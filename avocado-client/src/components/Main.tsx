@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image, Alert } from 'react-native';
 import { Firebase } from '../integrations/firebase';
+ 
 
 interface State {
     text: string | null;

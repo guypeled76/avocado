@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import Main from './components/Main';
 import AuthService from './services/Auth';
+import Avatar from './components/elements/Avatar';
 
 interface State {
   user: firebase.User | null;
@@ -19,7 +20,7 @@ export default class App extends React.Component<{}, State> {
 
     if (user) {
       const avatar = user.photoURL && (
-        <Image style={{ width: 50, height: 50 }} source={{ uri: user.photoURL }} />
+        <Avatar size={100} uri={user.photoURL} />
       );
 
       return (

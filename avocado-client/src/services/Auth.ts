@@ -16,6 +16,8 @@ export default class AuthService {
       }
     );
 
+
+
     if (type === 'success' && token) {
       // Build Firebase credential with the Facebook access token.
       const credential = Firebase.auth.FacebookAuthProvider.credential(token);
