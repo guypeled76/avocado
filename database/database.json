@@ -1,6 +1,44 @@
 {
-
-    "timelines" : {},
-    "chats" : {}, 
-    "preferences" : {}
+  "chats" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : {
+      "ff" : true
+    }
+  },
+  "notifications" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : true
+  },
+  "posts" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : true
+  },
+  "preferences" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : true
+  },
+  "profiles" : {
+    "OVvshWpba6aWbWFNQ5JPS0JZLc33" : {
+      "gerby" : true,
+      "moshe" : true,
+      "test" : true
+    },
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : true,
+    "pYqffHAquqVYh0raFz2JhkiZIYh2" : {
+      "gerby" : true
+    }
+  },
+  "roles" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : {
+      "admin" : true,
+      "editor" : true
+    },
+    "gfEtfOM35GZCM8ioulOXOmEVAHW2" : {
+      "consultant" : true,
+      "editor" : true
+    },
+    "pYqffHAquqVYh0raFz2JhkiZIYh2" : {
+      "consultant" : true,
+      "editor" : true
+    }
+  },
+  "timelines" : {
+    "UEUPKVkr7Hgm3eNWLDdD8ydww5M2" : true
+  }
 }
