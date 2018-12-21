@@ -6,8 +6,12 @@ interface State {
     
 }
 
+interface User {
+    photoURL : string | null
+}
+
 interface Props {
-    uri : string,
+    user : User | null,
     size: number
 }
 
@@ -34,7 +38,13 @@ export default class Avatar extends React.Component<Props, State> {
             shadowColor:'black',
             shadowOpacity:0.5
         }
-        return <Image style={style} source={{ uri: this.props.uri }} />;
+
+        const {user} = this.props;
+        if(user != null && user.photoURL != null) {
+            return <Image style={style} source={{ uri: user.photoURL }} />;
+        } else {
+            return <View style={style}/>
+        }
     }
 
 }

@@ -4,6 +4,9 @@ import { config } from '../config';
 import { Firebase } from '../integrations/firebase';
 
 export default class AuthService {
+
+  static loggedUser : firebase.User | null;
+
   /**
    * Login with Facebook and Firebase
    *

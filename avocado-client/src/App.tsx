@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import Main from './components/Main';
 import AuthService from './services/Auth';
 import Avatar from './components/elements/Avatar';
+import Login from './components/views/login/Login';
 
 interface State {
   user: firebase.User | null;
@@ -12,31 +13,26 @@ export default class App extends React.Component<{}, State> {
   public state: State = { user: null };
 
   public componentDidMount() {
-    AuthService.subscribeAuthChange(user => this.setState({ user }));
+    AuthService.subscribeAuthChange(user => {
+      AuthService.loggedUser = user;
+      this.setState({ user });
+    });
   }
 
   public render() {
     const { user } = this.state;
 
     if (user) {
-      const avatar = user.photoURL && (
-        <Avatar size={100} uri={user.photoURL} />
-      );
-
       return (
         <View style={styles.container}>
-          <Text>You are logged in!!!!!</Text>
-          {avatar}
-          <Button onPress={AuthService.logout} title='Logout' />
-          <Main RRR={user.uid} />
+          <Main/>
         </View>
       );
     }
 
     return (
       <View style={styles.container}>
-        <Text>Welcome!</Text>
-        <Button onPress={AuthService.loginWithFacebook} title='Login with Facebook' />
+          <Login />
       </View>
     );
   }
@@ -46,7 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });
