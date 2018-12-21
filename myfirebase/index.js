@@ -18,4 +18,8 @@ var app = firebase.initializeApp({
     });
   }
 
+  function addImage() {
+      firebase.storage()
+  }
+
   writeUserData("test1", "test1", "test@gmail.com", "test.png");
