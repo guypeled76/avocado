@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, Button, View } from 'react-native';
+import Avatar from '../../elements/Avatar';
+import AuthService from '../../../services/Auth';
 
 
 interface PostItem {
@@ -8,24 +10,49 @@ interface PostItem {
 
 interface State {
     items : PostItem[];
+    text : string;
 }
 
 interface Props {}
 
 export default class Posts extends React.Component<Props, State> {
     public state: State = { 
-        items : []
+        items : [],
+        text : 'test!!!!'
     };
 
     constructor(props : Props) {
         super(props);
 
+
+
+        // Bind handlers
+        this.onClick = this.onClick.bind(this);
         
+    }
+
+    private onClick() {
+
+        this.setState({text:this.state.text + "!"});
+        //Firebase.database().ref("profiles/" + this.props.RRR + "/gerby").set(true).then((a) => {
+
+        //}).catch(b => {
+
+        //});
     }
 
     public render() {
 
-        return <Text>Posts</Text>;
+        const {text} = this.state;
+        return <View>
+            <Text>Posts</Text>
+            <Text>You are logged in!!!!!</Text>
+                <Avatar size={100} user={AuthService.loggedUser} />
+                <Button onPress={AuthService.logout} title='Logout' />
+                <Text>{text}</Text>
+                <Button onPress={this.onClick} title="click me" />
+                
+                </View>;
     }
 
 }
