@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, FlatList, View, StyleSheet } from 'react-native';
-import Icon from '../../elements/Icon';
+import {NotificationsIcon} from '../../elements';
 
 
 
@@ -33,9 +33,7 @@ export default class Notifications extends React.Component<Props, State> {
     static navigationOptions = {
         title: 'Notifications',
         tabBarLabel: 'Notifications',
-        tabBarIcon: () => (
-            <Icon name="md-chatboxes" size={24} color="gray" />
-        )
+        tabBarIcon: NotificationsIcon
     }
 }
 

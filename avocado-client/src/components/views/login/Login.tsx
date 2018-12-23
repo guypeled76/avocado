@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Text, View, Button, StyleSheet } from 'react-native';
-
+import { SocialIcon } from 'react-native-elements'
 import AuthService from '../../../services/Auth';
 
 export default class Login extends React.Component<{}, {}> {
@@ -11,7 +11,12 @@ export default class Login extends React.Component<{}, {}> {
 
         return  <View>
                     <Text>Welcome!</Text>
-                    <Button onPress={AuthService.loginWithFacebook} title='Login with Facebook' />
+                    <SocialIcon
+  title='Sign In With Facebook'
+  button
+  type='facebook'
+  onPress={AuthService.loginWithFacebook} 
+/>
                 </View>;
     }
 

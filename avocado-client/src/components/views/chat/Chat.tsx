@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, ViewStyle, Image } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import { NavigationTabScreenOptions } from 'react-navigation';
-import {Icon} from '../../elements';
+import {ChatIcon} from '../../elements';
 
 
 
@@ -60,12 +60,8 @@ export default class Chat extends React.Component<Props, State> {
         )
     }
 
-    static navigationOptions = {
-        title: 'Chats',
-        tabBarLabel: 'Chats',
-        tabBarIcon: () => (
-            <Icon name="md-chatboxes" size={24} color="gray" />
-        )
+    static navigationOptions  = {
+        tabBarIcon: ChatIcon
     }
 
 

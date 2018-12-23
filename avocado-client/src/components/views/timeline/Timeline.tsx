@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Icon from '../../elements/Icon';
+import {TimelineIcon} from '../../elements';
 
 
 interface State {
@@ -27,8 +27,6 @@ export default class Timeline extends React.Component<Props, State> {
     static navigationOptions = {
         title: 'Timeline',
         tabBarLabel: 'Timeline',
-        tabBarIcon: () => (
-            <Icon name="md-chatboxes" size={24} color="gray" />
-        )
+        tabBarIcon: TimelineIcon
     }
 }

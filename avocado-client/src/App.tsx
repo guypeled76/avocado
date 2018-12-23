@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, SafeAreaView } from 'react-native';
 import Main from './components/Main';
 import AuthService from './services/Auth';
 import Avatar from './components/elements/Avatar';
@@ -24,16 +24,16 @@ export default class App extends React.Component<{}, State> {
 
     if (user) {
       return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <Main/>
-        </View>
+        </SafeAreaView>
       );
     }
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
           <Login />
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'stretch',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

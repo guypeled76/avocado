@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Button, View } from 'react-native';
 import Avatar from '../../elements/Avatar';
 import AuthService from '../../../services/Auth';
-import Icon from '../../elements/Icon';
+import { PostsIcon } from '../../elements';
 
 
 
@@ -11,33 +11,33 @@ interface PostItem {
 }
 
 interface State {
-    items : PostItem[];
-    text : string;
+    items: PostItem[];
+    text: string;
 }
 
-interface Props {}
+interface Props { }
 
 export default class Posts extends React.Component<Props, State> {
-    public state: State = { 
-        items : [],
-        text : 'test!!!!'
+    public state: State = {
+        items: [],
+        text: 'test!!!!'
     };
 
-    constructor(props : Props) {
+    constructor(props: Props) {
         super(props);
 
 
 
         // Bind handlers
         this.onClick = this.onClick.bind(this);
-        
+
     }
 
 
 
     private onClick() {
 
-        this.setState({text:this.state.text + "!"});
+        this.setState({ text: this.state.text + "!" });
         //Firebase.database().ref("profiles/" + this.props.RRR + "/gerby").set(true).then((a) => {
 
         //}).catch(b => {
@@ -47,24 +47,20 @@ export default class Posts extends React.Component<Props, State> {
 
     public render() {
 
-        const {text} = this.state;
+        const { text } = this.state;
         return <View>
-            <Text>Posts</Text>
-            <Text>You are logged in!!!!!</Text>
-                <Avatar size={100} user={AuthService.loggedUser} />
-                <Button onPress={AuthService.logout} title='Logout' />
-                <Text>{text}</Text>
-                <Button onPress={this.onClick} title="click me" />
-                </View>;
+
+            <Button onPress={AuthService.logout} title='Logout' />
+            <Text>{text}</Text>
+            <Button onPress={this.onClick} title="click me" />
+        </View>;
     }
 
 
     static navigationOptions = {
         title: 'Posts',
         tabBarLabel: 'Posts',
-        tabBarIcon: () => (
-            <Icon name="md-chatboxes" size={24} color="gray" />
-        )
+        tabBarIcon: PostsIcon
     }
 
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert } from 'react-native';
-import { Icon } from 'react-native-vector-icons';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { StyleSheet, Text, View, Button, Image, Alert, StatusBar } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { createBottomTabNavigator, createTabNavigator, createAppContainer } from 'react-navigation';
 
 
 import { Firebase } from '../integrations/firebase';
@@ -25,12 +25,12 @@ interface Props { }
 
 
 const AppNavigator = createBottomTabNavigator({
-        Posts: { screen: Posts},
-        Timeline: { screen: Timeline},
-        Notifications: { screen: Notifications},
-        Chat: { screen: Chat},
-        Settings: { screen: Settings}
-    });
+    Posts: { screen: Posts },
+    Timeline: { screen: Timeline },
+    Notifications: { screen: Notifications },
+    Chat: { screen: Chat },
+    Settings: { screen: Settings }
+});
 
 const AppNavigatorContainer = createAppContainer(AppNavigator);
 
@@ -62,9 +62,20 @@ export default class Main extends React.Component<Props, State> {
     public render() {
         const { text } = this.state;
 
-        //<StackNavigator />
         return <View style={styles.container}>
-            <AppNavigatorContainer />
+            <View style={styles.searchRow}> 
+                <View style={styles.avatarBar}>
+                    <Avatar size={30} user={AuthService.loggedUser} />
+                </View>
+                <SearchBar style={styles.searchBar}
+                    lightTheme
+                    icon={{ type: 'font-awesome', name: 'search' }}
+                    placeholder='Type Here...' round
+                    inputStyle={styles.searchInput}
+                    containerStyle={styles.searchContainer} />
+            </View>
+
+            <AppNavigatorContainer style={styles.app} />
         </View>;
     }
 }
@@ -72,8 +83,34 @@ export default class Main extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection:"column",
         backgroundColor: 'lightgray',
         alignItems: 'stretch',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly'
     },
+    searchContainer: {
+        backgroundColor: 'lightgray',
+    },
+    searchInput: {
+        backgroundColor: 'white'
+    },
+    searchRow: {
+        backgroundColor:'yellow',
+        alignItems: 'stretch',
+        flexDirection:'row',
+        height:40
+    },
+    searchBar : {
+        flexGrow: 1
+    },
+    app : {
+        flexGrow: 1
+    }, 
+     
+    avatarBar: {
+        width:30,
+        flexDirection:'column',
+        alignItems:'center',
+        backgroundColor:'green'
+    }
 });
