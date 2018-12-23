@@ -10,7 +10,7 @@ export function Icon(props : {name : string, size : number, color : string}) {
 }
 
 function TabIcon(name : string, focused : boolean) {
-    return <Icon name={name} size={32} color={focused ? "blue" : "gray"} />
+    return <Icon name={name} size={28} color={focused ? "blue" : "gray"} />
 }
 
 export function ChatIcon(tintColor : string, focused : boolean) {

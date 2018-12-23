@@ -30,6 +30,10 @@ const AppNavigator = createBottomTabNavigator({
     Notifications: { screen: Notifications },
     Chat: { screen: Chat },
     Settings: { screen: Settings }
+}, {
+    tabBarOptions: {
+        showLabel: false
+    }
 });
 
 const AppNavigatorContainer = createAppContainer(AppNavigator);
@@ -63,7 +67,7 @@ export default class Main extends React.Component<Props, State> {
         const { text } = this.state;
 
         return <View style={styles.container}>
-            <View style={styles.searchRow}> 
+            <View style={styles.searchRow}>
                 <View style={styles.avatarBar}>
                     <Avatar size={30} user={AuthService.loggedUser} />
                 </View>
@@ -83,34 +87,34 @@ export default class Main extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection:"column",
+        flexDirection: "column",
         backgroundColor: 'lightgray',
         alignItems: 'stretch',
         justifyContent: 'space-evenly'
     },
     searchContainer: {
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
     },
     searchInput: {
         backgroundColor: 'white'
     },
     searchRow: {
-        backgroundColor:'yellow',
+        backgroundColor: 'white',
         alignItems: 'stretch',
-        flexDirection:'row',
-        height:40
+        flexDirection: 'row',
+        height: 40
     },
-    searchBar : {
+    searchBar: {
         flexGrow: 1
     },
-    app : {
+    app: {
         flexGrow: 1
-    }, 
-     
+    },
+
     avatarBar: {
-        width:30,
-        flexDirection:'column',
-        alignItems:'center',
-        backgroundColor:'green'
+        width: 30,
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: 'white'
     }
 });
