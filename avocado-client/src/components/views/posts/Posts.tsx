@@ -20,7 +20,7 @@ interface Props { }
 export default class Posts extends React.Component<Props, State> {
     public state: State = {
         items: [],
-        text: 'test!!!!'
+        text: 'test!!!!?'
     };
 
     constructor(props: Props) {
