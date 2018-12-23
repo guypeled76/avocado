@@ -12,6 +12,9 @@
     "validate": "yarn test && yarn lint && tsc --noEmit"
   },
   "dependencies": {
+    "@expo/vector-icons": "^8.0.0",
+    "@types/expo__vector-icons": "^6.2.3",
+    "@types/react-navigation": "^3.0.1",
     "expo": "^31.0.2",
     "firebase": "^5.5.8",
     "react": "16.5.0",

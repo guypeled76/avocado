@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, Button, View } from 'react-native';
 import Avatar from '../../elements/Avatar';
 import AuthService from '../../../services/Auth';
+import Icon from '../../elements/Icon';
+
 
 
 interface PostItem {
@@ -31,6 +33,8 @@ export default class Posts extends React.Component<Props, State> {
         
     }
 
+
+
     private onClick() {
 
         this.setState({text:this.state.text + "!"});
@@ -51,8 +55,16 @@ export default class Posts extends React.Component<Props, State> {
                 <Button onPress={AuthService.logout} title='Logout' />
                 <Text>{text}</Text>
                 <Button onPress={this.onClick} title="click me" />
-                
                 </View>;
+    }
+
+
+    static navigationOptions = {
+        title: 'Posts',
+        tabBarLabel: 'Posts',
+        tabBarIcon: () => (
+            <Icon name="md-chatboxes" size={24} color="gray" />
+        )
     }
 
 }

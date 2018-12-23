@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image, Alert } from 'react-native';
-
+import { Icon } from 'react-native-vector-icons';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 
@@ -17,24 +17,25 @@ import Settings from './views/settings/Settings';
 
 
 interface State {
-    text : string
+    text: string
 }
 
 interface Props { }
 
 
+
 const AppNavigator = createBottomTabNavigator({
-    Posts: { screen: Posts },
-    Timeline: { screen: Timeline },    
-    Notifications: { screen: Notifications },
-    Chat: { screen: Chat },
-    Settings: { screen: Settings}
-});
+        Posts: { screen: Posts},
+        Timeline: { screen: Timeline},
+        Notifications: { screen: Notifications},
+        Chat: { screen: Chat},
+        Settings: { screen: Settings}
+    });
 
 const AppNavigatorContainer = createAppContainer(AppNavigator);
 
 export default class Main extends React.Component<Props, State> {
-    public state: State = { text : "test"};
+    public state: State = { text: "test" };
 
     constructor(props: Props) {
         super(props);
@@ -50,7 +51,7 @@ export default class Main extends React.Component<Props, State> {
 
     private onClick() {
 
-        this.setState({text:this.state.text + "!"});
+        this.setState({ text: this.state.text + "!" });
         //Firebase.database().ref("profiles/" + this.props.RRR + "/gerby").set(true).then((a) => {
 
         //}).catch(b => {
@@ -59,19 +60,19 @@ export default class Main extends React.Component<Props, State> {
     }
 
     public render() {
-        const {text} = this.state;
-        
-//<StackNavigator />
+        const { text } = this.state;
+
+        //<StackNavigator />
         return <View style={styles.container}>
-                    <AppNavigatorContainer />
-            </View>;
+            <AppNavigatorContainer />
+        </View>;
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        backgroundColor: 'yellow',
+        flex: 1,
+        backgroundColor: 'lightgray',
         alignItems: 'stretch',
         justifyContent: 'center',
     },

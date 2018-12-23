@@ -1,6 +1,10 @@
 import React from 'react';
-import { Text, ViewStyle } from 'react-native';
+import { Text, ViewStyle, Image } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { NavigationTabScreenOptions } from 'react-navigation';
+import Icon from '../../elements/Icon';
+
+
 
 
 interface State {
@@ -16,7 +20,6 @@ export default class Chat extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-
 
     }
 
@@ -38,7 +41,7 @@ export default class Chat extends React.Component<Props, State> {
         })
     }
 
-    onSend(messages : IMessage[]) {
+    onSend(messages: IMessage[]) {
         this.setState(previousState => ({
             messages: GiftedChat.append(previousState.messages, messages),
         }))
@@ -47,7 +50,7 @@ export default class Chat extends React.Component<Props, State> {
     render() {
         return (
             <GiftedChat
-                imageStyle={style}
+                imageStyle={imageStyle}
                 messages={this.state.messages}
                 onSend={messages => this.onSend(messages)}
                 user={{
@@ -57,10 +60,19 @@ export default class Chat extends React.Component<Props, State> {
         )
     }
 
+    static navigationOptions = {
+        title: 'Chats',
+        tabBarLabel: 'Chats',
+        tabBarIcon: () => (
+            <Icon name="md-chatboxes" size={24} color="gray" />
+        )
+    }
+
+
 
 
 }
 
-const style : ViewStyle = {
-        
+const imageStyle: ViewStyle = {
+
 }
