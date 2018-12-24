@@ -1,59 +1,56 @@
 import React from 'react';
-import { Text, Button, View } from 'react-native';
+import { Text, Button, View, ScrollView } from 'react-native';
 import Avatar from '../../elements/Avatar';
 import AuthService from '../../../services/Auth';
 import { PostsIcon } from '../../elements';
+import {PostInfo, ImagePostInfo, VideoPostInfo, TextPostInfo} from '../../../entities';
+import { PostsList } from './PostList';
 
 
 
-interface PostItem {
-
-}
 
 interface State {
-    items: PostItem[];
-    text: string;
+    posts: (ImagePostInfo | VideoPostInfo | TextPostInfo)[];
 }
 
 interface Props { }
 
 export default class Posts extends React.Component<Props, State> {
     public state: State = {
-        items: [],
-        text: 'test!!!!?'
+        posts: [ {
+            key: "ddd2",
+            type: "text",
+            description: "ddd"
+        }, {
+            key: "ddd1",
+            type: "image",
+            description: "This is a test",
+            image: {uri:"https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg"}
+        }, {
+            key: "ddd3",
+            type: "image",
+            description: "This is a test",
+            image: {uri:"https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg"}
+        }, {
+            key: "ddd4",
+            type: "image",
+            description: "This is a test",
+            image: {uri:"https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg"}
+        }]
     };
 
     constructor(props: Props) {
         super(props);
-
-
-
-        // Bind handlers
-        this.onClick = this.onClick.bind(this);
-
     }
 
 
 
-    private onClick() {
-
-        this.setState({ text: this.state.text + "!" });
-        //Firebase.database().ref("profiles/" + this.props.RRR + "/gerby").set(true).then((a) => {
-
-        //}).catch(b => {
-
-        //});
-    }
 
     public render() {
 
-        const { text } = this.state;
-        return <View>
-
-            <Button onPress={AuthService.logout} title='Logout' />
-            <Text>{text}</Text>
-            <Button onPress={this.onClick} title="click me" />
-        </View>;
+        return <ScrollView>
+            <PostsList posts={this.state.posts}/>
+        </ScrollView>;
     }
 
 

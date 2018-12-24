@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, ViewStyle, Image } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import { NavigationTabScreenOptions } from 'react-navigation';
 import {ChatIcon} from '../../elements';
 
 
