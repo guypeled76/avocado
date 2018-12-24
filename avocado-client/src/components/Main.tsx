@@ -1,7 +1,8 @@
 import React from 'react';
-import { KeyboardAvoidingView, View, ViewStyle, StyleSheet} from 'react-native';
+import { KeyboardAvoidingView, View, ViewStyle, StyleSheet } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 
 import { Firebase } from '../integrations/firebase';
@@ -24,19 +25,19 @@ interface Props { }
 
 
 
-const AppNavigator = createBottomTabNavigator({
+const AppNavigator = createMaterialBottomTabNavigator({
     Posts: { screen: Posts },
     Timeline: { screen: Timeline },
     Notifications: { screen: Notifications },
     Chat: { screen: Chat },
     Settings: { screen: Settings }
 }, {
-    tabBarOptions: {
-        showLabel: false,
-        activeTintColor:"#3366BB",
-        inactiveTintColor:"gray"
-    }
-});
+        inactiveTintColor: "gray",
+        activeColor: "#3366BB",
+        inactiveColor: "gray",
+        barStyle: { backgroundColor: 'white' },
+        labeled: false
+    });
 
 const AppNavigatorContainer = createAppContainer(AppNavigator);
 
@@ -86,7 +87,7 @@ export default class Main extends React.Component<Props, State> {
     }
 }
 
-const containerStyle : ViewStyle = {
+const containerStyle: ViewStyle = {
     flex: 1,
     flexDirection: "column",
     backgroundColor: 'lightgray',
