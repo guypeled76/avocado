@@ -28,7 +28,7 @@ export default class Chat extends React.Component<Props, State> {
         this.setState({
             messages: [
                 {
-                    _id: 1,
+                    _id: "sdfdsfs",
                     text: 'Hello developer',
                     createdAt: new Date(),
                     user: {
