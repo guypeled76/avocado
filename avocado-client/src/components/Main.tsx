@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, Alert, StatusBar } from 'react-native';
+import { KeyboardAvoidingView, View, ViewStyle, StyleSheet} from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { createBottomTabNavigator, createTabNavigator, createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 
 import { Firebase } from '../integrations/firebase';
@@ -68,7 +68,7 @@ export default class Main extends React.Component<Props, State> {
     public render() {
         const { text } = this.state;
 
-        return <View style={styles.container}>
+        return <KeyboardAvoidingView enabled behavior="padding" style={containerStyle}>
             <View style={styles.searchRow}>
                 <View style={styles.avatarBar}>
                     <Avatar size={30} user={AuthService.loggedUser} />
@@ -82,18 +82,19 @@ export default class Main extends React.Component<Props, State> {
             </View>
 
             <AppNavigatorContainer style={styles.app} />
-        </View>;
+        </KeyboardAvoidingView>;
     }
 }
 
+const containerStyle : ViewStyle = {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: 'lightgray',
+    alignItems: 'stretch',
+    justifyContent: 'space-evenly'
+};
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: 'lightgray',
-        alignItems: 'stretch',
-        justifyContent: 'space-evenly'
-    },
     searchContainer: {
         backgroundColor: 'white',
     },

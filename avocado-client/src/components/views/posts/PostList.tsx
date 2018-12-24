@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { Card, List, ListItem, Button } from 'react-native-elements';
-import { ImagePostInfo, PostInfo, TextPostInfo, VideoPostInfo } from '../../../entities';
+import { ImagePostInfo, PostInfoType, TextPostInfo, VideoPostInfo } from '../../../entities';
 import Posts from './Posts';
 
 
@@ -28,7 +28,7 @@ function TextPost(props : {post:TextPostInfo}) {
 }
 
 
-export function PostsList(props : {posts : PostInfo[]}) {
+export function PostsList(props : {posts : PostInfoType[]}) {
     return <List containerStyle={{marginBottom: 20}}>
     {
       props.posts.map((post) => {
