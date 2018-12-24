@@ -32,7 +32,9 @@ const AppNavigator = createBottomTabNavigator({
     Settings: { screen: Settings }
 }, {
     tabBarOptions: {
-        showLabel: false
+        showLabel: false,
+        activeTintColor:"#3366BB",
+        inactiveTintColor:"gray"
     }
 });
 

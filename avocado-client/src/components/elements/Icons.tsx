@@ -9,27 +9,27 @@ export function Icon(props : {name : string, size : number, color : string}) {
     return <Ionicons name={props.name} size={props.size} color={props.color}/>
 }
 
-function TabIcon(name : string, focused : boolean) {
-    return <Icon name={name} size={28} color={focused ? "blue" : "gray"} />
+function TabIcon(name : string, tintColor : string) {
+    return <Icon name={name} size={28} color={tintColor} />
 }
 
-export function ChatIcon(tintColor : string, focused : boolean) {
-    return TabIcon("md-chatboxes", focused);
+export function ChatIcon({tintColor}) {
+    return TabIcon("md-chatboxes", tintColor);
 }
 
-export function NotificationsIcon(tintColor : string, focused : boolean) {
-    return TabIcon("ios-notifications", focused);
+export function NotificationsIcon({tintColor}) {
+    return TabIcon("ios-notifications", tintColor);
 }
 
-export function PostsIcon(tintColor : string, focused : boolean) {
-    return TabIcon("ios-filing", focused);
+export function PostsIcon({tintColor}) {
+    return TabIcon("ios-filing", tintColor);
 }
 
-export function TimelineIcon(tintColor : string, focused : boolean) {
-    return TabIcon("md-speedometer", focused);
+export function TimelineIcon({tintColor}) {
+    return TabIcon("md-speedometer", tintColor);
 }
 
-export function SettinsIcon(tintColor : string, focused : boolean) {
-    return TabIcon("ios-options", focused);
+export function SettingsIcon({tintColor}) {
+    return TabIcon("md-options", tintColor);
 }
 
