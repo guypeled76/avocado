@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, SafeAreaView } from 'react-native';
-import Main from './components/Main';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import AuthService from './services/Auth';
-import Avatar from './components/elements/Avatar';
 import Login from './components/views/login/Login';
+import Navigation from './components/views/Navigation';
 
 interface State {
   user: firebase.User | null;
@@ -17,6 +16,7 @@ export default class App extends React.Component<{}, State> {
       AuthService.loggedUser = user;
       this.setState({ user });
     });
+
   }
 
   public render() {
@@ -25,7 +25,7 @@ export default class App extends React.Component<{}, State> {
     if (user) {
       return (
         <SafeAreaView style={styles.container}>
-          <Main/>
+          <Navigation />
         </SafeAreaView>
       );
     }

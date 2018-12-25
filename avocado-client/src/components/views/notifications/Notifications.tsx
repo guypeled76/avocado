@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, FlatList, View, StyleSheet } from 'react-native';
+import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
 import {NotificationsIcon} from '../../elements';
+import { NavigationScreenProps, DrawerActions } from 'react-navigation';
 
 
 
@@ -9,14 +10,14 @@ interface State {
     items: any[];
 }
 
-interface Props { }
 
-export default class Notifications extends React.Component<Props, State> {
+
+export default class Notifications extends React.Component<NavigationScreenProps, State> {
     public state: State = {
         items: [{key: "i1", text: "test1" }, { key: "i2", text: "test2" }, { key: "i3", text: "test3" }, { key: "i4", text: "test4" }]
     };
 
-    constructor(props: Props) {
+    constructor(props: NavigationScreenProps) {
         super(props);
 
 
@@ -24,9 +25,14 @@ export default class Notifications extends React.Component<Props, State> {
 
     public render() {
 
+        const {navigate} = this.props.navigation;
+
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
-            return <View style={itemStyle}><Text>{itemInfo.item.text}</Text></View>
+            return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
+            <Button title="ddd" onPress={()=>navigate("WebDialog")}></Button>
+            <Button title="ggg" onPress={()=>this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
+            </View>
         }} />;
     }
 
