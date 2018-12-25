@@ -46,6 +46,7 @@ export default class Timeline extends React.Component<Props, State> {
           '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
           '2012-05-19': {disabled: true, disableTouchEvent: true}
         }}
+        
       /><TimeLineComponent
         data={data}
       />

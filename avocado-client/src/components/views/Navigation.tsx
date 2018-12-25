@@ -62,6 +62,7 @@ const StackNavigator = createStackNavigator({
     App: { 
         screen: DrawerNavigator,
         navigationOptions: () => ({
+            
         title: `A`,
         header: <View style={styles.searchRow}>
         <View style={styles.avatarBar}>

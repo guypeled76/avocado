@@ -1,33 +1,10 @@
 import React from 'react';
 
+import {UserInfo} from '../entities';
 
-const { Provider, Consumer  } = React.createContext({
-    
-});
-/*
-export class UserProvider extends React.Component<{},{}> {
-  constructor(props) {
-    super(props);
+const UserContext = React.createContext<UserInfo|null>(null);
 
-   
-  }
 
-  render() {
-      return ;
-  }
-*/
-/*
-  render() {
-    return <Provider value={2}>{this.props.children}</Provider>;
-  }
-}*/
-/*
-export const UserConsumer = ({ children }) => {
-  return (
-    <Consumer>
-      {dimensions =>
-        children(getWindowWidth(dimensions), getWindowHeight(dimensions))
-      }
-    </Consumer>
-  );
-};*/
+export const UserContextProvider = UserContext.Provider;
+export const UserContextConsumer = UserContext.Consumer;
+
