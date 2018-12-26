@@ -2368,6 +2368,11 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+data.task@^3.1.1:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/data.task/-/data.task-3.1.2.tgz#f61511339ad5c5ac6f417cc2666b95153dc7448d"
+  integrity sha512-gGDjno8m/FS1kdMU3EmKcLaO1enFyfCV/EscvDZ4+KZDSg9xHePa2VFfWd+QO5PUp18NdCIziOpaSUE4Efw8/w==
+
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -4728,6 +4733,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.differenceby@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/lodash.differenceby/-/lodash.differenceby-4.8.0.tgz#cfd59e94353af5de51da5d302ca4ebff33faac57"
+  integrity sha1-z9WelDU69d5R2l0wLKTr/zP6rFc=
+
 lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
@@ -6127,6 +6137,11 @@ react-native-gifted-chat@^0.5.0:
     react-native-parsed-text "^0.0.20"
     uuid "3.3.0"
 
+react-native-injectable-component@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-injectable-component/-/react-native-injectable-component-0.1.2.tgz#44ee28262c79789254ce5708b3477c134b2610c0"
+  integrity sha1-RO4oJix5eJJUzlcIs0d8E0smEMA=
+
 react-native-lightbox@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
@@ -6137,6 +6152,18 @@ react-native-lightbox@^0.7.0:
 react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
+
+react-native-masonry@^0.5.0-alpha.3:
+  version "0.5.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/react-native-masonry/-/react-native-masonry-0.5.0-alpha.3.tgz#9169a85038b18fa478bb00d39ecf0227a65d2cc1"
+  integrity sha512-Jxw+eIMr3Fzb7TW0ZDC5STfLNiQHuQjZDNk4QJPenuM5l6bKZN51sMV9TbsO3g6zxQLHvO0DPNY5hfA5zNlFqw==
+  dependencies:
+    data.task "^3.1.1"
+    lodash.differenceby "^4.8.0"
+    lodash.isequal "^4.5.0"
+    opencollective "^1.0.3"
+    prop-types "^15.5.8"
+    react-native-injectable-component "^0.1.2"
 
 react-native-paper@^2.4.0:
   version "2.4.0"

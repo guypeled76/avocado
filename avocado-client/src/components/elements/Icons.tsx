@@ -33,3 +33,7 @@ export function SettingsIcon({tintColor}) {
     return TabIcon("md-options", tintColor);
 }
 
+export function RecipesIcon({tintColor}) {
+    return TabIcon("ios-restaurant", tintColor);
+}
+

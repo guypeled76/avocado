@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
-import {NotificationsIcon} from '../../elements';
+import { NotificationsIcon } from '../../elements';
 import { NavigationScreenProps, DrawerActions } from 'react-navigation';
-
-
+import { colors, strings } from 'resources';
 
 
 interface State {
@@ -14,7 +13,7 @@ interface State {
 
 export default class Notifications extends React.Component<NavigationScreenProps, State> {
     public state: State = {
-        items: [{key: "i1", text: "test1" }, { key: "i2", text: "test2" }, { key: "i3", text: "test3" }, { key: "i4", text: "test4" }]
+        items: [{ key: "i1", text: "test1" }, { key: "i2", text: "test2" }, { key: "i3", text: "test3" }, { key: "i4", text: "test4" }]
     };
 
     constructor(props: NavigationScreenProps) {
@@ -25,13 +24,13 @@ export default class Notifications extends React.Component<NavigationScreenProps
 
     public render() {
 
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
 
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
             return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
-            <Button title="ddd" onPress={()=>navigate("WebDialog", {url:'http://www.google.com'})}></Button>
-            <Button title="ggg" onPress={()=>this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
+                <Button title={strings.test} color={colors.background} onPress={() => navigate("WebDialog", { url: 'http://www.google.com' })}></Button>
+                <Button title="ggg" onPress={() => this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
             </View>
         }} />;
     }

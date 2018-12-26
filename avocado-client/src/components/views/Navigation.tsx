@@ -17,6 +17,7 @@ import Notifications from './notifications/Notifications';
 import Posts from './posts/Posts';
 import Timeline from './timeline/Timeline';
 import Settings from './settings/Settings';
+import Recipes from './recipes/Recipes';
 import WebDialog from '../dialogs/WebDialog';
 import DrawerDialog from '../dialogs/DrawerDialog';
 
@@ -28,7 +29,7 @@ const TabsNavigator = createMaterialTopTabNavigator({
     Timeline: { screen: Timeline },
     Notifications: { screen: Notifications },
     Chat: { screen: Chat },
-    Settings: { screen: Settings }
+    Recipes: { screen: Recipes }
 }, {
         tabBarPosition: "top",
         tabBarOptions: {
@@ -52,9 +53,6 @@ const TabsNavigatorContainer = createAppContainer(TabsNavigator);
 const DrawerNavigator = createDrawerNavigator({
     Tabs:{
         screen: TabsNavigatorContainer
-    }, 
-    WebDD: {
-        screen: WebDialog
     }
 },{
     initialRouteName: 'Tabs',
@@ -84,6 +82,9 @@ const StackNavigator = createStackNavigator({
         title: `BBBBB`,
         headerTitle:'dd'
       }) },
+    Settings : {
+        screen: Settings
+    },
 }, {
 
 });
