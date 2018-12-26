@@ -1,10 +1,19 @@
 import React from 'react';
 
-import {View, Text} from 'react-native';
+import {WebView} from 'react-native';
+import { NavigationScreenProps } from 'react-navigation';
 
-export default class WebDialog extends React.Component<{}, {}> {
+export default class WebDialog extends React.Component<NavigationScreenProps, {}> {
   
     public render() {
-        return <View><Text>ddddd</Text></View>
+        return <WebView
+        source={{uri: this.props.navigation.getParam("url")}}
+        style={{flex: 1}}
+      />
+    }
+
+    static navigationOptions = {
+        title: 'Posts',
+        tabBarLabel: 'Posts'
     }
 }

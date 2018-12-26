@@ -48,22 +48,24 @@ const TabsNavigator = createMaterialTopTabNavigator({
 
 const TabsNavigatorContainer = createAppContainer(TabsNavigator);
 
+
 const DrawerNavigator = createDrawerNavigator({
     Tabs:{
         screen: TabsNavigatorContainer
+    }, 
+    WebDD: {
+        screen: WebDialog
     }
 },{
     initialRouteName: 'Tabs',
     contentComponent: DrawerDialog,
-    drawerWidth: 300
+    drawerWidth: 300,
 });
 
 const StackNavigator = createStackNavigator({
     App: { 
         screen: DrawerNavigator,
         navigationOptions: () => ({
-            
-        title: `A`,
         header: <View style={styles.searchRow}>
         <View style={styles.avatarBar}>
             <Avatar size={30} user={AuthService.loggedUser} />

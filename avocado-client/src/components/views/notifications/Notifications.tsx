@@ -30,7 +30,7 @@ export default class Notifications extends React.Component<NavigationScreenProps
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
             return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
-            <Button title="ddd" onPress={()=>navigate("WebDialog")}></Button>
+            <Button title="ddd" onPress={()=>navigate("WebDialog", {url:'http://www.google.com'})}></Button>
             <Button title="ggg" onPress={()=>this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
             </View>
         }} />;
