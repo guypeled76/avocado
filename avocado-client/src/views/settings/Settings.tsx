@@ -8,7 +8,7 @@ interface State {
 
 interface Props {}
 
-export default class Settings extends React.Component<Props, State> {
+export class Settings extends React.Component<Props, State> {
     public state: State = { 
         
     };
@@ -35,7 +35,7 @@ export default class Settings extends React.Component<Props, State> {
    static navigationOptions = {
         title: strings.views.settings,
         tabBarLabel: strings.views.settings,
-        tabBarIcon: icons.views.settings
+        tabBarIcon: icons.navigation.settings
     }
 
    

@@ -15,7 +15,7 @@ interface Props {
     size: number
 }
 
-export default class Avatar extends React.Component<Props, State> {
+export class Avatar extends React.Component<Props, State> {
     public state: State = { };
 
     constructor(props : Props) {

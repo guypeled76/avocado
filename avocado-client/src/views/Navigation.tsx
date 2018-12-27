@@ -1,35 +1,38 @@
 import React from 'react';
 
 import { KeyboardAvoidingView, View, ViewStyle, StyleSheet } from 'react-native';
-import { SearchBar, Text } from 'react-native-elements';
+import { SearchBar } from 'react-native-elements';
+import { 
+    createAppContainer, 
+    createStackNavigator, 
+    createDrawerNavigator, 
+    createMaterialTopTabNavigator 
+} from 'react-navigation';
 
-import { createAppContainer, createStackNavigator, NavigationScreenProps, createDrawerNavigator } from 'react-navigation';
-import { createMaterialTopTabNavigator } from 'react-navigation';
+import {AuthService} from 'services';
 
+import {
+    Posts, 
+    Timeline, 
+    Notifications, 
+    Chat, 
+    Recipes, 
+    Settings
+} from 'views';
 
-import { Firebase } from '../../integrations/firebase';
-import AuthService from '../../services/Auth';
-import Avatar from '../elements/Avatar';
-
-
-import Chat from './chat/Chat';
-import Notifications from './notifications/Notifications';
-import Posts from './posts/Posts';
-import Timeline from './timeline/Timeline';
-import Settings from './settings/Settings';
-import Recipes from './recipes/Recipes';
-import WebDialog from '../dialogs/WebDialog';
-import DrawerDialog from '../dialogs/DrawerDialog';
+import { constants } from 'resources';
+import { WebDialog, DrawerDialog } from 'dialogs';
+import { Avatar } from 'elements';
 
 
 
 
 const TabsNavigator = createMaterialTopTabNavigator({
-    Posts: { screen: Posts },
-    Timeline: { screen: Timeline },
-    Notifications: { screen: Notifications },
-    Chat: { screen: Chat },
-    Recipes: { screen: Recipes }
+    [constants.navigation.feed]: { screen: Posts },
+    [constants.navigation.timeline]: { screen: Timeline },
+    [constants.navigation.notifications]: { screen: Notifications },
+    [constants.navigation.chat]: { screen: Chat },
+    [constants.navigation.recipes]: { screen: Recipes }
 }, {
         tabBarPosition: "top",
         tabBarOptions: {
@@ -51,11 +54,11 @@ const TabsNavigatorContainer = createAppContainer(TabsNavigator);
 
 
 const DrawerNavigator = createDrawerNavigator({
-    Tabs:{
+    [constants.navigation.tabs]:{
         screen: TabsNavigatorContainer
     }
 },{
-    initialRouteName: 'Tabs',
+    initialRouteName: constants.navigation.tabs,
     contentComponent: DrawerDialog,
     drawerWidth: 300,
 });
@@ -91,7 +94,7 @@ const StackNavigator = createStackNavigator({
 
 const StackNavigatorContainer = createAppContainer(StackNavigator);
 
-export default class Navigation extends React.Component<{}, {}> {
+export class Navigation extends React.Component<{}, {}> {
 
 
     public render() {

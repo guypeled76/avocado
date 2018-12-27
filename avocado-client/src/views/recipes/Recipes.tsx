@@ -1,13 +1,12 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import Masonry from 'react-native-masonry';
-import { strings, icons } from 'resources';
+import { strings, icons, styles } from 'resources';
 
 
 
 
 
-export default class Timeline extends React.Component<{}, {}> {
+export class Recipes extends React.Component<{}, {}> {
 
     
     public state = { 
@@ -21,8 +20,8 @@ export default class Timeline extends React.Component<{}, {}> {
     }
 
     public render() {
-        return <Masonry style={styles.container}
-            columns={2} // optional - Default: 2
+        return <Masonry style={styles.fill}
+            columns={2} 
             bricks={[]}
             />;
 
@@ -31,13 +30,7 @@ export default class Timeline extends React.Component<{}, {}> {
     static navigationOptions = {
         title: strings.views.recipes,
         tabBarLabel: strings.views.recipes,
-        tabBarIcon: icons.views.recipes
+        tabBarIcon: icons.navigation.recipes
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex:1
-    }
-
-});

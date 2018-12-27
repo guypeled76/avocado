@@ -3,7 +3,7 @@ import { Facebook } from 'expo';
 import { config } from '../config';
 import { Firebase } from '../integrations/firebase';
 
-export default class AuthService {
+export class AuthService {
 
   static loggedUser : firebase.User | null;
 

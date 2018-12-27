@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
-import AuthService from './services/Auth';
-import Login from './components/views/login/Login';
-import Navigation from './components/views/Navigation';
+import { AuthService } from 'services';
+import { Login, Navigation } from 'views';
 
 interface State {
   user: firebase.User | null;

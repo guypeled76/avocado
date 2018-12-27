@@ -4,7 +4,7 @@ import {View, Text} from 'react-native';
 import { DrawerItemsProps } from 'react-navigation';
 import { Drawer } from 'react-native-paper';
 
-export default class DrawerDialog extends React.Component<DrawerItemsProps, {active:string}> {
+export class DrawerDialog extends React.Component<DrawerItemsProps, {active:string}> {
   
     state = {
         active: 'first',

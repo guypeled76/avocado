@@ -10,7 +10,7 @@ interface State {
 
 
 
-export default class Notifications extends React.Component<NavigationScreenProps, State> {
+export class Notifications extends React.Component<NavigationScreenProps, State> {
     public state: State = {
         items: [{ key: "i1", text: "test1" }, { key: "i2", text: "test2" }, { key: "i3", text: "test3" }, { key: "i4", text: "test4" }]
     };
@@ -37,7 +37,7 @@ export default class Notifications extends React.Component<NavigationScreenProps
     static navigationOptions = {
         title: strings.views.notifications,
         tabBarLabel: strings.views.notifications,
-        tabBarIcon: icons.views.feed
+        tabBarIcon: icons.navigation.notifications
     }
 }
 

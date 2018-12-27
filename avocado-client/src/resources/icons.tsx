@@ -19,6 +19,6 @@ const navigationHandlers = {
 }
 
 export const icons = {
-    views: navigationHandlers
+    navigation: navigationHandlers
 };
 

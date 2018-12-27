@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { SocialIcon } from 'react-native-elements'
-import AuthService from '../../../services/Auth';
+import {AuthService} from 'services';
 
-export default class Login extends React.Component<{}, {}> {
+export class Login extends React.Component<{}, {}> {
 
 
   public render() {

@@ -13,7 +13,7 @@ interface State {
 
 interface Props { }
 
-export default class Chat extends React.Component<Props, State> {
+export class Chat extends React.Component<Props, State> {
     public state: State = {
         messages: []
     };
@@ -61,7 +61,7 @@ export default class Chat extends React.Component<Props, State> {
     }
 
     static navigationOptions  = {
-        tabBarIcon: icons.views.chat
+        tabBarIcon: icons.navigation.chat
     }
 
 
