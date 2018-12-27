@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
-import {SettingsIcon} from '../../elements';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { strings, icons } from 'resources';
 
 interface State {
 }
@@ -33,9 +33,9 @@ export default class Settings extends React.Component<Props, State> {
     }
 
    static navigationOptions = {
-        title: 'Settings',
-        tabBarLabel: 'Settings',
-        tabBarIcon: SettingsIcon
+        title: strings.views.settings,
+        tabBarLabel: strings.views.settings,
+        tabBarIcon: icons.views.settings
     }
 
    

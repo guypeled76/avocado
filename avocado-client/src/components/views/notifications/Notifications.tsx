@@ -1,8 +1,7 @@
 import React from 'react';
 import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
-import { NotificationsIcon } from '../../elements';
 import { NavigationScreenProps, DrawerActions } from 'react-navigation';
-import { colors, strings } from 'resources';
+import { colors, strings, icons } from 'resources';
 
 
 interface State {
@@ -29,16 +28,16 @@ export default class Notifications extends React.Component<NavigationScreenProps
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
             return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
-                <Button title={strings.test} color={colors.background} onPress={() => navigate("WebDialog", { url: 'http://www.google.com' })}></Button>
+                <Button title="ddd" color={colors.background} onPress={() => navigate("WebDialog", { url: 'http://www.google.com' })}></Button>
                 <Button title="ggg" onPress={() => this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
             </View>
         }} />;
     }
 
     static navigationOptions = {
-        title: 'Notifications',
-        tabBarLabel: 'Notifications',
-        tabBarIcon: NotificationsIcon
+        title: strings.views.notifications,
+        tabBarLabel: strings.views.notifications,
+        tabBarIcon: icons.views.feed
     }
 }
 

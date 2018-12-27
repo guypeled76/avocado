@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text, Button, View, ScrollView } from 'react-native';
-import Avatar from '../../elements/Avatar';
-import AuthService from '../../../services/Auth';
-import { PostsIcon } from '../../elements';
+import { ScrollView } from 'react-native';
 import {PostInfoType, dummyPosts} from '../../../entities';
 import { PostsList } from './PostList';
+import { strings, icons } from 'resources';
+import { createIconSet } from '@expo/vector-icons';
 
 
 
@@ -36,9 +35,9 @@ export default class Posts extends React.Component<Props, State> {
 
 
     static navigationOptions = {
-        title: 'Posts',
-        tabBarLabel: 'Posts',
-        tabBarIcon: PostsIcon
+        title: strings.views.feed,
+        tabBarLabel: strings.views.feed,
+        tabBarIcon: icons.views.feed
     }
 
 }

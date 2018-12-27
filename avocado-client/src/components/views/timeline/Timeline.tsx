@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text,ScrollView, StyleSheet } from 'react-native';
-import {TimelineIcon} from '../../elements';
 import {default as TimeLineComponent} from 'react-native-timeline-listview';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { strings, icons } from 'resources';
 
 
 interface State {
@@ -54,9 +54,9 @@ export default class Timeline extends React.Component<Props, State> {
     }
 
     static navigationOptions = {
-        title: 'Timeline',
-        tabBarLabel: 'Timeline',
-        tabBarIcon: TimelineIcon
+        title: strings.views.timeline,
+        tabBarLabel: strings.views.timeline,
+        tabBarIcon: icons.views.timeline
     }
 }
 

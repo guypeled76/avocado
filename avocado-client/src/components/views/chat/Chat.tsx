@@ -1,7 +1,8 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import {ChatIcon} from '../../elements';
+import { icons } from 'resources';
+
 
 
 
@@ -60,7 +61,7 @@ export default class Chat extends React.Component<Props, State> {
     }
 
     static navigationOptions  = {
-        tabBarIcon: ChatIcon
+        tabBarIcon: icons.views.chat
     }
 
 

@@ -1,12 +1,17 @@
 
 
 
-const tabs = {
-    notifications : 'Notifications'
+const views = {
+    notifications : 'Notifications',
+    feed : 'Feed',
+    recipes: 'Recipes',
+    chat: 'Chat',
+    settings: 'Settings',
+    timeline: 'Timeline'
 };
 
 export const strings = {
-    tabs: tabs,
+    views: views,
 
     test :"googo"
 

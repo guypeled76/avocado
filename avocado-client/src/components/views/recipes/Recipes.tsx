@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { RecipesIcon } from '../../elements';
 import Masonry from 'react-native-masonry';
+import { strings, icons } from 'resources';
 
 
 
@@ -29,9 +29,9 @@ export default class Timeline extends React.Component<{}, {}> {
     }
 
     static navigationOptions = {
-        title: 'Recipes',
-        tabBarLabel: 'Recipes',
-        tabBarIcon: RecipesIcon
+        title: strings.views.recipes,
+        tabBarLabel: strings.views.recipes,
+        tabBarIcon: icons.views.recipes
     }
 }
 

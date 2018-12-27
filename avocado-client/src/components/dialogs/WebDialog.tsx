@@ -11,9 +11,4 @@ export default class WebDialog extends React.Component<NavigationScreenProps, {}
         style={{flex: 1}}
       />
     }
-
-    static navigationOptions = {
-        title: 'Posts',
-        tabBarLabel: 'Posts'
-    }
 }
