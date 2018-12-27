@@ -85,7 +85,7 @@ const StackNavigator = createStackNavigator({
         title: `BBBBB`,
         headerTitle:'dd'
       }) },
-    Settings : {
+    [constants.navigation.settings] : {
         screen: Settings
     },
 }, {

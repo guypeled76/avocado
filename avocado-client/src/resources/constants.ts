@@ -18,7 +18,8 @@ const navigation = {
     chat : 'chat',
     timeline : 'timeline',
     notifications : 'notifications',
-    recipes : 'recipes'
+    recipes : 'recipes',
+    settings : 'settings'
 }
 
 

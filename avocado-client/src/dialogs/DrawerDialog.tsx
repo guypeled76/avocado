@@ -3,6 +3,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import { DrawerItemsProps } from 'react-navigation';
 import { Drawer } from 'react-native-paper';
+import { constants } from 'resources';
 
 export class DrawerDialog extends React.Component<DrawerItemsProps, {active:string}> {
   
@@ -23,6 +24,13 @@ export class DrawerDialog extends React.Component<DrawerItemsProps, {active:stri
               label="Second Item"
               active={active === 'second'}
               onPress={() => { this.setState({ active: 'second' }); }}
+            />
+            <Drawer.Item
+              label="Settings"
+              active={active === 'third'}
+              onPress={() => { this.setState({ active: 'third' }); 
+              this.props.navigation.closeDrawer();
+              this.props.navigation.navigate(constants.navigation.settings) }}
             />
          </Drawer.Section>
         );
