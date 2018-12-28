@@ -27,8 +27,7 @@
     "react-native-paper": "^2.4.0",
     "react-native-timeline-listview": "^0.2.3",
     "react-navigation": "^3.0.9",
-    "react-navigation-material-bottom-tabs": "^1.0.0",
-    "avocado-common":"file:../avocado-common"
+    "react-navigation-material-bottom-tabs": "^1.0.0"
   },
   "devDependencies": {
     "@types/expo": "^30.0.0",
