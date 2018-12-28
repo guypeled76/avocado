@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import {testConstants} from 'avocado-common';
+
 const logo = require('./logo.svg');
 
 class App extends Component<{},{}> {
@@ -12,8 +14,8 @@ class App extends Component<{},{}> {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
+          <p> 
+            Edit <code>src/App.js</code> and save to reload {testConstants.one}.
           </p>
           <a
             className="App-link"

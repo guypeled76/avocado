@@ -1445,6 +1445,14 @@ autoprefixer@^9.3.1:
     postcss "^7.0.6"
     postcss-value-parser "^3.3.1"
 
+"avocado-common@file:../avocado-common":
+  version "1.0.0"
+  dependencies:
+    "@types/jest" "^23.3.10"
+    "@types/node" "^10.12.18"
+    "@types/react" "^16.7.18"
+    typescript "^3.2.2"
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
