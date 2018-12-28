@@ -1,4 +1,8 @@
-import { ImageURISource } from "react-native";
+
+
+export interface ImageInfo {
+    uri: string;
+}
 
 
 
@@ -9,14 +13,14 @@ export interface PostInfo {
 
 export interface ImagePostInfo extends PostInfo {
     description: string;
-    image: ImageURISource;
+    image: ImageInfo;
     type: "image";
 }
 
 export interface VideoPostInfo extends PostInfo {
     description: string;
-    image: ImageURISource;
-    video: ImageURISource;
+    image: ImageInfo;
+    video: ImageInfo;
     type: "video";
 }
 

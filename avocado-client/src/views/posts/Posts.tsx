@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import {PostInfoType, dummyPosts} from 'entities';
+import {PostInfoType, dummyPosts} from 'avocado-common';
 import { strings, icons } from 'resources';
 
 import { PostsList } from './PostList';
