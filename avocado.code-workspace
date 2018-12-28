@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "avocado-web"
+		},
+		{
+			"path": "avocado-common"
 		}
 	],
 	"settings": {}
