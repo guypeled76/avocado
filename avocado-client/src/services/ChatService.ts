@@ -34,15 +34,15 @@ export class ChatService {
         return message;
     }
 
-    off() {
+    public off() {
         this.ref.off();
     }
 
-    get uid() {
+    private get uid() {
         return (Firebase.auth().currentUser || { uid: null }).uid;
     }
-    // 2.
-    get timestamp() {
+ 
+    private get timestamp() {
         return Firebase.database.ServerValue.TIMESTAMP;
     }
 

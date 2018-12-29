@@ -1,4 +1,4 @@
 
-export * from "./Auth";
+export * from "./AuthService";
 export * from './Firebase';
-export * from './Chat';
+export * from './ChatService';
