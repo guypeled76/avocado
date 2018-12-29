@@ -68,16 +68,13 @@ const StackNavigator = createStackNavigator({
         screen: DrawerNavigator,
         navigationOptions: () => ({
         header: <View style={styles.searchRow}>
-        <View style={styles.avatarBar}>
-            <Avatar size={30} user={AuthService.loggedUser} />
-        </View>
-        <SearchBar style={styles.searchBar}
-            lightTheme
-            icon={{ type: 'font-awesome', name: 'search' }}
-            placeholder='Type Here...' round
-            inputStyle={styles.searchInput}
-            containerStyle={styles.searchContainer} />
-    </View>
+                    <SearchBar style={styles.searchBar}
+                        lightTheme
+                        icon={{ type: 'font-awesome', name: 'search' }}
+                        placeholder='Search...' round
+                        inputStyle={styles.searchInput}
+                        containerStyle={styles.searchContainer} />
+                </View>
         
       }) },
     WebDialog: { screen: WebDialog,
@@ -118,18 +115,23 @@ const containerStyle: ViewStyle = {
 const styles = StyleSheet.create({
     searchContainer: {
         backgroundColor: 'white',
+        flex:1
     },
     searchInput: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderColor:'lightgray',
+        borderWidth:1
     },
     searchRow: {
         backgroundColor: 'white',
         alignItems: 'stretch',
         flexDirection: 'row',
-        height: 40
+        height: 45,
+        flex:1,
+        borderWidth:0
     },
     searchBar: {
-        flexGrow: 1
+        flex: 1
     },
     app: {
         flex: 1

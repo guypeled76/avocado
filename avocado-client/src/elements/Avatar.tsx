@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, StyleProp} from 'react-native';
+import { Image, View} from 'react-native';
 
 
 interface State {
@@ -37,7 +37,7 @@ export class Avatar extends React.Component<Props, State> {
             shadowRadius:100,
             shadowColor:'black',
             shadowOpacity:0.5
-        }
+        };
 
         const {user} = this.props;
         if(user != null && user.photoURL != null) {
