@@ -1,7 +1,8 @@
 import React from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, KeyboardAvoidingView } from 'react-native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import { icons } from 'resources';
+import { icons, styles } from 'resources';
+import { AuthService, ChatService } from 'services';
 
 
 
@@ -18,49 +19,50 @@ export class Chat extends React.Component<Props, State> {
         messages: []
     };
 
+    private chatService : ChatService;
+
     constructor(props: Props) {
         super(props);
 
     }
 
-
-    componentWillMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: "sdfdsfs",
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-            ],
-        })
+    componentDidMount() {
+        this.chatService = new ChatService(AuthService.loggedUser.uid, "main");
+        this.chatService.on(message =>
+            this.setState(previousState => ({
+                messages: GiftedChat.append(previousState.messages, message),
+            }))
+        );
     }
 
-    onSend(messages: IMessage[]) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
+    
+    componentWillUnmount() {
+        this.chatService.off();
     }
+
 
     render() {
         return (
-            <GiftedChat
-                imageStyle={imageStyle}
-                messages={this.state.messages}
-                onSend={messages => this.onSend(messages)}
-                user={{
-                    _id: 1,
-                }}
-            />
+            <KeyboardAvoidingView enabled behavior="padding" style={styles.fill}>
+                <GiftedChat
+                    imageStyle={imageStyle}
+                    messages={this.state.messages}
+                    onSend={(message)=>this.chatService.send(message)}
+                    user={{
+                        _id: AuthService.loggedUser.uid,
+                        name: AuthService.loggedUser.displayName
+                    }}
+                    listViewProps={{
+                        style: {
+                            backgroundColor: 'yellow'
+                        }
+                    }}
+                />
+            </KeyboardAvoidingView>
         )
     }
 
-    static navigationOptions  = {
+    static navigationOptions = {
         tabBarIcon: icons.navigation.chat
     }
 

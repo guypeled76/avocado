@@ -1,7 +1,7 @@
 import { Facebook, Google } from 'expo';
 
 import { config } from '../config';
-import { Firebase } from '../integrations/firebase';
+import { Firebase } from 'services';
 import { Alert } from 'react-native';
 
 export class AuthService {

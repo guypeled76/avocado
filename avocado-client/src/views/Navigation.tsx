@@ -9,8 +9,6 @@ import {
     createMaterialTopTabNavigator 
 } from 'react-navigation';
 
-import {AuthService} from 'services';
-
 import {
     Posts, 
     Timeline, 
@@ -21,11 +19,11 @@ import {
 } from 'views';
 
 import { constants } from 'resources';
-import { WebDialog, DrawerDialog } from 'dialogs';
-import { Avatar } from 'elements';
 
-
-
+import { 
+    WebDialog, 
+    DrawerDialog 
+} from 'dialogs';
 
 const TabsNavigator = createMaterialTopTabNavigator({
     [constants.navigation.feed]: { screen: Posts },
@@ -34,6 +32,7 @@ const TabsNavigator = createMaterialTopTabNavigator({
     [constants.navigation.chat]: { screen: Chat },
     [constants.navigation.recipes]: { screen: Recipes }
 }, {
+        lazy:true,
         tabBarPosition: "top",
         tabBarOptions: {
             activeTintColor: "blue",
@@ -41,7 +40,7 @@ const TabsNavigator = createMaterialTopTabNavigator({
             showLabel: false,
             showIcon: true,
             style: {
-                borderTopWidth: 0,
+                borderWidth: 0,
                 backgroundColor: 'white'
             },
             indicatorStyle: {
@@ -50,22 +49,10 @@ const TabsNavigator = createMaterialTopTabNavigator({
         }
     });
 
-const TabsNavigatorContainer = createAppContainer(TabsNavigator);
-
-
-const DrawerNavigator = createDrawerNavigator({
-    [constants.navigation.tabs]:{
-        screen: TabsNavigatorContainer
-    }
-},{
-    initialRouteName: constants.navigation.tabs,
-    contentComponent: DrawerDialog,
-    drawerWidth: 300,
-});
 
 const StackNavigator = createStackNavigator({
     App: { 
-        screen: DrawerNavigator,
+        screen: TabsNavigator,
         navigationOptions: () => ({
         header: <View style={styles.searchRow}>
                     <SearchBar style={styles.searchBar}
@@ -89,7 +76,18 @@ const StackNavigator = createStackNavigator({
 
 });
 
-const StackNavigatorContainer = createAppContainer(StackNavigator);
+
+const DrawerNavigator = createDrawerNavigator({
+    [constants.navigation.tabs]:{
+        screen: StackNavigator
+    }
+},{
+    initialRouteName: constants.navigation.tabs,
+    contentComponent: DrawerDialog,
+    drawerWidth: 300,
+});
+
+const DrawerNavigatorContainer = createAppContainer(DrawerNavigator);
 
 export class Navigation extends React.Component<{}, {}> {
 
@@ -97,9 +95,7 @@ export class Navigation extends React.Component<{}, {}> {
     public render() {
 
 
-        return <KeyboardAvoidingView enabled behavior="padding" style={containerStyle}>
-            <StackNavigatorContainer style={styles.app} />
-        </KeyboardAvoidingView>;
+        return <DrawerNavigatorContainer style={styles.app} />;
     }
 }
 
