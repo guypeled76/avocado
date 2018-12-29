@@ -1,21 +1,41 @@
-import { Facebook } from 'expo';
+import { Facebook, Google } from 'expo';
 
 import { config } from '../config';
 import { Firebase } from '../integrations/firebase';
+import { Alert } from 'react-native';
 
 export class AuthService {
 
-  static loggedUser : firebase.User | null;
+  static loggedUser: firebase.User | null;
 
-  /**
-   * Login with Facebook and Firebase
-   *
-   * Uses Expo Facebook API and authenticates the Facebook user in Firebase
-   */
+  public static async loginWithGoogle() {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: '387060388445-7s2qfor21bvja6lh722kctc5denpo92a.apps.googleusercontent.com',
+        iosClientId: '387060388445-o6jus1djlf3geblbrstchi5b0u20hsnj.apps.googleusercontent.com',
+        webClientId: '387060388445-mlv4ivijphvaecqliq60dlbrhdpf8lsp.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+
+        behavior: 'web'
+      });
+      if (result.type === 'success') {
+
+        const credential = Firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
+
+        await Firebase
+          .auth()
+          .signInAndRetrieveDataWithCredential(credential);
+      } 
+    } catch (e) {
+      Alert.alert(e);
+    }
+
+  }
+
   public static async loginWithFacebook() {
     const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-      config.facebook.appId, { 
-        permissions: ['public_profile', 'email'] 
+      config.facebook.appId, {
+        permissions: ['public_profile', 'email']
       }
     );
 

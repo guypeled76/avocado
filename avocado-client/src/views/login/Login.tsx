@@ -14,7 +14,7 @@ export class Login extends React.Component<{}, {}> {
         title="Sign In With Google"
         button 
         type="google-plus-official"
-        onPress={AuthService.loginWithFacebook} />
+        onPress={AuthService.loginWithGoogle} />
       <SocialIcon
         title='Sign In With Facebook'
         button

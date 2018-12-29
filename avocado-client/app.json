@@ -22,6 +22,12 @@
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "com.gremlin.avocado"
+    },
+    "android": {
+      "package": "com.gremlin.avocado"
+    }
   }
 }
