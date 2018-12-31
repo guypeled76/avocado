@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {WebView} from 'react-native';
+import { WebView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
 
 export class WebDialog extends React.Component<NavigationScreenProps, {}> {

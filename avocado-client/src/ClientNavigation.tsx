@@ -56,8 +56,9 @@ const TabsNavigator = createMaterialTopTabNavigator({
 const StackNavigator = createStackNavigator({
     App: { 
         screen: TabsNavigator,
-        navigationOptions: () => ({ header: <SearchBox/> })},
-    WebDialog: { screen: WebDialog },
+        navigationOptions: () => ({ header: <SearchBox/> })
+    },
+    [constants.navigation.webbrowser]: { screen: WebDialog },
     [constants.navigation.settings] : {
         screen: Settings
     },

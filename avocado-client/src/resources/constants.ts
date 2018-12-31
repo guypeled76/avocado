@@ -19,7 +19,8 @@ const navigation = {
     timeline : 'timeline',
     notifications : 'notifications',
     recipes : 'recipes',
-    settings : 'settings'
+    settings : 'settings',
+    webbrowser: 'webbrowser'
 }
 
 

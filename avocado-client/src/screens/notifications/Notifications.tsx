@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
 import { NavigationScreenProps, DrawerActions } from 'react-navigation';
-import { colors, strings, icons } from 'resources';
+import { colors, strings, icons, constants } from 'resources';
 
 
 interface State {
@@ -28,7 +28,7 @@ export class Notifications extends React.Component<NavigationScreenProps, State>
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
             return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
-                <Button title="ddd" color={colors.background} onPress={() => navigate("WebDialog", { url: 'http://www.google.com' })}></Button>
+                <Button title="ddd" color={colors.background} onPress={() => navigate(constants.navigation.webbrowser, { url: 'http://www.google.com' })}></Button>
                 <Button title="ggg" onPress={() => this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
             </View>
         }} />;
