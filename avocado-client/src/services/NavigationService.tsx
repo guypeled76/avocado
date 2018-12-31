@@ -42,11 +42,12 @@ export function createNavigation(tabs : NavigationRouteConfigMap, dialogs : Navi
                     height: 0
                 }
             }
-        });
+        }
+    );
 
 
     const StackNavigator = createStackNavigator(Object.assign({
-        __app__: {
+        '__app__': {
             screen: TabsNavigator,
             navigationOptions: () => ({
                 header: <SearchBox/>
@@ -56,11 +57,11 @@ export function createNavigation(tabs : NavigationRouteConfigMap, dialogs : Navi
 
 
     const DrawerNavigator = createDrawerNavigator({
-        [constants.navigation.tabs]: {
+        '__tabs__': {
             screen: StackNavigator
         }
     }, {
-        initialRouteName: constants.navigation.tabs,
+        initialRouteName: '__tabs__',
         contentComponent: drawer,
         drawerWidth: 300,
     });
