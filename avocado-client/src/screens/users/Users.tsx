@@ -4,6 +4,7 @@ import { strings, icons, styles } from 'resources';
 import { UserInfo } from 'avocado-common';
 import { UsersService } from 'services';
 import { Avatar } from 'elements';
+import { ListItem } from 'react-native-elements';
 
 
 interface State {
@@ -46,10 +47,12 @@ export class Users extends React.Component<{}, State> {
 
     renderUser(info: any) {
         const userInfo : UserInfo = info.item;
-        return <View style={styles.rowContainer}>
-            <Avatar user={userInfo} size={30} />
-            <Text>{userInfo.displayName}</Text>
-        </View>
+        return <ListItem
+        roundAvatar
+        title={userInfo.displayName}
+        subtitle={userInfo.email}
+        avatar={{ uri: userInfo.photoURL }}
+      />
     }
 
     public render() {
