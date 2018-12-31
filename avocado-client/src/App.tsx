@@ -1,32 +1,46 @@
 import React from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { AuthService } from 'services';
-import { Login, Navigation } from 'screens';
+import { Login } from 'screens';
+
+
+import { UserInfo, RolesInfo } from 'avocado-common';
+import { ConsultantNavigation } from './ConsultantNavigation';
+import { ClientNavigation } from './ClientNavigation';
 
 interface State {
-  user: firebase.User | null;
+  user: UserInfo | null;
+  roles: RolesInfo | null;
 }
 
 export default class App extends React.Component<{}, State> {
-  public state: State = { user: null };
+  public state: State = { user: null, roles: null };
 
   public componentDidMount() {
-    AuthService.subscribeAuthChange(user => {
+    AuthService.subscribeAuthChange((user,roles) => {
       AuthService.loggedUser = user;
-      this.setState({ user });
+      this.setState({ user, roles });
     });
 
   }
 
   public render() {
-    const { user } = this.state;
+    const { user, roles } = this.state;
 
     if (user) {
-      return (
-        <SafeAreaView style={styles.container}>
-          <Navigation />
-        </SafeAreaView>
-      );
+      if(roles != null && roles.consultant) {
+        return (
+          <SafeAreaView style={styles.container}>
+            <ConsultantNavigation />
+          </SafeAreaView>
+        );
+      } else {
+        return (
+          <SafeAreaView style={styles.container}>
+            <ClientNavigation />
+          </SafeAreaView>
+        );
+      }
     }
 
     return (

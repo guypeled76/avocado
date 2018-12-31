@@ -6,3 +6,10 @@ export interface UserInfo {
     providerId: string;
     uid: string;
 }
+
+
+export interface RolesInfo {
+    admin:boolean;
+    editor:boolean;
+    consultant:boolean;
+}  

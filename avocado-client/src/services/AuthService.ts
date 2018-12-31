@@ -3,10 +3,11 @@ import { Facebook, Google } from 'expo';
 import { config } from '../config';
 import { Firebase } from 'services';
 import { Alert } from 'react-native';
+import { RolesInfo, UserInfo } from 'avocado-common';
 
 export class AuthService {
 
-  static loggedUser: firebase.User | null;
+  static loggedUser: UserInfo | null;
 
   public static async loginWithGoogle() {
     try {
@@ -25,7 +26,7 @@ export class AuthService {
         await Firebase
           .auth()
           .signInAndRetrieveDataWithCredential(credential);
-      } 
+      }
     } catch (e) {
       Alert.alert(e);
     }
@@ -57,8 +58,16 @@ export class AuthService {
    * 
    * @param callback Called with the current authenticated user as first argument
    */
-  public static subscribeAuthChange(callback: (user: firebase.User | null) => void) {
-    Firebase.auth().onAuthStateChanged(callback);
+  public static subscribeAuthChange(callback: (user: UserInfo | null, roles: RolesInfo | null) => void) {
+    Firebase.auth().onAuthStateChanged((firebaseUser: firebase.User | null) => {
+      if (firebaseUser != null) {
+        Firebase.database().ref(`roles/${firebaseUser.uid}`).on("value", (snapshot) => {
+          callback(firebaseUser, snapshot.val());
+        });
+      } else {
+        callback(null, null);
+      }
+    });
   }
 
   public static async logout() {
