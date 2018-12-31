@@ -5,8 +5,7 @@ import { Login } from 'screens';
 
 
 import { UserInfo, RolesInfo } from 'avocado-common';
-import { ConsultantNavigation } from './ConsultantNavigation';
-import { ClientNavigation } from './ClientNavigation';
+import { ConsultantNavigation, ClientNavigation } from './Navigation';
 
 interface State {
   user: UserInfo | null;

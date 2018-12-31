@@ -14,7 +14,8 @@ import {
     Notifications,
     Chat,
     Recipes,
-    Settings
+    Settings,
+    Users
 } from 'screens';
 
 import {
@@ -26,10 +27,6 @@ import {
     WebDialog,
     DrawerDialog
 } from 'dialogs';
-
-import {
-    SearchBox
-} from 'elements';
 
 import { createNavigation } from 'services/NavigationService';
 
@@ -53,6 +50,26 @@ export function ClientNavigation() {
         },
         DrawerDialog
     );
+}
+
+export function ConsultantNavigation() {
+    return createNavigation({
+            [constants.navigation.users]: { screen: Users },
+            [constants.navigation.notifications]: { screen: Notifications },
+            [constants.navigation.chat]: { screen: Chat, }
+        }, {
+            [constants.navigation.webbrowser]: {
+                screen: WebDialog,
+                navigationOptions: ({ navigation }) => ({
+                    title: navigation.state.params.title
+                })
+            },
+            [constants.navigation.settings]: {
+                screen: Settings
+            }
+    },
+    DrawerDialog
+);
 }
 
 
