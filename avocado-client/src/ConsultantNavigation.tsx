@@ -1,15 +1,30 @@
 import React from 'react';
 
-import { View,Text } from "react-native";
-import { styles } from "resources";
-import { AuthService } from "services";
-import { Button } from 'react-native-elements';
+import { constants } from "resources";;
+import { Chat, Settings, Notifications } from 'screens';
+import { WebDialog, DrawerDialog } from 'dialogs';
+import { createNavigation } from 'services/NavigationService';
+
+
 
 
 
 
 export function ConsultantNavigation() {
-    return <View style={styles.fill}>
-        <Button onPress={AuthService.logout} title="logout"/>
-    </View>;
+    return createNavigation({
+            [constants.navigation.notifications]: { screen: Notifications },
+            [constants.navigation.chat]: { screen: Chat, }
+        }, {
+            [constants.navigation.webbrowser]: {
+                screen: WebDialog,
+                navigationOptions: ({ navigation }) => ({
+                    title: navigation.state.params.title
+                })
+            },
+            [constants.navigation.settings]: {
+                screen: Settings
+            }
+    },
+    DrawerDialog
+);
 }
