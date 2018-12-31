@@ -20,7 +20,8 @@ const navigation = {
     notifications : 'notifications',
     recipes : 'recipes',
     settings : 'settings',
-    webbrowser: 'webbrowser'
+    webbrowser: 'webbrowser',
+    users: 'users'
 }
 
 

@@ -7,7 +7,8 @@ const views = {
     recipes: 'Recipes',
     chat: 'Chat',
     settings: 'Settings',
-    timeline: 'Timeline'
+    timeline: 'Timeline',
+    users: 'Users',
 };
 
 export const strings = {

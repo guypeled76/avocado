@@ -15,7 +15,8 @@ const navigationHandlers = {
     timeline : navigationIconHandler("md-speedometer"),
     feed : navigationIconHandler("ios-filing"),
     notifications : navigationIconHandler("ios-notifications"),
-    chat : navigationIconHandler("md-chatboxes")
+    chat : navigationIconHandler("md-chatboxes"),
+    users : navigationIconHandler("md-contacts")
 }
 
 export const icons = {

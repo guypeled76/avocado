@@ -5,3 +5,4 @@ export * from './settings/Settings';
 export * from './posts/Posts';
 export * from './notifications/Notifications';
 export * from './recipes/Recipes';
+export * from './users/Users';
