@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, FlatList, Alert, View } from 'react-native';
+import { Text, FlatList, Alert, View, ActivityIndicator } from 'react-native';
 import { strings, icons, styles } from 'resources';
 import { UserInfo } from 'avocado-common';
 import { UsersService } from 'services';
@@ -9,6 +9,7 @@ import { ListItem } from 'react-native-elements';
 
 interface State {
     users : UserInfo[];
+    loading : boolean;
 }
 
 
@@ -16,7 +17,8 @@ export class Users extends React.Component<{}, State> {
 
     
     public state = { 
-       users : []
+       users : [],
+       loading: false
     };
 
     private usersService : UsersService;
@@ -52,11 +54,23 @@ export class Users extends React.Component<{}, State> {
         title={userInfo.displayName}
         subtitle={userInfo.email}
         avatar={{ uri: userInfo.photoURL }}
+        containerStyle={{ borderBottomWidth: 0 }}
       />
     }
 
+    renderFooter = () => {
+        if (!this.state.loading) return null;
+
+        return <ActivityIndicator animating size="large" />;
+    }
+
     public render() {
-        return <FlatList data={this.state.users} keyExtractor={(item)=>item.uid} renderItem={this.renderUser} style={styles.fill} />
+        return <FlatList 
+                    data={this.state.users} 
+                    keyExtractor={(item)=>item.uid} 
+                    renderItem={this.renderUser} 
+                    style={styles.fill} 
+                    ListFooterComponent={this.renderFooter}/>
 
     }
 
