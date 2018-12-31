@@ -4,6 +4,7 @@ import { config } from '../config';
 import { Firebase } from 'services';
 import { Alert } from 'react-native';
 import { RolesInfo, UserInfo } from 'avocado-common';
+import { ActivityService } from './ActivityService';
 
 export class AuthService {
 
@@ -62,6 +63,9 @@ export class AuthService {
     Firebase.auth().onAuthStateChanged((firebaseUser: firebase.User | null) => {
       if (firebaseUser != null) {
         Firebase.database().ref(`roles/${firebaseUser.uid}`).on("value", (snapshot) => {
+
+          ActivityService.registerLogin(firebaseUser);
+
           callback(firebaseUser, snapshot.val());
         });
       } else {

@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     columnContainer: {
         flexDirection:'column'
     },
+    rowContainer: {
+        flexDirection:'row'
+    },
     padding : {
         padding:10
     }

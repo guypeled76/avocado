@@ -18,6 +18,14 @@ export abstract class ListService<TItem> {
         return Firebase.database.ServerValue.TIMESTAMP;
     }
 
+    public retrieve(callback : (TItem) => void) {
+        this.ref.once('child_added', (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+                callback(this.fromServerSnapshot(childSnapshot));
+            });
+        });
+    }
+
     public onChildAdded(callback : (TItem) => void) {
         return this.ref
         .limitToLast(this.pageSize)
