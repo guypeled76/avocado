@@ -1,65 +1,39 @@
-import { Firebase } from "services";
+import { ListService } from "services";
 
 
-export class ChatService {
+export class ChatService extends ListService<any> {
 
-
-
-    constructor(private userId: string, private chatId: string) {
-
+    constructor(userId: string, chatId: string, pageSize: number) {
+        super(`chats/${userId}/${chatId}/messages`, pageSize)
     }
 
-    private get ref() {
-        return Firebase.database().ref(`chats/${this.userId}/${this.chatId}/messages`);
-    }
 
-    on = callback =>
-        this.ref
-            .limitToLast(20)
-            .on('child_added', snapshot => callback(this.parse(snapshot)));
+    protected toServerValue(item: any) {
+        
+        const { text, user } = item;
 
-    parse = snapshot => {
-        // 1.
-        const { timestamp: numberStamp, text, user } = snapshot.val();
-        const { key: _id } = snapshot;
-        // 2.
-        const timestamp = new Date(numberStamp);
-        // 3.
-        const message = {
-            _id,
-            timestamp,
-            text,
-            user,
-        };
-        return message;
-    }
-
-    public off() {
-        this.ref.off();
-    }
-
-    private get uid() {
-        return (Firebase.auth().currentUser || { uid: null }).uid;
-    }
- 
-    private get timestamp() {
-        return Firebase.database.ServerValue.TIMESTAMP;
-    }
-
-    // 3.
-    send = messages => {
-        for (let i = 0; i < messages.length; i++) {
-            const { text, user } = messages[i];
-            // 4.
-            const message = {
+        return {
+            key: item._id, 
+            value: {
                 text,
                 user,
-                timestamp: this.timestamp,
-            };
-            this.append(message);
-        }
-    };
-    // 5.
-    append = message => {
-        this.ref.push(message)};
+                timestamp: this.timestamp
+            }
+        };
+    }
+
+
+
+    protected fromServerValue(key: string, value: any) {
+        const message = {
+            _id: key,
+            text: value.text,
+            createdAt: null,
+            user: value.user,
+            image: null,
+            system: null
+        };
+
+        return message;
+    }
 }

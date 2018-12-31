@@ -29,7 +29,7 @@ const TabsNavigator = createMaterialTopTabNavigator({
     [constants.navigation.feed]: { screen: Posts },
     [constants.navigation.timeline]: { screen: Timeline },
     [constants.navigation.notifications]: { screen: Notifications },
-    [constants.navigation.chat]: { screen: Chat },
+    [constants.navigation.chat]: { screen: Chat ,  },
     [constants.navigation.recipes]: { screen: Recipes }
 }, {
         lazy:true,
