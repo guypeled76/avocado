@@ -10,7 +10,7 @@ export class ActivityService {
             email: user.email,
             uid: user.uid,
             phoneNumber: user.phoneNumber,
-            phoneUrl: user.photoURL,
+            photoURL: user.photoURL,
             lastLogin: ActivityService.timestamp
         }).catch(reason => {
             Alert.alert(reason);
