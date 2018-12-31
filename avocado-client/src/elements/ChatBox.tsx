@@ -17,7 +17,7 @@ interface Props {
     userId: string
 }
 
-export class ChatView extends React.Component<Props, State> {
+export class ChatBox extends React.Component<Props, State> {
     public state: State = {
         messages: [],
         user : {

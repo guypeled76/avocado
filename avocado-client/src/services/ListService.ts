@@ -60,7 +60,7 @@ export abstract class ListService<TItem> {
         return this.ref.push(value);
     }
 
-    public appendItems(...items: TItem[]) {
+    public appendItems(items: TItem[]) {
         items.forEach(item => {
             this.appendItem(item);
         });

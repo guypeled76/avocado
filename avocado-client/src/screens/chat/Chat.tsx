@@ -1,5 +1,5 @@
 import React from "react";
-import { ChatView } from "./ChatView";
+import { ChatBox } from "elements";
 import { AuthService } from "services";
 import { icons } from "resources";
 
@@ -9,7 +9,7 @@ export class Chat extends React.Component {
 
 
     render() {
-        return <ChatView chatId="main" userId={AuthService.loggedUser.uid} />
+        return <ChatBox chatId="main" userId={AuthService.loggedUser.uid} />
     }
 
     static navigationOptions = {
