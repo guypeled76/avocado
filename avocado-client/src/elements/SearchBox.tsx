@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         flexDirection: 'row',
         height: 45,
-        flex:1,
         borderWidth:0
     },
     searchBar: {

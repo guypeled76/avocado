@@ -15,7 +15,8 @@ export class ActivityService {
         }).catch(reason => {
             Alert.alert(reason);
         });
-            
+           
+        
     }
 
     public static get timestamp() {
