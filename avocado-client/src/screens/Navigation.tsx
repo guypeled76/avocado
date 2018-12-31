@@ -16,7 +16,7 @@ import {
     Chat, 
     Recipes, 
     Settings
-} from 'views';
+} from 'screens';
 
 import { constants } from 'resources';
 

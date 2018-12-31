@@ -4,12 +4,8 @@ import { AuthService } from "services";
 import { icons } from "resources";
 
 
-interface State {
-}
 
-interface Props {}
-
-export class Chat extends React.Component<Props, State> {
+export class Chat extends React.Component {
 
 
     render() {
