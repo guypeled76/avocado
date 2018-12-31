@@ -28,7 +28,7 @@ export class Notifications extends React.Component<NavigationScreenProps, State>
         return <FlatList data={this.state.items} renderItem={(itemInfo) => {
 
             return <View style={itemStyle}><Text>{itemInfo.item.text}</Text>
-                <Button title="ddd" color={colors.background} onPress={() => navigate(constants.navigation.webbrowser, { url: 'http://www.google.com' })}></Button>
+                <Button title="ddd" color={colors.background} onPress={() => navigate(constants.navigation.webbrowser, { url: 'http://www.google.com', title:"google" })}></Button>
                 <Button title="ggg" onPress={() => this.props.navigation.dispatch(DrawerActions.toggleDrawer())}></Button>
             </View>
         }} />;

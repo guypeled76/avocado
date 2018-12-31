@@ -17,7 +17,10 @@ import {
     Settings
 } from 'screens';
 
-import { constants, styles } from 'resources';
+import { 
+    constants, 
+    styles 
+} from 'resources';
 
 import { 
     WebDialog, 
@@ -58,7 +61,12 @@ const StackNavigator = createStackNavigator({
         screen: TabsNavigator,
         navigationOptions: () => ({ header: <SearchBox/> })
     },
-    [constants.navigation.webbrowser]: { screen: WebDialog },
+    [constants.navigation.webbrowser]: { 
+        screen: WebDialog,
+        navigationOptions: ({ navigation }) => ({
+            title: navigation.state.params.title
+        })
+    },
     [constants.navigation.settings] : {
         screen: Settings
     },

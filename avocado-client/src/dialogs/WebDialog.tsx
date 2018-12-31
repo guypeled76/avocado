@@ -2,13 +2,11 @@ import React from 'react';
 
 import { WebView } from 'react-native';
 import { NavigationScreenProps } from 'react-navigation';
+import { styles } from 'resources';
 
-export class WebDialog extends React.Component<NavigationScreenProps, {}> {
-  
-    public render() {
-        return <WebView
-        source={{uri: this.props.navigation.getParam("url")}}
-        style={{flex: 1}}
-      />
-    }
+export function WebDialog(props: NavigationScreenProps) {
+    return <WebView
+        style={styles.fill}
+        source={{ uri: props.navigation.getParam("url") }}
+    />;
 }
