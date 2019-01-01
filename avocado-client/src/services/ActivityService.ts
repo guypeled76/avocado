@@ -1,6 +1,5 @@
 import { db, field } from 'services';
 import { UserInfo } from 'avocado-common';
-import { Alert } from 'react-native';
 
 export class ActivityService {
 
