@@ -3,7 +3,7 @@ import { ViewStyle, KeyboardAvoidingView, Alert } from 'react-native';
 import { GiftedChat, IMessage, IChatMessage, User } from 'react-native-gifted-chat';
 import { icons, styles } from 'resources';
 import { AuthService } from 'services';
-import { ChatSource } from 'data';
+import { ChatSource, ListSourceItem } from 'data';
 import { MessageInfo } from 'avocado-common';
 import { setMaxListeners } from 'cluster';
 
@@ -11,7 +11,7 @@ import { setMaxListeners } from 'cluster';
 
 
 interface State {
-    messages: IMessage[];
+    messages: IChatMessage[];
     user: User;
 }
 
@@ -39,29 +39,51 @@ export class ChatBox extends React.Component<Props, State> {
         this.chatSource = new ChatSource(props.userId, props.chatId);
     }
 
+    private static fromGiftedMessage(message:IChatMessage) : ListSourceItem<MessageInfo> {
+        return {
+            id:message._id,
+            value:{
+                message:message.text,
+                createAt:message.createdAt,
+                user : {
+                    uid: `${message.user._id}`,
+                    displayName: message.user.name,
+                    photoURL: message.user.avatar
+                }, 
+                image:message.image ? message.image : null
+            }
+        };
+    }
+
+    private static toGiftedMessage(item: ListSourceItem<MessageInfo>) : IChatMessage{
+
+        const {id, value} = item;
+
+        return {
+            _id: id,
+            text: value.message,
+            createdAt: value.createAt,
+            user: {
+                _id: value.user.uid,
+                name: value.user.displayName,
+                avatar: value.user.photoURL
+            },
+            image: value.image
+        };
+    }
+
     componentDidMount() {
 
-        this.chatSource.loadNext(item => {
-            const {key, value} = item;
-            const message : IChatMessage = {
-                _id: key,
-                text: value.text,
-                createdAt: value.createdAt,
-                user: {
-                    _id: value.user.id,
-                    name: value.user.name,
-                    avatar: value.user.avatar
-                },
-                image: value.image,
-                system: value.system
-            };
+        this.chatSource.next().then((items)=> {
+            const chatMessages = items.map(ChatBox.toGiftedMessage);
+            this.setState({
+                ...this.state,
+                messages: [...this.state.messages,...chatMessages],
+            });
+        }).catch((error)=>{
 
-            this.setState(previousState => ({
-                messages: [...previousState.messages, message],
-            }))
-
-        }
-        );
+        });
+  
     }
 
 
@@ -70,26 +92,7 @@ export class ChatBox extends React.Component<Props, State> {
     }
 
     onSendMessages = (messages: IMessage[]) => {
-
-        for (let message of messages) {
-
-            
-            const chatMessage : any = message;
-
-            this.chatSource.appendItem({
-                key: chatMessage._id, value: {
-                    text: chatMessage.text,
-                    createdAt: chatMessage.createdAt,
-                    user: {
-                        id: chatMessage.user._id,
-                        name: chatMessage.user.name,
-                        avatar: chatMessage.user.avatar
-                    },
-                    image: chatMessage.image,
-                    system: chatMessage.system
-                }
-            });
-        }
+        this.chatSource.setAll(messages.map(ChatBox.fromGiftedMessage));
     }
 
 

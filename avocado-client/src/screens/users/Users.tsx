@@ -33,12 +33,12 @@ export class Users extends React.Component<{}, State> {
 
         this.profilesSource = new ProfilesSource();
 
-        this.profilesSource.loadNext((item)=> {
-            const newState = {
-                users: [...this.state.users, item.value]
-            };
-            this.setState(newState);
+        this.profilesSource.next().then((items)=> {
+            this.setState({
+                users: [...this.state.users, ...items.map(item=>item.value)]
+            });
         });
+
         
     }
 

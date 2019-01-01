@@ -1,5 +1,12 @@
+import { UserInfo } from "./users";
+
 export interface MessageInfo {
-    message: string | null;
-    uid: string;
-    key: string;
+    message?: string;
+    user: {
+        displayName?: string;
+        photoURL?: string;
+        uid: string;
+    };
+    image?: string;
+    createAt: Date;
 }
