@@ -8,5 +8,5 @@ export interface MessageInfo {
         uid: string;
     };
     image?: string;
-    createAt: Date;
+    createAt: any;
 }
