@@ -84,6 +84,14 @@ export class ChatBox extends React.Component<Props, State> {
         }).catch((error)=>{
 
         });
+
+        this.chatSource.on("added", (item)=> {
+            const giftedMessage = ChatBox.toGiftedMessage(item);
+            this.setState({
+                ...this.state,
+                messages: [...this.state.messages, giftedMessage],
+            });
+        });
     }
 
 

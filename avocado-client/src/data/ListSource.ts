@@ -3,23 +3,58 @@ import { db } from "services";
 
 export interface ListSourceConfig {
     pageSize?: number;
+    reviseQuery?: (query: firestore.Query) => firestore.Query;
 }
 
-export type ListSourceItem<TItem> = {id: string, value: TItem};
+export type ListSourceItem<TItem> = {
+    id: string,
+    value: TItem
+};
 
+export type ListSourceEvent = "added" | "modified" | "removed";
+
+export type ListSourceEventHandler<TItem> = (item: ListSourceItem<TItem>) => void;
 
 export class ListSource<TItem> {
 
     private lastItem: any;
 
+    private addedHandler: ListSourceEventHandler<TItem>;
+    private removedHandler: ListSourceEventHandler<TItem>;
+    private modifiedHandler: ListSourceEventHandler<TItem>;
+
+    private attached = false;
+
     constructor(private collection: firestore.CollectionReference, private config?: ListSourceConfig) {
         this.config = Object.assign({
-            pageSize: 20
+            pageSize: 20,
+            reviseQuery: (query: firestore.Query) => query
         }, this.config);
     }
 
     private get pageSize(): number {
         return this.config.pageSize;
+    }
+
+    private get query() : firestore.Query {
+        return this.config.reviseQuery(this.collection);
+    }
+
+
+    public on(event: ListSourceEvent, callback: ListSourceEventHandler<TItem>) {
+        this.attachEvents();
+
+        if (event === 'added') {
+            this.addedHandler = callback;
+        } else if (event === 'modified') {
+            this.modifiedHandler = callback;
+        } else if (event === 'removed') {
+            this.removedHandler = callback;
+        }
+    }
+
+    public off() {
+        this.detachEvents();
     }
 
     public clear() {
@@ -30,15 +65,15 @@ export class ListSource<TItem> {
         return new Promise<ListSourceItem<TItem>[]>((resolved, rejected) => {
             if (resolved) {
 
-                let data: firestore.Query = this.collection;
+                let query = this.query;
                 if (this.lastItem) {
-                    data = data.startAfter(this.lastItem);
+                    query = query.startAfter(this.lastItem);
                 }
-                data.limit(this.pageSize).get().then((snapshot) => {
+                query.limit(this.pageSize).get().then((snapshot) => {
                     const docs = snapshot.docs;
                     if (docs.length > 0) {
                         this.lastItem = docs[docs.length - 1];
-                        resolved(docs.map(doc => <ListSourceItem<TItem>>{id:doc.id, value: <TItem>doc.data()}));
+                        resolved(docs.map(doc => <ListSourceItem<TItem>>{ id: doc.id, value: <TItem>doc.data() }));
                     }
                 }, (error) => {
                     if (rejected) {
@@ -49,29 +84,70 @@ export class ListSource<TItem> {
         });
     }
 
+
+
     public push(value: TItem) {
         return this.collection.doc().set(value);
     }
 
     public pushAll(values: TItem[]) {
         const batch = db.batch();
-        for(const value of values) {
+        for (const value of values) {
             batch.set(this.collection.doc(), value);
         }
         return batch.commit();
     }
 
-    public setAll(items : ListSourceItem<TItem>[]){
+    public setAll(items: ListSourceItem<TItem>[]) {
         const batch = db.batch();
-        for(const item of items) {
+        for (const item of items) {
             batch.set(this.collection.doc(item.id), item.value);
         }
         return batch.commit();
     }
 
-    public set(item : ListSourceItem<TItem>) {
+    public set(item: ListSourceItem<TItem>) {
         return this.collection.doc(item.id).set(item.value);
     }
 
 
+
+    private attachEvents() {
+        if (!this.attached) {
+
+            this.attached = true;
+
+            this.collection.onSnapshot(querySnapshot => {
+
+                querySnapshot.docChanges().forEach(change => {
+
+
+                    if (change.type === 'added') { 
+                        if (this.addedHandler) {
+                            this.addedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                        }
+                    }
+                    else if (change.type === 'modified') {
+                        if (this.modifiedHandler) {
+                            this.modifiedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                        } 
+                    }
+                    else if (change.type === 'removed') {
+                        if (this.removedHandler) {
+                            this.removedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                        }
+                    }
+
+                });
+            });
+        }
+    }
+
+    private detachEvents() {
+        if (this.attached) {
+            this.attached = false;
+            const unsubscribe = this.collection.onSnapshot(() => { });
+            unsubscribe();
+        }
+    }
 }
