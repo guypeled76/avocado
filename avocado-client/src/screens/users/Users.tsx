@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text, FlatList, Alert, View, ActivityIndicator } from 'react-native';
+import { FlatList, ActivityIndicator } from 'react-native';
 import { strings, icons, styles } from 'resources';
 import { UserInfo } from 'avocado-common';
-import { UsersService } from 'services';
-import { Avatar } from 'elements';
+import { db } from 'services';
 import { ListItem } from 'react-native-elements';
 
 
@@ -21,30 +20,29 @@ export class Users extends React.Component<{}, State> {
        loading: false
     };
 
-    private usersService : UsersService;
-
     constructor(props: {}) {
         super(props);
 
-        this.usersService = new UsersService(400);
 
         this.renderUser = this.renderUser.bind(this);
     }
 
     componentDidMount() {
-        
-        this.usersService.onChildAdded(user =>{
-            
-            const newState = {
-                users: [...this.state.users, user]
-            };
-            this.setState(newState);
-        }); 
+
+        db.collection("profiles").limit(30).get().then((snapshot)=> {
+            snapshot.forEach(result => {
+                
+                const newState = {
+                    users: [...this.state.users, result.data()]
+                };
+                this.setState(newState);
+            })
+        })
     }
 
 
     componentWillUnmount() {
-        this.usersService.off();
+        
     }
 
     renderUser(info: any) {

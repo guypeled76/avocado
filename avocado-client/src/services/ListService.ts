@@ -1,4 +1,5 @@
 import { Firebase } from "services";
+import { Alert } from "react-native";
 
 
 
@@ -19,7 +20,8 @@ export abstract class ListService<TItem> {
     }
 
     public retrieve(callback : (TItem) => void) {
-        this.ref.once('child_added', (snapshot) => {
+        this.ref.root.child("chats").on('value', (snapshot) => {
+            Alert.alert("df");
             snapshot.forEach((childSnapshot) => {
                 callback(this.fromServerSnapshot(childSnapshot));
             });
@@ -28,7 +30,6 @@ export abstract class ListService<TItem> {
 
     public onChildAdded(callback : (TItem) => void) {
         return this.ref
-        .limitToLast(this.pageSize)
         .on('child_added', snapshot => callback(this.fromServerSnapshot(snapshot)));
     }
 

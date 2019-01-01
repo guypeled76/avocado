@@ -6,7 +6,7 @@ import { InteractionManager } from "react-native";
 export class UsersService extends ListService<UserInfo> {
 
     constructor(pageSize: number) {
-        super(`/profiles`, pageSize)
+        super(`profiles`, pageSize)
     }
 
     
