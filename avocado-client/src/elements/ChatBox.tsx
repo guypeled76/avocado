@@ -2,44 +2,62 @@ import React from 'react';
 import { ViewStyle, KeyboardAvoidingView, Alert } from 'react-native';
 import { GiftedChat, IMessage, IChatMessage, User } from 'react-native-gifted-chat';
 import { icons, styles } from 'resources';
-import { AuthService, ChatService } from 'services';
+import { AuthService } from 'services';
+import { ChatSource } from 'data';
+import { MessageInfo } from 'avocado-common';
+import { setMaxListeners } from 'cluster';
 
 
 
 
 interface State {
     messages: IMessage[];
-    user:User;
+    user: User;
 }
 
-interface Props { 
+interface Props {
     chatId: string,
     userId: string
 }
 
+
 export class ChatBox extends React.Component<Props, State> {
     public state: State = {
         messages: [],
-        user : {
+        user: {
             _id: AuthService.loggedUser.uid,
             name: AuthService.loggedUser.displayName,
-            avatar:AuthService.loggedUser.photoURL
+            avatar: AuthService.loggedUser.photoURL
         }
     };
 
-    private chatService: ChatService;
+    private chatSource: ChatSource;
 
     constructor(props: Props) {
         super(props);
 
-        this.chatService = new ChatService(props.userId, props.chatId, 400);
+        this.chatSource = new ChatSource(props.userId, props.chatId);
     }
 
     componentDidMount() {
-        
-        this.chatService.onChildAdded(message =>{
+
+        this.chatSource.loadNext(item => {
+            const {key, value} = item;
+            const message : IChatMessage = {
+                _id: key,
+                text: value.text,
+                createdAt: value.createdAt,
+                user: {
+                    _id: value.user.id,
+                    name: value.user.name,
+                    avatar: value.user.avatar
+                },
+                image: value.image,
+                system: value.system
+            };
+
             this.setState(previousState => ({
-                messages: GiftedChat.append(previousState.messages, message),
+                messages: [...previousState.messages, message],
             }))
 
         }
@@ -48,11 +66,30 @@ export class ChatBox extends React.Component<Props, State> {
 
 
     componentWillUnmount() {
-        this.chatService.off();
+
     }
 
-    onSendMessages = (messages:IMessage[]) => {
-        this.chatService.appendItems(messages);
+    onSendMessages = (messages: IMessage[]) => {
+
+        for (let message of messages) {
+
+            
+            const chatMessage : any = message;
+
+            this.chatSource.appendItem({
+                key: chatMessage._id, value: {
+                    text: chatMessage.text,
+                    createdAt: chatMessage.createdAt,
+                    user: {
+                        id: chatMessage.user._id,
+                        name: chatMessage.user.name,
+                        avatar: chatMessage.user.avatar
+                    },
+                    image: chatMessage.image,
+                    system: chatMessage.system
+                }
+            });
+        }
     }
 
 
@@ -74,9 +111,9 @@ export class ChatBox extends React.Component<Props, State> {
         )
     }
 
-    
+
 }
 
 const imageStyle: ViewStyle = {
-    backgroundColor:"lightgray"
+    backgroundColor: "lightgray"
 }

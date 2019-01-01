@@ -10,5 +10,9 @@
 			"path": "avocado-common"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"onfailure"
+		]
+	}
 }

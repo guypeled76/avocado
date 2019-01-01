@@ -4,6 +4,7 @@ import { strings, icons, styles } from 'resources';
 import { UserInfo } from 'avocado-common';
 import { db } from 'services';
 import { ListItem } from 'react-native-elements';
+import { ProfilesSource } from 'data';
 
 
 interface State {
@@ -14,7 +15,8 @@ interface State {
 
 export class Users extends React.Component<{}, State> {
 
-    
+    private profilesSource : ProfilesSource;
+
     public state = { 
        users : [],
        loading: false
@@ -29,15 +31,15 @@ export class Users extends React.Component<{}, State> {
 
     componentDidMount() {
 
-        db.collection("profiles").limit(30).get().then((snapshot)=> {
-            snapshot.forEach(result => {
-                
-                const newState = {
-                    users: [...this.state.users, result.data()]
-                };
-                this.setState(newState);
-            })
-        })
+        this.profilesSource = new ProfilesSource();
+
+        this.profilesSource.loadNext((item)=> {
+            const newState = {
+                users: [...this.state.users, item.value]
+            };
+            this.setState(newState);
+        });
+        
     }
 
 
