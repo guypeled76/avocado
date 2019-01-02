@@ -8,6 +8,7 @@ export interface ImageInfo {
 
 export interface PostInfo {
     type: "image" | "video" | "text";
+    key?: StyleMedia;
     created:any;
 }
 

@@ -30,7 +30,8 @@
     "react-native-timeline-listview": "^0.2.3",
     "react-native-video": "^4.3.0",
     "react-navigation": "^3.0.9",
-    "react-navigation-material-bottom-tabs": "^1.0.0"
+    "react-navigation-material-bottom-tabs": "^1.0.0",
+    "avocado-common":"file:../avocado-common"
   },
   "devDependencies": {
     "@types/expo": "^30.0.0",
