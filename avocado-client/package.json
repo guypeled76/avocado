@@ -28,7 +28,6 @@
     "react-native-masonry": "^0.5.0-alpha.3",
     "react-native-paper": "^2.4.0",
     "react-native-timeline-listview": "^0.2.3",
-    "react-native-video": "^4.3.0",
     "react-navigation": "^3.0.9",
     "react-navigation-material-bottom-tabs": "^1.0.0",
     "avocado-common":"file:../avocado-common"

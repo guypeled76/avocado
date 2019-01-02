@@ -1,12 +1,19 @@
 import React from 'react';
 
-import { Video } from 'react-native-video';
+
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from 'resources';
+import { Video } from 'expo';
 
 export function VideoDialog(props: NavigationScreenProps) {
+
+    console.log("ddddd:"+props.navigation.getParam("url"));
     return <Video
         style={styles.fill}
         source={{ uri: props.navigation.getParam("url") }}
+        resizeMode="cover"
+        useNativeControls
+        shouldPlay
+        isLooping
     />;
 }
