@@ -25,7 +25,8 @@ import {
 
 import {
     WebDialog,
-    DrawerDialog
+    DrawerDialog,
+    VideoDialog
 } from 'dialogs';
 
 import { createNavigation } from 'services/NavigationService';
@@ -46,7 +47,11 @@ export function ClientNavigation() {
                 },
                 [constants.navigation.settings]: {
                     screen: Settings
+                },
+                [constants.navigation.video]: {
+                    screen:VideoDialog
                 }
+
         },
         DrawerDialog
     );

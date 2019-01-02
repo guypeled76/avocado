@@ -36,11 +36,11 @@ export class ChatBox extends React.Component<Props, State> {
     }
 
     private static fromGiftedMessage(message:IChatMessage) : ListSourceItem<MessageInfo> {
-        return {
+        return { 
             id:message._id,
             value:{ 
                 message:message.text,
-                createAt:field.serverTimestamp(),
+                created:field.serverTimestamp(),
                 user : ChatBox.fromGiftedUser(message.user), 
                 image:message.image ? message.image : null
             }
@@ -65,33 +65,40 @@ export class ChatBox extends React.Component<Props, State> {
 
     private static toGiftedMessage(item: ListSourceItem<MessageInfo>) : IChatMessage{
         const {id, value} = item;
+
         return {
             _id: id,
             text: value.message,
-            createdAt: value.createAt,
+            createdAt: ChatBox.toDate(value.created),
             user: ChatBox.toGiftedUser(value.user),
             image: value.image
         };
+    } 
+
+    private static toDate(timestamp:firebase.firestore.Timestamp) {
+        if(!timestamp) return null;
+        return timestamp.toDate();
     }
 
     componentDidMount() {
         this.chatSource.next().then((items)=> {
+            
             const chatMessages = items.map(ChatBox.toGiftedMessage);
             this.setState({
-                ...this.state,
                 messages: [...this.state.messages,...chatMessages],
             });
-        }).catch((error)=>{
-
-        });
-
-        this.chatSource.on("added", (item)=> {
-            const giftedMessage = ChatBox.toGiftedMessage(item);
-            this.setState({
-                ...this.state,
-                messages: [...this.state.messages, giftedMessage],
+        }).then(()=>{
+            this.chatSource.on("added", (item)=> {
+                const giftedMessage = ChatBox.toGiftedMessage(item);
+                this.setState({
+                    messages: [...this.state.messages, giftedMessage]
+                });
             });
+        }).catch((error)=>{
+            
         });
+
+       /* */
     }
 
 

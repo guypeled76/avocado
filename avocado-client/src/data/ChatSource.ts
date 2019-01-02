@@ -12,6 +12,6 @@ export class ChatSource extends ListSource<MessageInfo> {
 
 
     private static reviseQuery(query:firestore.Query) {
-        return query.orderBy("createdAt").limit(2);
-    }
+        return query.orderBy("created", "desc");
+    } 
 }

@@ -1,4 +1,4 @@
-import { db, field } from 'services';
+import { db, field } from './Firebase';
 import { UserInfo, ActivityInfo } from 'avocado-common';
 
 export class ActivityService {

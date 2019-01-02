@@ -1,7 +1,7 @@
 import { Facebook, Google } from 'expo';
 
 import { config } from '../config';
-import { Firebase } from 'services';
+import { Firebase } from './Firebase';
 import { Alert } from 'react-native';
 import { RolesInfo, UserInfo } from 'avocado-common';
 import { ActivityService } from './ActivityService';

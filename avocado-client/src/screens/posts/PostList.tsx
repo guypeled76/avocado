@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
-import { Card, List, ListItem, Button } from 'react-native-elements';
-import { ImagePostInfo, PostInfoType, TextPostInfo, VideoPostInfo } from '../../../entities';
-import Posts from './Posts';
+import { Card, List } from 'react-native-elements';
+import { ImagePostInfo, PostInfoType, TextPostInfo, VideoPostInfo } from 'avocado-common';
+
 
 
 
@@ -29,6 +28,8 @@ function TextPost(props : {post:TextPostInfo}) {
 
 
 export function PostsList(props : {posts : PostInfoType[]}) {
+
+    console.log(`posts:${props.posts.length}`);
     return <List containerStyle={{marginBottom: 20}}>
     {
       props.posts.map((post) => {

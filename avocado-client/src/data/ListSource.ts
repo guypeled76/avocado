@@ -37,9 +37,18 @@ export class ListSource<TItem> {
     }
 
     private get query() : firestore.Query {
-        return this.config.reviseQuery(this.collection);
+        let query = this.config.reviseQuery(this.collection);
+
+        if (this.lastItem) {
+            query = query.startAfter(this.lastItem);
+        }
+
+        return query;
     }
 
+    protected reviseItem(id: string, item: TItem) : TItem {
+        return item;
+    }
 
     public on(event: ListSourceEvent, callback: ListSourceEventHandler<TItem>) {
         this.attachEvents();
@@ -63,17 +72,15 @@ export class ListSource<TItem> {
 
     public next(): Promise<ListSourceItem<TItem>[]> {
         return new Promise<ListSourceItem<TItem>[]>((resolved, rejected) => {
-            if (resolved) {
-
-                let query = this.query;
-                if (this.lastItem) {
-                    query = query.startAfter(this.lastItem);
-                }
-                query.limit(this.pageSize).get().then((snapshot) => {
+            if (resolved) {              
+                this.query.limit(this.pageSize).get().then((snapshot) => {
+                    
                     const docs = snapshot.docs;
                     if (docs.length > 0) {
                         this.lastItem = docs[docs.length - 1];
-                        resolved(docs.map(doc => <ListSourceItem<TItem>>{ id: doc.id, value: <TItem>doc.data() }));
+                        resolved(docs.map(doc => <ListSourceItem<TItem>>{ id: doc.id, value: this.reviseItem(doc.id, <TItem>doc.data()) }));
+                    } else {
+                        console.log("next() returned no items.");
                     }
                 }, (error) => {
                     if (rejected) {
@@ -117,24 +124,22 @@ export class ListSource<TItem> {
 
             this.attached = true;
 
-            this.collection.onSnapshot(querySnapshot => {
+            this.query.onSnapshot(querySnapshot => {
 
                 querySnapshot.docChanges().forEach(change => {
-
-
                     if (change.type === 'added') { 
                         if (this.addedHandler) {
-                            this.addedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                            this.addedHandler({ id: change.doc.id, value: this.reviseItem(change.doc.id, <TItem>change.doc.data()) })
                         }
                     }
                     else if (change.type === 'modified') {
                         if (this.modifiedHandler) {
-                            this.modifiedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                            this.modifiedHandler({ id: change.doc.id, value: this.reviseItem(change.doc.id, <TItem>change.doc.data()) })
                         } 
                     }
                     else if (change.type === 'removed') {
                         if (this.removedHandler) {
-                            this.removedHandler({ id: change.doc.id, value: <TItem>change.doc.data() })
+                            this.removedHandler({ id: change.doc.id, value: this.reviseItem(change.doc.id, <TItem>change.doc.data()) })
                         }
                     }
 

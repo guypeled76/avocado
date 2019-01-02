@@ -42,6 +42,17 @@ export class DrawerDialog extends React.Component<DrawerItemsProps, { active: st
             }}
           />
           <Drawer.Item
+            label="Video"
+            active={active === 'fifth'}
+            onPress={() => {
+              this.setState({ active: 'fifth' });
+              this.props.navigation.closeDrawer();
+              this.props.navigation.navigate(constants.navigation.video, {
+                url:'https://sample-videos.com/video123/mp4/480/big_buck_bunny_480p_20mb.mp4'
+              })
+            }}
+          />
+          <Drawer.Item
             label="Logout"
             active={active === 'fourth'}
             onPress={() => {

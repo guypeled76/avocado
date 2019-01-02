@@ -7,8 +7,8 @@ export interface ImageInfo {
 
 
 export interface PostInfo {
-    key: string;
     type: "image" | "video" | "text";
+    created:any;
 }
 
 export interface ImagePostInfo extends PostInfo {
@@ -30,42 +30,3 @@ export interface TextPostInfo extends PostInfo {
 }
 
 export type PostInfoType = ImagePostInfo | VideoPostInfo | TextPostInfo;
-
-
-export const dummyPosts: PostInfoType[] = [{
-        key: "ddd2",
-        type: "text",
-        description: "ddd"
-    }, {
-        key: "ddd1",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-    }, {
-        key: "ddd3",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-    }, {
-        key: "ddd4",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-    }, {
-        key: "ddd5",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-    }, {
-        key: "ddd6",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-    }, {
-        key: "ddd7",
-        type: "image",
-        description: "This is a test",
-        image: { uri: "https://antitrustlair.files.wordpress.com/2013/02/post_danmark.jpg" }
-}];
-
-

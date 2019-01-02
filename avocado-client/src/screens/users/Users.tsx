@@ -37,9 +37,13 @@ export class Users extends React.Component<{}, State> {
             this.setState({
                 users: [...this.state.users, ...items.map(item=>item.value)]
             });
-        });
-
-        
+        }).then(()=>{
+            this.profilesSource.on("added", (item)=> {
+                this.setState({
+                    users: [...this.state.users, item.value]
+                });
+            });
+        }); 
     }
 
 
