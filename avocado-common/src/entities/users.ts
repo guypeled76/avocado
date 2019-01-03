@@ -9,7 +9,7 @@ export interface UserInfo {
 
 
 export interface RolesInfo {
-    admin:boolean;
-    editor:boolean;
-    consultant:boolean;
+    admin?:boolean;
+    editor?:boolean;
+    consultant?:boolean;
 }  

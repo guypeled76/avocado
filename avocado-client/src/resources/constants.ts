@@ -16,6 +16,7 @@ const navigation = {
     tabs : 'tabs',
     feed : 'feed',
     chat : 'chat',
+    comments : 'comments',
     timeline : 'timeline',
     notifications : 'notifications',
     recipes : 'recipes',

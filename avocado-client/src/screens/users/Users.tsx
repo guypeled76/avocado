@@ -1,10 +1,11 @@
 import React from 'react';
-import { FlatList, ActivityIndicator } from 'react-native';
-import { strings, icons, styles } from 'resources';
+import { FlatList, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import { strings, icons, styles, constants } from 'resources';
 import { UserInfo } from 'avocado-common';
 import { db } from 'services';
 import { ListItem } from 'react-native-elements';
 import { ProfilesSource } from 'data';
+import { NavigationScreenProps } from 'react-navigation';
 
 
 interface State {
@@ -13,7 +14,7 @@ interface State {
 }
 
 
-export class Users extends React.Component<{}, State> {
+export class Users extends React.Component<NavigationScreenProps, State> {
 
     private profilesSource : ProfilesSource;
 
@@ -22,11 +23,12 @@ export class Users extends React.Component<{}, State> {
        loading: false
     };
 
-    constructor(props: {}) {
+    constructor(props: NavigationScreenProps) {
         super(props);
 
 
         this.renderUser = this.renderUser.bind(this);
+        this.navigateItem = this.navigateItem.bind(this);
     }
 
     componentDidMount() {
@@ -51,15 +53,23 @@ export class Users extends React.Component<{}, State> {
         
     }
 
+    navigateItem(userInfo: UserInfo) {
+        this.props.navigation.navigate(constants.navigation.comments, {
+            chatId:"main",
+            userId:userInfo.uid
+        })
+    }
+
     renderUser(info: any) {
         const userInfo : UserInfo = info.item;
-        return <ListItem
+        return <TouchableOpacity onPress={()=> this.navigateItem(userInfo)}><ListItem
         roundAvatar
         title={userInfo.displayName}
         subtitle={userInfo.email}
         avatar={{ uri: userInfo.photoURL }}
         containerStyle={{ borderBottomWidth: 0 }}
-      />
+        badge={{ value: 3, textStyle: { color: 'orange' }, containerStyle: { marginTop: 0 } }}
+      /></TouchableOpacity>
     }
 
     renderFooter = () => {
@@ -74,7 +84,8 @@ export class Users extends React.Component<{}, State> {
                     keyExtractor={(item)=>item.uid} 
                     renderItem={this.renderUser} 
                     style={styles.fill} 
-                    ListFooterComponent={this.renderFooter}/>
+                    ListFooterComponent={this.renderFooter} 
+                    />
 
     }
 

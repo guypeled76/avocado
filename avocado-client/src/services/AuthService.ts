@@ -5,6 +5,7 @@ import { Firebase } from './Firebase';
 import { Alert } from 'react-native';
 import { RolesInfo, UserInfo } from 'avocado-common';
 import { ActivityService } from './ActivityService';
+import { SecurityService } from './SecurityService';
 
 export class AuthService {
 
@@ -62,12 +63,12 @@ export class AuthService {
   public static subscribeAuthChange(callback: (user: UserInfo | null, roles: RolesInfo | null) => void) {
     Firebase.auth().onAuthStateChanged((firebaseUser: firebase.User | null) => {
       if (firebaseUser != null) {
-        Firebase.database().ref(`roles/${firebaseUser.uid}`).on("value", (snapshot) => {
+        SecurityService.readRoles(firebaseUser).then((roles)=>{
 
-          ActivityService.registerLogin(firebaseUser);
-
-          callback(firebaseUser, snapshot.val());
-        });
+            ActivityService.registerLogin(firebaseUser);
+             
+            callback(firebaseUser, roles);
+        })
       } else {
         callback(null, null);
       }

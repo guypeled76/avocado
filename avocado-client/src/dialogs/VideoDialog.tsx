@@ -6,8 +6,6 @@ import { styles } from 'resources';
 import { Video } from 'expo';
 
 export function VideoDialog(props: NavigationScreenProps) {
-
-    console.log("ddddd:"+props.navigation.getParam("url"));
     return <Video
         style={styles.fill}
         source={{ uri: props.navigation.getParam("url") }}
