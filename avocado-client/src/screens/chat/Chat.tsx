@@ -1,7 +1,8 @@
 import React from "react";
-import { ChatBox } from "elements";
+import { ChatBox, KeyboardAvoider } from "elements";
 import { AuthService } from "services";
-import { icons } from "resources";
+import { icons, styles } from "resources";
+import { KeyboardAvoidingView } from "react-native";
 
 
 
@@ -9,7 +10,7 @@ export class Chat extends React.Component {
 
 
     render() {
-        return <ChatBox chatId="main" userId={AuthService.loggedUser.uid} />
+        return <KeyboardAvoider><ChatBox chatId="main" userId={AuthService.loggedUser.uid} /></KeyboardAvoider>;
     }
 
     static navigationOptions = {

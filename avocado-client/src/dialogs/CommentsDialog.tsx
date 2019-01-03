@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigationScreenProps } from 'react-navigation';
 import { styles } from 'resources';
 import { ChatBox } from 'elements';
+import { KeyboardAvoidingView } from 'react-native';
 
 export function CommentsDialog(props: NavigationScreenProps) {
     const chatId=props.navigation.getParam("chatId");

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 
 export const styles = StyleSheet.create({
@@ -13,8 +13,11 @@ export const styles = StyleSheet.create({
     },
     padding : {
         padding:10
-    }
+    },
 
-
+    fillSafeArea: {
+        flex: 1,
+        paddingTop: Platform.OS === 'android' ? 25 : 0
+    },
     
 });

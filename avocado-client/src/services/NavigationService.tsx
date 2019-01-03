@@ -1,28 +1,29 @@
 import React from 'react';
 
 
-import { 
-    createAppContainer, 
-    createStackNavigator, 
-    createDrawerNavigator, 
-    createMaterialTopTabNavigator, 
+import {
+    createAppContainer,
+    createStackNavigator,
+    createDrawerNavigator,
+    createMaterialTopTabNavigator,
     NavigationRouteConfigMap,
     DrawerItemsProps
 } from 'react-navigation';
 
 
-import { 
-    constants, 
-    styles 
+import {
+    constants,
+    styles
 } from 'resources';
 
 
-import { 
-    SearchBox 
+import {
+    SearchBox
 } from 'elements';
+import { SafeAreaView } from 'react-native';
 
 
-export function createNavigation(tabs : NavigationRouteConfigMap, dialogs : NavigationRouteConfigMap, drawer: React.ComponentType<DrawerItemsProps>) {
+export function createNavigation(tabs: NavigationRouteConfigMap, dialogs: NavigationRouteConfigMap, drawer: React.ComponentType<DrawerItemsProps>) {
 
     const TabsNavigator = createMaterialTopTabNavigator(
         tabs,
@@ -50,7 +51,7 @@ export function createNavigation(tabs : NavigationRouteConfigMap, dialogs : Navi
         '__app__': {
             screen: TabsNavigator,
             navigationOptions: () => ({
-                header: <SearchBox/>
+                header: <SearchBox />
             })
         }
     }, dialogs));
@@ -61,14 +62,16 @@ export function createNavigation(tabs : NavigationRouteConfigMap, dialogs : Navi
             screen: StackNavigator
         }
     }, {
-        initialRouteName: '__tabs__',
-        contentComponent: drawer,
-        drawerWidth: 300,
-    });
+            initialRouteName: '__tabs__',
+            contentComponent: drawer,
+            drawerWidth: 300,
+        }); 
 
     const DrawerNavigatorContainer = createAppContainer(DrawerNavigator);
 
 
-    return <DrawerNavigatorContainer style={ styles.fill } />;
-    
+    return <SafeAreaView style={styles.fillSafeArea}>
+        <DrawerNavigatorContainer style={styles.fill} />
+    </SafeAreaView>;
+
 }

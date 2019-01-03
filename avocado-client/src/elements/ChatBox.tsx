@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewStyle, KeyboardAvoidingView } from 'react-native';
+import { ViewStyle, KeyboardAvoidingView, View, Platform } from 'react-native';
 import { GiftedChat, IMessage, IChatMessage, User } from 'react-native-gifted-chat';
 import { styles } from 'resources';
 import { AuthService, field } from 'services';
@@ -114,9 +114,12 @@ export class ChatBox extends React.Component<Props, State> {
 
 
     render() {
-        return (
-            <KeyboardAvoidingView enabled behavior="padding" style={styles.fill}>
+        return (<KeyboardAvoidingView behavior= {(Platform.OS === 'ios')? "padding" : null}
+        keyboardVerticalOffset={Platform.select({ios: 0, android: 500})}
+        style={styles.fill}>
+            
                 <GiftedChat
+                    
                     imageStyle={imageStyle}
                     messages={this.state.messages}
                     onSend={this.onSendMessages}
@@ -127,7 +130,7 @@ export class ChatBox extends React.Component<Props, State> {
                         }
                     }}
                 />
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
         )
     }
 
