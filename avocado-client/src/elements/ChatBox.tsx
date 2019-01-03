@@ -81,6 +81,13 @@ export class ChatBox extends React.Component<Props, State> {
     }
 
     componentDidMount() {
+        this.chatSource.on("added", (item)=> {
+            const giftedMessage = ChatBox.toGiftedMessage(item);
+            this.setState({
+                messages: [giftedMessage, ...this.state.messages]
+            });
+        });
+        /*
         this.chatSource.next().then((items)=> {
             
             const chatMessages = items.map(ChatBox.toGiftedMessage);
@@ -88,16 +95,11 @@ export class ChatBox extends React.Component<Props, State> {
                 messages: [...this.state.messages,...chatMessages],
             });
         }).then(()=>{
-            this.chatSource.on("added", (item)=> {
-                const giftedMessage = ChatBox.toGiftedMessage(item);
-                this.setState({
-                    messages: [...this.state.messages, giftedMessage]
-                });
-            });
+            
         }).catch((error)=>{
             
         });
-
+*/
        /* */
     }
 

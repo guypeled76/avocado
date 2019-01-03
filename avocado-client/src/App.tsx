@@ -19,7 +19,7 @@ export default class App extends React.Component<{}, State> {
     AuthService.subscribeAuthChange((user,roles) => {
       AuthService.loggedUser = user;
       this.setState({ user, roles });
-    });
+    }); 
 
   }
 
