@@ -1,3 +1,5 @@
+import 'package:avocado_client/pages/authentication/login.dart';
+import 'package:avocado_client/pages/authentication/signup.dart';
 import 'package:avocado_client/pages/tabs/chat.dart';
 import 'package:avocado_client/pages/tabs/food.dart';
 import 'package:avocado_client/pages/tabs/notifications.dart';
@@ -8,16 +10,14 @@ import 'package:flutter/material.dart';
 
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({Key key}) : super(key: key);
 
-  final String title;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
 
   void _add() {
 
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           drawer: DrawerPage(),
           appBar: AppBar(
-              title: Text(widget.title),
+              title: Text('Avocado Clinik'),
               bottom: TabBar(tabs: [
                 Tab(icon: Icon(Icons.home)),
                 Tab(icon: Icon(Icons.timer)),
@@ -55,4 +55,3 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 }
-

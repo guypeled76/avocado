@@ -1,0 +1,36 @@
+import 'package:avocado_client/pages/authentication/login.dart';
+import 'package:avocado_client/pages/authentication/signup.dart';
+import 'package:avocado_client/pages/home.dart';
+import 'package:flutter/material.dart';
+
+
+class AuthPage extends StatefulWidget {
+  AuthPage({Key key}) : super(key: key);
+
+
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+
+  PageController _controller = new PageController(initialPage: 0, viewportFraction: 1.0);
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: _controller,
+      physics: new AlwaysScrollableScrollPhysics(),
+      children: <Widget>[
+        LoginPage(),
+        HomePage(),
+        SignupPage()
+      ],
+      scrollDirection: Axis.horizontal,
+    );
+  }
+
+}
+

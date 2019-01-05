@@ -13,6 +13,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        color: Colors.white,
         child: Center(
             child:Text("signup")
         )

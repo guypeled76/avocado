@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
+import 'auth.dart';
 
 void main() => runApp(AvocadoApp());
 
@@ -12,7 +12,7 @@ class AvocadoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomePage(title: 'Avocado Clinik'),
+      home: AuthPage(),
     );
   }
 }
