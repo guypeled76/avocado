@@ -1,10 +1,11 @@
 import React from 'react';
-import { ViewStyle, KeyboardAvoidingView, View, Platform } from 'react-native';
+import { ViewStyle, View, Platform } from 'react-native';
 import { GiftedChat, IMessage, IChatMessage, User } from 'react-native-gifted-chat';
 import { styles } from 'resources';
 import { AuthService, field } from 'services';
 import { ChatSource, ListSourceItem } from 'data';
 import { MessageInfo } from 'avocado-common';
+import { AvoidKeyboard } from './Miscs';
 
 
 interface State {
@@ -61,8 +62,8 @@ export class ChatBox extends React.Component<Props, State> {
             name: user.displayName,
             avatar: user.photoURL
         };
-    }
-
+    } 
+ 
     private static toGiftedMessage(item: ListSourceItem<MessageInfo>) : IChatMessage{
         const {id, value} = item;
 
@@ -114,9 +115,7 @@ export class ChatBox extends React.Component<Props, State> {
 
 
     render() {
-        return (<KeyboardAvoidingView behavior= {(Platform.OS === 'ios')? "padding" : null}
-        keyboardVerticalOffset={Platform.select({ios: 0, android: 500})}
-        style={styles.fill}>
+        return (<AvoidKeyboard>
             
                 <GiftedChat
                     
@@ -130,7 +129,7 @@ export class ChatBox extends React.Component<Props, State> {
                         }
                     }}
                 />
-                </KeyboardAvoidingView>
+                </AvoidKeyboard>
         )
     }
 
