@@ -2,6 +2,7 @@ import 'package:avocado_client/pages/chat.dart';
 import 'package:avocado_client/pages/food.dart';
 import 'package:avocado_client/pages/notifications.dart';
 import 'package:avocado_client/pages/timeline.dart';
+import 'package:avocado_client/pages/drawer.dart';
 import 'package:flutter/material.dart';
 import 'feed.dart';
 
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
+          drawer: DrawerPage(),
           appBar: AppBar(
               title: Text(widget.title),
               bottom: TabBar(tabs: [
