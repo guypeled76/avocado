@@ -8,11 +8,11 @@ class AvocadoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Avocado Clinet',
+      title: 'Avocado',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomePage(title: 'Avocado Client'),
+      home: HomePage(title: 'Avocado Clinik'),
     );
   }
 }
