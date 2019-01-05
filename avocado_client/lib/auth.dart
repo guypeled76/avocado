@@ -25,7 +25,6 @@ class _AuthPageState extends State<AuthPage> {
       physics: new AlwaysScrollableScrollPhysics(),
       children: <Widget>[
         LoginPage(),
-        HomePage(),
         SignupPage()
       ],
       scrollDirection: Axis.horizontal,

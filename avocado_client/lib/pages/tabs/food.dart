@@ -14,7 +14,13 @@ class _FoodPageState extends State<FoodPage> {
   Widget build(BuildContext context) {
     return Container(
         child: Center(
-            child:Text("food")
+            child:RaisedButton(
+        padding: const EdgeInsets.all(8.0),
+      textColor: Colors.white,
+      color: Colors.blue,
+      onPressed: () => Navigator.of(context).pushReplacementNamed("/"),
+      child: new Text("Logout"),
+    )
         )
     );
   }

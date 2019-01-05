@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           floatingActionButton: FloatingActionButton(
             onPressed: _add,
             tooltip: 'Increment',
-            child: Icon(Icons.add),
+            child: Icon(Icons.mode_edit),
           ), // This trailing comma makes auto-formatting nicer for build methods.
         ));
   }
