@@ -6,10 +6,10 @@ class AboutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AboutListTile(
       applicationIcon: FlutterLogo(
-        colors: Colors.yellow,
+        colors: Colors.green,
       ),
       icon: FlutterLogo(
-        colors: Colors.yellow,
+        colors: Colors.green,
       ),
       aboutBoxChildren: <Widget>[
         SizedBox(
@@ -21,6 +21,7 @@ class AboutWidget extends StatelessWidget {
         Text(
           "Gremlin",
         ),
+
       ],
       applicationName: "Avocado Client",
       applicationVersion: "1.0.1",
