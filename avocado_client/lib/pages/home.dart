@@ -1,3 +1,7 @@
+import 'package:avocado_client/pages/chat.dart';
+import 'package:avocado_client/pages/food.dart';
+import 'package:avocado_client/pages/notifications.dart';
+import 'package:avocado_client/pages/timeline.dart';
 import 'package:flutter/material.dart';
 import 'feed.dart';
 
@@ -11,12 +15,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+
+  void _add() {
+
   }
 
   @override
@@ -36,14 +38,14 @@ class _HomePageState extends State<HomePage> {
           body: TabBarView(
             children: [
               FeedPage(),
-              Icon(Icons.timer),
-              Icon(Icons.notifications),
-              Icon(Icons.local_dining),
-              Icon(Icons.chat),
+              TimelinePage(),
+              NotificationsPage(),
+              FoodPage(),
+              ChatPage(),
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: _add,
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -51,17 +53,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/*Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      )*/
