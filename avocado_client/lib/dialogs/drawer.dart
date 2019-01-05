@@ -1,4 +1,4 @@
-import 'package:avocado_client/pages/about.dart';
+import 'package:avocado_client/widgets/about.dart';
 import 'package:flutter/material.dart';
 
 class DrawerPage extends StatefulWidget {

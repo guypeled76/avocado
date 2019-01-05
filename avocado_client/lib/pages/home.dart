@@ -1,10 +1,11 @@
-import 'package:avocado_client/pages/chat.dart';
-import 'package:avocado_client/pages/food.dart';
-import 'package:avocado_client/pages/notifications.dart';
-import 'package:avocado_client/pages/timeline.dart';
-import 'package:avocado_client/pages/drawer.dart';
+import 'package:avocado_client/pages/tabs/chat.dart';
+import 'package:avocado_client/pages/tabs/food.dart';
+import 'package:avocado_client/pages/tabs/notifications.dart';
+import 'package:avocado_client/pages/tabs/timeline.dart';
+import 'package:avocado_client/pages/tabs/feed.dart';
+import 'package:avocado_client/dialogs/drawer.dart';
 import 'package:flutter/material.dart';
-import 'feed.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
