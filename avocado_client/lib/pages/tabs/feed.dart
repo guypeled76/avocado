@@ -14,7 +14,7 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Container(
         child: Center(
-            child:Text("home")
+            child:Text("feed")
         )
     );
   }
