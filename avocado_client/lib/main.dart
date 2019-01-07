@@ -1,14 +1,12 @@
+import 'package:avocado_client/dialogs/splash.dart';
 import 'package:avocado_client/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'auth.dart';
 
 void main() => runApp(AvocadoApp());
 
-final routes = {
-  '/login':         (BuildContext context) => new AuthPage(),
-  '/home':         (BuildContext context) => new HomePage(),
-  '/' :          (BuildContext context) => new AuthPage(),
-};
+
 
 class AvocadoApp extends StatelessWidget {
 
@@ -21,7 +19,21 @@ class AvocadoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      routes: routes,
+      home: StreamBuilder<FirebaseUser>(
+          stream: FirebaseAuth.instance.onAuthStateChanged,
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return new SplashPage();
+            } else {
+              if (snapshot.hasData) {
+                return new HomePage();
+              } else {
+                return new AuthPage();
+              }
+            }
+          }
+
+      ),
     );
   }
 }
