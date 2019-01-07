@@ -1,5 +1,4 @@
-import 'package:avocado_client/pages/authentication/login.dart';
-import 'package:avocado_client/pages/authentication/signup.dart';
+import 'package:avocado_client/dialogs/search.dart';
 import 'package:avocado_client/pages/tabs/chat.dart';
 import 'package:avocado_client/pages/tabs/food.dart';
 import 'package:avocado_client/pages/tabs/notifications.dart';
@@ -18,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final AppSearchDelegate _delegate = AppSearchDelegate();
 
   void _add() {
 
@@ -41,7 +42,13 @@ class _HomePageState extends State<HomePage> {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed:  (){}
+                  onPressed:  () async {
+
+                    final int selected = await showSearch<int>(
+                      context: context,
+                      delegate: _delegate,
+                    );
+                  }
                 )
               ],
           ),
@@ -62,3 +69,5 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 }
+
+

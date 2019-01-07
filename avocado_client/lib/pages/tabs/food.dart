@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FoodPage extends StatefulWidget {
@@ -18,7 +19,9 @@ class _FoodPageState extends State<FoodPage> {
         padding: const EdgeInsets.all(8.0),
       textColor: Colors.white,
       color: Colors.blue,
-      onPressed: () => Navigator.of(context).pushReplacementNamed("/"),
+      onPressed: () {
+        FirebaseAuth.instance.signOut();
+      },
       child: new Text("Logout"),
     )
         )
