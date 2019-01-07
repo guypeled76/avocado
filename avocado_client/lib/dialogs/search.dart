@@ -20,7 +20,7 @@ class AppSearchDelegate extends SearchDelegate<int> {
       onPressed: () {
         close(context, 0);
       },
-    )
+    );
   }
 
   @override
