@@ -1,6 +1,6 @@
 # avocado_client
 
-The avocado client.
+The avocado client
 
 ## Getting Started
 

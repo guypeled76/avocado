@@ -37,7 +37,14 @@ class _HomePageState extends State<HomePage> {
                 Tab(icon: Icon(Icons.notifications)),
                 Tab(icon: Icon(Icons.local_dining)),
                 Tab(icon: Icon(Icons.chat)),
-              ])),
+              ]),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed:  (){}
+                )
+              ],
+          ),
           body: TabBarView(
             children: [
               FeedPage(),
