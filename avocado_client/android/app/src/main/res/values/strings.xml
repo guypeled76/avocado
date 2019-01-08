@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Avocado</string>
+    <string name="facebook_app_id">2289351617806667</string>
+    <string name="fb_login_protocol_scheme">2289351617806667</string>
+</resources>

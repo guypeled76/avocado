@@ -26,6 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.219538454820-k6rloae90ipto3017gne3viae7l1qi1f</string>
+				<string>fb2289351617806667</string>
 			</array>
 		</dict>
 	</array>
@@ -52,5 +53,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+    <key>FacebookAppID</key>
+    <string>2289351617806667</string>
+    <key>FacebookDisplayName</key>
+    <string>Avocado</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+    
 </dict>
 </plist>

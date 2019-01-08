@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-
+final FacebookLogin facebookSignIn = new FacebookLogin();
 
 
 class LoginPage extends StatefulWidget {
@@ -19,6 +20,22 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  void _authenticateWithFacebook() async {
+    final FacebookLoginResult result =
+    await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        widget._auth.signInWithFacebook(accessToken: accessToken.token);
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+
+        break;
+      case FacebookLoginStatus.error:
+        break;
+    }
+  }
 
   void _authenticateWithGoogle() async {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
@@ -37,13 +54,27 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       color: Colors.white,
         child: Center(
-            child:RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              textColor: Colors.white,
-              color: Colors.blue,
-              onPressed: _authenticateWithGoogle,
-              child: new Text("Login"),
+            child: Column(
+              children: <Widget>[
+                RaisedButton(
+                  padding: const EdgeInsets.all(8.0),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: _authenticateWithGoogle,
+                  child: new Text("Google Login"),
+                ),
+                RaisedButton(
+                  padding: const EdgeInsets.all(8.0),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: _authenticateWithFacebook,
+                  child: new Text("Facebook Login"),
+                )
+              ],
             )
+
+
+
         )
     );
   }
