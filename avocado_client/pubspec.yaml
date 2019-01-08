@@ -26,6 +26,9 @@ dev_dependencies:
   cloud_firestore: ^0.8.2
   google_sign_in: ^3.2.4
   firebase_auth: ^0.6.6
+  built_value: ^6.2.0
+  image_picker: ^0.4.10
+  video_player: ^0.8.0
 
 
 # For information on the generic Dart part of this file, see the

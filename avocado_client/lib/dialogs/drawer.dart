@@ -1,3 +1,4 @@
+import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/widgets/about.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,6 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-
-
   Future<void> _neverSatisfied() async {
     return showDialog<void>(
       barrierDismissible: false, // user must tap button!
@@ -38,10 +37,10 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 
-
   void _test() {
     _neverSatisfied();
   }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -56,7 +55,8 @@ class _DrawerPageState extends State<DrawerPage> {
               "alberte@gmail.com",
             ),
             currentAccountPicture: new CircleAvatar(
-              backgroundImage: new NetworkImage("https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
+              backgroundImage: new NetworkImage(
+                  "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
             ),
           ),
           new ListTile(
@@ -64,9 +64,15 @@ class _DrawerPageState extends State<DrawerPage> {
               "Profile",
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
             ),
-            leading: Icon(
-              Icons.person,
+            leading: IconButton(
+              icon: Icon(Icons.network_check),
               color: Colors.blue,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TestingDialog()),
+                );
+              },
             ),
             onTap: _test,
           ),
@@ -118,5 +124,3 @@ class _DrawerPageState extends State<DrawerPage> {
     );
   }
 }
-
-

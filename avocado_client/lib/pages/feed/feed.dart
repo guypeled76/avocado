@@ -23,7 +23,7 @@ class _FeedPageState extends State<FeedPage> {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return createPost(snapshot.data[index])
+                      return createPost(snapshot.data[index]);
                     });
               } else {
                 return Text("Loading");
