@@ -7,9 +7,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 
 final FacebookLogin facebookSignIn = new FacebookLogin();
 
-
 class LoginPage extends StatefulWidget {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   LoginPage({Key key}) : super(key: key);
@@ -19,10 +17,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   void _authenticateWithFacebook() async {
     final FacebookLoginResult result =
-    await facebookSignIn.logInWithReadPermissions(['email']);
+        await facebookSignIn.logInWithReadPermissions(['email']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
@@ -30,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
         widget._auth.signInWithFacebook(accessToken: accessToken.token);
         break;
       case FacebookLoginStatus.cancelledByUser:
-
         break;
       case FacebookLoginStatus.error:
         break;
@@ -40,9 +36,8 @@ class _LoginPageState extends State<LoginPage> {
   void _authenticateWithGoogle() async {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
-    await googleUser.authentication;
-    final FirebaseUser user = await
-    widget._auth.signInWithGoogle(
+        await googleUser.authentication;
+    final FirebaseUser user = await widget._auth.signInWithGoogle(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
@@ -52,9 +47,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-        child: Center(
-            child: Column(
+        color: Colors.white,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text("Login"),
+            ),
+            body: Center(
+                child: Column(
               children: <Widget>[
                 RaisedButton(
                   padding: const EdgeInsets.all(8.0),
@@ -71,11 +70,6 @@ class _LoginPageState extends State<LoginPage> {
                   child: new Text("Facebook Login"),
                 )
               ],
-            )
-
-
-
-        )
-    );
+            ))));
   }
 }
