@@ -64,17 +64,15 @@ class _DrawerPageState extends State<DrawerPage> {
               "Profile",
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
             ),
-            leading: IconButton(
-              icon: Icon(Icons.network_check),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TestingDialog()),
-                );
-              },
+            leading: Icon(
+                Icons.person
             ),
-            onTap: _test,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TestingDialog()),
+              );
+            },
           ),
           new ListTile(
             title: Text(
