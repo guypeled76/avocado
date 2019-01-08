@@ -16,7 +16,7 @@ class TestingDialog extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.open_in_new),
               onPressed: () {
-                pickImageFromGallery();
+                //pickImageFromGallery();
               },
             )
           ],

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+
+/*
 import 'package:image_picker/image_picker.dart';
 
 
@@ -17,4 +19,4 @@ Future<File>  pickImageFromGallery() async {
 
 Future<File> pickVideoFromGallery() async {
   return ImagePicker.pickVideo(source: ImageSource.gallery);
-}
+}*/
