@@ -1,4 +1,4 @@
-import 'package:avocado_client/services/mediaPicker.dart';
+import 'package:avocado_client/dialogs/webview.dart';
 import 'package:flutter/material.dart';
 
 class TestingDialog extends StatelessWidget {
@@ -16,7 +16,10 @@ class TestingDialog extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.open_in_new),
               onPressed: () {
-                //pickImageFromGallery();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WebViewDialog()),
+                );
               },
             )
           ],
