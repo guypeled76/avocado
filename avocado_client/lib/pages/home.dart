@@ -1,9 +1,9 @@
 import 'package:avocado_client/dialogs/search.dart';
-import 'package:avocado_client/pages/tabs/chat.dart';
-import 'package:avocado_client/pages/tabs/food.dart';
-import 'package:avocado_client/pages/tabs/notifications.dart';
-import 'package:avocado_client/pages/tabs/timeline.dart';
-import 'package:avocado_client/pages/tabs/feed.dart';
+import 'package:avocado_client/pages/chat/chat.dart';
+import 'package:avocado_client/pages/food/food.dart';
+import 'package:avocado_client/pages/notifications/notifications.dart';
+import 'package:avocado_client/pages/timeline/timeline.dart';
+import 'package:avocado_client/pages/feed/feed.dart';
 import 'package:avocado_client/dialogs/drawer.dart';
 import 'package:flutter/material.dart';
 
