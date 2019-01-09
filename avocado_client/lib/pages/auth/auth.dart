@@ -1,6 +1,5 @@
-import 'package:avocado_client/pages/authentication/login.dart';
-import 'package:avocado_client/pages/authentication/signup.dart';
-import 'package:avocado_client/areas/client/home.dart';
+import 'login.dart';
+import 'signup.dart';
 import 'package:flutter/material.dart';
 
 
