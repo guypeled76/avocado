@@ -13,7 +13,7 @@ class ConsultantHomePage extends StatefulWidget {
 
 class _ConsultantHomePageState extends State<ConsultantHomePage> {
 
-  final SearchDialog _delegate = SearchDialog();
+
 
   void _add() {
 
@@ -37,14 +37,7 @@ class _ConsultantHomePageState extends State<ConsultantHomePage> {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed:  () async {
-
-                    final int selected = await showSearch<int>(
-                      context: context,
-                      delegate: _delegate,
-                    );
-                  }
-                )
+                  onPressed:  () => SearchDialog.show(context))
               ],
           ),
           body: TabBarView(

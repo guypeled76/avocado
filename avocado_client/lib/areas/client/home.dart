@@ -2,22 +2,15 @@ import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 
-
 class ClientHomePage extends StatefulWidget {
   ClientHomePage({Key key}) : super(key: key);
-
 
   @override
   _ClientHomePageState createState() => _ClientHomePageState();
 }
 
 class _ClientHomePageState extends State<ClientHomePage> {
-
-  final SearchDialog _delegate = SearchDialog();
-
-  void _add() {
-
-  }
+  void _add() {}
 
   @override
   Widget build(BuildContext context) {
@@ -26,26 +19,19 @@ class _ClientHomePageState extends State<ClientHomePage> {
         child: Scaffold(
           drawer: DrawerDialog(),
           appBar: AppBar(
-              title: Text('Avocado Clinik'),
-              bottom: TabBar(tabs: [
-                Tab(icon: Icon(Icons.home)),
-                Tab(icon: Icon(Icons.timer)),
-                Tab(icon: Icon(Icons.notifications)),
-                Tab(icon: Icon(Icons.local_dining)),
-                Tab(icon: Icon(Icons.chat)),
-              ]),
-              actions: <Widget>[
-                IconButton(
+            title: Text('Avocado Clinik'),
+            bottom: TabBar(tabs: [
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.timer)),
+              Tab(icon: Icon(Icons.notifications)),
+              Tab(icon: Icon(Icons.local_dining)),
+              Tab(icon: Icon(Icons.chat)),
+            ]),
+            actions: <Widget>[
+              IconButton(
                   icon: Icon(Icons.search),
-                  onPressed:  () async {
-
-                    final int selected = await showSearch<int>(
-                      context: context,
-                      delegate: _delegate,
-                    );
-                  }
-                )
-              ],
+                  onPressed: () => SearchDialog.show(context))
+            ],
           ),
           body: TabBarView(
             children: [
@@ -64,5 +50,3 @@ class _ClientHomePageState extends State<ClientHomePage> {
         ));
   }
 }
-
-
