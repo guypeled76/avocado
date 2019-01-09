@@ -1,6 +1,6 @@
 
 
-import 'package:avocado_client/data/index.dart';
+import 'package:avocado_client/data/data.dart';
 import 'mocks/posts.dart';
 
 Stream<List<PostInfo>>  loadPosts  () async* {

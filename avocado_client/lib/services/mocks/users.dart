@@ -1,6 +1,6 @@
 
 
-import 'package:avocado_client/data/index.dart';
+import 'package:avocado_client/data/data.dart';
 
 final user1 = UserInfo(
     key :"u1",

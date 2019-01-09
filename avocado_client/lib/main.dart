@@ -1,8 +1,7 @@
-import 'package:avocado_client/pages/splash/splash.dart';
-import 'package:avocado_client/areas/client/home.dart';
+import 'package:avocado_client/pages/pages.dart';
+import 'package:avocado_client/areas/areas.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'auth.dart';
 
 void main() => runApp(AvocadoApp());
 

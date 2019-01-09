@@ -1,5 +1,5 @@
 
-import 'package:avocado_client/data/index.dart';
+import 'package:avocado_client/data/data.dart';
 import 'users.dart';
 
 final posts = <PostInfo>[

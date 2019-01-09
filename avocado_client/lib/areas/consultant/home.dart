@@ -3,15 +3,15 @@ import 'package:avocado_client/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 
 
-class ClientHomePage extends StatefulWidget {
-  ClientHomePage({Key key}) : super(key: key);
+class ConsultantHomePage extends StatefulWidget {
+  ConsultantHomePage({Key key}) : super(key: key);
 
 
   @override
-  _ClientHomePageState createState() => _ClientHomePageState();
+  _ConsultantHomePageState createState() => _ConsultantHomePageState();
 }
 
-class _ClientHomePageState extends State<ClientHomePage> {
+class _ConsultantHomePageState extends State<ConsultantHomePage> {
 
   final SearchDialog _delegate = SearchDialog();
 

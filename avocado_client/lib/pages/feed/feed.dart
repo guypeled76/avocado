@@ -1,6 +1,6 @@
 import 'package:avocado_client/pages/feed/post.dart';
 import 'package:avocado_client/services/posts.dart';
-import 'package:avocado_client/data/index.dart';
+import 'package:avocado_client/data/data.dart';
 import 'package:flutter/material.dart';
 
 class FeedPage extends StatefulWidget {
