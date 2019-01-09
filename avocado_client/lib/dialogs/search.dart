@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppSearchDelegate extends SearchDelegate<int> {
+class SearchDialog extends SearchDelegate<int> {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [

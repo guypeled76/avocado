@@ -1,24 +1,19 @@
-import 'package:avocado_client/dialogs/search.dart';
-import 'package:avocado_client/pages/chat/chat.dart';
-import 'package:avocado_client/pages/food/food.dart';
-import 'package:avocado_client/pages/notifications/notifications.dart';
-import 'package:avocado_client/pages/timeline/timeline.dart';
-import 'package:avocado_client/pages/feed/feed.dart';
-import 'package:avocado_client/dialogs/drawer.dart';
+import 'package:avocado_client/pages/index.dart';
+import 'package:avocado_client/dialogs/index.dart';
 import 'package:flutter/material.dart';
 
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class ClientHomePage extends StatefulWidget {
+  ClientHomePage({Key key}) : super(key: key);
 
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _ClientHomePageState createState() => _ClientHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ClientHomePageState extends State<ClientHomePage> {
 
-  final AppSearchDelegate _delegate = AppSearchDelegate();
+  final SearchDialog _delegate = SearchDialog();
 
   void _add() {
 
@@ -29,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-          drawer: DrawerPage(),
+          drawer: DrawerDialog(),
           appBar: AppBar(
               title: Text('Avocado Clinik'),
               bottom: TabBar(tabs: [

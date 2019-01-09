@@ -1,5 +1,5 @@
-import 'package:avocado_client/dialogs/splash.dart';
-import 'package:avocado_client/pages/home.dart';
+import 'package:avocado_client/pages/splash/splash.dart';
+import 'package:avocado_client/areas/client/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth.dart';
@@ -26,7 +26,7 @@ class AvocadoApp extends StatelessWidget {
               return new SplashPage();
             } else {
               if (snapshot.hasData) {
-                return new HomePage();
+                return new ClientHomePage();
               } else {
                 return new AuthPage();
               }

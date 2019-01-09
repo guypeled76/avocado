@@ -2,14 +2,14 @@ import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/widgets/about.dart';
 import 'package:flutter/material.dart';
 
-class DrawerPage extends StatefulWidget {
-  DrawerPage({Key key}) : super(key: key);
+class DrawerDialog extends StatefulWidget {
+  DrawerDialog({Key key}) : super(key: key);
 
   @override
-  _DrawerPageState createState() => _DrawerPageState();
+  _DrawerDialogState createState() => _DrawerDialogState();
 }
 
-class _DrawerPageState extends State<DrawerPage> {
+class _DrawerDialogState extends State<DrawerDialog> {
   Future<void> _neverSatisfied() async {
     return showDialog<void>(
       barrierDismissible: false, // user must tap button!
