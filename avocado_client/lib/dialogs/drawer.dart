@@ -1,5 +1,6 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/widgets/about.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DrawerDialog extends StatefulWidget {
@@ -96,13 +97,16 @@ class _DrawerDialogState extends State<DrawerDialog> {
           ),
           new ListTile(
             title: Text(
-              "Timeline",
+              "Logout",
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
             ),
             leading: Icon(
-              Icons.timeline,
+              Icons.fullscreen_exit,
               color: Colors.cyan,
             ),
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+            },
           ),
           Divider(),
           new ListTile(
