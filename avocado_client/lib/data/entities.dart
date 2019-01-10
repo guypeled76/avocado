@@ -14,7 +14,5 @@ class ContentEntity extends EntityInfo {
 
 
   ContentEntity({String key, DateTime date, UserInfo user})
-      : super(key:key) {
-
-  }
+      : super(key:key);
 }
