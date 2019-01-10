@@ -37,7 +37,7 @@ class ConsultantHomePage extends StatelessWidget {
               TimelinePage(),
               NotificationsWidget(),
               FoodPage(),
-              ChatPage(),
+              ChatWidget(),
             ],
           ),
           floatingActionButton: FloatingActionButton(

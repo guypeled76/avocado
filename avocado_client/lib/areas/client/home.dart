@@ -39,7 +39,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
               TimelinePage(),
               NotificationsWidget(),
               FoodPage(),
-              ChatPage(),
+              ChatWidget(),
             ],
           ),
           floatingActionButton: FloatingActionButton(
