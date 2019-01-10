@@ -35,7 +35,7 @@ class ConsultantHomePage extends StatelessWidget {
             children: [
               FeedPage(),
               TimelinePage(),
-              NotificationsPage(),
+              NotificationsWidget(),
               FoodPage(),
               ChatPage(),
             ],

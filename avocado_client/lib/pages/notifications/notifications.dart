@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'notification.dart';
 
-class NotificationsPage extends StatefulWidget {
-  NotificationsPage({Key key}) : super(key: key);
-
-  @override
-  _NotificationsPageState createState() => _NotificationsPageState();
-}
-
-class _NotificationsPageState extends State<NotificationsPage> {
-
+class NotificationsWidget extends StatelessWidget {
+  NotificationsWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-            child:Text("notifications")
-        )
+    return ListView(
+      children: <Widget>[
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+        NotificationWidget(),
+      ],
     );
   }
 }
-
 

@@ -37,7 +37,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
             children: [
               FeedPage(),
               TimelinePage(),
-              NotificationsPage(),
+              NotificationsWidget(),
               FoodPage(),
               ChatPage(),
             ],
