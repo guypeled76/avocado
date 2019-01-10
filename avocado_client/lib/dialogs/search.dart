@@ -27,12 +27,12 @@ class SearchDialog extends SearchDelegate<int> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container();
+    return Text("d");
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Container();
+    return Text("ddd");
   }
 
   static show<T>(BuildContext context,{String query = ''}) async {

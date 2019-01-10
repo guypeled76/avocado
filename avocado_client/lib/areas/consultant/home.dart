@@ -3,17 +3,8 @@ import 'package:avocado_client/dialogs/dialogs.dart';
 import 'package:flutter/material.dart';
 
 
-class ConsultantHomePage extends StatefulWidget {
+class ConsultantHomePage extends StatelessWidget {
   ConsultantHomePage({Key key}) : super(key: key);
-
-
-  @override
-  _ConsultantHomePageState createState() => _ConsultantHomePageState();
-}
-
-class _ConsultantHomePageState extends State<ConsultantHomePage> {
-
-
 
   void _add() {
 
@@ -26,19 +17,19 @@ class _ConsultantHomePageState extends State<ConsultantHomePage> {
         child: Scaffold(
           drawer: DrawerDialog(),
           appBar: AppBar(
-              title: Text('Avocado Clinik'),
-              bottom: TabBar(tabs: [
-                Tab(icon: Icon(Icons.home)),
-                Tab(icon: Icon(Icons.timer)),
-                Tab(icon: Icon(Icons.notifications)),
-                Tab(icon: Icon(Icons.local_dining)),
-                Tab(icon: Icon(Icons.chat)),
-              ]),
-              actions: <Widget>[
-                IconButton(
+            title: Text('Avocado Clinik'),
+            bottom: TabBar(tabs: [
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.timer)),
+              Tab(icon: Icon(Icons.notifications)),
+              Tab(icon: Icon(Icons.local_dining)),
+              Tab(icon: Icon(Icons.chat)),
+            ]),
+            actions: <Widget>[
+              IconButton(
                   icon: Icon(Icons.search),
                   onPressed:  () => SearchDialog.show(context))
-              ],
+            ],
           ),
           body: TabBarView(
             children: [
@@ -57,5 +48,6 @@ class _ConsultantHomePageState extends State<ConsultantHomePage> {
         ));
   }
 }
+
 
 

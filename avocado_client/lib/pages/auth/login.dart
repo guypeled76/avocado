@@ -7,16 +7,13 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 
 final FacebookLogin facebookSignIn = new FacebookLogin();
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   LoginPage({Key key}) : super(key: key);
 
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
 
-class _LoginPageState extends State<LoginPage> {
   void _authenticateWithFacebook() async {
     final FacebookLoginResult result =
         await facebookSignIn.logInWithReadPermissions(['email']);
@@ -24,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         final FacebookAccessToken accessToken = result.accessToken;
-        widget._auth.signInWithFacebook(accessToken: accessToken.token);
+        this._auth.signInWithFacebook(accessToken: accessToken.token);
         break;
       case FacebookLoginStatus.cancelledByUser:
         break;
@@ -37,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
-    final FirebaseUser user = await widget._auth.signInWithGoogle(
+    final FirebaseUser user = await this._auth.signInWithGoogle(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );

@@ -12,7 +12,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d1",
   ),
   ImagePostInfo(
     key: "p1",
@@ -23,7 +23,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d2",
   ),
   ImagePostInfo(
     key: "p1",
@@ -34,7 +34,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d3",
   ),
   ImagePostInfo(
     key: "p1",
@@ -45,7 +45,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d4",
   ),
   ImagePostInfo(
     key: "p1",
@@ -56,7 +56,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d5",
   ),
   ImagePostInfo(
     key: "p1",
@@ -67,7 +67,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d6",
   ),
   ImagePostInfo(
     key: "p1",
@@ -78,7 +78,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d7",
   ),
   ImagePostInfo(
     key: "p1",
@@ -89,6 +89,6 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d",
+    content: "d8",
   )
 ];
