@@ -1,5 +1,5 @@
 import 'package:avocado_client/dialogs/testings.dart';
-import 'package:avocado_client/widgets/about.dart';
+import 'package:avocado_client/dialogs/about.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
