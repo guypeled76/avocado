@@ -1,5 +1,6 @@
 import 'package:avocado_client/data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ImageViewDialog extends StatelessWidget {
   final ImageContentInfo imageInfo;
@@ -10,7 +11,7 @@ class ImageViewDialog extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text("image"),
+          title: Text("image1"),
           backgroundColor: Colors.black,
           actions: <Widget>[IconButton(
             icon:Icon(Icons.more_vert),
@@ -19,11 +20,9 @@ class ImageViewDialog extends StatelessWidget {
             },
           )],
         ),
-        body: Center(
-          child: Image(
-            image: NetworkImage(this.imageInfo.image),
-          )
-        ),
+        body: PhotoView(
+            imageProvider: NetworkImage(this.imageInfo.image),
+          ),
     );
   }
 
