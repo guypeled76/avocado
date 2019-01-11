@@ -1,8 +1,10 @@
+import 'package:avocado_client/data/images.dart';
 import 'package:flutter/material.dart';
+import 'package:avocado_client/dialogs/imageview.dart';
 
 class Post extends StatelessWidget {
 
-  final image, content, name, time, likes, comments, shares;
+  var image, content, name, time, likes, comments, shares;
 
   Post({
     this.image, this.content, this.name, this.time, this.likes, this.comments, this.shares
@@ -10,14 +12,23 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
+    return GestureDetector(
+      onTap: () {
+        if(this.image != null) {
+          ImageViewDialog.show(context,ImageContentInfo(
+              key:"dd",
+              image:this.image)
+          );
+        }
+      },
+        child:Card(
       shape: Border(bottom: BorderSide(color: Colors.lightGreenAccent, width: 0.3)),
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new ListTile(
             leading: CircleAvatar(
-              radius: 20.0,
+              radius: 25.0,
               child: new Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -78,6 +89,6 @@ class Post extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }
