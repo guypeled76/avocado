@@ -1,5 +1,6 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/dialogs/about.dart';
+import 'package:avocado_client/pages/auth/context.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -50,14 +51,14 @@ class _DrawerDialogState extends State<DrawerDialog> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              "Albert Einstein",
+              AuthContext.of(context).getDisplayName(),
             ),
             accountEmail: Text(
-              "alberte@gmail.com",
+              AuthContext.of(context).getEMail(),
             ),
             currentAccountPicture: new CircleAvatar(
               backgroundImage: new NetworkImage(
-                  "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
+                  AuthContext.of(context).getPhotoUrl()),
             ),
           ),
           new ListTile(

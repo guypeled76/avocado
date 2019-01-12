@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:avocado_client/pages/auth/context.dart';
 
 void main() => runApp(AvocadoApp());
 
@@ -28,12 +29,15 @@ class AvocadoApp extends StatelessWidget {
           stream: FirebaseAuth.instance.onAuthStateChanged,
           builder: (BuildContext context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return new SplashPage();
+              return SplashPage();
             } else {
               if (snapshot.hasData) {
-                return new ClientHomePage();
+                return AuthContext(
+                    user: snapshot.data,
+                    child: ClientHomePage()
+                );
               } else {
-                return new AuthPage();
+                return AuthPage();
               }
             }
           }

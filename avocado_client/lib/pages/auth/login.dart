@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
-final GoogleSignIn googleSignIn = GoogleSignIn();
 
-final FacebookLogin facebookSignIn = new FacebookLogin();
 
 class LoginPage extends StatelessWidget {
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  final FacebookLogin _facebookSignIn = new FacebookLogin();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -16,7 +18,7 @@ class LoginPage extends StatelessWidget {
 
   void _authenticateWithFacebook() async {
     final FacebookLoginResult result =
-        await facebookSignIn.logInWithReadPermissions(['email']);
+        await _facebookSignIn.logInWithReadPermissions(['email']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
@@ -31,7 +33,7 @@ class LoginPage extends StatelessWidget {
   }
 
   void _authenticateWithGoogle() async {
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
     final FirebaseUser user = await this._auth.signInWithGoogle(
