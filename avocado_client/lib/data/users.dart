@@ -1,10 +1,10 @@
 import 'package:avocado_client/data/entities.dart';
 
 class UserInfo extends EntityInfo {
-  final String name = null;
-  final String image = null;
+  final String name;
+  final String image;
 
-  UserInfo({String key, String name, String image}) : super(key: key);
+  UserInfo({String key, this.name, this.image}) : super(key: key);
 }
 
 class ProfileInfo extends UserInfo {

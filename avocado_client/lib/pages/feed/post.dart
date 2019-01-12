@@ -58,6 +58,13 @@ class Post extends StatelessWidget {
             title: Text(content),
           ),
           Container(
+            height: 200,
+            decoration: BoxDecoration(
+                image:new DecorationImage(
+                  fit:BoxFit.fitWidth,
+            image: new NetworkImage(image)
+          ))),
+          Container(
             padding: new EdgeInsets.all(18.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

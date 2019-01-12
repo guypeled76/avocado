@@ -1,3 +1,5 @@
+import 'package:avocado_client/pages/graph/linechart.dart';
+import 'package:avocado_client/pages/graph/piechart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
 
@@ -15,7 +17,15 @@ class _TimelinePageState extends State<TimelinePage> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Calendar()
+        Calendar(),
+        Container(
+          height: 300,
+          child: LineChartWidget.withSampleData(),
+        ),
+        Container(
+          height: 300,
+          child: PieChartWidget.withSampleData(),
+        )
       ],
     );
   }

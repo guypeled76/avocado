@@ -9,10 +9,10 @@ class EntityInfo {
 
 class ContentEntity extends EntityInfo {
 
-  final DateTime date = null;
-  final UserInfo user = null;
+  final DateTime date;
+  final UserInfo user;
 
 
-  ContentEntity({String key, DateTime date, UserInfo user})
+  ContentEntity({String key, this.date, this.user})
       : super(key:key);
 }

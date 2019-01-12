@@ -44,7 +44,7 @@ class FeedPage extends StatelessWidget {
       comments: "2",
       shares: "3",
       likes: "45",
-      name: post.content,
+      name: post.user.name,
       content: post.content,
     );
   }

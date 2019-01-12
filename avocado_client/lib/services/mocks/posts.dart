@@ -12,7 +12,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d1",
+    content: "This is a test post",
   ),
   ImagePostInfo(
     key: "p1",
@@ -23,7 +23,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d2",
+    content: "What is the meaning of life?",
   ),
   ImagePostInfo(
     key: "p1",
@@ -34,7 +34,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d3",
+    content: "42 is the meaning of life",
   ),
   ImagePostInfo(
     key: "p1",
@@ -45,7 +45,7 @@ final posts = <PostInfo>[
     shares: 3,
     likes: 45,
     user: user1,
-    content: "d4",
+    content: " מעניין איך עברית נראה.",
   ),
   ImagePostInfo(
     key: "p1",

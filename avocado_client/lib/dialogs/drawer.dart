@@ -70,6 +70,7 @@ class _DrawerDialogState extends State<DrawerDialog> {
                 Icons.person
             ),
             onTap: () {
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TestingDialog()),
@@ -88,13 +89,16 @@ class _DrawerDialogState extends State<DrawerDialog> {
           ),
           new ListTile(
             title: Text(
-              "Dashboard",
+              "Switch",
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
             ),
             leading: Icon(
               Icons.dashboard,
               color: Colors.red,
             ),
+            onTap: () {
+
+            },
           ),
           new ListTile(
             title: Text(
