@@ -1,4 +1,5 @@
 import 'package:avocado_client/data/data.dart';
+import 'package:avocado_client/dialogs/comments.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -32,9 +33,11 @@ class ImageViewDialog extends StatelessWidget {
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  _button(context, Icons.thumb_up, "Like"),
-                  _button(context, Icons.comment, "Comments"),
-                  _button(context, Icons.share, "Share"),
+                  _button(context, Icons.thumb_up, "Like", () {}),
+                  _button(context, Icons.comment, "Comments", () {
+                    CommentsDialog.show(context);
+                  }),
+                  _button(context, Icons.share, "Share", () {}),
                 ])),
             Container(height: 15,)
           ],
@@ -42,8 +45,8 @@ class ImageViewDialog extends StatelessWidget {
     );
   }
 
-  Widget _button(BuildContext context, IconData icon, String text) {
-    return FlatButton(onPressed: () => {},
+  Widget _button(BuildContext context, IconData icon, String text, VoidCallback onPressed) {
+    return FlatButton(onPressed: onPressed,
         color: Colors.transparent,
         padding: EdgeInsets.all(0),
         child: Row( // Replace with a Row for horizontal icon + text

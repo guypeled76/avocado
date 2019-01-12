@@ -1,4 +1,5 @@
 import 'package:avocado_client/data/images.dart';
+import 'package:avocado_client/dialogs/comments.dart';
 import 'package:flutter/material.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 
@@ -83,7 +84,13 @@ class Post extends StatelessWidget {
                     ),
                   ],
                 ),
-                new Text(comments + " comments · " + shares + " share"),
+                new Row(children: <Widget>[
+                  GestureDetector(
+                    onTap: () => CommentsDialog.show(context),
+                    child: new Text(comments + " comments"),
+                  )
+                ],
+                )
               ],
             ),
           )
