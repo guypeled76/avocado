@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:built_value/serializer.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'info.dart';
@@ -25,17 +26,18 @@ Stream<Map<String, dynamic>> loadJSONEntities(String path) {
 
 Stream<List<PostInfo>> loadPosts() {
   return loadJSONEntities('assets/mocks/posts.json')
-      .map((map) {
-        try {
-          return serializers.deserializeWith(PostData.serializer, map);
-        } catch( e ) {
-
-          return null;
-        }
-      })
-      .where((post) {
-        return post != null;
-      })
+      .map((map) => serializers.deserializeWith(PostData.serializer, map))
       .toList()
       .asStream();
+}
+
+Stream<List<UserInfo>> loadUsers() {
+  return loadJSONEntities('assets/mocks/users.json')
+      .map((map) => serializers.deserializeWith(UserData.serializer, map))
+      .toList()
+      .asStream();
+}
+
+Stream<Map<String, UserInfo>> loadUsersMap() {
+  return loadUsers().map((users) => Map.fromIterable(users, key:(user)=> user.key, value:(user)=> user));
 }

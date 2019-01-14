@@ -2,13 +2,14 @@ import 'package:avocado_client/data/images.dart';
 import 'package:avocado_client/dialogs/comments.dart';
 import 'package:flutter/material.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Post extends StatelessWidget {
 
-  var image, content, name, time, likes, comments, shares;
+  var image, avatar, content, name, time, likes, comments, shares;
 
   Post({
-    this.image, this.content, this.name, this.time, this.likes, this.comments, this.shares
+    this.image, this.content, this.name, this.time, this.likes, this.comments, this.shares, this.avatar
   });
 
   @override
@@ -34,7 +35,7 @@ class Post extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: new NetworkImage(image),
+                    image: new CachedNetworkImageProvider(this.avatar),
                   ),
                 ),
               ),
@@ -62,7 +63,7 @@ class Post extends StatelessWidget {
             decoration: BoxDecoration(
                 image:new DecorationImage(
                   fit:BoxFit.fitWidth,
-            image: new NetworkImage(image)
+            image: new CachedNetworkImageProvider(image)
           ))),
           Container(
             padding: new EdgeInsets.all(18.0),

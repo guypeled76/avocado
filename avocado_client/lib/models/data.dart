@@ -23,3 +23,9 @@ abstract class PostData implements Built<PostData, PostDataBuilder>, PostInfo {
   static Serializer<PostData> get serializer => _$postDataSerializer;
 }
 
+abstract class UserData implements Built<UserData, UserDataBuilder>, UserInfo {
+  UserData._();
+  factory UserData([updates(UserDataBuilder b)]) = _$UserData;
+  static Serializer<UserData> get serializer => _$userDataSerializer;
+}
+

@@ -1,6 +1,7 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/dialogs/about.dart';
 import 'package:avocado_client/pages/auth/context.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class _DrawerDialogState extends State<DrawerDialog> {
               AuthContext.of(context).getEMail(),
             ),
             currentAccountPicture: new CircleAvatar(
-              backgroundImage: new NetworkImage(
+              backgroundImage: new CachedNetworkImageProvider(
                   AuthContext.of(context).getPhotoUrl()),
             ),
           ),

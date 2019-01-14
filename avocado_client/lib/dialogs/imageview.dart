@@ -1,5 +1,6 @@
 import 'package:avocado_client/data/data.dart';
 import 'package:avocado_client/dialogs/comments.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -22,7 +23,7 @@ class ImageViewDialog extends StatelessWidget {
           )],
         ),
         body: PhotoView(
-            imageProvider: NetworkImage(this.imageInfo.image),
+            imageProvider: CachedNetworkImageProvider(this.imageInfo.image),
           ),
         bottomNavigationBar: Column(
           mainAxisSize:MainAxisSize.min,

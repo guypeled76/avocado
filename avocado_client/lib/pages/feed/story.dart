@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class StoryWidget extends StatelessWidget {
@@ -11,7 +12,7 @@ class StoryWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: new NetworkImage(
+              image: new CachedNetworkImageProvider(
                   "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
             )));
   }

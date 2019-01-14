@@ -7,11 +7,6 @@ import 'stories.dart';
 class FeedPage extends StatelessWidget {
   FeedPage({Key key}) : super(key: key);
 
-  Future<Null> _handleRefresh() async {
-    await new Future.delayed(new Duration(seconds: 1));
-
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +17,15 @@ class FeedPage extends StatelessWidget {
           stream: loadPosts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              if(snapshot.data==null) {
-                return Text("Empty");
+              if(snapshot.hasError) {
+                return new Text(snapshot.error.toString());
               }
               return ListView.builder(
                 padding: EdgeInsets.all(0),
                   itemCount: snapshot.data.length+1,
                   itemBuilder: (context, index) {
                     if(index==0) return StoriesWidget();
-                    return createPost(snapshot.data[index-1]);
+                    return createPost(snapshot.data[index-1], null);
                   });
             } else {
               return Text("Loading");
@@ -39,14 +34,15 @@ class FeedPage extends StatelessWidget {
     );
   }
 
-  Widget createPost(PostInfo post) {
+  Widget createPost(PostInfo post, UserInfo user) {
     return Post(
       image:post.image,
+      avatar: post.image,
       time: post.date,
       comments: "2",
       shares: "3",
       likes: "45",
-      name: post.user,
+      name: "d",
       content: post.content,
     );
   }

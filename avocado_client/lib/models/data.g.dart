@@ -9,6 +9,7 @@ part of 'data.dart';
 Serializer<EntityData> _$entityDataSerializer = new _$EntityDataSerializer();
 Serializer<ContentData> _$contentDataSerializer = new _$ContentDataSerializer();
 Serializer<PostData> _$postDataSerializer = new _$PostDataSerializer();
+Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
 
 class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
   @override
@@ -152,6 +153,59 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
           break;
         case 'date':
           result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$UserDataSerializer implements StructuredSerializer<UserData> {
+  @override
+  final Iterable<Type> types = const [UserData, _$UserData];
+  @override
+  final String wireName = 'UserData';
+
+  @override
+  Iterable serialize(Serializers serializers, UserData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(String)),
+      'displayName',
+      serializers.serialize(object.displayName,
+          specifiedType: const FullType(String)),
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  UserData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new UserDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'image':
+          result.image = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'displayName':
+          result.displayName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'key':
@@ -471,6 +525,110 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
     final _$result = _$v ??
         new _$PostData._(
             image: image, content: content, user: user, date: date, key: key);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$UserData extends UserData {
+  @override
+  final String image;
+  @override
+  final String displayName;
+  @override
+  final String key;
+
+  factory _$UserData([void updates(UserDataBuilder b)]) =>
+      (new UserDataBuilder()..update(updates)).build();
+
+  _$UserData._({this.image, this.displayName, this.key}) : super._() {
+    if (image == null) {
+      throw new BuiltValueNullFieldError('UserData', 'image');
+    }
+    if (displayName == null) {
+      throw new BuiltValueNullFieldError('UserData', 'displayName');
+    }
+    if (key == null) {
+      throw new BuiltValueNullFieldError('UserData', 'key');
+    }
+  }
+
+  @override
+  UserData rebuild(void updates(UserDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  UserDataBuilder toBuilder() => new UserDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is UserData &&
+        image == other.image &&
+        displayName == other.displayName &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode {
+    return $jf(
+        $jc($jc($jc(0, image.hashCode), displayName.hashCode), key.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('UserData')
+          ..add('image', image)
+          ..add('displayName', displayName)
+          ..add('key', key))
+        .toString();
+  }
+}
+
+class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
+  _$UserData _$v;
+
+  String _image;
+  String get image => _$this._image;
+  set image(String image) => _$this._image = image;
+
+  String _displayName;
+  String get displayName => _$this._displayName;
+  set displayName(String displayName) => _$this._displayName = displayName;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  UserDataBuilder();
+
+  UserDataBuilder get _$this {
+    if (_$v != null) {
+      _image = _$v.image;
+      _displayName = _$v.displayName;
+      _key = _$v.key;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(UserData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$UserData;
+  }
+
+  @override
+  void update(void updates(UserDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$UserData build() {
+    final _$result = _$v ??
+        new _$UserData._(image: image, displayName: displayName, key: key);
     replace(_$result);
     return _$result;
   }
