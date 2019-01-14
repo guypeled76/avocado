@@ -17,3 +17,9 @@ abstract class ContentData implements Built<ContentData, ContentDataBuilder>, Co
   static Serializer<ContentData> get serializer => _$contentDataSerializer;
 }
 
+abstract class PostData implements Built<PostData, PostDataBuilder>, PostInfo {
+  PostData._();
+  factory PostData([updates(PostDataBuilder b)]) = _$PostData;
+  static Serializer<PostData> get serializer => _$postDataSerializer;
+}
+

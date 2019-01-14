@@ -1,6 +1,6 @@
 import 'package:avocado_client/pages/feed/post.dart';
-import 'package:avocado_client/services/posts.dart';
-import 'package:avocado_client/data/data.dart';
+import 'package:avocado_client/models/mocks.dart';
+import 'package:avocado_client/models/info.dart';
 import 'package:flutter/material.dart';
 import 'stories.dart';
 
@@ -22,6 +22,9 @@ class FeedPage extends StatelessWidget {
           stream: loadPosts(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              if(snapshot.data==null) {
+                return Text("Empty");
+              }
               return ListView.builder(
                 padding: EdgeInsets.all(0),
                   itemCount: snapshot.data.length+1,
@@ -38,13 +41,12 @@ class FeedPage extends StatelessWidget {
 
   Widget createPost(PostInfo post) {
     return Post(
-      image:
-          "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg",
-      time: "11:12",
+      image:post.image,
+      time: post.date,
       comments: "2",
       shares: "3",
       likes: "45",
-      name: post.user.name,
+      name: post.user,
       content: post.content,
     );
   }

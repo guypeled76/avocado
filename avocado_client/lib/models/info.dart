@@ -15,5 +15,14 @@ abstract class EntityInfo {
 }
 
 abstract class ContentInfo implements EntityInfo {
+  String get user;
 
+  String get date;
+}
+
+abstract class PostInfo implements ContentInfo {
+
+  String get image;
+
+  String get content;
 }
