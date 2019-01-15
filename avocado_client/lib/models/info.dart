@@ -6,7 +6,7 @@ abstract class EntityInfo {
 }
 
 abstract class ContentInfo implements EntityInfo {
-  String get user;
+  UserInfo get user;
   String get date;
 }
 

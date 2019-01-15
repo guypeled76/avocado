@@ -61,7 +61,8 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'user',
-      serializers.serialize(object.user, specifiedType: const FullType(String)),
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserInfo)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'key',
@@ -84,7 +85,7 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
       switch (key) {
         case 'user':
           result.user = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(UserInfo)) as UserInfo;
           break;
         case 'date':
           result.date = serializers.deserialize(value,
@@ -111,14 +112,15 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
   Iterable serialize(Serializers serializers, PostData object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserData)),
       'image',
       serializers.serialize(object.image,
           specifiedType: const FullType(String)),
       'content',
       serializers.serialize(object.content,
           specifiedType: const FullType(String)),
-      'user',
-      serializers.serialize(object.user, specifiedType: const FullType(String)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'key',
@@ -139,16 +141,16 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserData)) as UserData);
+          break;
         case 'image':
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'content':
           result.content = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'user':
-          result.user = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'date':
@@ -297,7 +299,7 @@ class EntityDataBuilder implements Builder<EntityData, EntityDataBuilder> {
 
 class _$ContentData extends ContentData {
   @override
-  final String user;
+  final UserInfo user;
   @override
   final String date;
   @override
@@ -352,9 +354,9 @@ class _$ContentData extends ContentData {
 class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   _$ContentData _$v;
 
-  String _user;
-  String get user => _$this._user;
-  set user(String user) => _$this._user = user;
+  UserInfo _user;
+  UserInfo get user => _$this._user;
+  set user(UserInfo user) => _$this._user = user;
 
   String _date;
   String get date => _$this._date;
@@ -400,11 +402,11 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
 
 class _$PostData extends PostData {
   @override
+  final UserData user;
+  @override
   final String image;
   @override
   final String content;
-  @override
-  final String user;
   @override
   final String date;
   @override
@@ -413,16 +415,16 @@ class _$PostData extends PostData {
   factory _$PostData([void updates(PostDataBuilder b)]) =>
       (new PostDataBuilder()..update(updates)).build();
 
-  _$PostData._({this.image, this.content, this.user, this.date, this.key})
+  _$PostData._({this.user, this.image, this.content, this.date, this.key})
       : super._() {
+    if (user == null) {
+      throw new BuiltValueNullFieldError('PostData', 'user');
+    }
     if (image == null) {
       throw new BuiltValueNullFieldError('PostData', 'image');
     }
     if (content == null) {
       throw new BuiltValueNullFieldError('PostData', 'content');
-    }
-    if (user == null) {
-      throw new BuiltValueNullFieldError('PostData', 'user');
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('PostData', 'date');
@@ -443,9 +445,9 @@ class _$PostData extends PostData {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PostData &&
+        user == other.user &&
         image == other.image &&
         content == other.content &&
-        user == other.user &&
         date == other.date &&
         key == other.key;
   }
@@ -453,7 +455,7 @@ class _$PostData extends PostData {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, image.hashCode), content.hashCode), user.hashCode),
+        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), content.hashCode),
             date.hashCode),
         key.hashCode));
   }
@@ -461,9 +463,9 @@ class _$PostData extends PostData {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PostData')
+          ..add('user', user)
           ..add('image', image)
           ..add('content', content)
-          ..add('user', user)
           ..add('date', date)
           ..add('key', key))
         .toString();
@@ -473,6 +475,10 @@ class _$PostData extends PostData {
 class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   _$PostData _$v;
 
+  UserDataBuilder _user;
+  UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
+  set user(UserDataBuilder user) => _$this._user = user;
+
   String _image;
   String get image => _$this._image;
   set image(String image) => _$this._image = image;
@@ -480,10 +486,6 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   String _content;
   String get content => _$this._content;
   set content(String content) => _$this._content = content;
-
-  String _user;
-  String get user => _$this._user;
-  set user(String user) => _$this._user = user;
 
   String _date;
   String get date => _$this._date;
@@ -497,9 +499,9 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
 
   PostDataBuilder get _$this {
     if (_$v != null) {
+      _user = _$v.user?.toBuilder();
       _image = _$v.image;
       _content = _$v.content;
-      _user = _$v.user;
       _date = _$v.date;
       _key = _$v.key;
       _$v = null;
@@ -522,9 +524,26 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
 
   @override
   _$PostData build() {
-    final _$result = _$v ??
-        new _$PostData._(
-            image: image, content: content, user: user, date: date, key: key);
+    _$PostData _$result;
+    try {
+      _$result = _$v ??
+          new _$PostData._(
+              user: user.build(),
+              image: image,
+              content: content,
+              date: date,
+              key: key);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        user.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'PostData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

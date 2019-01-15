@@ -37,12 +37,12 @@ class FeedPage extends StatelessWidget {
   Widget createPost(PostInfo post, UserInfo user) {
     return Post(
       image:post.image,
-      avatar: post.image,
+      avatar: post.user.image,
       time: post.date,
       comments: "2",
       shares: "3",
       likes: "45",
-      name: "d",
+      name: post.user.displayName,
       content: post.content,
     );
   }

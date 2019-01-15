@@ -7,7 +7,8 @@ part 'serializers.g.dart';
 @SerializersFor(const [
   EntityData,
   ContentData,
-  PostData
+  PostData,
+  UserData
 ])
 final Serializers serializers = (
     _$serializers.toBuilder()..addPlugin(new StandardJsonPlugin())
