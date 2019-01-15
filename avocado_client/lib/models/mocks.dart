@@ -24,6 +24,13 @@ Stream<Map<String, dynamic>> loadJSONEntities(String path) {
   });
 }
 
+Stream<List<PostInfo>> loadPinned() {
+  return loadJSONEntities('assets/mocks/pinned.json')
+      .map((map) => serializers.deserializeWith(PostData.serializer, map))
+      .toList()
+      .asStream();
+}
+
 Stream<List<PostInfo>> loadPosts() {
   return loadJSONEntities('assets/mocks/posts.json')
       .map((map) => serializers.deserializeWith(PostData.serializer, map))

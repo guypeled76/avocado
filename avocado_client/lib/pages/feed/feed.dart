@@ -20,30 +20,18 @@ class FeedPage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return SliverFillRemaining(
-                  child: new Text(snapshot.error.toString()));
+                  child: new Text(snapshot.error.toString())
+              );
             }
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return createPost(snapshot.data[index], null);
+                  return Post(snapshot.data[index]);
                 },
                 childCount: snapshot.hasData ? snapshot.data.length : 0,
               ),
             );
           })
     ]));
-  }
-
-  Widget createPost(PostInfo post, UserInfo user) {
-    return Post(
-      image: post.image,
-      avatar: post.user.image,
-      time: post.date,
-      comments: "2",
-      shares: "3",
-      likes: "45",
-      name: post.user.displayName,
-      content: post.content,
-    );
   }
 }

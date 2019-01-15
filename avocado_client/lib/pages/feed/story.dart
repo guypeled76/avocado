@@ -1,7 +1,13 @@
+import 'package:avocado_client/models/info.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class StoryWidget extends StatelessWidget {
+
+  final PostInfo post;
+
+  StoryWidget(this.post);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +19,7 @@ class StoryWidget extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.cover,
               image: new CachedNetworkImageProvider(
-                  "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
+                  this.post.image),
             )));
   }
 

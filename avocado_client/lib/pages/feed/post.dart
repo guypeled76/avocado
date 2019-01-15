@@ -1,25 +1,24 @@
 import 'package:avocado_client/data/images.dart';
 import 'package:avocado_client/dialogs/comments.dart';
+import 'package:avocado_client/models/info.dart';
 import 'package:flutter/material.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Post extends StatelessWidget {
 
-  var image, avatar, content, name, time, likes, comments, shares;
+  final PostInfo post;
 
-  Post({
-    this.image, this.content, this.name, this.time, this.likes, this.comments, this.shares, this.avatar
-  });
+  Post(this.post);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(this.image != null) {
+        if(this.post.image != null) {
           ImageViewDialog.show(context,ImageContentInfo(
               key:"dd",
-              image:this.image)
+              image:this.post.image)
           );
         }
       },
@@ -31,15 +30,15 @@ class Post extends StatelessWidget {
           new ListTile(
             leading: CircleAvatar(
               radius: 25.0,
-              backgroundImage: new CachedNetworkImageProvider(this.avatar)
+              backgroundImage: new CachedNetworkImageProvider(this.post.user.image)
             ),
             title: new Text(
-              name,
+              this.post.user.displayName,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: new Row(
               children: [
-                new Text(time),
+                new Text(this.post.date),
                 new Icon(
                   Icons.public,
                   size: 15.0,
@@ -49,14 +48,14 @@ class Post extends StatelessWidget {
             trailing: new Icon(Icons.more_horiz),
           ),
           ListTile(
-            title: Text(content),
+            title: Text(this.post.content),
           ),
           Container(
             height: 200,
             decoration: BoxDecoration(
                 image:new DecorationImage(
                   fit:BoxFit.fitWidth,
-            image: new CachedNetworkImageProvider(image)
+            image: new CachedNetworkImageProvider(this.post.image)
           ))),
           Container(
             padding: new EdgeInsets.all(18.0),
@@ -81,14 +80,14 @@ class Post extends StatelessWidget {
                           vertical: 0.0,
                           horizontal: 8.0
                       ),
-                      child: new Text(likes),
+                      child: new Text("2"),
                     ),
                   ],
                 ),
                 new Row(children: <Widget>[
                   GestureDetector(
                     onTap: () => CommentsDialog.show(context),
-                    child: new Text(comments + " comments"),
+                    child: new Text("2 comments"),
                   )
                 ],
                 )
