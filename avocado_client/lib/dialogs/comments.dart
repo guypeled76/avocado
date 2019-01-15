@@ -23,7 +23,7 @@ class CommentsDialog extends StatelessWidget {
             },
           )],
         ),
-      body: ChatWidget(),
+      body: ChatWidget(chatId:"c2"),
     );
   }
 

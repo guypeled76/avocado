@@ -9,17 +9,21 @@ abstract class EntityInfo {
 abstract class ContentInfo implements EntityInfo {
   UserInfo get user;
   String get date;
+  String get content;
 }
 
 abstract class PostInfo implements ContentInfo {
   String get image;
-  String get content;
+
 }
 
 abstract class NotificationInfo implements ContentInfo
 {
   NotificationType get type;
-  String get content;
+}
+
+abstract class MessageInfo implements ContentInfo {
+
 }
 
 

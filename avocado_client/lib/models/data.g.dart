@@ -12,6 +12,7 @@ Serializer<PostData> _$postDataSerializer = new _$PostDataSerializer();
 Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
 Serializer<NotificationData> _$notificationDataSerializer =
     new _$NotificationDataSerializer();
+Serializer<MessageData> _$messageDataSerializer = new _$MessageDataSerializer();
 
 class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
   @override
@@ -67,6 +68,9 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
           specifiedType: const FullType(UserInfo)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
     ];
@@ -91,6 +95,10 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
           break;
         case 'date':
           result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'key':
@@ -120,11 +128,11 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
       'image',
       serializers.serialize(object.image,
           specifiedType: const FullType(String)),
+      'date',
+      serializers.serialize(object.date, specifiedType: const FullType(String)),
       'content',
       serializers.serialize(object.content,
           specifiedType: const FullType(String)),
-      'date',
-      serializers.serialize(object.date, specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
     ];
@@ -151,12 +159,12 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'content':
-          result.content = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
         case 'date':
           result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'key':
@@ -240,11 +248,11 @@ class _$NotificationDataSerializer
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(NotificationType)),
+      'date',
+      serializers.serialize(object.date, specifiedType: const FullType(String)),
       'content',
       serializers.serialize(object.content,
           specifiedType: const FullType(String)),
-      'date',
-      serializers.serialize(object.date, specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
     ];
@@ -272,12 +280,71 @@ class _$NotificationDataSerializer
                   specifiedType: const FullType(NotificationType))
               as NotificationType;
           break;
+        case 'date':
+          result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'content':
           result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
+  @override
+  final Iterable<Type> types = const [MessageData, _$MessageData];
+  @override
+  final String wireName = 'MessageData';
+
+  @override
+  Iterable serialize(Serializers serializers, MessageData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserData)),
+      'date',
+      serializers.serialize(object.date, specifiedType: const FullType(String)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  MessageData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new MessageDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserData)) as UserData);
+          break;
         case 'date':
           result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'key':
@@ -373,17 +440,22 @@ class _$ContentData extends ContentData {
   @override
   final String date;
   @override
+  final String content;
+  @override
   final String key;
 
   factory _$ContentData([void updates(ContentDataBuilder b)]) =>
       (new ContentDataBuilder()..update(updates)).build();
 
-  _$ContentData._({this.user, this.date, this.key}) : super._() {
+  _$ContentData._({this.user, this.date, this.content, this.key}) : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('ContentData', 'user');
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('ContentData', 'date');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('ContentData', 'content');
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('ContentData', 'key');
@@ -403,12 +475,15 @@ class _$ContentData extends ContentData {
     return other is ContentData &&
         user == other.user &&
         date == other.date &&
+        content == other.content &&
         key == other.key;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, user.hashCode), date.hashCode), key.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
+        key.hashCode));
   }
 
   @override
@@ -416,6 +491,7 @@ class _$ContentData extends ContentData {
     return (newBuiltValueToStringHelper('ContentData')
           ..add('user', user)
           ..add('date', date)
+          ..add('content', content)
           ..add('key', key))
         .toString();
   }
@@ -432,6 +508,10 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
 
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
+
   String _key;
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
@@ -442,6 +522,7 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
     if (_$v != null) {
       _user = _$v.user;
       _date = _$v.date;
+      _content = _$v.content;
       _key = _$v.key;
       _$v = null;
     }
@@ -463,8 +544,8 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
 
   @override
   _$ContentData build() {
-    final _$result =
-        _$v ?? new _$ContentData._(user: user, date: date, key: key);
+    final _$result = _$v ??
+        new _$ContentData._(user: user, date: date, content: content, key: key);
     replace(_$result);
     return _$result;
   }
@@ -476,16 +557,16 @@ class _$PostData extends PostData {
   @override
   final String image;
   @override
-  final String content;
-  @override
   final String date;
+  @override
+  final String content;
   @override
   final String key;
 
   factory _$PostData([void updates(PostDataBuilder b)]) =>
       (new PostDataBuilder()..update(updates)).build();
 
-  _$PostData._({this.user, this.image, this.content, this.date, this.key})
+  _$PostData._({this.user, this.image, this.date, this.content, this.key})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PostData', 'user');
@@ -493,11 +574,11 @@ class _$PostData extends PostData {
     if (image == null) {
       throw new BuiltValueNullFieldError('PostData', 'image');
     }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('PostData', 'content');
-    }
     if (date == null) {
       throw new BuiltValueNullFieldError('PostData', 'date');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('PostData', 'content');
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('PostData', 'key');
@@ -517,16 +598,16 @@ class _$PostData extends PostData {
     return other is PostData &&
         user == other.user &&
         image == other.image &&
-        content == other.content &&
         date == other.date &&
+        content == other.content &&
         key == other.key;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), content.hashCode),
-            date.hashCode),
+        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
+            content.hashCode),
         key.hashCode));
   }
 
@@ -535,8 +616,8 @@ class _$PostData extends PostData {
     return (newBuiltValueToStringHelper('PostData')
           ..add('user', user)
           ..add('image', image)
-          ..add('content', content)
           ..add('date', date)
+          ..add('content', content)
           ..add('key', key))
         .toString();
   }
@@ -553,13 +634,13 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   String get image => _$this._image;
   set image(String image) => _$this._image = image;
 
-  String _content;
-  String get content => _$this._content;
-  set content(String content) => _$this._content = content;
-
   String _date;
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
+
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
 
   String _key;
   String get key => _$this._key;
@@ -571,8 +652,8 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _image = _$v.image;
-      _content = _$v.content;
       _date = _$v.date;
+      _content = _$v.content;
       _key = _$v.key;
       _$v = null;
     }
@@ -600,8 +681,8 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
           new _$PostData._(
               user: user.build(),
               image: image,
-              content: content,
               date: date,
+              content: content,
               key: key);
     } catch (_) {
       String _$failedField;
@@ -729,9 +810,9 @@ class _$NotificationData extends NotificationData {
   @override
   final NotificationType type;
   @override
-  final String content;
-  @override
   final String date;
+  @override
+  final String content;
   @override
   final String key;
 
@@ -739,7 +820,7 @@ class _$NotificationData extends NotificationData {
       (new NotificationDataBuilder()..update(updates)).build();
 
   _$NotificationData._(
-      {this.user, this.type, this.content, this.date, this.key})
+      {this.user, this.type, this.date, this.content, this.key})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'user');
@@ -747,11 +828,11 @@ class _$NotificationData extends NotificationData {
     if (type == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'type');
     }
-    if (content == null) {
-      throw new BuiltValueNullFieldError('NotificationData', 'content');
-    }
     if (date == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'date');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'content');
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'key');
@@ -772,16 +853,16 @@ class _$NotificationData extends NotificationData {
     return other is NotificationData &&
         user == other.user &&
         type == other.type &&
-        content == other.content &&
         date == other.date &&
+        content == other.content &&
         key == other.key;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), type.hashCode), content.hashCode),
-            date.hashCode),
+        $jc($jc($jc($jc(0, user.hashCode), type.hashCode), date.hashCode),
+            content.hashCode),
         key.hashCode));
   }
 
@@ -790,8 +871,8 @@ class _$NotificationData extends NotificationData {
     return (newBuiltValueToStringHelper('NotificationData')
           ..add('user', user)
           ..add('type', type)
-          ..add('content', content)
           ..add('date', date)
+          ..add('content', content)
           ..add('key', key))
         .toString();
   }
@@ -809,13 +890,13 @@ class NotificationDataBuilder
   NotificationType get type => _$this._type;
   set type(NotificationType type) => _$this._type = type;
 
-  String _content;
-  String get content => _$this._content;
-  set content(String content) => _$this._content = content;
-
   String _date;
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
+
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
 
   String _key;
   String get key => _$this._key;
@@ -827,8 +908,8 @@ class NotificationDataBuilder
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
       _type = _$v.type;
-      _content = _$v.content;
       _date = _$v.date;
+      _content = _$v.content;
       _key = _$v.key;
       _$v = null;
     }
@@ -856,8 +937,8 @@ class NotificationDataBuilder
           new _$NotificationData._(
               user: user.build(),
               type: type,
-              content: content,
               date: date,
+              content: content,
               key: key);
     } catch (_) {
       String _$failedField;
@@ -867,6 +948,137 @@ class NotificationDataBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'NotificationData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$MessageData extends MessageData {
+  @override
+  final UserData user;
+  @override
+  final String date;
+  @override
+  final String content;
+  @override
+  final String key;
+
+  factory _$MessageData([void updates(MessageDataBuilder b)]) =>
+      (new MessageDataBuilder()..update(updates)).build();
+
+  _$MessageData._({this.user, this.date, this.content, this.key}) : super._() {
+    if (user == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'user');
+    }
+    if (date == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'date');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'content');
+    }
+    if (key == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'key');
+    }
+  }
+
+  @override
+  MessageData rebuild(void updates(MessageDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  MessageDataBuilder toBuilder() => new MessageDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is MessageData &&
+        user == other.user &&
+        date == other.date &&
+        content == other.content &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
+        key.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('MessageData')
+          ..add('user', user)
+          ..add('date', date)
+          ..add('content', content)
+          ..add('key', key))
+        .toString();
+  }
+}
+
+class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
+  _$MessageData _$v;
+
+  UserDataBuilder _user;
+  UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
+  set user(UserDataBuilder user) => _$this._user = user;
+
+  String _date;
+  String get date => _$this._date;
+  set date(String date) => _$this._date = date;
+
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  MessageDataBuilder();
+
+  MessageDataBuilder get _$this {
+    if (_$v != null) {
+      _user = _$v.user?.toBuilder();
+      _date = _$v.date;
+      _content = _$v.content;
+      _key = _$v.key;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(MessageData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$MessageData;
+  }
+
+  @override
+  void update(void updates(MessageDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$MessageData build() {
+    _$MessageData _$result;
+    try {
+      _$result = _$v ??
+          new _$MessageData._(
+              user: user.build(), date: date, content: content, key: key);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        user.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'MessageData', _$failedField, e.toString());
       }
       rethrow;
     }

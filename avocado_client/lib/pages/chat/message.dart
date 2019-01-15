@@ -1,9 +1,12 @@
+import 'package:avocado_client/models/info.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class MessageWidget extends StatelessWidget {
-  final String message;
-  final Widget other;
-  MessageWidget({this.message, this.other});
+
+  final MessageInfo message;
+  final UserInfo other;
+  MessageWidget({@required this.message, this.other});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +14,7 @@ class MessageWidget extends StatelessWidget {
         children: <Widget>[
       Container(
         padding: EdgeInsets.all(2),
-        child: this.other != null ? this.other : Container(width: 100)
+        child: this.other != null ? CircleAvatar(backgroundImage: CachedNetworkImageProvider(this.other.image)) : Container(width: 100)
       ),
       Expanded(
         child:
@@ -21,7 +24,7 @@ class MessageWidget extends StatelessWidget {
           decoration: BoxDecoration(
               color: this.other != null ? Colors.grey : Colors.blue, borderRadius: BorderRadius.circular(16.0)),
           child: Text(
-            this.message,
+            this.message.content,
             softWrap: true,
             style: TextStyle(fontSize: 16.0, color: this.other != null ? Colors.black : Colors.white),
           ))),

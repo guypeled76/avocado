@@ -24,6 +24,17 @@ Stream<Map<String, dynamic>> loadJSONEntities(String path) {
   });
 }
 
+Stream<Map<String, dynamic>> loadJSONSectionEntities(String path, String category) {
+  return loadJSONAsset(path).expand((map) => map.entries).where((entry)=>entry.key == category).expand((entry) {
+      Map<String,dynamic> section = entry.value;
+      return section.entries;
+    }).map((entry) {
+    Map<String, dynamic> result = entry.value;
+      result["key"] = entry.key;
+      return result;
+  });
+}
+
 Stream<List<PostInfo>> loadPinned() {
   return loadJSONEntities('assets/mocks/pinned.json')
       .map((map) => serializers.deserializeWith(PostData.serializer, map))
@@ -41,6 +52,13 @@ Stream<List<PostInfo>> loadPosts() {
 Stream<List<UserInfo>> loadUsers() {
   return loadJSONEntities('assets/mocks/users.json')
       .map((map) => serializers.deserializeWith(UserData.serializer, map))
+      .toList()
+      .asStream();
+}
+
+Stream<List<MessageInfo>> loadChat(String chatId) {
+  return loadJSONSectionEntities('assets/mocks/chat.json', chatId)
+      .map((map) => serializers.deserializeWith(MessageData.serializer, map))
       .toList()
       .asStream();
 }
