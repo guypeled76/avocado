@@ -1,4 +1,5 @@
 import 'data.dart';
+import 'enums.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
@@ -8,7 +9,9 @@ part 'serializers.g.dart';
   EntityData,
   ContentData,
   PostData,
-  UserData
+  UserData,
+  NotificationData,
+  NotificationType
 ])
 final Serializers serializers = (
     _$serializers.toBuilder()..addPlugin(new StandardJsonPlugin())

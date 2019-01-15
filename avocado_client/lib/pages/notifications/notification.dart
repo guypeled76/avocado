@@ -1,17 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:avocado_client/models/info.dart';
 
 class NotificationWidget extends StatelessWidget {
-  NotificationWidget({Key key}) : super(key: key);
+
+  final NotificationInfo notification;
+
+  NotificationWidget({Key key, this.notification}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
         leading: new CircleAvatar(
-          backgroundImage: new NetworkImage(
-              "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"),
+          backgroundImage: new CachedNetworkImageProvider(
+            this.notification.user.image
+          )
         ),
-        title: const Text('Trix\'s airplane'),
-        subtitle: Text('The airplane is only in Act II.'),
+        title: Text(this.notification.user.displayName),
+        subtitle: Text(this.notification.content),
         onTap: () {/* react to the tile being tapped */});
   }
 }

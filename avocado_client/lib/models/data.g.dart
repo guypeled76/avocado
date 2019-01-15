@@ -10,6 +10,8 @@ Serializer<EntityData> _$entityDataSerializer = new _$EntityDataSerializer();
 Serializer<ContentData> _$contentDataSerializer = new _$ContentDataSerializer();
 Serializer<PostData> _$postDataSerializer = new _$PostDataSerializer();
 Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
+Serializer<NotificationData> _$notificationDataSerializer =
+    new _$NotificationDataSerializer();
 
 class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
   @override
@@ -208,6 +210,74 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
           break;
         case 'displayName':
           result.displayName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$NotificationDataSerializer
+    implements StructuredSerializer<NotificationData> {
+  @override
+  final Iterable<Type> types = const [NotificationData, _$NotificationData];
+  @override
+  final String wireName = 'NotificationData';
+
+  @override
+  Iterable serialize(Serializers serializers, NotificationData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserData)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(NotificationType)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+      'date',
+      serializers.serialize(object.date, specifiedType: const FullType(String)),
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  NotificationData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new NotificationDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserData)) as UserData);
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+                  specifiedType: const FullType(NotificationType))
+              as NotificationType;
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'date':
+          result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'key':
@@ -648,6 +718,158 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   _$UserData build() {
     final _$result = _$v ??
         new _$UserData._(image: image, displayName: displayName, key: key);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$NotificationData extends NotificationData {
+  @override
+  final UserData user;
+  @override
+  final NotificationType type;
+  @override
+  final String content;
+  @override
+  final String date;
+  @override
+  final String key;
+
+  factory _$NotificationData([void updates(NotificationDataBuilder b)]) =>
+      (new NotificationDataBuilder()..update(updates)).build();
+
+  _$NotificationData._(
+      {this.user, this.type, this.content, this.date, this.key})
+      : super._() {
+    if (user == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'user');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'type');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'content');
+    }
+    if (date == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'date');
+    }
+    if (key == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'key');
+    }
+  }
+
+  @override
+  NotificationData rebuild(void updates(NotificationDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  NotificationDataBuilder toBuilder() =>
+      new NotificationDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is NotificationData &&
+        user == other.user &&
+        type == other.type &&
+        content == other.content &&
+        date == other.date &&
+        key == other.key;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc($jc($jc($jc(0, user.hashCode), type.hashCode), content.hashCode),
+            date.hashCode),
+        key.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('NotificationData')
+          ..add('user', user)
+          ..add('type', type)
+          ..add('content', content)
+          ..add('date', date)
+          ..add('key', key))
+        .toString();
+  }
+}
+
+class NotificationDataBuilder
+    implements Builder<NotificationData, NotificationDataBuilder> {
+  _$NotificationData _$v;
+
+  UserDataBuilder _user;
+  UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
+  set user(UserDataBuilder user) => _$this._user = user;
+
+  NotificationType _type;
+  NotificationType get type => _$this._type;
+  set type(NotificationType type) => _$this._type = type;
+
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
+
+  String _date;
+  String get date => _$this._date;
+  set date(String date) => _$this._date = date;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  NotificationDataBuilder();
+
+  NotificationDataBuilder get _$this {
+    if (_$v != null) {
+      _user = _$v.user?.toBuilder();
+      _type = _$v.type;
+      _content = _$v.content;
+      _date = _$v.date;
+      _key = _$v.key;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(NotificationData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$NotificationData;
+  }
+
+  @override
+  void update(void updates(NotificationDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$NotificationData build() {
+    _$NotificationData _$result;
+    try {
+      _$result = _$v ??
+          new _$NotificationData._(
+              user: user.build(),
+              type: type,
+              content: content,
+              date: date,
+              key: key);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        user.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'NotificationData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

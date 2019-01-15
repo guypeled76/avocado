@@ -9,7 +9,7 @@ import 'serializers.dart';
 
 Stream<String> loadAsset(String path) {
   return Stream<String>.fromFuture(
-      rootBundle.loadString('assets/mocks/posts.json'));
+      rootBundle.loadString(path));
 }
 
 Stream<Map<String, dynamic>> loadJSONAsset(String path) {
@@ -34,6 +34,13 @@ Stream<List<PostInfo>> loadPosts() {
 Stream<List<UserInfo>> loadUsers() {
   return loadJSONEntities('assets/mocks/users.json')
       .map((map) => serializers.deserializeWith(UserData.serializer, map))
+      .toList()
+      .asStream();
+}
+
+Stream<List<NotificationInfo>> loadNotifications() {
+  return loadJSONEntities('assets/mocks/notifications.json')
+      .map((map) => serializers.deserializeWith(NotificationData.serializer, map))
       .toList()
       .asStream();
 }

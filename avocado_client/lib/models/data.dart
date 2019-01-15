@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'info.dart';
+import 'enums.dart';
 
 part 'data.g.dart';
 
@@ -30,5 +31,14 @@ abstract class UserData implements Built<UserData, UserDataBuilder>, UserInfo {
   UserData._();
   factory UserData([updates(UserDataBuilder b)]) = _$UserData;
   static Serializer<UserData> get serializer => _$userDataSerializer;
+}
+
+abstract class NotificationData implements Built<NotificationData, NotificationDataBuilder>, NotificationInfo {
+
+  UserData get user;
+
+  NotificationData._();
+  factory NotificationData([updates(NotificationDataBuilder b)]) = _$NotificationData;
+  static Serializer<NotificationData> get serializer => _$notificationDataSerializer;
 }
 

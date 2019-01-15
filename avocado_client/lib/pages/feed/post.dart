@@ -31,14 +31,7 @@ class Post extends StatelessWidget {
           new ListTile(
             leading: CircleAvatar(
               radius: 25.0,
-              child: new Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                    image: new CachedNetworkImageProvider(this.avatar),
-                  ),
-                ),
-              ),
+              backgroundImage: new CachedNetworkImageProvider(this.avatar)
             ),
             title: new Text(
               name,
