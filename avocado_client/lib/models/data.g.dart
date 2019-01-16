@@ -320,6 +320,12 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
     ];
+    if (object.image != null) {
+      result
+        ..add('image')
+        ..add(serializers.serialize(object.image,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -338,6 +344,10 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
         case 'user':
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(UserData)) as UserData);
+          break;
+        case 'image':
+          result.image = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'date':
           result.date = serializers.deserialize(value,
@@ -960,6 +970,8 @@ class _$MessageData extends MessageData {
   @override
   final UserData user;
   @override
+  final String image;
+  @override
   final String date;
   @override
   final String content;
@@ -969,7 +981,8 @@ class _$MessageData extends MessageData {
   factory _$MessageData([void updates(MessageDataBuilder b)]) =>
       (new MessageDataBuilder()..update(updates)).build();
 
-  _$MessageData._({this.user, this.date, this.content, this.key}) : super._() {
+  _$MessageData._({this.user, this.image, this.date, this.content, this.key})
+      : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('MessageData', 'user');
     }
@@ -996,6 +1009,7 @@ class _$MessageData extends MessageData {
     if (identical(other, this)) return true;
     return other is MessageData &&
         user == other.user &&
+        image == other.image &&
         date == other.date &&
         content == other.content &&
         key == other.key;
@@ -1004,7 +1018,8 @@ class _$MessageData extends MessageData {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
+        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
+            content.hashCode),
         key.hashCode));
   }
 
@@ -1012,6 +1027,7 @@ class _$MessageData extends MessageData {
   String toString() {
     return (newBuiltValueToStringHelper('MessageData')
           ..add('user', user)
+          ..add('image', image)
           ..add('date', date)
           ..add('content', content)
           ..add('key', key))
@@ -1025,6 +1041,10 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
   UserDataBuilder _user;
   UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
   set user(UserDataBuilder user) => _$this._user = user;
+
+  String _image;
+  String get image => _$this._image;
+  set image(String image) => _$this._image = image;
 
   String _date;
   String get date => _$this._date;
@@ -1043,6 +1063,7 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
   MessageDataBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
+      _image = _$v.image;
       _date = _$v.date;
       _content = _$v.content;
       _key = _$v.key;
@@ -1070,7 +1091,11 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
     try {
       _$result = _$v ??
           new _$MessageData._(
-              user: user.build(), date: date, content: content, key: key);
+              user: user.build(),
+              image: image,
+              date: date,
+              content: content,
+              key: key);
     } catch (_) {
       String _$failedField;
       try {

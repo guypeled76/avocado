@@ -1,4 +1,3 @@
-import 'package:avocado_client/data/images.dart';
 import 'package:avocado_client/dialogs/comments.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +15,7 @@ class Post extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if(this.post.image != null) {
-          ImageViewDialog.show(context,ImageContentInfo(
-              key:"dd",
-              image:this.post.image)
-          );
+          ImageViewDialog.show(context, this.post);
         }
       },
         child:Card(

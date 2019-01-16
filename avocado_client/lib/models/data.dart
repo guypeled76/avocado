@@ -47,6 +47,9 @@ abstract class MessageData implements Built<MessageData, MessageDataBuilder>, Me
 
   UserData get user;
 
+  @nullable
+  String get image;
+
   MessageData._();
   factory MessageData([updates(MessageDataBuilder b)]) = _$MessageData;
   static Serializer<MessageData> get serializer => _$messageDataSerializer;

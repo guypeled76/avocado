@@ -12,18 +12,23 @@ abstract class ContentInfo implements EntityInfo {
   String get content;
 }
 
-abstract class PostInfo implements ContentInfo {
+abstract class PostInfo implements ContentInfo, ImageContentInfo {
   String get image;
 
 }
 
-abstract class NotificationInfo implements ContentInfo
+abstract class ImageContentInfo implements ContentInfo
 {
-  NotificationType get type;
+  String get image;
 }
 
-abstract class MessageInfo implements ContentInfo {
+abstract class NotificationInfo implements ContentInfo
+{
+    NotificationType get type;
+}
 
+abstract class MessageInfo implements ContentInfo, ImageContentInfo {
+  String get image;
 }
 
 
