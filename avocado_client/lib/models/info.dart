@@ -4,6 +4,12 @@ export 'enums.dart';
 
 abstract class EntityInfo {
   String get key;
+  EntityType get type;
+}
+
+abstract class TargetInfo {
+  String get key;
+  EntityType get type;
 }
 
 abstract class ContentInfo implements EntityInfo {
@@ -12,7 +18,7 @@ abstract class ContentInfo implements EntityInfo {
   String get content;
 }
 
-abstract class PostInfo implements ContentInfo, ImageContentInfo {
+abstract class PostInfo implements ContentInfo, ImageContentInfo, SearchInfo {
   String get image;
 
 }
@@ -24,10 +30,14 @@ abstract class ImageContentInfo implements ContentInfo
 
 abstract class NotificationInfo implements ContentInfo
 {
-    NotificationType get type;
+  TargetInfo get target;
 }
 
-abstract class MessageInfo implements ContentInfo, ImageContentInfo {
+abstract class SearchInfo implements ContentInfo {
+
+}
+
+abstract class MessageInfo implements ContentInfo, ImageContentInfo, SearchInfo {
   String get image;
 }
 

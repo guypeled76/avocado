@@ -9,10 +9,11 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ContentData.serializer)
       ..add(EntityData.serializer)
+      ..add(EntityType.serializer)
       ..add(MessageData.serializer)
       ..add(NotificationData.serializer)
-      ..add(NotificationType.serializer)
       ..add(PostData.serializer)
+      ..add(TargetData.serializer)
       ..add(UserData.serializer))
     .build();
 

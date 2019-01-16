@@ -37,6 +37,8 @@ abstract class NotificationData implements Built<NotificationData, NotificationD
 
   UserData get user;
 
+  TargetData get target;
+
   NotificationData._();
   factory NotificationData([updates(NotificationDataBuilder b)]) = _$NotificationData;
   static Serializer<NotificationData> get serializer => _$notificationDataSerializer;
@@ -53,4 +55,10 @@ abstract class MessageData implements Built<MessageData, MessageDataBuilder>, Me
   MessageData._();
   factory MessageData([updates(MessageDataBuilder b)]) = _$MessageData;
   static Serializer<MessageData> get serializer => _$messageDataSerializer;
+}
+
+abstract class TargetData implements Built<TargetData, TargetDataBuilder>, TargetInfo {
+  TargetData._();
+  factory TargetData([updates(TargetDataBuilder b)]) = _$TargetData;
+  static Serializer<TargetData> get serializer => _$targetDataSerializer;
 }

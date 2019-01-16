@@ -11,8 +11,9 @@ part 'serializers.g.dart';
   PostData,
   UserData,
   NotificationData,
-  NotificationType,
-  MessageData
+  EntityType,
+  MessageData,
+  TargetData
 ])
 final Serializers serializers = (
     _$serializers.toBuilder()..addPlugin(new StandardJsonPlugin())

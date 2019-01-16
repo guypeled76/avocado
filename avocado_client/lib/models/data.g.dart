@@ -13,6 +13,7 @@ Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
 Serializer<NotificationData> _$notificationDataSerializer =
     new _$NotificationDataSerializer();
 Serializer<MessageData> _$messageDataSerializer = new _$MessageDataSerializer();
+Serializer<TargetData> _$targetDataSerializer = new _$TargetDataSerializer();
 
 class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
   @override
@@ -26,6 +27,9 @@ class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
     final result = <Object>[
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
 
     return result;
@@ -45,6 +49,10 @@ class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
         case 'key':
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
           break;
       }
     }
@@ -73,6 +81,9 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
           specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
 
     return result;
@@ -105,6 +116,10 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
       }
     }
 
@@ -135,6 +150,9 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
           specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
 
     return result;
@@ -171,6 +189,10 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
       }
     }
 
@@ -196,6 +218,9 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
           specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
 
     return result;
@@ -224,6 +249,10 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
       }
     }
 
@@ -245,9 +274,9 @@ class _$NotificationDataSerializer
       'user',
       serializers.serialize(object.user,
           specifiedType: const FullType(UserData)),
-      'type',
-      serializers.serialize(object.type,
-          specifiedType: const FullType(NotificationType)),
+      'target',
+      serializers.serialize(object.target,
+          specifiedType: const FullType(TargetData)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'content',
@@ -255,6 +284,9 @@ class _$NotificationDataSerializer
           specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
 
     return result;
@@ -275,10 +307,9 @@ class _$NotificationDataSerializer
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(UserData)) as UserData);
           break;
-        case 'type':
-          result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(NotificationType))
-              as NotificationType;
+        case 'target':
+          result.target.replace(serializers.deserialize(value,
+              specifiedType: const FullType(TargetData)) as TargetData);
           break;
         case 'date':
           result.date = serializers.deserialize(value,
@@ -291,6 +322,10 @@ class _$NotificationDataSerializer
         case 'key':
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
           break;
       }
     }
@@ -319,6 +354,9 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
           specifiedType: const FullType(String)),
       'key',
       serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
     ];
     if (object.image != null) {
       result
@@ -361,6 +399,56 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
           result.key = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$TargetDataSerializer implements StructuredSerializer<TargetData> {
+  @override
+  final Iterable<Type> types = const [TargetData, _$TargetData];
+  @override
+  final String wireName = 'TargetData';
+
+  @override
+  Iterable serialize(Serializers serializers, TargetData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
+    ];
+
+    return result;
+  }
+
+  @override
+  TargetData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new TargetDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
       }
     }
 
@@ -371,13 +459,18 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
 class _$EntityData extends EntityData {
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$EntityData([void updates(EntityDataBuilder b)]) =>
       (new EntityDataBuilder()..update(updates)).build();
 
-  _$EntityData._({this.key}) : super._() {
+  _$EntityData._({this.key, this.type}) : super._() {
     if (key == null) {
       throw new BuiltValueNullFieldError('EntityData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('EntityData', 'type');
     }
   }
 
@@ -391,17 +484,19 @@ class _$EntityData extends EntityData {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntityData && key == other.key;
+    return other is EntityData && key == other.key && type == other.type;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, key.hashCode));
+    return $jf($jc($jc(0, key.hashCode), type.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntityData')..add('key', key))
+    return (newBuiltValueToStringHelper('EntityData')
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -413,11 +508,16 @@ class EntityDataBuilder implements Builder<EntityData, EntityDataBuilder> {
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   EntityDataBuilder();
 
   EntityDataBuilder get _$this {
     if (_$v != null) {
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -438,7 +538,7 @@ class EntityDataBuilder implements Builder<EntityData, EntityDataBuilder> {
 
   @override
   _$EntityData build() {
-    final _$result = _$v ?? new _$EntityData._(key: key);
+    final _$result = _$v ?? new _$EntityData._(key: key, type: type);
     replace(_$result);
     return _$result;
   }
@@ -453,11 +553,14 @@ class _$ContentData extends ContentData {
   final String content;
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$ContentData([void updates(ContentDataBuilder b)]) =>
       (new ContentDataBuilder()..update(updates)).build();
 
-  _$ContentData._({this.user, this.date, this.content, this.key}) : super._() {
+  _$ContentData._({this.user, this.date, this.content, this.key, this.type})
+      : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('ContentData', 'user');
     }
@@ -469,6 +572,9 @@ class _$ContentData extends ContentData {
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('ContentData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('ContentData', 'type');
     }
   }
 
@@ -486,14 +592,16 @@ class _$ContentData extends ContentData {
         user == other.user &&
         date == other.date &&
         content == other.content &&
-        key == other.key;
+        key == other.key &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
-        key.hashCode));
+        $jc($jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
+            key.hashCode),
+        type.hashCode));
   }
 
   @override
@@ -502,7 +610,8 @@ class _$ContentData extends ContentData {
           ..add('user', user)
           ..add('date', date)
           ..add('content', content)
-          ..add('key', key))
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -526,6 +635,10 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   ContentDataBuilder();
 
   ContentDataBuilder get _$this {
@@ -534,6 +647,7 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
       _date = _$v.date;
       _content = _$v.content;
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -555,7 +669,8 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   @override
   _$ContentData build() {
     final _$result = _$v ??
-        new _$ContentData._(user: user, date: date, content: content, key: key);
+        new _$ContentData._(
+            user: user, date: date, content: content, key: key, type: type);
     replace(_$result);
     return _$result;
   }
@@ -572,11 +687,14 @@ class _$PostData extends PostData {
   final String content;
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$PostData([void updates(PostDataBuilder b)]) =>
       (new PostDataBuilder()..update(updates)).build();
 
-  _$PostData._({this.user, this.image, this.date, this.content, this.key})
+  _$PostData._(
+      {this.user, this.image, this.date, this.content, this.key, this.type})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PostData', 'user');
@@ -592,6 +710,9 @@ class _$PostData extends PostData {
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('PostData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('PostData', 'type');
     }
   }
 
@@ -610,15 +731,18 @@ class _$PostData extends PostData {
         image == other.image &&
         date == other.date &&
         content == other.content &&
-        key == other.key;
+        key == other.key &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
-            content.hashCode),
-        key.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
+                content.hashCode),
+            key.hashCode),
+        type.hashCode));
   }
 
   @override
@@ -628,7 +752,8 @@ class _$PostData extends PostData {
           ..add('image', image)
           ..add('date', date)
           ..add('content', content)
-          ..add('key', key))
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -656,6 +781,10 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   PostDataBuilder();
 
   PostDataBuilder get _$this {
@@ -665,6 +794,7 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
       _date = _$v.date;
       _content = _$v.content;
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -693,7 +823,8 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
               image: image,
               date: date,
               content: content,
-              key: key);
+              key: key,
+              type: type);
     } catch (_) {
       String _$failedField;
       try {
@@ -717,11 +848,14 @@ class _$UserData extends UserData {
   final String displayName;
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$UserData([void updates(UserDataBuilder b)]) =>
       (new UserDataBuilder()..update(updates)).build();
 
-  _$UserData._({this.image, this.displayName, this.key}) : super._() {
+  _$UserData._({this.image, this.displayName, this.key, this.type})
+      : super._() {
     if (image == null) {
       throw new BuiltValueNullFieldError('UserData', 'image');
     }
@@ -730,6 +864,9 @@ class _$UserData extends UserData {
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('UserData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('UserData', 'type');
     }
   }
 
@@ -746,13 +883,15 @@ class _$UserData extends UserData {
     return other is UserData &&
         image == other.image &&
         displayName == other.displayName &&
-        key == other.key;
+        key == other.key &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, image.hashCode), displayName.hashCode), key.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, image.hashCode), displayName.hashCode), key.hashCode),
+        type.hashCode));
   }
 
   @override
@@ -760,7 +899,8 @@ class _$UserData extends UserData {
     return (newBuiltValueToStringHelper('UserData')
           ..add('image', image)
           ..add('displayName', displayName)
-          ..add('key', key))
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -780,6 +920,10 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   UserDataBuilder();
 
   UserDataBuilder get _$this {
@@ -787,6 +931,7 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
       _image = _$v.image;
       _displayName = _$v.displayName;
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -808,7 +953,8 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   @override
   _$UserData build() {
     final _$result = _$v ??
-        new _$UserData._(image: image, displayName: displayName, key: key);
+        new _$UserData._(
+            image: image, displayName: displayName, key: key, type: type);
     replace(_$result);
     return _$result;
   }
@@ -818,25 +964,27 @@ class _$NotificationData extends NotificationData {
   @override
   final UserData user;
   @override
-  final NotificationType type;
+  final TargetData target;
   @override
   final String date;
   @override
   final String content;
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$NotificationData([void updates(NotificationDataBuilder b)]) =>
       (new NotificationDataBuilder()..update(updates)).build();
 
   _$NotificationData._(
-      {this.user, this.type, this.date, this.content, this.key})
+      {this.user, this.target, this.date, this.content, this.key, this.type})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'user');
     }
-    if (type == null) {
-      throw new BuiltValueNullFieldError('NotificationData', 'type');
+    if (target == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'target');
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'date');
@@ -846,6 +994,9 @@ class _$NotificationData extends NotificationData {
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'type');
     }
   }
 
@@ -862,28 +1013,32 @@ class _$NotificationData extends NotificationData {
     if (identical(other, this)) return true;
     return other is NotificationData &&
         user == other.user &&
-        type == other.type &&
+        target == other.target &&
         date == other.date &&
         content == other.content &&
-        key == other.key;
+        key == other.key &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), type.hashCode), date.hashCode),
-            content.hashCode),
-        key.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, user.hashCode), target.hashCode), date.hashCode),
+                content.hashCode),
+            key.hashCode),
+        type.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('NotificationData')
           ..add('user', user)
-          ..add('type', type)
+          ..add('target', target)
           ..add('date', date)
           ..add('content', content)
-          ..add('key', key))
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -896,9 +1051,9 @@ class NotificationDataBuilder
   UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
   set user(UserDataBuilder user) => _$this._user = user;
 
-  NotificationType _type;
-  NotificationType get type => _$this._type;
-  set type(NotificationType type) => _$this._type = type;
+  TargetDataBuilder _target;
+  TargetDataBuilder get target => _$this._target ??= new TargetDataBuilder();
+  set target(TargetDataBuilder target) => _$this._target = target;
 
   String _date;
   String get date => _$this._date;
@@ -912,15 +1067,20 @@ class NotificationDataBuilder
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   NotificationDataBuilder();
 
   NotificationDataBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
-      _type = _$v.type;
+      _target = _$v.target?.toBuilder();
       _date = _$v.date;
       _content = _$v.content;
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -946,15 +1106,18 @@ class NotificationDataBuilder
       _$result = _$v ??
           new _$NotificationData._(
               user: user.build(),
-              type: type,
+              target: target.build(),
               date: date,
               content: content,
-              key: key);
+              key: key,
+              type: type);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         user.build();
+        _$failedField = 'target';
+        target.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'NotificationData', _$failedField, e.toString());
@@ -977,11 +1140,14 @@ class _$MessageData extends MessageData {
   final String content;
   @override
   final String key;
+  @override
+  final EntityType type;
 
   factory _$MessageData([void updates(MessageDataBuilder b)]) =>
       (new MessageDataBuilder()..update(updates)).build();
 
-  _$MessageData._({this.user, this.image, this.date, this.content, this.key})
+  _$MessageData._(
+      {this.user, this.image, this.date, this.content, this.key, this.type})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('MessageData', 'user');
@@ -994,6 +1160,9 @@ class _$MessageData extends MessageData {
     }
     if (key == null) {
       throw new BuiltValueNullFieldError('MessageData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'type');
     }
   }
 
@@ -1012,15 +1181,18 @@ class _$MessageData extends MessageData {
         image == other.image &&
         date == other.date &&
         content == other.content &&
-        key == other.key;
+        key == other.key &&
+        type == other.type;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
-            content.hashCode),
-        key.hashCode));
+        $jc(
+            $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
+                content.hashCode),
+            key.hashCode),
+        type.hashCode));
   }
 
   @override
@@ -1030,7 +1202,8 @@ class _$MessageData extends MessageData {
           ..add('image', image)
           ..add('date', date)
           ..add('content', content)
-          ..add('key', key))
+          ..add('key', key)
+          ..add('type', type))
         .toString();
   }
 }
@@ -1058,6 +1231,10 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
   String get key => _$this._key;
   set key(String key) => _$this._key = key;
 
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
   MessageDataBuilder();
 
   MessageDataBuilder get _$this {
@@ -1067,6 +1244,7 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
       _date = _$v.date;
       _content = _$v.content;
       _key = _$v.key;
+      _type = _$v.type;
       _$v = null;
     }
     return this;
@@ -1095,7 +1273,8 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
               image: image,
               date: date,
               content: content,
-              key: key);
+              key: key,
+              type: type);
     } catch (_) {
       String _$failedField;
       try {
@@ -1107,6 +1286,94 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
       }
       rethrow;
     }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$TargetData extends TargetData {
+  @override
+  final String key;
+  @override
+  final EntityType type;
+
+  factory _$TargetData([void updates(TargetDataBuilder b)]) =>
+      (new TargetDataBuilder()..update(updates)).build();
+
+  _$TargetData._({this.key, this.type}) : super._() {
+    if (key == null) {
+      throw new BuiltValueNullFieldError('TargetData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('TargetData', 'type');
+    }
+  }
+
+  @override
+  TargetData rebuild(void updates(TargetDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  TargetDataBuilder toBuilder() => new TargetDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is TargetData && key == other.key && type == other.type;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc($jc(0, key.hashCode), type.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('TargetData')
+          ..add('key', key)
+          ..add('type', type))
+        .toString();
+  }
+}
+
+class TargetDataBuilder implements Builder<TargetData, TargetDataBuilder> {
+  _$TargetData _$v;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
+  TargetDataBuilder();
+
+  TargetDataBuilder get _$this {
+    if (_$v != null) {
+      _key = _$v.key;
+      _type = _$v.type;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(TargetData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$TargetData;
+  }
+
+  @override
+  void update(void updates(TargetDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$TargetData build() {
+    final _$result = _$v ?? new _$TargetData._(key: key, type: type);
     replace(_$result);
     return _$result;
   }

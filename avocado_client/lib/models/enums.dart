@@ -5,16 +5,18 @@ import 'package:built_value/serializer.dart';
 
 part 'enums.g.dart';
 
-class NotificationType extends EnumClass {
+class EntityType extends EnumClass {
 
-  static Serializer<NotificationType> get serializer => _$notificationTypeSerializer;
+  static Serializer<EntityType> get serializer => _$entityTypeSerializer;
 
-  static const NotificationType comment = _$comment;
-  static const NotificationType post = _$post;
+  static const EntityType message = _$message;
+  static const EntityType post = _$post;
+  static const EntityType user = _$user;
+  static const EntityType notification = _$notification;
 
-  const NotificationType._(String name) : super(name);
+  const EntityType._(String name) : super(name);
 
-  static BuiltSet<NotificationType> get values => _$values;
-  static NotificationType valueOf(String name) => _$valueOf(name);
+  static BuiltSet<EntityType> get values => _$values;
+  static EntityType valueOf(String name) => _$valueOf(name);
 }
 
