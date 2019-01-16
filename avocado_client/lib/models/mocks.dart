@@ -70,6 +70,14 @@ Stream<List<NotificationInfo>> loadNotifications() {
       .asStream();
 }
 
+Stream<List<SearchInfo>> loadSearch(String wildCard) {
+  return ConcatStream([
+    loadPosts(), loadPinned()
+  ]).expand((list) => list)
+      .where((item) => item.content.indexOf(wildCard) > -1)
+      .toList().asStream();
+}
+
 Stream<Map<String, UserInfo>> loadUsersMap() {
   return loadUsers().map((users) => Map.fromIterable(users, key:(user)=> user.key, value:(user)=> user));
 }

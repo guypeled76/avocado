@@ -1,3 +1,5 @@
+import 'package:avocado_client/models/info.dart';
+import 'package:avocado_client/models/mocks.dart';
 import 'package:flutter/material.dart';
 
 class SearchDialog extends SearchDelegate<int> {
@@ -27,12 +29,48 @@ class SearchDialog extends SearchDelegate<int> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text("d");
+    return StreamBuilder<List<SearchInfo>>(
+        stream: loadSearch(query),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return new Text(snapshot.error.toString());
+            }
+            return ListView.builder(
+                padding: EdgeInsets.all(0),
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                      title: Text(snapshot.data[index].content),
+                  );
+                });
+          } else {
+            return Text("Loading");
+          }
+        });
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Text("ddd");
+    return StreamBuilder<List<SearchInfo>>(
+        stream: loadSearch(query),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return new Text(snapshot.error.toString());
+            }
+            return ListView.builder(
+                padding: EdgeInsets.all(0),
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(snapshot.data[index].content),
+                  );
+                });
+          } else {
+            return Text("Loading");
+          }
+        });
   }
 
   static show<T>(BuildContext context,{String query = ''}) async {
