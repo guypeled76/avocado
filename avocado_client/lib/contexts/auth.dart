@@ -1,3 +1,4 @@
+import 'package:avocado_client/contexts/user.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,9 @@ class AuthContext extends InheritedWidget {
 
   final FirebaseUser user;
 
-  const AuthContext({ Key key, Widget child, this.user })
+  final UserStore store = new UserStore();
+
+  AuthContext({ Key key, Widget child, this.user })
       : super(key: key, child: child);
 
   @override

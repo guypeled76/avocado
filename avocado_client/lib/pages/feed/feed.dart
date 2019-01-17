@@ -1,5 +1,5 @@
+import 'package:avocado_client/contexts/user.dart';
 import 'package:avocado_client/pages/feed/post.dart';
-import 'package:avocado_client/models/mocks.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:flutter/material.dart';
 import 'stories.dart';
@@ -16,7 +16,7 @@ class FeedPage extends StatelessWidget {
         [StoriesWidget()],
       )),
       StreamBuilder<List<PostInfo>>(
-          stream: loadPosts(),
+          stream: UserStore.of(context).getPosts(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return SliverFillRemaining(

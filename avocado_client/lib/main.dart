@@ -1,10 +1,10 @@
+import 'package:avocado_client/contexts/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:avocado_client/pages/auth/context.dart';
 
 void main() => runApp(AvocadoApp());
 
