@@ -22,6 +22,9 @@ abstract class PostData implements Built<PostData, PostDataBuilder>, PostInfo {
 
   UserData get user;
 
+  @nullable
+  String get video;
+
   PostData._();
   factory PostData([updates(PostDataBuilder b)]) = _$PostData;
   static Serializer<PostData> get serializer => _$postDataSerializer;

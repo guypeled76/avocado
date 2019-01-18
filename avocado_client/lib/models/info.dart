@@ -20,7 +20,7 @@ abstract class ContentInfo implements EntityInfo {
 
 abstract class PostInfo implements ContentInfo, ImageContentInfo, SearchInfo {
   String get image;
-
+  String get video;
 }
 
 abstract class ImageContentInfo implements ContentInfo

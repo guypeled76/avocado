@@ -154,6 +154,12 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
     ];
+    if (object.video != null) {
+      result
+        ..add('video')
+        ..add(serializers.serialize(object.video,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -172,6 +178,10 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
         case 'user':
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(UserData)) as UserData);
+          break;
+        case 'video':
+          result.video = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'image':
           result.image = serializers.deserialize(value,
@@ -680,6 +690,8 @@ class _$PostData extends PostData {
   @override
   final UserData user;
   @override
+  final String video;
+  @override
   final String image;
   @override
   final String date;
@@ -694,7 +706,13 @@ class _$PostData extends PostData {
       (new PostDataBuilder()..update(updates)).build();
 
   _$PostData._(
-      {this.user, this.image, this.date, this.content, this.key, this.type})
+      {this.user,
+      this.video,
+      this.image,
+      this.date,
+      this.content,
+      this.key,
+      this.type})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PostData', 'user');
@@ -728,6 +746,7 @@ class _$PostData extends PostData {
     if (identical(other, this)) return true;
     return other is PostData &&
         user == other.user &&
+        video == other.video &&
         image == other.image &&
         date == other.date &&
         content == other.content &&
@@ -739,7 +758,11 @@ class _$PostData extends PostData {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), video.hashCode),
+                        image.hashCode),
+                    date.hashCode),
                 content.hashCode),
             key.hashCode),
         type.hashCode));
@@ -749,6 +772,7 @@ class _$PostData extends PostData {
   String toString() {
     return (newBuiltValueToStringHelper('PostData')
           ..add('user', user)
+          ..add('video', video)
           ..add('image', image)
           ..add('date', date)
           ..add('content', content)
@@ -764,6 +788,10 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   UserDataBuilder _user;
   UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
   set user(UserDataBuilder user) => _$this._user = user;
+
+  String _video;
+  String get video => _$this._video;
+  set video(String video) => _$this._video = video;
 
   String _image;
   String get image => _$this._image;
@@ -790,6 +818,7 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   PostDataBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
+      _video = _$v.video;
       _image = _$v.image;
       _date = _$v.date;
       _content = _$v.content;
@@ -820,6 +849,7 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
       _$result = _$v ??
           new _$PostData._(
               user: user.build(),
+              video: video,
               image: image,
               date: date,
               content: content,
