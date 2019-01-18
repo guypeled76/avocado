@@ -21,15 +21,15 @@ class AuthContext extends InheritedWidget {
     return context.inheritFromWidgetOfExactType(AuthContext);
   }
 
-  String getEMail() {
+  String get email {
     return user?.email ?? "";
   }
 
-  String getDisplayName() {
+  String get displayName {
     return user?.displayName ?? "";
   }
 
-  String getPhotoUrl() {
+  String get photoUrl {
     return user?.photoUrl ?? "";
   }
 

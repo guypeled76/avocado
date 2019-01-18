@@ -46,20 +46,23 @@ class _DrawerDialogState extends State<DrawerDialog> {
 
   @override
   Widget build(BuildContext context) {
+
+    AuthContext authContext = AuthContext.of(context);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              AuthContext.of(context).getDisplayName(),
+              authContext.displayName,
             ),
             accountEmail: Text(
-              AuthContext.of(context).getEMail(),
+              authContext.email,
             ),
             currentAccountPicture: new CircleAvatar(
               backgroundImage: new CachedNetworkImageProvider(
-                  AuthContext.of(context).getPhotoUrl()),
+                  authContext.photoUrl),
             ),
           ),
           new ListTile(
