@@ -1,3 +1,4 @@
+import 'package:avocado_client/contexts/search.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:avocado_client/models/mocks.dart' as mocks;
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class UserContext extends InheritedWidget {
   }
 }
 
-class UserStore {
+class UserStore extends SearchStore {
   BehaviorSubject<List<PostInfo>> _posts;
 
   static UserStore of(BuildContext context) {
@@ -42,5 +43,10 @@ class UserStore {
 
   void dispose() {
     _posts.close();
+  }
+
+  @override
+  Stream<List<SearchInfo>> search(String wildCard) {
+    return mocks.loadSearch(wildCard);
   }
 }

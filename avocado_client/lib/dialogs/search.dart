@@ -1,3 +1,4 @@
+import 'package:avocado_client/contexts/search.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:avocado_client/models/mocks.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class SearchDialog extends SearchDelegate<int> {
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder<List<SearchInfo>>(
-        stream: loadSearch(query),
+        stream: SearchContext.of(context).search(query),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
