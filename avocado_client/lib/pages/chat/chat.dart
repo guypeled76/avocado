@@ -17,17 +17,17 @@ class ChatWidget extends StatelessWidget {
 
     AuthContext authContext = AuthContext.of(context);
 
-    ImageViewDialog.show(context, ImageContentInfo.create(
+    ImageViewDialog.showFromFile(context, ImageContentInfo.create(
       key: "t1",
       content: "",
       date:"",
       user: UserInfo.create(
-        key: authContext.user.uid,
-        displayName: authContext.displayName,
-        image: authContext.photoUrl
+          key: "dd",
+          displayName: "dd",
+          image: "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"
       ),
-      image: image.path
-    ));
+      image: image.uri.toString()
+    ), image);
   }
 
   _takeImage(BuildContext context) async {
@@ -35,17 +35,17 @@ class ChatWidget extends StatelessWidget {
 
     AuthContext authContext = AuthContext.of(context);
 
-    ImageViewDialog.show(context, ImageContentInfo.create(
+    ImageViewDialog.showFromFile(context, ImageContentInfo.create(
         key: "t1",
         content: "",
         date:"",
         user: UserInfo.create(
-            key: authContext.user.uid,
-            displayName: authContext.displayName,
-            image: authContext.photoUrl
+            key: "dd",
+            displayName: "dd",
+            image: "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"
         ),
-        image: image.path
-    ));
+        image: image.uri.toString()
+    ), image);
   }
 
   @override

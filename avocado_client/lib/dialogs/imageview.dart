@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:avocado_client/dialogs/comments.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,10 +8,23 @@ import 'package:photo_view/photo_view.dart';
 
 class ImageViewDialog extends StatelessWidget {
   final ImageContentInfo imageInfo;
-  ImageViewDialog({Key key, @required this.imageInfo}) : super(key: key);
+  final File imageFile;
+
+
+  ImageViewDialog({Key key, @required this.imageInfo, this.imageFile}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    ImageProvider imageProvider;
+    if(this.imageFile != null) {
+      imageProvider = FileImage(this.imageFile);
+    } else {
+      imageProvider = CachedNetworkImageProvider(this.imageInfo.image);
+    }
+
     return Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -23,7 +38,7 @@ class ImageViewDialog extends StatelessWidget {
           )],
         ),
         body: PhotoView(
-            imageProvider: CachedNetworkImageProvider(this.imageInfo.image),
+            imageProvider: imageProvider,
           ),
         bottomNavigationBar: Column(
           mainAxisSize:MainAxisSize.min,
@@ -64,6 +79,16 @@ class ImageViewDialog extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (context) => ImageViewDialog(
         imageInfo: imageInfo,
+      )),
+    );
+  }
+
+  static void showFromFile(BuildContext context, ImageContentInfo imageInfo, File imageFile) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ImageViewDialog(
+        imageInfo: imageInfo,
+        imageFile: imageFile,
       )),
     );
   }
