@@ -1,3 +1,6 @@
+import 'package:avocado_client/contexts/auth.dart';
+import 'package:avocado_client/dialogs/imageview.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:avocado_client/models/info.dart';
 import 'package:avocado_client/models/mocks.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,41 @@ class ChatWidget extends StatelessWidget {
 
   ChatWidget({Key key, @required this.chatId}) : super(key: key);
 
+  _openImage(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    AuthContext authContext = AuthContext.of(context);
+
+    ImageViewDialog.show(context, ImageContentInfo.create(
+      key: "t1",
+      content: "",
+      date:"",
+      user: UserInfo.create(
+        key: authContext.user.uid,
+        displayName: authContext.displayName,
+        image: authContext.photoUrl
+      ),
+      image: image.path
+    ));
+  }
+
+  _takeImage(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    AuthContext authContext = AuthContext.of(context);
+
+    ImageViewDialog.show(context, ImageContentInfo.create(
+        key: "t1",
+        content: "",
+        date:"",
+        user: UserInfo.create(
+            key: authContext.user.uid,
+            displayName: authContext.displayName,
+            image: authContext.photoUrl
+        ),
+        image: image.path
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +56,14 @@ class ChatWidget extends StatelessWidget {
               child: buildChat(context)
           ),
           Row(children: <Widget>[
-            IconButton(icon: Icon(Icons.camera)),
-            IconButton(icon: Icon(Icons.image)),
+            IconButton(
+                onPressed: () => _takeImage(context),
+                icon: Icon(Icons.camera)
+            ),
+            IconButton(
+              onPressed: () => _openImage(context),
+                icon: Icon(Icons.image)
+            ),
             Expanded(child: TextFormField(
 
             ),),

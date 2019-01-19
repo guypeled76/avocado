@@ -1,4 +1,5 @@
 import 'enums.dart';
+import 'data.dart';
 
 export 'enums.dart';
 
@@ -26,6 +27,27 @@ abstract class PostInfo implements ContentInfo, ImageContentInfo, SearchInfo {
 abstract class ImageContentInfo implements ContentInfo
 {
   String get image;
+
+  static ImageContentInfo create({
+    String key,
+    String content,
+    UserInfo user,
+    String date,
+    String image
+    }) {
+    var builder = MessageDataBuilder()
+        ..key = key
+        ..content = content
+        ..user = UserInfo.createBuilder(key:user.key, displayName:user.displayName, image:user.image)
+        ..date = date
+        ..type = EntityType.message
+        ..image = image;
+    ;
+
+
+    return builder.build();
+
+  }
 }
 
 abstract class NotificationInfo implements ContentInfo
@@ -47,4 +69,39 @@ abstract class MessageInfo implements ContentInfo, ImageContentInfo, SearchInfo 
 abstract class UserInfo implements EntityInfo {
   String get image;
   String get displayName;
+
+
+  static UserDataBuilder createBuilder({
+    String key,
+    String displayName,
+    String image
+  }) {
+    var builder = UserDataBuilder()
+      ..key = key
+      ..type = EntityType.user
+      ..displayName = displayName
+      ..image = image;
+    ;
+
+
+    return builder;
+
+  }
+
+  static UserInfo create({
+    String key,
+    String displayName,
+    String image
+  }) {
+    var builder = UserDataBuilder()
+      ..key = key
+      ..type = EntityType.user
+      ..displayName = displayName
+      ..image = image;
+    ;
+
+
+    return builder.build();
+
+  }
 }
