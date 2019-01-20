@@ -1,3 +1,4 @@
+import 'package:avocado_client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,30 +18,37 @@ class LoginPage extends StatelessWidget {
 
 
   void _authenticateWithFacebook() async {
-    final FacebookLoginResult result =
-        await _facebookSignIn.logInWithReadPermissions(['email']);
+    try {
+      final FacebookLoginResult result =
+      await _facebookSignIn.logInWithReadPermissions(['email']);
 
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
-        this._auth.signInWithFacebook(accessToken: accessToken.token);
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        break;
-      case FacebookLoginStatus.error:
-        break;
+      switch (result.status) {
+        case FacebookLoginStatus.loggedIn:
+          final FacebookAccessToken accessToken = result.accessToken;
+          this._auth.signInWithFacebook(accessToken: accessToken.token);
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          break;
+        case FacebookLoginStatus.error:
+          break;
+      }
+    } catch (e) {
+      logError("Failed ot login with facebook", e);
     }
   }
 
   void _authenticateWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final FirebaseUser user = await this._auth.signInWithGoogle(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    // do something with signed-in user
+    try {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+      final FirebaseUser user = await this._auth.signInWithGoogle(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+    } catch (e) {
+      logError("Failed ot login with google", e);
+    }
   }
 
   @override

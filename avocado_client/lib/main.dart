@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:avocado_client/contexts/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
@@ -5,9 +7,25 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
 
-void main() => runApp(AvocadoApp());
 
+void main() {
+
+
+
+  TargetPlatform targetPlatform;
+  if (Platform.isMacOS) {
+    targetPlatform = TargetPlatform.iOS;
+  } else if (Platform.isLinux || Platform.isWindows) {
+    targetPlatform = TargetPlatform.android;
+  }
+  if (targetPlatform != null) {
+    debugDefaultTargetPlatformOverride = targetPlatform;
+  }
+
+  runApp(AvocadoApp());
+}
 
 
 class AvocadoApp extends StatelessWidget {
