@@ -1,6 +1,6 @@
 import 'package:avocado_client/contexts/search.dart';
-import 'package:avocado_client/models/info.dart';
-import 'package:avocado_client/models/mocks.dart' as mocks;
+import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/mocks.dart' as mocks;
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 

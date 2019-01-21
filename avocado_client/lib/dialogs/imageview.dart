@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:avocado_client/dialogs/comments.dart';
-import 'package:avocado_client/models/info.dart';
+import 'package:avocado_common/modules.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';

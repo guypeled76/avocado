@@ -1,5 +1,5 @@
-import 'package:avocado_client/models/info.dart';
-import 'package:avocado_client/models/mocks.dart';
+import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/mocks.dart';
 import 'package:flutter/material.dart';
 import 'notification.dart';
 

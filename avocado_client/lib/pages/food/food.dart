@@ -7,7 +7,7 @@ class FoodPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("food");
+    return Center(child: Text("food"));
   }
 }
 

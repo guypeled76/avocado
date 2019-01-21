@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "avocado_client"
+		},
+		{
+			"path": "avocado_common"
+		},
+		{
+			"path": "avocado_web"
+		}
+	],
+	"settings": {}
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:avocado_client/contexts/user.dart';
-import 'package:avocado_client/models/info.dart';
+import 'package:avocado_common/modules.dart';
 import 'story.dart';
 
 class Stories extends StatelessWidget {
