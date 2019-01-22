@@ -1,15 +1,17 @@
 import 'package:avocado_common/common.dart';
-import 'package:avocado_common/mocks.dart';
 import 'package:flutter/material.dart';
 import 'notification.dart';
 
 class NotificationsWidget extends StatelessWidget {
-  NotificationsWidget({Key key}) : super(key: key);
+
+  final NotificationsBLoC bloc;
+
+  NotificationsWidget({Key key, this.bloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<NotificationInfo>>(
-        stream: loadNotifications(),
+        stream: this.bloc.notifications,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

@@ -1,6 +1,3 @@
-import 'package:avocado_client/contexts/auth.dart';
-import 'package:avocado_client/contexts/search.dart';
-import 'package:avocado_client/contexts/user.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
 import 'package:avocado_common/common.dart';
@@ -37,22 +34,20 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   onPressed: () => SearchDialog.show(context))
             ],
           ),
-          body: SearchContext(
-              store: AuthContext.of(context).store,
-              child: UserContext(
-                  store: AuthContext.of(context).store,
-                  child: TabBarView(children: [
-                    FeedPage(
-                      bloc: FeedBloC(),
-                    ),
-                    TimelinePage(),
-                    NotificationsWidget(),
-                    FoodPage(),
-                    ChatWidget(
-                      bloc: ChatBLoC(
-                          chatId: "c1"),
-                    ),
-                  ]))),
+          body: TabBarView(children: [
+                  FeedPage(
+                    bloc: FeedBloC(),
+                  ),
+                  TimelinePage(),
+                  NotificationsWidget(
+                      bloc: NotificationsBLoC()
+                  ),
+                  FoodPage(),
+                  ChatWidget(
+                    bloc: ChatBLoC(
+                        chatId: "c1"),
+                  ),
+                ]),
           floatingActionButton: FloatingActionButton(
             onPressed: _add,
             tooltip: 'Increment',

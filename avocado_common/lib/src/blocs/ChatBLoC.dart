@@ -1,5 +1,5 @@
 import 'package:avocado_common/models.dart';
-import 'package:avocado_common/mocks.dart';
+import 'package:avocado_common/src/models/mocks.dart';
 
 class ChatBLoC {
 

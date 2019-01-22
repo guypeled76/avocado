@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:avocado_client/contexts/user.dart';
 import 'package:avocado_common/common.dart';
 import 'story.dart';
 

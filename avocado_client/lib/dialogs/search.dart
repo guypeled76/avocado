@@ -1,9 +1,12 @@
-import 'package:avocado_client/contexts/search.dart';
 import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 class SearchDialog extends SearchDelegate<int> {
   static final SearchDialog dialog = SearchDialog();
+
+  final SearchBLoC bloc = new SearchBLoC();
+
+
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -29,8 +32,9 @@ class SearchDialog extends SearchDelegate<int> {
 
   @override
   Widget buildResults(BuildContext context) {
+    this.bloc.query.add(query);
     return StreamBuilder<List<SearchInfo>>(
-        stream: SearchContext.of(context).search(query),
+        stream: this.bloc.results,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -52,8 +56,9 @@ class SearchDialog extends SearchDelegate<int> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    this.bloc.query.add(query);
     return StreamBuilder<List<SearchInfo>>(
-        stream: SearchContext.of(context).search(query),
+        stream: this.bloc.results,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
