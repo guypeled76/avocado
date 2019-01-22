@@ -1,4 +1,4 @@
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'package:avocado_common/mocks.dart';
 import 'package:flutter/material.dart';
 import 'notification.dart';

@@ -1,6 +1,6 @@
 import 'package:avocado_client/dialogs/comments.dart';
 import 'package:avocado_client/dialogs/video.dart';
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:cached_network_image/cached_network_image.dart';

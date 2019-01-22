@@ -3,6 +3,7 @@ import 'package:avocado_client/contexts/search.dart';
 import 'package:avocado_client/contexts/user.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 class ClientHomePage extends StatefulWidget {
@@ -41,7 +42,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
               child: UserContext(
                   store: AuthContext.of(context).store,
                   child: TabBarView(children: [
-                    FeedPage(),
+                    FeedPage(
+                      bloc: FeedBloC(),
+                    ),
                     TimelinePage(),
                     NotificationsWidget(),
                     FoodPage(),

@@ -1,5 +1,5 @@
 import 'package:avocado_client/contexts/search.dart';
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 class SearchDialog extends SearchDelegate<int> {

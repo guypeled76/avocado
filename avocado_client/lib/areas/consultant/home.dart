@@ -1,5 +1,6 @@
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 
@@ -33,7 +34,7 @@ class ConsultantHomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              FeedPage(),
+              FeedPage(bloc: new FeedBloC()),
               TimelinePage(),
               NotificationsWidget(),
               FoodPage(),

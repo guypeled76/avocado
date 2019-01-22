@@ -1,7 +1,7 @@
 import 'package:avocado_client/contexts/auth.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'package:avocado_common/mocks.dart';
 import 'package:flutter/material.dart';
 import 'message.dart';

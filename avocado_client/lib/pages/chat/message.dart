@@ -1,4 +1,4 @@
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

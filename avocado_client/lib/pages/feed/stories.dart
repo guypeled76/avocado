@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:avocado_client/contexts/user.dart';
-import 'package:avocado_common/modules.dart';
+import 'package:avocado_common/common.dart';
 import 'story.dart';
 
 class Stories extends StatelessWidget {
+
+  final Stream<List<PostInfo>> stream;
+
+  Stories({@required this.stream});
+  
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -14,7 +20,7 @@ class Stories extends StatelessWidget {
             height: 200.0,
             padding: EdgeInsets.all(0),
             child: StreamBuilder<List<PostInfo>>(
-                stream: UserStore.of(context).pinned,
+                stream: this.stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
