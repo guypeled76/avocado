@@ -1,6 +1,6 @@
 name: avocado_common
 description: The avocado common DL/BL package.
-# version: 1.0.0
+version: 1.0.1
 # homepage: https://www.example.com
 # author: guy.p <email@example.com>
 

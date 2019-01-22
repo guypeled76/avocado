@@ -49,7 +49,8 @@ class _ClientHomePageState extends State<ClientHomePage> {
                     NotificationsWidget(),
                     FoodPage(),
                     ChatWidget(
-                      chatId: "c1",
+                      bloc: ChatBLoC(
+                          chatId: "c1"),
                     ),
                   ]))),
           floatingActionButton: FloatingActionButton(

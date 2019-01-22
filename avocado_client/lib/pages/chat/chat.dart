@@ -2,15 +2,14 @@ import 'package:avocado_client/contexts/auth.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:avocado_common/common.dart';
-import 'package:avocado_common/mocks.dart';
 import 'package:flutter/material.dart';
 import 'message.dart';
 
 class ChatWidget extends StatelessWidget {
 
-  final String chatId;
+  final ChatBLoC bloc;
 
-  ChatWidget({Key key, @required this.chatId}) : super(key: key);
+  ChatWidget({Key key, @required this.bloc}) : super(key: key);
 
   _openImage(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -75,7 +74,7 @@ class ChatWidget extends StatelessWidget {
 
   Widget buildChat(BuildContext context) {
     return StreamBuilder<List<MessageInfo>>(
-        stream: loadChat(this.chatId),
+        stream: this.bloc.messages,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

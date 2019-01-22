@@ -1,4 +1,5 @@
 import 'package:avocado_client/pages/chat/chat.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 class CommentsDialog extends StatelessWidget {
@@ -23,7 +24,7 @@ class CommentsDialog extends StatelessWidget {
             },
           )],
         ),
-      body: ChatWidget(chatId:"c2"),
+      body: ChatWidget(bloc: ChatBLoC(chatId: "c2")),
     );
   }
 
