@@ -1,4 +1,5 @@
 import 'package:avocado_client/services/auth.dart';
+import 'package:avocado_client/services/provider.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:avocado_common/common.dart';
@@ -14,7 +15,7 @@ class ChatWidget extends StatelessWidget {
   _openImage(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    AuthContext authContext = AuthContext.of(context);
+    AuthContext authContext = ServiceProvider.get<AuthContext>(context);
 
     ImageViewDialog.showFromFile(context, ImageContentInfo.create(
       key: "t1",
@@ -32,7 +33,7 @@ class ChatWidget extends StatelessWidget {
   _takeImage(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-    AuthContext authContext = AuthContext.of(context);
+    AuthContext authContext = ServiceProvider.get<AuthContext>(context);
 
     ImageViewDialog.showFromFile(context, ImageContentInfo.create(
         key: "t1",

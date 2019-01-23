@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:avocado_client/services/provider.dart';
 import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
@@ -50,8 +51,8 @@ class AvocadoApp extends StatelessWidget {
               return SplashPage();
             } else {
               if (snapshot.hasData) {
-                return AuthContext(
-                    user: snapshot.data,
+                return ServiceProvider(
+                  services: [AuthContext(snapshot.data)],
                     child: ClientHomePage()
                 );
               } else {

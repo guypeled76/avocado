@@ -1,6 +1,7 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/dialogs/about.dart';
 import 'package:avocado_client/services/auth.dart';
+import 'package:avocado_client/services/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,8 @@ class _DrawerDialogState extends State<DrawerDialog> {
   @override
   Widget build(BuildContext context) {
 
-    AuthContext authContext = AuthContext.of(context);
+    AuthContext authContext = ServiceProvider.get<AuthContext>(context)
+
 
     return Drawer(
       child: ListView(
