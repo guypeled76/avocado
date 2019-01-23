@@ -48,7 +48,7 @@ class _DrawerDialogState extends State<DrawerDialog> {
   @override
   Widget build(BuildContext context) {
 
-    AuthContext authContext = ServiceProvider.get<AuthContext>(context)
+    AuthContext authContext = ServiceProvider.get<AuthContext>(context);
 
 
     return Drawer(
