@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:avocado_client/contexts/auth.dart';
+import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';

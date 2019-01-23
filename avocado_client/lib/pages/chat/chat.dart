@@ -1,4 +1,4 @@
-import 'package:avocado_client/contexts/auth.dart';
+import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/dialogs/imageview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:avocado_common/common.dart';
