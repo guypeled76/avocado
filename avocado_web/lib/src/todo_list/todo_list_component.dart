@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:avocado_web/src/components/feed/feed_component.dart';
 
 import 'todo_list_service.dart';
 
@@ -10,6 +11,7 @@ import 'todo_list_service.dart';
   styleUrls: ['todo_list_component.css'],
   templateUrl: 'todo_list_component.html',
   directives: [
+    FeedComponent,
     MaterialCheckboxComponent,
     MaterialFabComponent,
     MaterialIconComponent,

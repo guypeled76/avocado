@@ -42,7 +42,7 @@ class LoginPage extends StatelessWidget {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
       await googleUser.authentication;
-      final FirebaseUser user = await this._auth.signInWithGoogle(
+      await this._auth.signInWithGoogle(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );

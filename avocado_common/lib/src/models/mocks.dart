@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:resource/resource.dart' show Resource;
 import 'info.dart';
 import 'data.dart';
 import 'serializers.dart';

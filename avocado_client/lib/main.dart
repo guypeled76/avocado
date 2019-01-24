@@ -31,7 +31,7 @@ void main() {
 
 class AvocadoApp extends StatelessWidget {
 
-  FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   // This widget is the root of your application.
   @override

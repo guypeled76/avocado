@@ -14,12 +14,11 @@ class _SplashPageState extends State<SplashPage> {
         color: Colors.white,
         child: Center(
             child: RaisedButton(
-              padding: const EdgeInsets.all(8.0),
-              textColor: Colors.white,
-              color: Colors.blue,
-              child: new Text("Splash"),
-            )
-        )
-    );
+          onPressed: () {},
+          padding: const EdgeInsets.all(8.0),
+          textColor: Colors.white,
+          color: Colors.blue,
+          child: new Text("Splash"),
+        )));
   }
 }
