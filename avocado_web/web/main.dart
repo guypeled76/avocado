@@ -1,8 +1,19 @@
 import 'package:angular/angular.dart';
 import 'package:avocado_web/app_component.template.dart' as ng;
+import 'package:avocado_web/src/services/FirebaseService.dart';
+
+
+
+
+import 'main.template.dart' as self;
+
+@GenerateInjector([
+  ClassProvider(FirebaseService),
+])
+final InjectorFactory rootInjector = self.rootInjector$Injector;
 
 
 void main() {
 
-  runApp(ng.AppComponentNgFactory);
+  runApp(ng.AppComponentNgFactory, createInjector:rootInjector);
 }

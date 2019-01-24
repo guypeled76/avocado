@@ -40,8 +40,22 @@
             <nav class="material-navigation">
                 <a>Link 2</a>
             </nav>
+            <material-button class="material-drawer-button" icon
+                             materialTooltip="Notifications"
+                             >
+                <material-icon icon="notifications"></material-icon>
+            </material-button>
             <nav class="material-navigation">
-                <a>Link 3</a>
+                <div id="sign-in" class="user" *ngIf="fbService.user == null">
+                    <material-button raised class="sign-in-button" (trigger)="fbService.signIn()">
+                        <img class="google-icon" src="g-logo.png"/>
+                        Sign In
+                    </material-button>
+                </div>
+
+                <div id="sign-out" class="user" *ngIf="fbService.user != null">
+                    <img id="header-user-image" [src]="fbService.user?.photoURL">
+                </div>
             </nav>
         </div>
     </header>
