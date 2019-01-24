@@ -33,6 +33,7 @@ import 'src/todo_list/todo_list_component.dart';
 class AppComponent {
   bool customWidth = false;
   bool end = false;
+  bool basicPopupVisible = false;
 
   final FirebaseService fbService;
 

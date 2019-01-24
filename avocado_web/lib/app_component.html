@@ -34,28 +34,24 @@
             </material-button>
             <span class="material-header-title">Simple Layout</span>
             <div class="material-spacer"></div>
-            <nav class="material-navigation">
-                <a>Link 1</a>
-            </nav>
-            <nav class="material-navigation">
-                <a>Link 2</a>
-            </nav>
-            <material-button class="material-drawer-button" icon
-                             materialTooltip="Notifications"
-                             >
-                <material-icon icon="notifications"></material-icon>
-            </material-button>
-            <nav class="material-navigation">
-                <div id="sign-in" class="user" *ngIf="fbService.user == null">
-                    <material-button raised class="sign-in-button" (trigger)="fbService.signIn()">
-                        <img class="google-icon" src="g-logo.png"/>
-                        Sign In
-                    </material-button>
-                </div>
 
-                <div id="sign-out" class="user" *ngIf="fbService.user != null">
-                    <img id="header-user-image" [src]="fbService.user?.photoURL">
-                </div>
+            <nav class="material-navigation">
+                <material-button class="material-drawer-button" icon
+                                 materialTooltip="Notifications"
+                                 >
+                    <material-icon icon="notifications"></material-icon>
+                </material-button>
+            </nav>
+            <nav class="material-navigation">
+
+                <material-button class="material-drawer-button" icon (trigger)="fbService.signIn()" *ngIf="fbService.user == null">
+                    <material-icon icon="face"></material-icon>
+                </material-button>
+
+                <material-button class="material-drawer-button" icon (trigger)="fbService.signOut()" *ngIf="fbService.user != null">
+                    <material-icon icon="cancel"></material-icon>
+                </material-button>
+
             </nav>
         </div>
     </header>
