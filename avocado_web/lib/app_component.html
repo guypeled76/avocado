@@ -4,17 +4,14 @@
     <material-list *deferredContent>
         <div group class="mat-drawer-spacer"></div>
         <div group>
-            <material-list-item>
-                <a [routerLink]="RoutePaths.dashboard.toUrl()"
+            <material-list-item [routerLink]="RoutePaths.dashboard.toUrl()"
                    [routerLinkActive]="'active'">
                 <material-icon icon="inbox"></material-icon>Dashboard
-                </a>
+
             </material-list-item>
-            <material-list-item>
-                <a [routerLink]="RoutePaths.clients.toUrl()"
+            <material-list-item [routerLink]="RoutePaths.clients.toUrl()"
                    [routerLinkActive]="'active'">
                 <material-icon icon="star"></material-icon>Clients
-                </a>
             </material-list-item>
             <material-list-item>
                 <material-icon icon="send"></material-icon>Sent Mail
@@ -38,7 +35,7 @@
                              class="material-drawer-button" (trigger)="drawer.toggle()">
                 <material-icon icon="menu"></material-icon>
             </material-button>
-            <span class="material-header-title">Simple Layout</span>
+            <span class="material-header-title">Avocado Clinic</span>
             <div class="material-spacer"></div>
 
             <nav class="material-navigation">

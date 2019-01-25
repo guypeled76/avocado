@@ -12,7 +12,7 @@ var posts = {
       "displayName" : "Alber Einstein",
       "image" : "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"
     },
-    "content": "תמונה של ארוחת פליאו",
+    "content": "סרטון על קפה",
     "type":"post",
     "video":"https://firebasestorage.googleapis.com/v0/b/avocado-backend.appspot.com/o/videos%2Ftest.mp4?alt=media&token=a7c9a4bd-5761-42e2-8fd4-bbce8a3f421f"
   },
