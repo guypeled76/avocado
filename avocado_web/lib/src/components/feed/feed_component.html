@@ -1,9 +1,5 @@
-<H1>Feed {{name}}</H1>
 
+<div style="display: flex;flex-wrap: wrap;">
+    <post-component [post]="post" *ngFor="let post of bloc.posts | async"></post-component>
+</div>
 
-<ul>
-    <li *ngFor="let post of bloc.posts | async">
-        <post-component [post]="post" ></post-component>
-    </li>
-
-</ul>
