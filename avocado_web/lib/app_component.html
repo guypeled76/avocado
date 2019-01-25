@@ -5,10 +5,16 @@
         <div group class="mat-drawer-spacer"></div>
         <div group>
             <material-list-item>
-                <material-icon icon="inbox"></material-icon>Inbox
+                <a [routerLink]="RoutePaths.dashboard.toUrl()"
+                   [routerLinkActive]="'active'">
+                <material-icon icon="inbox"></material-icon>Dashboard
+                </a>
             </material-list-item>
             <material-list-item>
-                <material-icon icon="star"></material-icon>Star
+                <a [routerLink]="RoutePaths.clients.toUrl()"
+                   [routerLinkActive]="'active'">
+                <material-icon icon="star"></material-icon>Clients
+                </a>
             </material-list-item>
             <material-list-item>
                 <material-icon icon="send"></material-icon>Sent Mail
@@ -56,12 +62,8 @@
         </div>
     </header>
     <div class="content-area">
-        <h3>Options</h3>
-        <material-toggle [(checked)]="end" label="end">
-        </material-toggle>
-        <material-toggle [(checked)]="customWidth" label="custom width">
-        </material-toggle>
-        <todo-list></todo-list>
+        <router-outlet [routes]="Routes.all"></router-outlet>
+        <!--todo-list></todo-list-->
 
     </div>
 

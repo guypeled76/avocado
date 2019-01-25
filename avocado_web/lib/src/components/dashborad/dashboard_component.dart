@@ -5,5 +5,5 @@ import 'package:angular/angular.dart';
   templateUrl: 'dashboard_component.html',
 )
 class DashboardComponent {
-  var name = 'Angular';
+  var name = 'Dashboard';
 }

@@ -5,5 +5,5 @@ import 'package:angular/angular.dart';
   templateUrl: 'client_component.html',
 )
 class ClientComponent {
-  var name = 'Angular';
+  var name = 'Client';
 }

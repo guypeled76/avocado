@@ -1,7 +1,6 @@
 import 'package:angular_router/angular_router.dart';
 
 
-//import 'src/components/feed/feed_component.dart' as feed_template;
 import 'src/components/dashborad/dashboard_component.template.dart' as dashboard_template;
 import 'src/components/clients/clients_component.template.dart' as clients_template;
 import 'src/components/clients/client_component.template.dart' as client_template;
@@ -10,7 +9,7 @@ const clientIdParam = 'clientId';
 
 class RoutePaths {
   static final dashboard = RoutePath(path: 'dashboard');
-  static final clients = RoutePath(path: 'heroes');
+  static final clients = RoutePath(path: 'clients');
   static final client = RoutePath(path: '${clients.path}/:$clientIdParam');
 }
 
@@ -29,12 +28,12 @@ class Routes {
 
   static final clients = RouteDefinition(
     routePath: RoutePaths.clients,
-    component: clients_template.HeroComponentNgFactory,
+    component: clients_template.ClientsComponentNgFactory,
   );
 
   static final client = RouteDefinition(
     routePath: RoutePaths.client,
-    component: clients_template.HeroListComponentNgFactory,
+    component: client_template.ClientComponentNgFactory,
   );
 
   static final all = <RouteDefinition>[
