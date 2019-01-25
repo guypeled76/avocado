@@ -13,6 +13,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MessageData.serializer)
       ..add(NotificationData.serializer)
       ..add(PostData.serializer)
+      ..add(ProfileData.serializer)
       ..add(TargetData.serializer)
       ..add(UserData.serializer))
     .build();

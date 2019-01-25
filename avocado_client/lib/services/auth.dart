@@ -1,25 +1,24 @@
-
-
+import 'package:avocado_common/common.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthContext  {
+class AuthServiceImpl implements AuthService {
 
-  final FirebaseUser user;
+  final FirebaseUser profile;
 
 
-  AuthContext(this.user);
+  AuthServiceImpl(this.profile);
 
 
   String get email {
-    return user?.email ?? "";
+    return profile?.email ?? "";
   }
 
   String get displayName {
-    return user?.displayName ?? "";
+    return profile?.displayName ?? "";
   }
 
   String get photoUrl {
-    return user?.photoUrl ?? "";
+    return profile?.photoUrl ?? "";
   }
 
 }

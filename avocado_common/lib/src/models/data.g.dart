@@ -10,6 +10,7 @@ Serializer<EntityData> _$entityDataSerializer = new _$EntityDataSerializer();
 Serializer<ContentData> _$contentDataSerializer = new _$ContentDataSerializer();
 Serializer<PostData> _$postDataSerializer = new _$PostDataSerializer();
 Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
+Serializer<ProfileData> _$profileDataSerializer = new _$ProfileDataSerializer();
 Serializer<NotificationData> _$notificationDataSerializer =
     new _$NotificationDataSerializer();
 Serializer<MessageData> _$messageDataSerializer = new _$MessageDataSerializer();
@@ -247,6 +248,73 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'image':
+          result.image = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'displayName':
+          result.displayName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$ProfileDataSerializer implements StructuredSerializer<ProfileData> {
+  @override
+  final Iterable<Type> types = const [ProfileData, _$ProfileData];
+  @override
+  final String wireName = 'ProfileData';
+
+  @override
+  Iterable serialize(Serializers serializers, ProfileData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'email',
+      serializers.serialize(object.email,
+          specifiedType: const FullType(String)),
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(String)),
+      'displayName',
+      serializers.serialize(object.displayName,
+          specifiedType: const FullType(String)),
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
+    ];
+
+    return result;
+  }
+
+  @override
+  ProfileData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new ProfileDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'email':
+          result.email = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'image':
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -985,6 +1053,145 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
     final _$result = _$v ??
         new _$UserData._(
             image: image, displayName: displayName, key: key, type: type);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$ProfileData extends ProfileData {
+  @override
+  final String email;
+  @override
+  final String image;
+  @override
+  final String displayName;
+  @override
+  final String key;
+  @override
+  final EntityType type;
+
+  factory _$ProfileData([void updates(ProfileDataBuilder b)]) =>
+      (new ProfileDataBuilder()..update(updates)).build();
+
+  _$ProfileData._(
+      {this.email, this.image, this.displayName, this.key, this.type})
+      : super._() {
+    if (email == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'email');
+    }
+    if (image == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'image');
+    }
+    if (displayName == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'displayName');
+    }
+    if (key == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'type');
+    }
+  }
+
+  @override
+  ProfileData rebuild(void updates(ProfileDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  ProfileDataBuilder toBuilder() => new ProfileDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is ProfileData &&
+        email == other.email &&
+        image == other.image &&
+        displayName == other.displayName &&
+        key == other.key &&
+        type == other.type;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc(
+            $jc($jc($jc(0, email.hashCode), image.hashCode),
+                displayName.hashCode),
+            key.hashCode),
+        type.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('ProfileData')
+          ..add('email', email)
+          ..add('image', image)
+          ..add('displayName', displayName)
+          ..add('key', key)
+          ..add('type', type))
+        .toString();
+  }
+}
+
+class ProfileDataBuilder implements Builder<ProfileData, ProfileDataBuilder> {
+  _$ProfileData _$v;
+
+  String _email;
+  String get email => _$this._email;
+  set email(String email) => _$this._email = email;
+
+  String _image;
+  String get image => _$this._image;
+  set image(String image) => _$this._image = image;
+
+  String _displayName;
+  String get displayName => _$this._displayName;
+  set displayName(String displayName) => _$this._displayName = displayName;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
+  ProfileDataBuilder();
+
+  ProfileDataBuilder get _$this {
+    if (_$v != null) {
+      _email = _$v.email;
+      _image = _$v.image;
+      _displayName = _$v.displayName;
+      _key = _$v.key;
+      _type = _$v.type;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(ProfileData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$ProfileData;
+  }
+
+  @override
+  void update(void updates(ProfileDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$ProfileData build() {
+    final _$result = _$v ??
+        new _$ProfileData._(
+            email: email,
+            image: image,
+            displayName: displayName,
+            key: key,
+            type: type);
     replace(_$result);
     return _$result;
   }

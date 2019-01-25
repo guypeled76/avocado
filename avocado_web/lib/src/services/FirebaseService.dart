@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:angular/angular.dart';
+import 'package:avocado_common/common.dart';
 import 'package:firebase/firebase.dart' as fb;
 
 @Injectable()
-class FirebaseService {
-  fb.User user;
+class FirebaseService implements AuthService {
+  fb.User profile;
   fb.Auth _fbAuth;
-  fb.GoogleAuthProvider _fbGoogleAuthProvider;
 
   FirebaseService() {
     fb.initializeApp(
@@ -22,14 +22,25 @@ class FirebaseService {
     _fbAuth.onAuthStateChanged.listen(_authChanged);
   }
 
+
+
   void _authChanged(fb.User event) {
-    user = event;
+    profile = event;
   }
 
-  Future signIn() async {
+  Future signInWithGoogle() async {
     try {
-      _fbGoogleAuthProvider = new fb.GoogleAuthProvider();
+      var _fbGoogleAuthProvider = new fb.GoogleAuthProvider();
       await _fbAuth.signInWithPopup(_fbGoogleAuthProvider);
+    } catch (error) {
+      print("$runtimeType::login() -- $error");
+    }
+  }
+
+  Future signInWithFacebook() async {
+    try {
+      var _fbFacebookAuthProvider = new fb.FacebookAuthProvider();
+      await _fbAuth.signInWithPopup(_fbFacebookAuthProvider);
     } catch (error) {
       print("$runtimeType::login() -- $error");
     }
@@ -38,4 +49,13 @@ class FirebaseService {
   void signOut() {
     _fbAuth.signOut();
   }
+
+  @override
+  String get displayName => profile?.displayName;
+
+  @override
+  String get email => profile?.email;
+
+  @override
+  String get photoUrl => profile?.photoURL;
 }

@@ -2,9 +2,8 @@
 
 
 <ul>
-    <!--li *ngFor="let post of bloc.posts">
-        <span>d</span>
-
-    </li-->
+    <li *ngFor="let post of bloc.posts | async">
+        <post-component [post]="post" ></post-component>
+    </li>
 
 </ul>

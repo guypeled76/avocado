@@ -35,6 +35,12 @@ abstract class UserData implements Built<UserData, UserDataBuilder>, UserInfo {
   static Serializer<UserData> get serializer => _$userDataSerializer;
 }
 
+abstract class ProfileData implements Built<ProfileData, ProfileDataBuilder>, ProfileInfo {
+  ProfileData._();
+  factory ProfileData([updates(ProfileDataBuilder b)]) = _$ProfileData;
+  static Serializer<ProfileData> get serializer => _$profileDataSerializer;
+}
+
 abstract class NotificationData implements Built<NotificationData, NotificationDataBuilder>, NotificationInfo {
 
   UserData get user;

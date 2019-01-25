@@ -105,3 +105,26 @@ abstract class UserInfo implements EntityInfo {
 
   }
 }
+
+abstract class ProfileInfo implements UserInfo {
+  String get email;
+
+  static ProfileInfo create({
+    String key,
+    String displayName,
+    String image,
+    String email
+  }) {
+    var builder = ProfileDataBuilder()
+      ..key = key
+      ..type = EntityType.user
+      ..displayName = displayName
+      ..email = email
+      ..image = image;
+    ;
+
+
+    return builder.build();
+
+  }
+}

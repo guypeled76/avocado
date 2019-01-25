@@ -25,8 +25,8 @@
         </div>
     </material-list>
 </material-drawer>
-<div class="material-content">
-    <header class="material-header shadow">
+<material-content style="flex-direction: column;height:100%" >
+    <header class="material-header shadow" style="flex:auto">
         <div class="material-header-row">
             <material-button icon
                              class="material-drawer-button" (trigger)="drawer.toggle()">
@@ -36,7 +36,7 @@
             <div class="material-spacer"></div>
 
             <nav class="material-navigation">
-                <material-button class="material-drawer-button" icon
+                <material-button class="material-drawer-button" icon 
                                  materialTooltip="Notifications"
                                  >
                     <material-icon icon="notifications"></material-icon>
@@ -44,29 +44,25 @@
             </nav>
             <nav class="material-navigation">
 
-                <material-button class="material-drawer-button" icon (trigger)="fbService.signIn()" *ngIf="fbService.user == null">
+                <material-button class="material-drawer-button" icon (trigger)="fbService.signInWithFacebook()" *ngIf="fbService.profile == null">
                     <material-icon icon="face"></material-icon>
                 </material-button>
 
-                <material-button class="material-drawer-button" icon (trigger)="fbService.signOut()" *ngIf="fbService.user != null">
+                <material-button class="material-drawer-button" icon (trigger)="fbService.signOut()" *ngIf="fbService.profile != null">
                     <material-icon icon="cancel"></material-icon>
                 </material-button>
 
             </nav>
         </div>
     </header>
-    <div>
-        Lorem ipsum dolor sit amet, ad erat postea ullamcorper nec, veri veniam quo
-        et. Diam phaedrum ei mea, quaeque voluptaria efficiantur duo no. Eu adhuc
-        veritus civibus nec, sumo invidunt mel id, in vim dictas detraxit. Per an
-        legere iriure blandit. Veri iisque accusamus an pri.
-    </div>
-    <div class="controls">
+    <div style="flex: none; overflow: auto; border:1px solid red">
         <h3>Options</h3>
         <material-toggle [(checked)]="end" label="end">
         </material-toggle>
         <material-toggle [(checked)]="customWidth" label="custom width">
         </material-toggle>
         <todo-list></todo-list>
+
     </div>
-</div>
+
+</material-content>

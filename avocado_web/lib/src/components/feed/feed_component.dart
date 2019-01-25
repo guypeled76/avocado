@@ -12,19 +12,16 @@ import 'package:avocado_common/common.dart';
   ],
   pipes: [commonPipes],
 )
-class FeedComponent implements OnInit {
+class FeedComponent  {
   var name = 'Angular';
 
-  FeedBloC bloc;
+  FeedBloC bloc = FeedBloC();
+
 
   FeedComponent() {
 
   }
 
-  @override
-  Future<Null> ngOnInit() async {
-    //this.bloc = new FeedBloC();
-  }
 
 
 

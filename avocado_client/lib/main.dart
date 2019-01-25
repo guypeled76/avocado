@@ -4,6 +4,7 @@ import 'package:avocado_client/services/provider.dart';
 import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
+import 'package:avocado_common/common.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,7 +53,7 @@ class AvocadoApp extends StatelessWidget {
             } else {
               if (snapshot.hasData) {
                 return ServiceProvider(
-                  services: [AuthContext(snapshot.data)],
+                  services: [ServiceImpl(AuthService, AuthServiceImpl(snapshot.data))],
                     child: ClientHomePage()
                 );
               } else {

@@ -4,13 +4,9 @@ import 'package:avocado_common/src/models/mocks.dart';
 
 class FeedBloC {
 
+  final Stream<List<PostInfo>> pinned = loadPinned();
 
-  Stream<List<PostInfo>> get pinned {
-    return loadPinned();
-  }
+  final Stream<List<PostInfo>> posts = loadPosts();
 
-  Stream<List<PostInfo>> get posts {
 
-   return loadPosts();
-  }
 }

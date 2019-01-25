@@ -11,7 +11,12 @@ class ServiceProvider extends InheritedWidget {
       : super(key: key, child: child){
     if(services != null) {
       for(Object service in services) {
-        _services[service.runtimeType] = service;
+        ServiceImpl impl = service as ServiceImpl;
+        if(impl != null) {
+          _services[impl.serviceType] = impl.service;
+        } else {
+          _services[service.runtimeType] = service;
+        }
       }
     }
   }
@@ -38,4 +43,10 @@ class ServiceProvider extends InheritedWidget {
     return service;
   }
 
+}
+
+class ServiceImpl {
+  final Object service;
+  final Type serviceType;
+  ServiceImpl(this.serviceType, this.service);
 }
