@@ -6,18 +6,29 @@
         <div group>
             <material-list-item [routerLink]="RoutePaths.dashboard.toUrl()"
                    [routerLinkActive]="'active'">
-                <material-icon icon="inbox"></material-icon>Dashboard
+                <material-icon icon="dashboard"></material-icon>Dashboard
 
             </material-list-item>
             <material-list-item [routerLink]="RoutePaths.clients.toUrl()"
                    [routerLinkActive]="'active'">
-                <material-icon icon="star"></material-icon>Clients
+                <material-icon icon="people"></material-icon>Clients
             </material-list-item>
-            <material-list-item>
-                <material-icon icon="send"></material-icon>Sent Mail
+            <material-list-item [routerLink]="RoutePaths.posts.toUrl()"
+                                [routerLinkActive]="'active'">
+                <material-icon icon="list_all"></material-icon>Posts
+
             </material-list-item>
-            <material-list-item>
-                <material-icon icon="drafts"></material-icon>Drafts
+            <material-list-item [routerLink]="RoutePaths.waterfalls.toUrl()"
+                                [routerLinkActive]="'active'">
+                <material-icon icon="waves"></material-icon>Waterfalls
+            </material-list-item>
+            <material-list-item [routerLink]="RoutePaths.food.toUrl()"
+                                [routerLinkActive]="'active'">
+                <material-icon icon="local_dining"></material-icon>Food
+            </material-list-item>
+            <material-list-item [routerLink]="RoutePaths.notifications.toUrl()"
+                                [routerLinkActive]="'active'">
+                <material-icon icon="notifications"></material-icon>Notifications
             </material-list-item>
         </div>
         <div group>
@@ -40,7 +51,7 @@
 
             <nav class="material-navigation">
                 <material-button class="material-drawer-button" icon 
-                                 materialTooltip="Notifications"
+                                 materialTooltip="Notifications" [routerLink]="RoutePaths.notifications.toUrl()"
                                  >
                     <material-icon icon="notifications"></material-icon>
                 </material-button>
