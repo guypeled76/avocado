@@ -25,8 +25,8 @@
         </div>
     </material-list>
 </material-drawer>
-<material-content style="flex-direction: column;height:100%" >
-    <header class="material-header shadow" style="flex:auto">
+<material-content class="main-area" >
+    <header class="material-header shadow" style="flex:none">
         <div class="material-header-row">
             <material-button icon
                              class="material-drawer-button" (trigger)="drawer.toggle()">
@@ -55,7 +55,7 @@
             </nav>
         </div>
     </header>
-    <div style="flex: none; overflow: auto; border:1px solid red">
+    <div class="content-area">
         <h3>Options</h3>
         <material-toggle [(checked)]="end" label="end">
         </material-toggle>

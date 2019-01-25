@@ -18,3 +18,13 @@
 @include mat-drawer-width(50%);
 @include mat-temporary-drawer-width(50%);
 }
+
+.main-area  {
+    flex-direction: column;
+    height:100%;
+    display: flex
+}
+
+.content-area {
+    flex: 1; overflow: auto;
+}
