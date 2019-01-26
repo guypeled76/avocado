@@ -9,12 +9,13 @@ import 'src/components/waterfalls/waterfalls_component.template.dart' as waterfa
 import 'src/components/food/food_component.template.dart' as food_template;
 import 'src/components/notifications/notifications_component.template.dart' as notifications_template;
 
-const clientIdParam = 'clientId';
+
+const idParam = 'Id';
 
 class RoutePaths {
   static final dashboard = RoutePath(path: 'dashboard');
   static final clients = RoutePath(path: 'clients');
-  static final client = RoutePath(path: '${clients.path}/:$clientIdParam');
+  static final client = RoutePath(path: '${clients.path}/:$idParam');
   static final posts = RoutePath(path: 'posts');
   static final waterfalls = RoutePath(path: 'waterfalls');
   static final notifications = RoutePath(path: 'notifications');
@@ -22,9 +23,8 @@ class RoutePaths {
 }
 
 abstract class RouteParams {
-  static int getClientId(Map<String, String> parameters) {
-    final id = parameters[clientIdParam];
-    return id == null ? null : int.tryParse(id);
+  static String getId(Map<String, String> parameters) {
+    return parameters[idParam];
   }
 }
 
@@ -58,6 +58,7 @@ class Routes {
     routePath: RoutePaths.food,
     component: food_template.FoodComponentNgFactory,
   );
+
 
   static final notifications = RouteDefinition(
     routePath: RoutePaths.notifications,

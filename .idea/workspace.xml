@@ -2,31 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="de58c749-dee8-4740-8e4c-37cec87eb0db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/food_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/food_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/ingredient_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/ingredient_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/ingredients_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/ingredients_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/meals_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/meals_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/recipes_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/food/recipes_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/notifications/notifications_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/notifications/notifications_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/posts_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/posts_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfall_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfall_component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfalls_component.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfalls_component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avocado_web/lib/app_component.html" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_web/lib/app_component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avocado_web/lib/app_routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_web/lib/app_routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +18,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="176">
+              <caret line="42" column="40" selection-start-line="42" selection-start-column="40" selection-end-line="42" selection-end-column="40" />
+              <folding>
+                <element signature="n#style#0;n#header#0;n#material-content#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="38" selection-start-column="38" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/angular_components-0.11.0/lib/laminate/overlay/module.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="167">
+              <caret line="116" column="6" selection-start-line="116" selection-start-column="6" selection-end-line="116" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="45" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="158">
+              <caret line="35" column="98" selection-start-line="35" selection-start-column="98" selection-end-line="35" selection-end-column="98" />
+              <folding>
+                <element signature="n#style#0;n#video-component#0;n#material-dialog#0;n#modal#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/posts_component.dart">
           <provider selected="true" editor-type-id="text-editor">
@@ -60,83 +114,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/feed/post_component.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="19" selection-end-column="1" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="48" column="1" selection-start-line="48" selection-start-column="1" selection-end-line="48" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/feed/post_component.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="1" lean-forward="true" selection-end-line="48" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/feed/post_component.html">
+        <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_routes.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="10" column="12" selection-end-line="28" />
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+              <folding>
+                <element signature="e#0#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -163,8 +148,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/avocado_client/lib/pages/splash/splash.dart" />
-        <option value="$PROJECT_DIR$/avocado_client/lib/pages/chat/chat.dart" />
         <option value="$PROJECT_DIR$/avocado_client/lib/utils.dart" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/todo_list/todo_list_component.html" />
         <option value="$PROJECT_DIR$/avocado_web/lib/app_component.css" />
@@ -206,14 +189,16 @@
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfalls_component.dart" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/food/food_component.dart" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/notifications/notifications_component.dart" />
-        <option value="$PROJECT_DIR$/avocado_web/lib/app_routes.dart" />
-        <option value="$PROJECT_DIR$/avocado_web/lib/app_component.html" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/posts_component.html" />
-        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart" />
-        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.scss" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/posts_component.dart" />
         <option value="$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/app_component.html" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/app_routes.dart" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.dart" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.html" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart" />
+        <option value="$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html" />
       </list>
     </option>
   </component>
@@ -226,7 +211,7 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="PackagesPane" proportions="" version="1">
+    <navigator proportions="" version="1">
       <autoscrollFromSource ProjectPane="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
@@ -265,11 +250,97 @@
             <path>
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
               <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="clients" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="clients" type="462c0819:PsiDirectoryNode" />
+              <item name="clients_component.dart" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="posts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="posts" type="462c0819:PsiDirectoryNode" />
+              <item name="post_component.dart" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="posts" type="462c0819:PsiDirectoryNode" />
+              <item name="posts_component.dart" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="posts" type="462c0819:PsiDirectoryNode" />
+              <item name="video_component.dart" type="620a8d5e:NestingTreeNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="avocado_web" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="app_component.dart" type="620a8d5e:NestingTreeNode" />
             </path>
             <path>
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Dart Packages" type="3dd79eb:DartTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Dart Packages" type="3dd79eb:DartTreeStructureProvider$1" />
+              <item name="lib" type="e6ad2126:DartTreeStructureProvider$DartSdkOrLibraryRootNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Dart Packages" type="3dd79eb:DartTreeStructureProvider$1" />
+              <item name="lib" type="e6ad2126:DartTreeStructureProvider$DartSdkOrLibraryRootNode" />
+              <item name="laminate" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Dart Packages" type="3dd79eb:DartTreeStructureProvider$1" />
+              <item name="lib" type="e6ad2126:DartTreeStructureProvider$DartSdkOrLibraryRootNode" />
+              <item name="laminate" type="462c0819:PsiDirectoryNode" />
+              <item name="overlay" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -407,128 +478,6 @@
             <path>
               <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
               <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="clients" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="clients" type="1f31426a:PackageElementNode" />
-              <item name="clients_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="feed" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="feed" type="1f31426a:PackageElementNode" />
-              <item name="feed_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="feed" type="1f31426a:PackageElementNode" />
-              <item name="post_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="food" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="notifications" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="notifications" type="1f31426a:PackageElementNode" />
-              <item name="notifications_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="posts" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="posts" type="1f31426a:PackageElementNode" />
-              <item name="post_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="posts" type="1f31426a:PackageElementNode" />
-              <item name="posts_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="waterfalls" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="waterfalls" type="1f31426a:PackageElementNode" />
-              <item name="waterfall_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="src" type="1f31426a:PackageElementNode" />
-              <item name="components" type="1f31426a:PackageElementNode" />
-              <item name="waterfalls" type="1f31426a:PackageElementNode" />
-              <item name="waterfalls_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
-              <item name="app_component.dart" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="avocado" type="58d84e3e:PackageViewProjectNode" />
-              <item name="avocado_web" type="616d4139:PackageViewModuleNode" />
               <item name="Libraries" type="5c3f07af:PackageViewLibrariesNode" />
             </path>
             <path>
@@ -546,7 +495,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548456247829" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548539776679" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="1.8" />
@@ -696,7 +645,7 @@
       <workItem from="1548310444056" duration="8391000" />
       <workItem from="1548350415840" duration="9041000" />
       <workItem from="1548381807746" duration="918000" />
-      <workItem from="1548394773427" duration="11137000" />
+      <workItem from="1548394773427" duration="15294000" />
     </task>
     <task id="LOCAL-00001" summary="Fix intelliJ">
       <created>1548172108264</created>
@@ -831,11 +780,18 @@
       <option name="project" value="LOCAL" />
       <updated>1548433039199</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="routes">
+      <created>1548456365284</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1548456365284</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54051000" />
+    <option name="totallyTimeSpent" value="58208000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -848,6 +804,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33333334" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -890,6 +847,48 @@
       <window_info anchor="right" id="Device File Explorer" order="12" side_tool="true" />
       <window_info anchor="right" id="Maven" order="13" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33333334" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="UI Designer" order="6" />
+      <window_info id="Build Variants" order="7" side_tool="true" />
+      <window_info id="Captures" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32902467" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32902467" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49930555" weight="0.39952996" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32902467" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49861112" weight="0.4453584" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49861112" visible="true" weight="0.37955347" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5013889" side_tool="true" weight="0.32902467" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49930555" weight="0.3278496" />
+      <window_info anchor="bottom" id="Flutter Performance" order="12" side_tool="true" />
+      <window_info anchor="bottom" id="Android Profiler" order="13" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Logcat" order="14" />
+      <window_info anchor="bottom" id="Messages" order="15" sideWeight="0.49930555" weight="0.3287841" />
+      <window_info anchor="bottom" id="Docker" order="16" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Flutter Inspector" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Flutter Outline" order="6" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" id="SciView" order="8" />
+      <window_info anchor="right" id="Database" order="9" />
+      <window_info anchor="right" id="Palette&#9;" order="10" />
+      <window_info anchor="right" id="Theme Preview" order="11" />
+      <window_info anchor="right" id="Device File Explorer" order="12" side_tool="true" />
+      <window_info anchor="right" id="Maven" order="13" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -908,49 +907,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="routes" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/avocado_client/lib/services/auth.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="21" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_client/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="49" column="31" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_common/lib/src/blocs/blocs.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_common/lib/src/services/AuthService.dart">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_common/lib/models.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_common/test/common.dart">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_common/lib/src/models/serializers.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1006,13 +962,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="82" selection-start-line="9" selection-start-column="82" selection-end-line="9" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -1122,16 +1071,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/waterfalls/waterfalls_component.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -1143,26 +1082,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_routes.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="53" column="112" selection-start-line="53" selection-start-column="112" selection-end-line="53" selection-end-column="112" />
-          <folding>
-            <element signature="n#style#0;n#header#0;n#material-content#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1203,13 +1122,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/feed/post_component.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -1219,18 +1131,95 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
+        <state relative-caret-position="675">
           <caret line="48" column="1" selection-start-line="48" selection-start-column="1" selection-end-line="48" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart">
+    <entry file="file://$PROJECT_DIR$/avocado_web/build/main.dart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="4" />
+        <state relative-caret-position="-250694">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/build/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/build/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="42" column="40" selection-start-line="42" selection-start-column="40" selection-end-line="42" selection-end-column="40" />
+          <folding>
+            <element signature="n#style#0;n#header#0;n#material-content#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_component.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/app_routes.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/video_component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="45" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -1254,20 +1243,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.dart">
+    <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/angular_components-0.11.0/lib/laminate/overlay/module.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="167">
+          <caret line="116" column="6" selection-start-line="116" selection-start-column="6" selection-end-line="116" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/clients/clients_component.html">
+    <entry file="file://$PROJECT_DIR$/avocado_web/lib/src/components/posts/post_component.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="158">
+          <caret line="35" column="98" selection-start-line="35" selection-start-column="98" selection-end-line="35" selection-end-column="98" />
+          <folding>
+            <element signature="n#style#0;n#video-component#0;n#material-dialog#0;n#modal#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

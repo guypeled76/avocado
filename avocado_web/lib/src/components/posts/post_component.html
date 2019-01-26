@@ -17,7 +17,7 @@
             <material-button icon>
                 <material-icon icon="favorite_border"></material-icon>
             </material-button>
-            <material-button icon>
+            <material-button icon (trigger)="onClick()">
                 <material-icon icon="share"></material-icon>
             </material-button>
             <material-button icon>
@@ -26,3 +26,32 @@
         </div>
     </div>
 </div>
+
+
+<modal [visible]="showEditor">
+    <material-dialog class="basic-dialog">
+
+        <h1 header>{{post?.content}}</h1>
+
+        <video-component [video]="post?.video" [visible]="post?.video!= null"  style="width: 300px"></video-component>
+
+        <p>
+            Aenean scelerisque posuere augue, vitae ornare felis ultricies nec. Integer tincidunt libero
+            quis diam congue, ac congue augue posuere. Quisque vel dui a libero finibus imperdiet. Donec
+            ac sapien eget ante volutpat hendrerit. Nunc vel aliquam sapien. Sed dolor libero, posuere a
+            ex eget, fermentum aliquet augue. Phasellus lobortis vitae lorem at egestas. Morbi et ante
+            ultrices ligula dignissim tincidunt non a sem. Morbi tempor posuere sapien sit amet sodales.
+            Praesent ac felis hendrerit, luctus augue et, tristique neque. Nulla scelerisque, urna non
+            iaculis auctor, nisi orci vehicula tellus, sed rhoncus purus eros rhoncus erat. Mauris in
+            mollis nisl. Mauris pretium erat id feugiat mollis. Nam at molestie nisi. Mauris pretium
+            pulvinar neque, sit amet sagittis felis hendrerit suscipit.
+        </p>
+
+        <div footer>
+            <material-button autoFocus clear-size (trigger)="showEditor = false">
+                Close
+            </material-button>
+        </div>
+
+    </material-dialog>
+</modal>
