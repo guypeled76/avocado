@@ -13,6 +13,7 @@ Serializer<UserData> _$userDataSerializer = new _$UserDataSerializer();
 Serializer<ProfileData> _$profileDataSerializer = new _$ProfileDataSerializer();
 Serializer<NotificationData> _$notificationDataSerializer =
     new _$NotificationDataSerializer();
+Serializer<VideoData> _$videoDataSerializer = new _$VideoDataSerializer();
 Serializer<MessageData> _$messageDataSerializer = new _$MessageDataSerializer();
 Serializer<TargetData> _$targetDataSerializer = new _$TargetDataSerializer();
 
@@ -31,6 +32,9 @@ class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
 
     return result;
@@ -54,6 +58,12 @@ class _$EntityDataSerializer implements StructuredSerializer<EntityData> {
         case 'type':
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
+          break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
           break;
       }
     }
@@ -85,6 +95,9 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
 
     return result;
@@ -121,6 +134,12 @@ class _$ContentDataSerializer implements StructuredSerializer<ContentData> {
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
           break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
       }
     }
 
@@ -154,6 +173,9 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
     if (object.video != null) {
       result
@@ -204,6 +226,12 @@ class _$PostDataSerializer implements StructuredSerializer<PostData> {
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
           break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
       }
     }
 
@@ -232,6 +260,9 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
 
     return result;
@@ -264,6 +295,12 @@ class _$UserDataSerializer implements StructuredSerializer<UserData> {
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
           break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
       }
     }
 
@@ -295,6 +332,9 @@ class _$ProfileDataSerializer implements StructuredSerializer<ProfileData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
 
     return result;
@@ -331,6 +371,12 @@ class _$ProfileDataSerializer implements StructuredSerializer<ProfileData> {
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
           break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
       }
     }
 
@@ -365,6 +411,9 @@ class _$NotificationDataSerializer
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
 
     return result;
@@ -405,6 +454,101 @@ class _$NotificationDataSerializer
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
           break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$VideoDataSerializer implements StructuredSerializer<VideoData> {
+  @override
+  final Iterable<Type> types = const [VideoData, _$VideoData];
+  @override
+  final String wireName = 'VideoData';
+
+  @override
+  Iterable serialize(Serializers serializers, VideoData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'user',
+      serializers.serialize(object.user,
+          specifiedType: const FullType(UserData)),
+      'image',
+      serializers.serialize(object.image,
+          specifiedType: const FullType(String)),
+      'video',
+      serializers.serialize(object.video,
+          specifiedType: const FullType(String)),
+      'date',
+      serializers.serialize(object.date, specifiedType: const FullType(String)),
+      'content',
+      serializers.serialize(object.content,
+          specifiedType: const FullType(String)),
+      'key',
+      serializers.serialize(object.key, specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type,
+          specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
+    ];
+
+    return result;
+  }
+
+  @override
+  VideoData deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new VideoDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'user':
+          result.user.replace(serializers.deserialize(value,
+              specifiedType: const FullType(UserData)) as UserData);
+          break;
+        case 'image':
+          result.image = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'video':
+          result.video = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'date':
+          result.date = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'content':
+          result.content = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'key':
+          result.key = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(EntityType)) as EntityType;
+          break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
+          break;
       }
     }
 
@@ -435,6 +579,9 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
       'type',
       serializers.serialize(object.type,
           specifiedType: const FullType(EntityType)),
+      'hashtags',
+      serializers.serialize(object.hashtags,
+          specifiedType: const FullType(List, const [const FullType(String)])),
     ];
     if (object.image != null) {
       result
@@ -480,6 +627,12 @@ class _$MessageDataSerializer implements StructuredSerializer<MessageData> {
         case 'type':
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(EntityType)) as EntityType;
+          break;
+        case 'hashtags':
+          result.hashtags = serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(List, const [const FullType(String)]))
+              as List<String>;
           break;
       }
     }
@@ -539,16 +692,21 @@ class _$EntityData extends EntityData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$EntityData([void updates(EntityDataBuilder b)]) =>
       (new EntityDataBuilder()..update(updates)).build();
 
-  _$EntityData._({this.key, this.type}) : super._() {
+  _$EntityData._({this.key, this.type, this.hashtags}) : super._() {
     if (key == null) {
       throw new BuiltValueNullFieldError('EntityData', 'key');
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('EntityData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('EntityData', 'hashtags');
     }
   }
 
@@ -562,19 +720,24 @@ class _$EntityData extends EntityData {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntityData && key == other.key && type == other.type;
+    return other is EntityData &&
+        key == other.key &&
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, key.hashCode), type.hashCode));
+    return $jf(
+        $jc($jc($jc(0, key.hashCode), type.hashCode), hashtags.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('EntityData')
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -590,12 +753,17 @@ class EntityDataBuilder implements Builder<EntityData, EntityDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   EntityDataBuilder();
 
   EntityDataBuilder get _$this {
     if (_$v != null) {
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -616,7 +784,8 @@ class EntityDataBuilder implements Builder<EntityData, EntityDataBuilder> {
 
   @override
   _$EntityData build() {
-    final _$result = _$v ?? new _$EntityData._(key: key, type: type);
+    final _$result =
+        _$v ?? new _$EntityData._(key: key, type: type, hashtags: hashtags);
     replace(_$result);
     return _$result;
   }
@@ -633,11 +802,14 @@ class _$ContentData extends ContentData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$ContentData([void updates(ContentDataBuilder b)]) =>
       (new ContentDataBuilder()..update(updates)).build();
 
-  _$ContentData._({this.user, this.date, this.content, this.key, this.type})
+  _$ContentData._(
+      {this.user, this.date, this.content, this.key, this.type, this.hashtags})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('ContentData', 'user');
@@ -653,6 +825,9 @@ class _$ContentData extends ContentData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('ContentData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('ContentData', 'hashtags');
     }
   }
 
@@ -671,15 +846,20 @@ class _$ContentData extends ContentData {
         date == other.date &&
         content == other.content &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, user.hashCode), date.hashCode), content.hashCode),
-            key.hashCode),
-        type.hashCode));
+        $jc(
+            $jc(
+                $jc($jc($jc(0, user.hashCode), date.hashCode),
+                    content.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -689,7 +869,8 @@ class _$ContentData extends ContentData {
           ..add('date', date)
           ..add('content', content)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -717,6 +898,10 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   ContentDataBuilder();
 
   ContentDataBuilder get _$this {
@@ -726,6 +911,7 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
       _content = _$v.content;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -748,7 +934,12 @@ class ContentDataBuilder implements Builder<ContentData, ContentDataBuilder> {
   _$ContentData build() {
     final _$result = _$v ??
         new _$ContentData._(
-            user: user, date: date, content: content, key: key, type: type);
+            user: user,
+            date: date,
+            content: content,
+            key: key,
+            type: type,
+            hashtags: hashtags);
     replace(_$result);
     return _$result;
   }
@@ -769,6 +960,8 @@ class _$PostData extends PostData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$PostData([void updates(PostDataBuilder b)]) =>
       (new PostDataBuilder()..update(updates)).build();
@@ -780,7 +973,8 @@ class _$PostData extends PostData {
       this.date,
       this.content,
       this.key,
-      this.type})
+      this.type,
+      this.hashtags})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('PostData', 'user');
@@ -799,6 +993,9 @@ class _$PostData extends PostData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('PostData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('PostData', 'hashtags');
     }
   }
 
@@ -819,7 +1016,8 @@ class _$PostData extends PostData {
         date == other.date &&
         content == other.content &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
@@ -828,12 +1026,14 @@ class _$PostData extends PostData {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, user.hashCode), video.hashCode),
-                        image.hashCode),
-                    date.hashCode),
-                content.hashCode),
-            key.hashCode),
-        type.hashCode));
+                    $jc(
+                        $jc($jc($jc(0, user.hashCode), video.hashCode),
+                            image.hashCode),
+                        date.hashCode),
+                    content.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -845,7 +1045,8 @@ class _$PostData extends PostData {
           ..add('date', date)
           ..add('content', content)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -881,6 +1082,10 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   PostDataBuilder();
 
   PostDataBuilder get _$this {
@@ -892,6 +1097,7 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
       _content = _$v.content;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -922,7 +1128,8 @@ class PostDataBuilder implements Builder<PostData, PostDataBuilder> {
               date: date,
               content: content,
               key: key,
-              type: type);
+              type: type,
+              hashtags: hashtags);
     } catch (_) {
       String _$failedField;
       try {
@@ -948,11 +1155,14 @@ class _$UserData extends UserData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$UserData([void updates(UserDataBuilder b)]) =>
       (new UserDataBuilder()..update(updates)).build();
 
-  _$UserData._({this.image, this.displayName, this.key, this.type})
+  _$UserData._(
+      {this.image, this.displayName, this.key, this.type, this.hashtags})
       : super._() {
     if (image == null) {
       throw new BuiltValueNullFieldError('UserData', 'image');
@@ -965,6 +1175,9 @@ class _$UserData extends UserData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('UserData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('UserData', 'hashtags');
     }
   }
 
@@ -982,14 +1195,18 @@ class _$UserData extends UserData {
         image == other.image &&
         displayName == other.displayName &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, image.hashCode), displayName.hashCode), key.hashCode),
-        type.hashCode));
+        $jc(
+            $jc($jc($jc(0, image.hashCode), displayName.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -998,7 +1215,8 @@ class _$UserData extends UserData {
           ..add('image', image)
           ..add('displayName', displayName)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -1022,6 +1240,10 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   UserDataBuilder();
 
   UserDataBuilder get _$this {
@@ -1030,6 +1252,7 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
       _displayName = _$v.displayName;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -1052,7 +1275,11 @@ class UserDataBuilder implements Builder<UserData, UserDataBuilder> {
   _$UserData build() {
     final _$result = _$v ??
         new _$UserData._(
-            image: image, displayName: displayName, key: key, type: type);
+            image: image,
+            displayName: displayName,
+            key: key,
+            type: type,
+            hashtags: hashtags);
     replace(_$result);
     return _$result;
   }
@@ -1069,12 +1296,19 @@ class _$ProfileData extends ProfileData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$ProfileData([void updates(ProfileDataBuilder b)]) =>
       (new ProfileDataBuilder()..update(updates)).build();
 
   _$ProfileData._(
-      {this.email, this.image, this.displayName, this.key, this.type})
+      {this.email,
+      this.image,
+      this.displayName,
+      this.key,
+      this.type,
+      this.hashtags})
       : super._() {
     if (email == null) {
       throw new BuiltValueNullFieldError('ProfileData', 'email');
@@ -1090,6 +1324,9 @@ class _$ProfileData extends ProfileData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('ProfileData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('ProfileData', 'hashtags');
     }
   }
 
@@ -1108,17 +1345,20 @@ class _$ProfileData extends ProfileData {
         image == other.image &&
         displayName == other.displayName &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, email.hashCode), image.hashCode),
-                displayName.hashCode),
-            key.hashCode),
-        type.hashCode));
+            $jc(
+                $jc($jc($jc(0, email.hashCode), image.hashCode),
+                    displayName.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -1128,7 +1368,8 @@ class _$ProfileData extends ProfileData {
           ..add('image', image)
           ..add('displayName', displayName)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -1156,6 +1397,10 @@ class ProfileDataBuilder implements Builder<ProfileData, ProfileDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   ProfileDataBuilder();
 
   ProfileDataBuilder get _$this {
@@ -1165,6 +1410,7 @@ class ProfileDataBuilder implements Builder<ProfileData, ProfileDataBuilder> {
       _displayName = _$v.displayName;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -1191,7 +1437,8 @@ class ProfileDataBuilder implements Builder<ProfileData, ProfileDataBuilder> {
             image: image,
             displayName: displayName,
             key: key,
-            type: type);
+            type: type,
+            hashtags: hashtags);
     replace(_$result);
     return _$result;
   }
@@ -1210,12 +1457,20 @@ class _$NotificationData extends NotificationData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$NotificationData([void updates(NotificationDataBuilder b)]) =>
       (new NotificationDataBuilder()..update(updates)).build();
 
   _$NotificationData._(
-      {this.user, this.target, this.date, this.content, this.key, this.type})
+      {this.user,
+      this.target,
+      this.date,
+      this.content,
+      this.key,
+      this.type,
+      this.hashtags})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'user');
@@ -1234,6 +1489,9 @@ class _$NotificationData extends NotificationData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('NotificationData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('NotificationData', 'hashtags');
     }
   }
 
@@ -1254,17 +1512,22 @@ class _$NotificationData extends NotificationData {
         date == other.date &&
         content == other.content &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, user.hashCode), target.hashCode), date.hashCode),
-                content.hashCode),
-            key.hashCode),
-        type.hashCode));
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), target.hashCode),
+                        date.hashCode),
+                    content.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -1275,7 +1538,8 @@ class _$NotificationData extends NotificationData {
           ..add('date', date)
           ..add('content', content)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -1308,6 +1572,10 @@ class NotificationDataBuilder
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   NotificationDataBuilder();
 
   NotificationDataBuilder get _$this {
@@ -1318,6 +1586,7 @@ class NotificationDataBuilder
       _content = _$v.content;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -1347,7 +1616,8 @@ class NotificationDataBuilder
               date: date,
               content: content,
               key: key,
-              type: type);
+              type: type,
+              hashtags: hashtags);
     } catch (_) {
       String _$failedField;
       try {
@@ -1358,6 +1628,210 @@ class NotificationDataBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'NotificationData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$VideoData extends VideoData {
+  @override
+  final UserData user;
+  @override
+  final String image;
+  @override
+  final String video;
+  @override
+  final String date;
+  @override
+  final String content;
+  @override
+  final String key;
+  @override
+  final EntityType type;
+  @override
+  final List<String> hashtags;
+
+  factory _$VideoData([void updates(VideoDataBuilder b)]) =>
+      (new VideoDataBuilder()..update(updates)).build();
+
+  _$VideoData._(
+      {this.user,
+      this.image,
+      this.video,
+      this.date,
+      this.content,
+      this.key,
+      this.type,
+      this.hashtags})
+      : super._() {
+    if (user == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'user');
+    }
+    if (image == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'image');
+    }
+    if (video == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'video');
+    }
+    if (date == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'date');
+    }
+    if (content == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'content');
+    }
+    if (key == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'key');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('VideoData', 'hashtags');
+    }
+  }
+
+  @override
+  VideoData rebuild(void updates(VideoDataBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  VideoDataBuilder toBuilder() => new VideoDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is VideoData &&
+        user == other.user &&
+        image == other.image &&
+        video == other.video &&
+        date == other.date &&
+        content == other.content &&
+        key == other.key &&
+        type == other.type &&
+        hashtags == other.hashtags;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, user.hashCode), image.hashCode),
+                            video.hashCode),
+                        date.hashCode),
+                    content.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('VideoData')
+          ..add('user', user)
+          ..add('image', image)
+          ..add('video', video)
+          ..add('date', date)
+          ..add('content', content)
+          ..add('key', key)
+          ..add('type', type)
+          ..add('hashtags', hashtags))
+        .toString();
+  }
+}
+
+class VideoDataBuilder implements Builder<VideoData, VideoDataBuilder> {
+  _$VideoData _$v;
+
+  UserDataBuilder _user;
+  UserDataBuilder get user => _$this._user ??= new UserDataBuilder();
+  set user(UserDataBuilder user) => _$this._user = user;
+
+  String _image;
+  String get image => _$this._image;
+  set image(String image) => _$this._image = image;
+
+  String _video;
+  String get video => _$this._video;
+  set video(String video) => _$this._video = video;
+
+  String _date;
+  String get date => _$this._date;
+  set date(String date) => _$this._date = date;
+
+  String _content;
+  String get content => _$this._content;
+  set content(String content) => _$this._content = content;
+
+  String _key;
+  String get key => _$this._key;
+  set key(String key) => _$this._key = key;
+
+  EntityType _type;
+  EntityType get type => _$this._type;
+  set type(EntityType type) => _$this._type = type;
+
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
+  VideoDataBuilder();
+
+  VideoDataBuilder get _$this {
+    if (_$v != null) {
+      _user = _$v.user?.toBuilder();
+      _image = _$v.image;
+      _video = _$v.video;
+      _date = _$v.date;
+      _content = _$v.content;
+      _key = _$v.key;
+      _type = _$v.type;
+      _hashtags = _$v.hashtags;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(VideoData other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$VideoData;
+  }
+
+  @override
+  void update(void updates(VideoDataBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$VideoData build() {
+    _$VideoData _$result;
+    try {
+      _$result = _$v ??
+          new _$VideoData._(
+              user: user.build(),
+              image: image,
+              video: video,
+              date: date,
+              content: content,
+              key: key,
+              type: type,
+              hashtags: hashtags);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        user.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'VideoData', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -1379,12 +1853,20 @@ class _$MessageData extends MessageData {
   final String key;
   @override
   final EntityType type;
+  @override
+  final List<String> hashtags;
 
   factory _$MessageData([void updates(MessageDataBuilder b)]) =>
       (new MessageDataBuilder()..update(updates)).build();
 
   _$MessageData._(
-      {this.user, this.image, this.date, this.content, this.key, this.type})
+      {this.user,
+      this.image,
+      this.date,
+      this.content,
+      this.key,
+      this.type,
+      this.hashtags})
       : super._() {
     if (user == null) {
       throw new BuiltValueNullFieldError('MessageData', 'user');
@@ -1400,6 +1882,9 @@ class _$MessageData extends MessageData {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('MessageData', 'type');
+    }
+    if (hashtags == null) {
+      throw new BuiltValueNullFieldError('MessageData', 'hashtags');
     }
   }
 
@@ -1419,17 +1904,22 @@ class _$MessageData extends MessageData {
         date == other.date &&
         content == other.content &&
         key == other.key &&
-        type == other.type;
+        type == other.type &&
+        hashtags == other.hashtags;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, user.hashCode), image.hashCode), date.hashCode),
-                content.hashCode),
-            key.hashCode),
-        type.hashCode));
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, user.hashCode), image.hashCode),
+                        date.hashCode),
+                    content.hashCode),
+                key.hashCode),
+            type.hashCode),
+        hashtags.hashCode));
   }
 
   @override
@@ -1440,7 +1930,8 @@ class _$MessageData extends MessageData {
           ..add('date', date)
           ..add('content', content)
           ..add('key', key)
-          ..add('type', type))
+          ..add('type', type)
+          ..add('hashtags', hashtags))
         .toString();
   }
 }
@@ -1472,6 +1963,10 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
   EntityType get type => _$this._type;
   set type(EntityType type) => _$this._type = type;
 
+  List<String> _hashtags;
+  List<String> get hashtags => _$this._hashtags;
+  set hashtags(List<String> hashtags) => _$this._hashtags = hashtags;
+
   MessageDataBuilder();
 
   MessageDataBuilder get _$this {
@@ -1482,6 +1977,7 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
       _content = _$v.content;
       _key = _$v.key;
       _type = _$v.type;
+      _hashtags = _$v.hashtags;
       _$v = null;
     }
     return this;
@@ -1511,7 +2007,8 @@ class MessageDataBuilder implements Builder<MessageData, MessageDataBuilder> {
               date: date,
               content: content,
               key: key,
-              type: type);
+              type: type,
+              hashtags: hashtags);
     } catch (_) {
       String _$failedField;
       try {

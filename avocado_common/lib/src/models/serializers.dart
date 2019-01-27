@@ -14,7 +14,8 @@ part 'serializers.g.dart';
   EntityType,
   MessageData,
   TargetData,
-  ProfileData
+  ProfileData,
+  VideoData
 ])
 final Serializers serializers = (
     _$serializers.toBuilder()..addPlugin(new StandardJsonPlugin())

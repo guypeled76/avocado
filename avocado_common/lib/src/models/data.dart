@@ -52,6 +52,15 @@ abstract class NotificationData implements Built<NotificationData, NotificationD
   static Serializer<NotificationData> get serializer => _$notificationDataSerializer;
 }
 
+abstract class VideoData implements Built<VideoData, VideoDataBuilder>, VideoInfo {
+
+  UserData get user;
+
+  VideoData._();
+  factory VideoData([updates(VideoDataBuilder b)]) = _$VideoData;
+  static Serializer<VideoData> get serializer => _$videoDataSerializer;
+}
+
 
 abstract class MessageData implements Built<MessageData, MessageDataBuilder>, MessageInfo {
 

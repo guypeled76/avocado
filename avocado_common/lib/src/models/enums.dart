@@ -13,10 +13,12 @@ class EntityType extends EnumClass {
   static const EntityType post = _$post;
   static const EntityType user = _$user;
   static const EntityType notification = _$notification;
+  static const EntityType video = _$video;
 
   const EntityType._(String name) : super(name);
 
   static BuiltSet<EntityType> get values => _$values;
   static EntityType valueOf(String name) => _$valueOf(name);
 }
+
 

@@ -6,6 +6,7 @@ export 'enums.dart';
 abstract class EntityInfo {
   String get key;
   EntityType get type;
+  List<String> get hashtags;
 }
 
 abstract class TargetInfo {
@@ -33,7 +34,8 @@ abstract class ImageContentInfo implements ContentInfo
     String content,
     UserInfo user,
     String date,
-    String image
+    String image,
+    List<String> hashtags
     }) {
     var builder = MessageDataBuilder()
         ..key = key
@@ -41,8 +43,36 @@ abstract class ImageContentInfo implements ContentInfo
         ..user = UserInfo.createBuilder(key:user.key, displayName:user.displayName, image:user.image)
         ..date = date
         ..type = EntityType.message
-        ..image = image;
+        ..image = image
+        ..hashtags = hashtags;
     ;
+
+
+    return builder.build();
+
+  }
+}
+
+abstract class VideoInfo implements ContentInfo, ImageContentInfo, SearchInfo {
+  String get image;
+  String get video;
+
+  static VideoInfo create({
+    String key,
+    String content,
+    UserInfo user,
+    String date,
+    String image,
+    List<String> hashtags
+  }) {
+    var builder = VideoDataBuilder()
+      ..key = key
+      ..content = content
+      ..user = UserInfo.createBuilder(key:user.key, displayName:user.displayName, image:user.image)
+      ..date = date
+      ..type = EntityType.video
+      ..image = image,
+      ..hashtags = hashtags;
 
 
     return builder.build();
@@ -74,14 +104,15 @@ abstract class UserInfo implements EntityInfo {
   static UserDataBuilder createBuilder({
     String key,
     String displayName,
-    String image
+    String image,
+    List<String> hashtags
   }) {
     var builder = UserDataBuilder()
       ..key = key
       ..type = EntityType.user
       ..displayName = displayName
-      ..image = image;
-    ;
+      ..image = image,
+      ..hashtags = hashtags;
 
 
     return builder;

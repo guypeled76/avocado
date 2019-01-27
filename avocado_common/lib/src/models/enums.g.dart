@@ -10,6 +10,7 @@ const EntityType _$message = const EntityType._('message');
 const EntityType _$post = const EntityType._('post');
 const EntityType _$user = const EntityType._('user');
 const EntityType _$notification = const EntityType._('notification');
+const EntityType _$video = const EntityType._('video');
 
 EntityType _$valueOf(String name) {
   switch (name) {
@@ -21,6 +22,8 @@ EntityType _$valueOf(String name) {
       return _$user;
     case 'notification':
       return _$notification;
+    case 'video':
+      return _$video;
     default:
       throw new ArgumentError(name);
   }
@@ -32,6 +35,7 @@ final BuiltSet<EntityType> _$values =
   _$post,
   _$user,
   _$notification,
+  _$video,
 ]);
 
 Serializer<EntityType> _$entityTypeSerializer = new _$EntityTypeSerializer();
