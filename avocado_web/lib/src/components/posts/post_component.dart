@@ -11,6 +11,9 @@ import 'package:avocado_web/src/components/posts/video_component.dart';
       MaterialButtonComponent,
       MaterialIconComponent,
       MaterialDialogComponent,
+      materialInputDirectives,
+      MaterialMultilineInputComponent,
+      materialNumberInputDirectives,
       NgStyle,
       VideoComponent,
       ModalComponent
@@ -19,9 +22,11 @@ import 'package:avocado_web/src/components/posts/video_component.dart';
       'package:angular_components/css/mdc_web/card/mdc-card.scss.css',
       'post_component.scss.css'
     ])
-class PostComponent {
+class PostComponent  {
 
   var showEditor = false;
+
+  var value = "";
 
   @Input("post")
   PostInfo post;
