@@ -55,7 +55,8 @@ var chats = {
         "displayName": "Friedrich Nietzsche",
         "image": "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"
       },
-      "content": "רעב?"
+      "content": "רעב?",
+      "hashtags":["test","test1"]
     },
     "m2": {
       "type":"message",

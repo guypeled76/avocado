@@ -126,7 +126,8 @@ var posts = {
       "image" : "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"
     },
     "content": "תמונה של ארוחת פליאו",
-    "type":"post"
+    "type":"post",
+    "hashtags":["test","test1"]
   },
   "p9": {
     "image":
