@@ -1,14 +1,15 @@
 import 'package:avocado_common/common.dart';
+import 'dart:convert';
 
-Future<int> testJSON()async {
+Future<String> testJSON()async {
 
 
   FeedBloC bloc = FeedBloC();
 
-  int count = 0;
+  String result = "";
   List<PostInfo> posts = await bloc.posts.first;
   for(PostInfo post in posts) {
-    count++;
+    result += json.encode(post.toJson());
   }
-  return count;
+  return result;
 }
