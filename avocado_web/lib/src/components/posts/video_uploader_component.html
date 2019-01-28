@@ -1,6 +1,13 @@
-<div>
-    <form #form enctype="multipart/form-data">
-        <input type="file" #upload name='file' (change)="uploadFiles(form)">
-    </form>
-    <span>{{progress}}</span>
-</div>
+
+<form #form enctype="multipart/form-data">
+
+    <material-input label="name" [(ngModel)]="name" [floatingLabel]="true"></material-input>
+    <material-input label="content" [(ngModel)]="content" [floatingLabel]="true"></material-input>
+    <input type="file" #upload name='file'>
+
+    <div>
+        <material-button raised class="blue" (trigger)="uploadFiles(form)" >Add</material-button>
+    </div>
+</form>
+<span>--{{output}}--</span>
+

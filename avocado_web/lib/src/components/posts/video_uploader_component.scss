@@ -1,1 +1,10 @@
 @import 'package:angular_components/css/material/material';
+
+:host {
+  width: 100%;
+}
+form {
+  display: flex;
+  flex-direction: column;
+
+}
