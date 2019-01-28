@@ -18,5 +18,4 @@ class PostsComponent {
 
   FeedBloC bloc = FeedBloC();
 
-  var name = 'Posts';
 }

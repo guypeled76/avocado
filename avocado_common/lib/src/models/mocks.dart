@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'info.dart';
-import 'data.dart';
-import 'serializers.dart';
 import 'package:rxdart/rxdart.dart';
 import 'mocks/mocks.dart';
 
@@ -27,35 +25,35 @@ Stream<Map<String, dynamic>> loadJSONSectionEntities(Map<String, dynamic> data, 
 
 Stream<List<PostInfo>> loadPinned() {
   return loadJSONEntities(pinned)
-      .map((map) => serializers.deserializeWith(PostData.serializer, map))
+      .map((map) => PostInfo.fromJson(map))
       .toList()
       .asStream();
 }
 
 Stream<List<PostInfo>> loadPosts() {
   return loadJSONEntities(posts)
-      .map((map) => serializers.deserializeWith(PostData.serializer, map))
+      .map((map) => PostInfo.fromJson(map))
       .toList()
       .asStream();
 }
 
 Stream<List<UserInfo>> loadUsers() {
   return loadJSONEntities(users)
-      .map((map) => serializers.deserializeWith(UserData.serializer, map))
+      .map((map) => UserInfo.fromJson(map))
       .toList()
       .asStream();
 }
 
 Stream<List<MessageInfo>> loadChat(String chatId) {
   return loadJSONSectionEntities(chats, chatId)
-      .map((map) => serializers.deserializeWith(MessageData.serializer, map))
+      .map((map) => MessageInfo.fromJson(map))
       .toList()
       .asStream();
 }
 
 Stream<List<NotificationInfo>> loadNotifications() {
   return loadJSONEntities(notifications)
-      .map((map) => serializers.deserializeWith(NotificationData.serializer, map))
+      .map((map) => NotificationInfo.fromJson(map))
       .toList()
       .asStream();
 }

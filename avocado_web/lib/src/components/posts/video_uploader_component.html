@@ -1,0 +1,6 @@
+<div>
+    <form #form enctype="multipart/form-data">
+        <input type="file" #upload name='file' (change)="uploadFiles(form)">
+    </form>
+    <span>{{progress}}</span>
+</div>

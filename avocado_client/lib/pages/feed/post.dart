@@ -29,7 +29,7 @@ class Post extends StatelessWidget {
             ),
             subtitle: new Row(
               children: [
-                new Text(this.post.date),
+                new Text(this.post.date.toString()),
                 new Icon(
                   Icons.public,
                   size: 15.0,

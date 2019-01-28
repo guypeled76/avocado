@@ -13,11 +13,11 @@ class ChatWidget extends StatelessWidget {
   _openImage(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    ImageViewDialog.showFromFile(context, ImageContentInfo.create(
+    ImageViewDialog.showFromFile(context, PostInfo(
       key: "t1",
       content: "",
-      date:"",
-      user: UserInfo.create(
+      date:DateTime.now(),
+      user: UserInfo(
           key: "dd",
           displayName: "dd",
           image: "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"
@@ -29,11 +29,11 @@ class ChatWidget extends StatelessWidget {
   _takeImage(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-    ImageViewDialog.showFromFile(context, ImageContentInfo.create(
+    ImageViewDialog.showFromFile(context, PostInfo(
         key: "t1",
         content: "",
-        date:"",
-        user: UserInfo.create(
+        date:DateTime.now(),
+        user: UserInfo(
             key: "dd",
             displayName: "dd",
             image: "https://c8.alamy.com/comp/ANJRF0/friedrich-nietzsche-ANJRF0.jpg"

@@ -1,6 +1,6 @@
 var notifications = {
   "n1": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key": "u1",
@@ -15,7 +15,7 @@ var notifications = {
     }
   },
   "n2": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key": "u1",
@@ -30,7 +30,7 @@ var notifications = {
     }
   },
   "n3": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key":"u2",
@@ -45,7 +45,7 @@ var notifications = {
     }
   },
   "n4": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key": "u1",
@@ -60,7 +60,7 @@ var notifications = {
     }
   },
   "n5": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key": "u1",
@@ -75,7 +75,7 @@ var notifications = {
     }
   },
   "n6": {
-    "date": "1/7/19 11:12",
+    "date": "2012-02-27 13:27:00",
     "user": {
       "type":"user",
       "key":"u2",

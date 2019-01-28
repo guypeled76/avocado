@@ -1,161 +1,179 @@
-import 'enums.dart';
-import 'data.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-export 'enums.dart';
+part 'info.g.dart';
 
-abstract class EntityInfo {
-  String get key;
-  EntityType get type;
-  List<String> get hashtags;
+enum EntityType {
+    message,
+    post,
+    user,
+    notification,
+    video
 }
 
-abstract class TargetInfo {
-  String get key;
-  EntityType get type;
+@JsonSerializable(nullable: false)
+class EntityInfo {
+  final String key;
+  final EntityType type;
+
+  @JsonKey(nullable: true, defaultValue: [])
+  final List<String> hashtags;
+  EntityInfo({this.key, this.type, this.hashtags});
+
+  factory EntityInfo.fromJson(Map<String, dynamic> json) => _$EntityInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$EntityInfoToJson(this);
 }
 
-abstract class ContentInfo implements EntityInfo {
-  UserInfo get user;
-  String get date;
-  String get content;
+@JsonSerializable(nullable: false)
+class TargetInfo {
+  final String key;
+  final EntityType type;
+  TargetInfo({this.key, this.type});
+
+  factory TargetInfo.fromJson(Map<String, dynamic> json) => _$TargetInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$TargetInfoToJson(this);
 }
 
-abstract class PostInfo implements ContentInfo, ImageContentInfo, SearchInfo {
-  String get image;
-  String get video;
+@JsonSerializable(nullable: false)
+class ContentInfo extends EntityInfo {
+  final UserInfo user;
+  final DateTime date;
+  final String content;
+
+  ContentInfo({String key, EntityType type, List<String> hashtags, this.user, this.date, this.content}) : super(
+    key:key,
+    type:type,
+    hashtags:hashtags
+  );
+
+  factory ContentInfo.fromJson(Map<String, dynamic> json) => _$ContentInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$PostInfoToJson(this);
 }
 
-abstract class ImageContentInfo implements ContentInfo
+@JsonSerializable(nullable: false)
+class PostInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+  final String image;
+  final String video;
+
+  PostInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      content:content,
+      user:user,
+      date:date
+  );
+
+  factory PostInfo.fromJson(Map<String, dynamic> json) => _$PostInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$PostInfoToJson(this);
+}
+
+@JsonSerializable(nullable: false)
+class ImageContentInfo extends ContentInfo
 {
-  String get image;
+  final String image;
 
-  static ImageContentInfo create({
-    String key,
-    String content,
-    UserInfo user,
-    String date,
-    String image,
-    List<String> hashtags
-    }) {
-    var builder = MessageDataBuilder()
-        ..key = key
-        ..content = content
-        ..user = UserInfo.createBuilder(key:user.key, displayName:user.displayName, image:user.image)
-        ..date = date
-        ..type = EntityType.message
-        ..image = image
-        ..hashtags = hashtags;
-    ;
+  ImageContentInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      content:content,
+      date:date,
+      user:user
+  );
 
+  factory ImageContentInfo.fromJson(Map<String, dynamic> json) => _$ImageContentInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ImageContentInfoToJson(this);
 
-    return builder.build();
-
-  }
 }
 
-abstract class VideoInfo implements ContentInfo, ImageContentInfo, SearchInfo {
-  String get image;
-  String get video;
+@JsonSerializable(nullable: false)
+class VideoInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+  final String image;
+  final String video;
 
-  static VideoInfo create({
-    String key,
-    String content,
-    UserInfo user,
-    String date,
-    String image,
-    List<String> hashtags
-  }) {
-    var builder = VideoDataBuilder()
-      ..key = key
-      ..content = content
-      ..user = UserInfo.createBuilder(key:user.key, displayName:user.displayName, image:user.image)
-      ..date = date
-      ..type = EntityType.video
-      ..image = image,
-      ..hashtags = hashtags;
+  VideoInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      content:content,
+      user:user,
+      date:date
+  );
 
-
-    return builder.build();
-
-  }
+  factory VideoInfo.fromJson(Map<String, dynamic> json) => _$VideoInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$VideoInfoToJson(this);
 }
 
-abstract class NotificationInfo implements ContentInfo
+@JsonSerializable(nullable: false)
+class NotificationInfo extends ContentInfo
 {
-  TargetInfo get target;
+  final TargetInfo target;
+
+  NotificationInfo({String key, EntityType type, List<String> hashtags, DateTime date, UserInfo user, String content, this.target}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      content:content,
+      user:user,
+      date:date
+  );
+
+  factory NotificationInfo.fromJson(Map<String, dynamic> json) => _$NotificationInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$NotificationInfoToJson(this);
 }
+
 
 abstract class SearchInfo implements ContentInfo {
 
 }
 
-abstract class MessageInfo implements ContentInfo, ImageContentInfo, SearchInfo {
-  String get image;
+@JsonSerializable(nullable: false)
+class MessageInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+  final String image;
+
+  MessageInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      content:content,
+      user:user,
+      date:date
+  );
+
+  factory MessageInfo.fromJson(Map<String, dynamic> json) => _$MessageInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$MessageInfoToJson(this);
 }
 
 
 
+@JsonSerializable(nullable: false)
+class UserInfo extends EntityInfo {
+  final String image;
+  final String displayName;
 
-abstract class UserInfo implements EntityInfo {
-  String get image;
-  String get displayName;
+  UserInfo({String key, EntityType type, List<String> hashtags, this.image, this.displayName}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags
+  );
 
+  factory UserInfo.fromJson(Map<String, dynamic> json) => _$UserInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
 
-  static UserDataBuilder createBuilder({
-    String key,
-    String displayName,
-    String image,
-    List<String> hashtags
-  }) {
-    var builder = UserDataBuilder()
-      ..key = key
-      ..type = EntityType.user
-      ..displayName = displayName
-      ..image = image,
-      ..hashtags = hashtags;
-
-
-    return builder;
-
-  }
-
-  static UserInfo create({
-    String key,
-    String displayName,
-    String image
-  }) {
-    var builder = UserDataBuilder()
-      ..key = key
-      ..type = EntityType.user
-      ..displayName = displayName
-      ..image = image;
-    ;
-
-
-    return builder.build();
-
-  }
 }
 
-abstract class ProfileInfo implements UserInfo {
-  String get email;
+@JsonSerializable(nullable: false)
+class ProfileInfo extends UserInfo {
+  final String email;
 
-  static ProfileInfo create({
-    String key,
-    String displayName,
-    String image,
-    String email
-  }) {
-    var builder = ProfileDataBuilder()
-      ..key = key
-      ..type = EntityType.user
-      ..displayName = displayName
-      ..email = email
-      ..image = image;
-    ;
+  ProfileInfo({String key, EntityType type, List<String> hashtags, String image, String displayName, this.email}) : super(
+      key:key,
+      type:type,
+      hashtags:hashtags,
+      displayName:displayName,
+      image:image
+  );
 
-
-    return builder.build();
-
-  }
+  factory ProfileInfo.fromJson(Map<String, dynamic> json) => _$ProfileInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ProfileInfoToJson(this);
 }

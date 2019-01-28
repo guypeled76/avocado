@@ -2,7 +2,7 @@ var chats = {
   "c1": {
     "m1": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -13,7 +13,7 @@ var chats = {
     },
     "m2": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -24,7 +24,7 @@ var chats = {
     },
     "m3": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -35,7 +35,7 @@ var chats = {
     },
     "m4": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -48,7 +48,7 @@ var chats = {
   "c2": {
     "m1": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -59,7 +59,7 @@ var chats = {
     },
     "m2": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -70,7 +70,7 @@ var chats = {
     },
     "m3": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -81,7 +81,7 @@ var chats = {
     },
     "m4": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key": "u2",
@@ -92,7 +92,7 @@ var chats = {
     },
     "m5": {
       "type":"message",
-      "date": "1/7/19 11:12",
+      "date": "2012-02-27 13:27:00",
       "user": {
         "type":"user",
         "key":"u2",
