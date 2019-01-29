@@ -1,6 +1,5 @@
 import 'package:angular/angular.dart';
 import 'package:avocado_common/common.dart';
-import 'package:firebase/firestore.dart';
 import 'dart:html';
 
 import 'package:angular_components/angular_components.dart';
@@ -22,9 +21,11 @@ import 'package:angular_components/angular_components.dart';
 class VideoUploaderComponent {
 
 
-  final RepositoryService repositoryService;
+  final VideosBLoC bloc;
 
-  VideoUploaderComponent(this.repositoryService);
+  VideoUploaderComponent(RepositoryService repository) :
+    bloc = VideosBLoC(repository);
+
 
   var progress = 20;
 
@@ -37,13 +38,10 @@ class VideoUploaderComponent {
   void uploadFiles(form) {
     var formData = new FormData(form);
 
-     output = formData.get('file').toString();
+     //output = formData.get('file').toString();
 
 
-     repositoryService.collection("targets").add(UserInfo(
-         key: "dd", displayName: "dd", hashtags: ["dd","gg"]).toJson());
-
-    repositoryService.collection("videos").addVideo(VideoInfo(
+     bloc.addVideo(VideoInfo(
       content: "ddd",
       user: UserInfo(
         key: "dd",
@@ -51,6 +49,8 @@ class VideoUploaderComponent {
         displayName: "dd"
       ),
       date: DateTime.now()
-    ));
+    )).then((video) {
+      output = video.key;
+     });
   }
 }

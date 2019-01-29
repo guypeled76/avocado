@@ -32,8 +32,8 @@ class RepositoryDocumentImpl extends RepositoryDocument {
   }
 
   @override
-  Stream<Map<String, dynamic>> get() {
-    return this.document.get().asStream().map((snapshot) {
+  Future<Map<String, dynamic>> get() {
+    return this.document.get().then((snapshot) {
       return RepositoryService.normalizeMap(snapshot.id, snapshot.data());
     });
   }
@@ -64,11 +64,10 @@ class RepositoryCollectionImpl extends RepositoryCollection {
   }
 
   @override
-  Stream<List<Map<String, dynamic>>> get() {
-    return collection.get().asStream().map((snapshot) {
-      snapshot.docs.map((doc) {
-        return RepositoryService.normalizeMap(doc.id, doc.data());
-      });
+  Future<List<Map<String, dynamic>>> get() {
+    return this.collection.get().then((snapshot) {
+      return snapshot.docs.map((doc) =>
+          RepositoryService.normalizeMap(doc.id, doc.data())).toList();
     });
   }
 
@@ -91,11 +90,10 @@ class RepositoryQueryImp extends RepositoryQuery {
   }
 
   @override
-  Stream<List<Map<String, dynamic>>> get() {
-    return query.get().asStream().map((snapshot) {
-      snapshot.docs.map((doc) {
-        return RepositoryService.normalizeMap(doc.id, doc.data());
-      });
+  Future<List<Map<String, dynamic>>> get() {
+    return this.query.get().then((snapshot) {
+      return snapshot.docs.map((doc) =>
+          RepositoryService.normalizeMap(doc.id, doc.data())).toList();
     });
   }
 
