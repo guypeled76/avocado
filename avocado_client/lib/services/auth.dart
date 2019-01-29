@@ -3,22 +3,35 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthServiceImpl implements AuthService {
 
-  final FirebaseUser profile;
+  ProfileInfo _profile;
 
+  AuthServiceImpl(FirebaseUser user) : _profile = ProfileInfo(
+    key: user.uid,
+    displayName: user.displayName,
+    image: user.photoUrl
+  );
 
-  AuthServiceImpl(this.profile);
-
-
-  String get email {
-    return profile?.email ?? "";
+  @override
+  ProfileInfo get profile {
+    return _profile;
   }
 
-  String get displayName {
-    return profile?.displayName ?? "";
+  @override
+  void signInWithFacebook() {
+
   }
 
-  String get photoUrl {
-    return profile?.photoUrl ?? "";
+  @override
+  void signInWithGoogle() {
+
   }
+
+  @override
+  void signOut() {
+
+  }
+
+
+
 
 }

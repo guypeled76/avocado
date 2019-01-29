@@ -32,5 +32,13 @@ abstract class RepositoryCollection extends RepositoryQuery {
 abstract class RepositoryQuery {
   Future<List<Map<String, dynamic>>> get();
 
-  RepositoryQuery where(String fieldPath, String op, dynamic value);
+  RepositoryQuery where(String field, {
+    dynamic isEqualTo,
+    dynamic isLessThan,
+    dynamic isLessThanOrEqualTo,
+    dynamic isGreaterThan,
+    dynamic isGreaterThanOrEqualTo,
+    dynamic arrayContains,
+    bool isNull,
+  });
 }

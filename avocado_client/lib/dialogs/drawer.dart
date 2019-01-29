@@ -29,14 +29,14 @@ class _DrawerDialogState extends State<DrawerDialog> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              authContext.displayName,
+              authContext.profile.displayName,
             ),
             accountEmail: Text(
-              authContext.email,
+              authContext.profile.email,
             ),
             currentAccountPicture: new CircleAvatar(
               backgroundImage: new CachedNetworkImageProvider(
-                  authContext.photoUrl),
+                  authContext.profile.image),
             ),
           ),
           new ListTile(

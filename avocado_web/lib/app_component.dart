@@ -7,8 +7,8 @@ import 'package:angular_components/material_list/material_list.dart';
 import 'package:angular_components/material_list/material_list_item.dart';
 import 'package:angular_components/material_toggle/material_toggle.dart';
 import 'package:angular_router/angular_router.dart';
+import 'package:avocado_common/common.dart';
 import 'package:avocado_web/app_routes.dart';
-import 'package:avocado_web/src/services/FirebaseService.dart';
 import 'src/todo_list/todo_list_component.dart';
 
 @Component(
@@ -38,7 +38,7 @@ class AppComponent {
   bool end = false;
   bool basicPopupVisible = false;
 
-  final FirebaseService fbService;
+  final AuthService auth;
 
-  AppComponent(FirebaseService this.fbService);
+  AppComponent(AuthService this.auth);
 }

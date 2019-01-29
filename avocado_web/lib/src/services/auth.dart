@@ -4,11 +4,11 @@ import 'package:avocado_common/common.dart';
 import 'package:firebase/firebase.dart' as fb;
 
 @Injectable()
-class FirebaseService implements AuthService {
-  fb.User profile;
+class AuthServiceImpl implements AuthService {
+  ProfileInfo _profile;
   fb.Auth _fbAuth;
 
-  FirebaseService() {
+  AuthServiceImpl() {
     fb.initializeApp(
         apiKey: "AIzaSyDZZbKWz5B2ofJAkbI_jw2u51aPdNnNmO0",
         authDomain: "avocado-backend.firebaseapp.com",
@@ -22,13 +22,24 @@ class FirebaseService implements AuthService {
     _fbAuth.onAuthStateChanged.listen(_authChanged);
   }
 
-
-
-  void _authChanged(fb.User event) {
-    profile = event;
+  ProfileInfo get profile {
+    return _profile;
   }
 
-  Future signInWithGoogle() async {
+
+  void _authChanged(fb.User user) {
+    if(user != null) {
+      _profile = ProfileInfo(
+          key: user.uid,
+          image: user.photoURL,
+          displayName: user.displayName
+      );
+    } else {
+      _profile = null;
+    }
+  }
+
+  void signInWithGoogle() async {
     try {
       var _fbGoogleAuthProvider = new fb.GoogleAuthProvider();
       await _fbAuth.signInWithPopup(_fbGoogleAuthProvider);
@@ -37,7 +48,7 @@ class FirebaseService implements AuthService {
     }
   }
 
-  Future signInWithFacebook() async {
+  void signInWithFacebook() async {
     try {
       var _fbFacebookAuthProvider = new fb.FacebookAuthProvider();
       await _fbAuth.signInWithPopup(_fbFacebookAuthProvider);
@@ -50,12 +61,5 @@ class FirebaseService implements AuthService {
     _fbAuth.signOut();
   }
 
-  @override
-  String get displayName => profile?.displayName;
 
-  @override
-  String get email => profile?.email;
-
-  @override
-  String get photoUrl => profile?.photoURL;
 }

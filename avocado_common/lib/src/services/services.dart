@@ -1,2 +1,2 @@
-export 'AuthService.dart';
-export 'RepositoryService.dart';
+export 'auth.dart';
+export 'repository.dart';
