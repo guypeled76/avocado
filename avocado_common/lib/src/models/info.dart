@@ -7,12 +7,16 @@ enum EntityType {
     post,
     user,
     notification,
-    video
+    video,
+    image,
+    profile
 }
 
 @JsonSerializable(nullable: false)
 class EntityInfo {
   final String key;
+
+  @JsonKey(nullable: false)
   final EntityType type;
 
   @JsonKey(nullable: true, defaultValue: [])
@@ -33,8 +37,7 @@ class TargetInfo {
   Map<String, dynamic> toJson() => _$TargetInfoToJson(this);
 }
 
-@JsonSerializable(nullable: false)
-class ContentInfo extends EntityInfo {
+abstract class ContentInfo extends EntityInfo {
   final UserInfo user;
   final DateTime date;
   final String content;
@@ -45,8 +48,6 @@ class ContentInfo extends EntityInfo {
     hashtags:hashtags
   );
 
-  factory ContentInfo.fromJson(Map<String, dynamic> json) => _$ContentInfoFromJson(json);
-  Map<String, dynamic> toJson() => _$PostInfoToJson(this);
 }
 
 @JsonSerializable(nullable: false)
@@ -54,9 +55,9 @@ class PostInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
   final String image;
   final String video;
 
-  PostInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
+  PostInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
       key:key,
-      type:type,
+      type: EntityType.post,
       hashtags:hashtags,
       content:content,
       user:user,
@@ -72,9 +73,9 @@ class ImageContentInfo extends ContentInfo
 {
   final String image;
 
-  ImageContentInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
+  ImageContentInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
       key:key,
-      type:type,
+      type:EntityType.image,
       hashtags:hashtags,
       content:content,
       date:date,
@@ -91,9 +92,9 @@ class VideoInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
   final String image;
   final String video;
 
-  VideoInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
+  VideoInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image, this.video}) : super(
       key:key,
-      type:type,
+      type:EntityType.video,
       hashtags:hashtags,
       content:content,
       user:user,
@@ -109,9 +110,9 @@ class NotificationInfo extends ContentInfo
 {
   final TargetInfo target;
 
-  NotificationInfo({String key, EntityType type, List<String> hashtags, DateTime date, UserInfo user, String content, this.target}) : super(
+  NotificationInfo({String key, List<String> hashtags, DateTime date, UserInfo user, String content, this.target}) : super(
       key:key,
-      type:type,
+      type:EntityType.notification,
       hashtags:hashtags,
       content:content,
       user:user,
@@ -131,9 +132,9 @@ abstract class SearchInfo implements ContentInfo {
 class MessageInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
   final String image;
 
-  MessageInfo({String key, EntityType type, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
+  MessageInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
       key:key,
-      type:type,
+      type:EntityType.message,
       hashtags:hashtags,
       content:content,
       user:user,
@@ -151,9 +152,9 @@ class UserInfo extends EntityInfo {
   final String image;
   final String displayName;
 
-  UserInfo({String key, EntityType type, List<String> hashtags, this.image, this.displayName}) : super(
+  UserInfo({String key,  List<String> hashtags, this.image, this.displayName}) : super(
       key:key,
-      type:type,
+      type:EntityType.user,
       hashtags:hashtags
   );
 
@@ -163,15 +164,16 @@ class UserInfo extends EntityInfo {
 }
 
 @JsonSerializable(nullable: false)
-class ProfileInfo extends UserInfo {
+class ProfileInfo extends EntityInfo implements UserInfo {
+
+  final String image;
+  final String displayName;
   final String email;
 
-  ProfileInfo({String key, EntityType type, List<String> hashtags, String image, String displayName, this.email}) : super(
+  ProfileInfo({String key, List<String> hashtags, this.image, this.displayName, this.email}) : super(
       key:key,
-      type:type,
-      hashtags:hashtags,
-      displayName:displayName,
-      image:image
+      type:EntityType.profile,
+      hashtags:hashtags
   );
 
   factory ProfileInfo.fromJson(Map<String, dynamic> json) => _$ProfileInfoFromJson(json);

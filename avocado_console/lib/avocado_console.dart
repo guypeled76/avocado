@@ -11,5 +11,17 @@ Future<String> testJSON()async {
   for(PostInfo post in posts) {
     result += json.encode(post.toJson());
   }
+
+  var video = VideoInfo(
+      content: "ddd",
+      user: UserInfo(
+          key: "dd",
+          image: "dd",
+          displayName: "dd"
+      ),
+      date: DateTime.now()
+  );
+
+  result += json.encode(video.toJson());
   return result;
 }

@@ -39,7 +39,9 @@ const _$EntityTypeEnumMap = <EntityType, dynamic>{
   EntityType.post: 'post',
   EntityType.user: 'user',
   EntityType.notification: 'notification',
-  EntityType.video: 'video'
+  EntityType.video: 'video',
+  EntityType.image: 'image',
+  EntityType.profile: 'profile'
 };
 
 TargetInfo _$TargetInfoFromJson(Map<String, dynamic> json) {
@@ -54,31 +56,9 @@ Map<String, dynamic> _$TargetInfoToJson(TargetInfo instance) =>
       'type': _$EntityTypeEnumMap[instance.type]
     };
 
-ContentInfo _$ContentInfoFromJson(Map<String, dynamic> json) {
-  return ContentInfo(
-      key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
-      hashtags:
-          (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-      date: DateTime.parse(json['date'] as String),
-      content: json['content'] as String);
-}
-
-Map<String, dynamic> _$ContentInfoToJson(ContentInfo instance) =>
-    <String, dynamic>{
-      'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
-      'hashtags': instance.hashtags,
-      'user': instance.user,
-      'date': instance.date.toIso8601String(),
-      'content': instance.content
-    };
-
 PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
   return PostInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
@@ -90,7 +70,6 @@ PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'user': instance.user,
       'date': instance.date.toIso8601String(),
@@ -102,7 +81,6 @@ Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
 ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
   return ImageContentInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
@@ -114,7 +92,6 @@ ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'user': instance.user,
       'date': instance.date.toIso8601String(),
@@ -125,7 +102,6 @@ Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) =>
 VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
   return VideoInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
@@ -137,7 +113,6 @@ VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'user': instance.user,
       'date': instance.date.toIso8601String(),
@@ -149,7 +124,6 @@ Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
 NotificationInfo _$NotificationInfoFromJson(Map<String, dynamic> json) {
   return NotificationInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       date: DateTime.parse(json['date'] as String),
@@ -161,7 +135,6 @@ NotificationInfo _$NotificationInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$NotificationInfoToJson(NotificationInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'user': instance.user,
       'date': instance.date.toIso8601String(),
@@ -172,7 +145,6 @@ Map<String, dynamic> _$NotificationInfoToJson(NotificationInfo instance) =>
 MessageInfo _$MessageInfoFromJson(Map<String, dynamic> json) {
   return MessageInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
@@ -184,7 +156,6 @@ MessageInfo _$MessageInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$MessageInfoToJson(MessageInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'user': instance.user,
       'date': instance.date.toIso8601String(),
@@ -195,7 +166,6 @@ Map<String, dynamic> _$MessageInfoToJson(MessageInfo instance) =>
 UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
   return UserInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       image: json['image'] as String,
@@ -204,7 +174,6 @@ UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'image': instance.image,
       'displayName': instance.displayName
@@ -213,7 +182,6 @@ Map<String, dynamic> _$UserInfoToJson(UserInfo instance) => <String, dynamic>{
 ProfileInfo _$ProfileInfoFromJson(Map<String, dynamic> json) {
   return ProfileInfo(
       key: json['key'] as String,
-      type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       image: json['image'] as String,
@@ -224,7 +192,6 @@ ProfileInfo _$ProfileInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ProfileInfoToJson(ProfileInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
-      'type': _$EntityTypeEnumMap[instance.type],
       'hashtags': instance.hashtags,
       'image': instance.image,
       'displayName': instance.displayName,
