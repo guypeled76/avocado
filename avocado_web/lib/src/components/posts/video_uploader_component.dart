@@ -42,7 +42,7 @@ class VideoUploaderComponent {
 
 
      bloc.addVideo(VideoInfo(
-      content: "ddd",
+      content: content,
       user: UserInfo(
         key: "dd",
         image: "dd",

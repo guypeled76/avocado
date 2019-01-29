@@ -1,1 +1,9 @@
-<h1>Hello {{name}}</h1>
+<h1>Hello Videos</h1>
+
+<div style="display: flex;flex-wrap: wrap;">
+    <div *ngFor="let video of bloc.videos | async" style="border: 1px solid red; margin: 5px">
+        key:{{video.key}} <br />
+        {{video.content}} <br />
+    </div>
+
+</div>
