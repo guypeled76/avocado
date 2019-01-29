@@ -42,7 +42,7 @@ class VideoUploaderComponent {
 
      repositoryService.collection("targets").add(UserInfo(
          key: "dd", displayName: "dd", hashtags: ["dd","gg"]).toJson());
-/*
+
     repositoryService.collection("videos").addVideo(VideoInfo(
       content: "ddd",
       user: UserInfo(
@@ -51,6 +51,6 @@ class VideoUploaderComponent {
         displayName: "dd"
       ),
       date: DateTime.now()
-    ));*/
+    ));
   }
 }

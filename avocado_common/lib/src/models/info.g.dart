@@ -62,7 +62,7 @@ PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+      user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
       image: json['image'] as String,
       video: json['video'] as String);
@@ -71,7 +71,7 @@ PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PostInfoToJson(PostInfo instance) => <String, dynamic>{
       'key': instance.key,
       'hashtags': instance.hashtags,
-      'user': instance.user,
+      'user': ContentInfo._userToJson(instance.user),
       'date': instance.date.toIso8601String(),
       'content': instance.content,
       'image': instance.image,
@@ -84,7 +84,7 @@ ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+      user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
       image: json['image'] as String);
 }
@@ -93,7 +93,7 @@ Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
       'hashtags': instance.hashtags,
-      'user': instance.user,
+      'user': ContentInfo._userToJson(instance.user),
       'date': instance.date.toIso8601String(),
       'content': instance.content,
       'image': instance.image
@@ -105,7 +105,7 @@ VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+      user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
       image: json['image'] as String,
       video: json['video'] as String);
@@ -114,7 +114,7 @@ VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) => <String, dynamic>{
       'key': instance.key,
       'hashtags': instance.hashtags,
-      'user': instance.user,
+      'user': ContentInfo._userToJson(instance.user),
       'date': instance.date.toIso8601String(),
       'content': instance.content,
       'image': instance.image,
@@ -127,19 +127,20 @@ NotificationInfo _$NotificationInfoFromJson(Map<String, dynamic> json) {
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       date: DateTime.parse(json['date'] as String),
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+      user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       content: json['content'] as String,
-      target: TargetInfo.fromJson(json['target'] as Map<String, dynamic>));
+      target: NotificationInfo._jsonToTarget(
+          json['target'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$NotificationInfoToJson(NotificationInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
       'hashtags': instance.hashtags,
-      'user': instance.user,
+      'user': ContentInfo._userToJson(instance.user),
       'date': instance.date.toIso8601String(),
       'content': instance.content,
-      'target': instance.target
+      'target': NotificationInfo._targetToJson(instance.target)
     };
 
 MessageInfo _$MessageInfoFromJson(Map<String, dynamic> json) {
@@ -148,7 +149,7 @@ MessageInfo _$MessageInfoFromJson(Map<String, dynamic> json) {
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       content: json['content'] as String,
-      user: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+      user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
       image: json['image'] as String);
 }
@@ -157,7 +158,7 @@ Map<String, dynamic> _$MessageInfoToJson(MessageInfo instance) =>
     <String, dynamic>{
       'key': instance.key,
       'hashtags': instance.hashtags,
-      'user': instance.user,
+      'user': ContentInfo._userToJson(instance.user),
       'date': instance.date.toIso8601String(),
       'content': instance.content,
       'image': instance.image

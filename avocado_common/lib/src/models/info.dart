@@ -38,9 +38,19 @@ class TargetInfo {
 }
 
 abstract class ContentInfo extends EntityInfo {
+
+  @JsonKey(fromJson: _jsonToUser, toJson: _userToJson)
   final UserInfo user;
   final DateTime date;
   final String content;
+
+  static Map<String, dynamic> _userToJson(UserInfo user) {
+      return user?.toJson();
+  }
+  
+  static UserInfo _jsonToUser(Map<String, dynamic> json) {
+      return UserInfo.fromJson(json);
+  }
 
   ContentInfo({String key, EntityType type, List<String> hashtags, this.user, this.date, this.content}) : super(
     key:key,
@@ -108,6 +118,7 @@ class VideoInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
 @JsonSerializable(nullable: false)
 class NotificationInfo extends ContentInfo
 {
+  @JsonKey(fromJson: _jsonToTarget, toJson: _targetToJson)
   final TargetInfo target;
 
   NotificationInfo({String key, List<String> hashtags, DateTime date, UserInfo user, String content, this.target}) : super(
@@ -118,6 +129,14 @@ class NotificationInfo extends ContentInfo
       user:user,
       date:date
   );
+
+  static Map<String, dynamic> _targetToJson(TargetInfo target) {
+    return target?.toJson();
+  }
+
+  static TargetInfo _jsonToTarget(Map<String, dynamic> json) {
+    return TargetInfo.fromJson(json);
+  }
 
   factory NotificationInfo.fromJson(Map<String, dynamic> json) => _$NotificationInfoFromJson(json);
   Map<String, dynamic> toJson() => _$NotificationInfoToJson(this);
