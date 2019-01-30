@@ -1,4 +1,5 @@
 import 'package:angular/angular.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:avocado_common/common.dart';
 import 'dart:html';
 
@@ -20,20 +21,19 @@ import 'package:angular_components/angular_components.dart';
 )
 class VideoUploaderComponent {
 
+  @Input()
+  VideosBLoC bloc;
 
-  final VideosBLoC bloc;
-
-  VideoUploaderComponent(RepositoryService repository) :
-    bloc = VideosBLoC(repository);
+  VideoUploaderComponent(RepositoryService repository);
 
 
   var progress = 20;
 
   var output = "";
 
-  var name = "d";
+  String name = "d";
 
-  var content = "test";
+  String content = "test";
 
   void uploadFiles(form) {
     var formData = new FormData(form);
@@ -41,7 +41,7 @@ class VideoUploaderComponent {
      //output = formData.get('file').toString();
 
 
-     bloc.addVideo(VideoInfo(
+     bloc.add(VideoInfo(
       content: content,
       user: UserInfo(
         key: "dd",

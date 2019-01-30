@@ -1,6 +1,6 @@
 import 'package:avocado_common/common.dart';
 
-class PostBLoC {
+class PostBLoC extends BaseBLoC {
 
   final PostInfo post;
 

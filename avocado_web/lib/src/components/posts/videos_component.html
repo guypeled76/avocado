@@ -4,6 +4,14 @@
     <div *ngFor="let video of bloc.videos | async" style="border: 1px solid red; margin: 5px">
         key:{{video.key}} <br />
         {{video.content}} <br />
+
+        <material-button icon
+                         class="material-drawer-button" (trigger)="delete(video)">
+            <material-icon icon="menu"></material-icon>
+        </material-button>
     </div>
 
 </div>
+
+
+<video-uploader-component [bloc]="bloc"></video-uploader-component>

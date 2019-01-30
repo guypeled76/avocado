@@ -9,7 +9,6 @@ import 'src/components/waterfalls/waterfalls_component.template.dart' as waterfa
 import 'src/components/food/food_component.template.dart' as food_template;
 import 'src/components/notifications/notifications_component.template.dart' as notifications_template;
 import 'src/components/posts/videos_component.template.dart' as videos_template;
-import 'src/components/posts/video_uploader_component.template.dart' as video_uploader_template;
 
 
 const idParam = 'Id';
@@ -20,7 +19,6 @@ class RoutePaths {
   static final client = RoutePath(path: '${clients.path}/:$idParam');
   static final posts = RoutePath(path: 'posts');
   static final videos = RoutePath(path: 'videos');
-  static final video_uploader = RoutePath(path: 'create_video');
   static final waterfalls = RoutePath(path: 'waterfalls');
   static final notifications = RoutePath(path: 'notifications');
   static final food = RoutePath(path: 'food');
@@ -48,10 +46,6 @@ class Routes {
     component: videos_template.VideosComponentNgFactory,
   );
 
-  static final video_uploader = RouteDefinition(
-    routePath: RoutePaths.video_uploader,
-    component: video_uploader_template.VideoUploaderComponentNgFactory
-  );
 
   static final client = RouteDefinition(
     routePath: RoutePaths.client,
@@ -87,7 +81,6 @@ class Routes {
     waterfalls,
     food,
     videos,
-    video_uploader,
     notifications,
     RouteDefinition.redirect(
       path: '',

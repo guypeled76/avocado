@@ -3,7 +3,7 @@ import 'package:avocado_common/common.dart';
 import 'package:avocado_common/src/models/mocks.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SearchBLoC {
+class SearchBLoC extends BaseBLoC{
 
   BehaviorSubject<String> _query = new BehaviorSubject(seedValue: "");
 
