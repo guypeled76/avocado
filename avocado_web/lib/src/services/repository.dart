@@ -7,6 +7,45 @@ class RepositoryServiceImpl extends RepositoryService {
   RepositoryCollection collection(String name) {
     return RepositoryCollectionImpl(fb.app().firestore().collection(name));
   }
+
+  Stream<RepositoryUploadSnapshot> uploadFile(String path, dynamic file) {
+    return fb.storage().ref(path).put(file).onStateChanged.map((snapshot) {
+      return RepositoryUploadSnapshotImpl(snapshot);
+    });
+  }
+}
+
+class RepositoryUploadSnapshotImpl extends RepositoryUploadSnapshot {
+
+  final fb.UploadTaskSnapshot snapshot;
+
+  RepositoryUploadSnapshotImpl(this.snapshot);
+
+
+  @override
+  RepositoryTaskState get state {
+    switch(snapshot.state) {
+      case fb.TaskState.SUCCESS:
+        return RepositoryTaskState.SUCCESS;
+      case fb.TaskState.CANCELED:
+        return RepositoryTaskState.CANCELED;
+      case fb.TaskState.ERROR:
+        return RepositoryTaskState.ERROR;
+      case fb.TaskState.PAUSED:
+        return RepositoryTaskState.PAUSED;
+      case fb.TaskState.RUNNING:
+        return RepositoryTaskState.RUNNING;
+    }
+
+    return RepositoryTaskState.RUNNING;
+  }
+
+  @override
+  int get bytesTransferred => snapshot.bytesTransferred;
+
+  @override
+  int get totalBytes => snapshot.totalBytes;
+
 }
 
 class RepositoryDocumentImpl extends RepositoryDocument {

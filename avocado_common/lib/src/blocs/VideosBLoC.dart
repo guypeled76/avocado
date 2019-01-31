@@ -11,14 +11,13 @@ class VideosBLoC extends BaseBLoC {
   Stream<List<VideoInfo>> videos;
 
   VideosBLoC(this.repository) {
-
     _videosController.onListen = () {
       repository.collection("videos").get().then((list) {
         _videosController.sink.add(list.map((map) => VideoInfo.fromJson(map)).toList());
       });
     };
 
-    this.videos = _videosController.stream.asBroadcastStream();
+    this.videos = _videosController.asBroadcastStream();
   }
 
   Future<VideoInfo> add(VideoInfo videoInfo) {

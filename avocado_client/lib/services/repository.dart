@@ -6,6 +6,13 @@ class RepositoryServiceImpl extends RepositoryService {
   RepositoryCollection collection(String name) {
     return RepositoryCollectionImpl(Firestore().collection(name));
   }
+
+  @override
+  Stream<RepositoryUploadSnapshot> uploadFile(String path, dynamic file) {
+    return null;
+  }
+
+
 }
 
 class RepositoryDocumentImpl extends RepositoryDocument {

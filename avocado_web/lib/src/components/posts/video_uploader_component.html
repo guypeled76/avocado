@@ -1,16 +1,11 @@
 
 <material-input label="name" changeUpdate [(ngModel)]="name" [floatingLabel]="true"></material-input>
 <material-input label="content" changeUpdate [(ngModel)]="content" [floatingLabel]="true"></material-input>
-<form #form enctype="multipart/form-data">
 
-
-    <input type="file" #upload name='file'>
-
-    <div>
-        <material-button raised class="blue" (trigger)="uploadFiles(form)" >Add</material-button>
-    </div>
-</form>
+<input type="file" #upload name='file'>
+<material-button raised class="blue" (trigger)="create()" >Add</material-button>
 <div>--{{output}}--</div>
 <div>--{{name}}--</div>
 <div>--{{content}}--</div>
+<div>--{{status}}--</div>
 

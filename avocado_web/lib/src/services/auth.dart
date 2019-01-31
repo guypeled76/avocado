@@ -17,6 +17,11 @@ class AuthServiceImpl implements AuthService {
         storageBucket: "avocado-backend.appspot.com",
         messagingSenderId: "219538454820");
 
+    fb.firestore().enablePersistence().then((success){
+      print("Enabled presistance.");
+    }).catchError((error) {
+      print("Failed to enable presistance: " + error);
+    });
 
     _fbAuth = fb.auth();
     _fbAuth.onAuthStateChanged.listen(_authChanged);

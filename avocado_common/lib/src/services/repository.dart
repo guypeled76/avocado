@@ -1,4 +1,4 @@
-import 'package:avocado_common/common.dart';
+
 
 abstract class RepositoryService {
   RepositoryCollection collection(String name);
@@ -7,7 +7,22 @@ abstract class RepositoryService {
     map["key"] = id;
     return map;
   }
+
+  Stream<RepositoryUploadSnapshot> uploadFile(String path, dynamic file);
 }
+
+abstract class RepositoryUploadSnapshot {
+
+  RepositoryTaskState get state;
+
+  int get bytesTransferred;
+
+  int get totalBytes;
+
+}
+
+enum RepositoryTaskState { RUNNING, PAUSED, SUCCESS, CANCELED, ERROR }
+
 
 abstract class RepositoryDocument {
   RepositoryCollection collection(String name);
