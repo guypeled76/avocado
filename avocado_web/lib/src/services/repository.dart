@@ -135,11 +135,18 @@ class RepositoryCollectionImpl extends RepositoryCollection {
 
   @override
   Future<RepositoryDocument> add(Map<String, dynamic> map) {
+    print("test" + map.toString());
     return collection
         .add(map)
         .asStream()
         .map((doc) => RepositoryDocumentImpl(doc))
         .first;
+  }
+
+  @override
+  Stream<RepositoryDocument> addMany(Stream<Map<String, dynamic>> maps) {
+    return maps
+        .asyncMap((map)=>this.add(map));
   }
 }
 

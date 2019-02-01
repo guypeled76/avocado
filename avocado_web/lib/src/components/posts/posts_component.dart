@@ -16,6 +16,12 @@ import 'package:avocado_web/src/components/posts/post_component.dart';
 )
 class PostsComponent {
 
-  FeedBloC bloc = FeedBloC();
+  FeedBloC bloc;
+
+  final RepositoryService repository;
+
+  PostsComponent(this.repository) {
+    bloc = FeedBloC(this.repository);
+  }
 
 }

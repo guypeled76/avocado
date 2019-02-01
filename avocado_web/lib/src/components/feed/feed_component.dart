@@ -15,11 +15,12 @@ import 'package:avocado_common/common.dart';
 class FeedComponent  {
   var name = 'Angular';
 
-  FeedBloC bloc = FeedBloC();
+  FeedBloC bloc;
 
+  final RepositoryService repository;
 
-  FeedComponent() {
-
+  FeedComponent(this.repository) {
+    bloc = FeedBloC(this.repository);
   }
 
 

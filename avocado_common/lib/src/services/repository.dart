@@ -42,6 +42,8 @@ abstract class RepositoryCollection extends RepositoryQuery {
 
   RepositoryDocument doc(String name);
 
+  Stream<RepositoryDocument> addMany(Stream<Map<String, dynamic>> maps);
+
 }
 
 abstract class RepositoryQuery {

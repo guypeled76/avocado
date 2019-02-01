@@ -90,6 +90,11 @@ class RepositoryCollectionImpl extends RepositoryCollection {
         .map((doc) => RepositoryDocumentImpl(doc))
         .first;
   }
+
+  @override
+  Stream<RepositoryDocument> addMany(Stream<Map<String, dynamic>> maps) {
+    return null;
+  }
 }
 
 class RepositoryQueryImp extends RepositoryQuery {

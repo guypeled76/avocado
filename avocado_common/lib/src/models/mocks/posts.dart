@@ -30,7 +30,8 @@ var posts = {
       "image" : "https://cdn.insidetheperimeter.ca/wp-content/uploads/2015/11/Albert_einstein_by_zuzahin-d5pcbug-WikiCommons-768x706.jpg"
     },
     "content": "תמונה של ארוחת פליאו",
-    "type":"post"
+    "type":"post",
+    "vidoe":null
   },
   "p3": {
     "image":

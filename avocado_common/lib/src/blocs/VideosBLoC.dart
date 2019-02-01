@@ -1,48 +1,32 @@
 
 import 'dart:async';
 import 'package:avocado_common/common.dart';
-import 'package:rxdart/rxdart.dart';
 
-class VideosBLoC extends BaseBLoC {
 
-  final RepositoryService repository;
-  final BehaviorSubject<List<VideoInfo>> _videosController = BehaviorSubject();
+class VideosBLoC extends EntitiesBLoC<VideoInfo> {
+
 
   Stream<List<VideoInfo>> videos;
 
-  VideosBLoC(this.repository) {
-    _videosController.onListen = () {
-      repository.collection("videos").get().then((list) {
-        _videosController.sink.add(list.map((map) => VideoInfo.fromJson(map)).toList());
-      });
-    };
-
-    this.videos = _videosController.asBroadcastStream();
+  VideosBLoC(RepositoryService repository) : super(repository) {
+    this.videos = this.entities;
   }
 
-  Future<VideoInfo> add(VideoInfo videoInfo) {
-    return repository.collection("videos").add(videoInfo.toJson()).then((doc) {
-      return doc.get().then((json) => VideoInfo.fromJson(json));
-    }).then((video) {
-      _videosController.first.then((list) {
-        List<VideoInfo> newList = List.from(list);
-        newList.add(video);
-        _videosController.sink.add(newList);
-      });
-
-      return video;
-    });
+  @override
+  RepositoryCollection get repositoryCollection {
+    return this.repository.collection("videos");
   }
 
-  void delete(VideoInfo video) {
-    repository.collection("videos").doc(video.key).delete().then((v) {
-      _videosController.first.then((list) {
-        List<VideoInfo> newList = List.from(list);
-        newList.remove(video);
-        _videosController.sink.add(newList);
-      });
-    });
+  @override
+  VideoInfo entityFromJson(Map<String, dynamic> json) {
+    return VideoInfo.fromJson(json);
   }
+
+  @override
+  Map<String, dynamic> jsonFromEntity(VideoInfo entity) {
+    return entity.toJson();
+  }
+
 
 
 }
