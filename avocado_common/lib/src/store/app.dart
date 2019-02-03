@@ -2,6 +2,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_redux/built_redux.dart';
 
 import 'posts.dart';
+import 'videos.dart';
 
 part 'app.g.dart';
 
@@ -12,6 +13,8 @@ abstract class AppActions extends ReduxActions {
 
   PostActions posts;
 
+  VideoActions videos;
+
   // factory to create on instance of the generated implementation of AppActions
   AppActions._();
   factory AppActions() => new _$AppActions();
@@ -21,6 +24,9 @@ abstract class App implements Built<App, AppBuilder> {
 
   /// [posts]
   Posts get posts;
+
+  /// [videos]
+  Videos get videos;
 
   // Built value boilerplate
   App._();
@@ -41,4 +47,5 @@ Reducer<App, AppBuilder, dynamic> createReducer() =>
 /// Reducers
 ///////////////////
 _clear(App state, Action<Null> action, AppBuilder builder) => builder
-  ..posts = new Posts().toBuilder();
+  ..posts = new Posts().toBuilder()
+  ..videos = new Videos().toBuilder();

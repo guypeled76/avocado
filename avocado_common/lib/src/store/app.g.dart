@@ -16,11 +16,13 @@ class _$AppActions extends AppActions {
   final ActionDispatcher<Null> clear =
       new ActionDispatcher<Null>('AppActions-clear');
   final PostActions posts = new PostActions();
+  final VideoActions videos = new VideoActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     clear.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
+    videos.setDispatcher(dispatcher);
   }
 }
 
@@ -36,13 +38,18 @@ class AppActionsNames {
 class _$App extends App {
   @override
   final Posts posts;
+  @override
+  final Videos videos;
 
   factory _$App([void updates(AppBuilder b)]) =>
       (new AppBuilder()..update(updates)).build();
 
-  _$App._({this.posts}) : super._() {
+  _$App._({this.posts, this.videos}) : super._() {
     if (posts == null) {
       throw new BuiltValueNullFieldError('App', 'posts');
+    }
+    if (videos == null) {
+      throw new BuiltValueNullFieldError('App', 'videos');
     }
   }
 
@@ -56,17 +63,20 @@ class _$App extends App {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is App && posts == other.posts;
+    return other is App && posts == other.posts && videos == other.videos;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, posts.hashCode));
+    return $jf($jc($jc(0, posts.hashCode), videos.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('App')..add('posts', posts)).toString();
+    return (newBuiltValueToStringHelper('App')
+          ..add('posts', posts)
+          ..add('videos', videos))
+        .toString();
   }
 }
 
@@ -77,11 +87,16 @@ class AppBuilder implements Builder<App, AppBuilder> {
   PostsBuilder get posts => _$this._posts ??= new PostsBuilder();
   set posts(PostsBuilder posts) => _$this._posts = posts;
 
+  VideosBuilder _videos;
+  VideosBuilder get videos => _$this._videos ??= new VideosBuilder();
+  set videos(VideosBuilder videos) => _$this._videos = videos;
+
   AppBuilder();
 
   AppBuilder get _$this {
     if (_$v != null) {
       _posts = _$v.posts?.toBuilder();
+      _videos = _$v.videos?.toBuilder();
       _$v = null;
     }
     return this;
@@ -104,12 +119,15 @@ class AppBuilder implements Builder<App, AppBuilder> {
   _$App build() {
     _$App _$result;
     try {
-      _$result = _$v ?? new _$App._(posts: posts.build());
+      _$result =
+          _$v ?? new _$App._(posts: posts.build(), videos: videos.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'posts';
         posts.build();
+        _$failedField = 'videos';
+        videos.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'App', _$failedField, e.toString());
