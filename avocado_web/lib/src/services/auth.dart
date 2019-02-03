@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:avocado_common/common.dart';
 import 'package:firebase/firebase.dart' as fb;

@@ -5,6 +5,7 @@ import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
 import 'package:avocado_client/services/repository.dart';
+import 'package:avocado_client/services/store.dart';
 import 'package:avocado_common/common.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,8 @@ class AvocadoApp extends StatelessWidget {
                 return ServiceProvider(
                   services: [
                     ServiceImpl(AuthService, AuthServiceImpl(snapshot.data)),
-                    ServiceImpl(RepositoryService, RepositoryServiceImpl())
+                    ServiceImpl(RepositoryService, RepositoryServiceImpl()),
+                    ServiceImpl(StoreService, StoreServiceImpl()),
                   ],
                     child: ClientHomePage()
                 );

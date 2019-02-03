@@ -27,3 +27,18 @@ abstract class App implements Built<App, AppBuilder> {
   factory App([updates(AppBuilder b)]) => new _$App((AppBuilder b) => b);
 
 }
+
+////////////////////
+/// Main Reducer
+///////////////////
+Reducer<App, AppBuilder, dynamic> createReducer() =>
+    (new ReducerBuilder<App, AppBuilder>()
+      ..add<Null>(AppActionsNames.clear, _clear)
+      ..combineNested(createPostsReducer()))
+      .build();
+
+////////////////////
+/// Reducers
+///////////////////
+_clear(App state, Action<Null> action, AppBuilder builder) => builder
+  ..posts = new Posts().toBuilder();
