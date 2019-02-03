@@ -8,14 +8,14 @@ class RepositoryServiceImpl extends RepositoryService {
     return RepositoryCollectionImpl(fb.app().firestore().collection(name));
   }
 
-  Stream<RepositoryUploadSnapshot> uploadFile(String path, dynamic file) {
+  Stream<RepositoryTaskSnapshot> uploadFile(String path, dynamic file) {
     return fb.storage().ref(path).put(file).onStateChanged.map((snapshot) {
       return RepositoryUploadSnapshotImpl(snapshot);
     });
   }
 }
 
-class RepositoryUploadSnapshotImpl extends RepositoryUploadSnapshot {
+class RepositoryUploadSnapshotImpl extends RepositoryTaskSnapshot {
 
   final fb.UploadTaskSnapshot snapshot;
 
@@ -135,7 +135,6 @@ class RepositoryCollectionImpl extends RepositoryCollection {
 
   @override
   Future<RepositoryDocument> add(Map<String, dynamic> map) {
-    print("test" + map.toString());
     return collection
         .add(map)
         .asStream()
@@ -144,7 +143,7 @@ class RepositoryCollectionImpl extends RepositoryCollection {
   }
 
   @override
-  Stream<RepositoryDocument> addMany(Stream<Map<String, dynamic>> maps) {
+  Stream<RepositoryDocument> addAll(Stream<Map<String, dynamic>> maps) {
     return maps
         .asyncMap((map)=>this.add(map));
   }

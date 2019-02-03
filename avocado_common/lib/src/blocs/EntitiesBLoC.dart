@@ -47,7 +47,7 @@ abstract class EntitiesBLoC<EntityType extends EntityInfo> extends BaseBLoC {
 
   Future<List<EntityType>> addMany(Stream<EntityType> entities) async {
     return repositoryCollection
-        .addMany(entities.map((entity) => jsonFromEntity(entity)))
+        .addAll(entities.map((entity) => jsonFromEntity(entity)))
         .asyncMap((doc) => doc.get())
         .map((map) => entityFromJson(map))
         .toList()
@@ -68,5 +68,12 @@ abstract class EntitiesBLoC<EntityType extends EntityInfo> extends BaseBLoC {
         _entitiesController.sink.add(newList);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+
   }
 }

@@ -10,7 +10,7 @@ class PostsBLoC extends EntitiesBLoC<PostInfo> {
 
   final bool pinned;
 
-  PostsBLoC(RepositoryService repository, this.pinned) : super(repository) {
+  PostsBLoC(RepositoryService repository, {this.pinned = false}) : super(repository) {
     this.posts = this.entities;
   }
 

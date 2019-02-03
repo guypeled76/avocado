@@ -2,7 +2,7 @@
 
 class BaseBLoC {
 
-  dispose() {
+  void dispose() {
 
   }
 }

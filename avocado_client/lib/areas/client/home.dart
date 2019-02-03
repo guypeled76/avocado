@@ -1,5 +1,6 @@
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
+import 'package:avocado_client/services/provider.dart';
 import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
           ),
           body: TabBarView(children: [
                   FeedPage(
-                    bloc: FeedBloC(),
+                    bloc: FeedBloC(ServiceProvider.get<RepositoryService>(context)),
                   ),
                   TimelinePage(),
                   NotificationsWidget(

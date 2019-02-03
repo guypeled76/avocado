@@ -8,7 +8,7 @@ class RepositoryServiceImpl extends RepositoryService {
   }
 
   @override
-  Stream<RepositoryUploadSnapshot> uploadFile(String path, dynamic file) {
+  Stream<RepositoryTaskSnapshot> uploadFile(String path, dynamic file) {
     return null;
   }
 
@@ -92,7 +92,7 @@ class RepositoryCollectionImpl extends RepositoryCollection {
   }
 
   @override
-  Stream<RepositoryDocument> addMany(Stream<Map<String, dynamic>> maps) {
+  Stream<RepositoryDocument> addAll(Stream<Map<String, dynamic>> maps) {
     return null;
   }
 }
