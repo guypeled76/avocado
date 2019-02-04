@@ -1,7 +1,9 @@
+import 'package:angular/angular.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:avocado_common/common.dart';
 import 'package:firebase/src/firestore.dart';
 
+@Injectable()
 class RepositoryServiceImpl extends RepositoryService {
   @override
   RepositoryCollection collection(String name) {
