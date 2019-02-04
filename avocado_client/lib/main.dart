@@ -56,9 +56,9 @@ class AvocadoApp extends StatelessWidget {
               if (snapshot.hasData) {
                 return ServiceProvider(
                   services: [
-                    ServiceImpl(AuthService, AuthServiceImpl(snapshot.data)),
-                    ServiceImpl(RepositoryService, RepositoryServiceImpl()),
-                    ServiceImpl(StoreService, StoreServiceImpl()),
+                    ServiceInstance(AuthService, AuthServiceImpl(snapshot.data)),
+                    ServiceInstance(RepositoryService, RepositoryServiceImpl()),
+                    ServiceClass<StoreService>((container) => StoreServiceImpl(container)),
                   ],
                     child: ClientHomePage()
                 );

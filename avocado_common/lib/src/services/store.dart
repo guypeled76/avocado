@@ -1,4 +1,7 @@
+import 'container.dart';
 
-abstract class StoreService {
+abstract class StoreService implements ServiceContainer {
 
+
+  StoreService();
 }
