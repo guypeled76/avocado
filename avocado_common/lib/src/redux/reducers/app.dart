@@ -1,7 +1,7 @@
 import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
-Reducer<AppState, AppStateBuilder, dynamic> createReducer(ServiceContainer container) {
+Reducer<AppState, AppStateBuilder, dynamic> createAppReducer(ServiceContainer container) {
   _clear(AppState state, Action<Null> action, AppStateBuilder builder) {
     return builder
       ..posts = new PostsState().toBuilder()
