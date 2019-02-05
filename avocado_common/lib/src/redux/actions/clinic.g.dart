@@ -13,16 +13,20 @@ class _$ClinicActions extends ClinicActions {
   factory _$ClinicActions() => new _$ClinicActions._();
   _$ClinicActions._() : super._();
 
-  final ActionDispatcher<ClinicInfo> update =
-      new ActionDispatcher<ClinicInfo>('ClinicActions-update');
+  final ActionDispatcher<ClinicInfo> set =
+      new ActionDispatcher<ClinicInfo>('ClinicActions-set');
+  final ClinicPostActions posts = new ClinicPostActions();
+  final ClinicVideoActions videos = new ClinicVideoActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
-    update.setDispatcher(dispatcher);
+    set.setDispatcher(dispatcher);
+    posts.setDispatcher(dispatcher);
+    videos.setDispatcher(dispatcher);
   }
 }
 
 class ClinicActionsNames {
-  static final ActionName<ClinicInfo> update =
-      new ActionName<ClinicInfo>('ClinicActions-update');
+  static final ActionName<ClinicInfo> set =
+      new ActionName<ClinicInfo>('ClinicActions-set');
 }

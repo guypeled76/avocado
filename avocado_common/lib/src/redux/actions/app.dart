@@ -6,8 +6,8 @@ part 'app.g.dart';
 
 abstract class AppActions extends ReduxActions {
   ActionDispatcher<Null> clear;
-  PostActions posts;
-  VideoActions videos;
+
+  ClinicActions clinic;
 
 
   AppActions._();

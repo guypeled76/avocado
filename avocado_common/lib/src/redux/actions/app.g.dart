@@ -15,14 +15,12 @@ class _$AppActions extends AppActions {
 
   final ActionDispatcher<Null> clear =
       new ActionDispatcher<Null>('AppActions-clear');
-  final PostActions posts = new PostActions();
-  final VideoActions videos = new VideoActions();
+  final ClinicActions clinic = new ClinicActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     clear.setDispatcher(dispatcher);
-    posts.setDispatcher(dispatcher);
-    videos.setDispatcher(dispatcher);
+    clinic.setDispatcher(dispatcher);
   }
 }
 

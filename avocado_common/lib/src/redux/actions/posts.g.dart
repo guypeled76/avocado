@@ -9,12 +9,45 @@ part of 'posts.dart';
 // ignore_for_file: avoid_classes_with_only_static_members
 // ignore_for_file: annotate_overrides
 
-class _$PostActions extends PostActions {
-  factory _$PostActions() => new _$PostActions._();
-  _$PostActions._() : super._();
+class _$ClinicPostActions extends ClinicPostActions {
+  factory _$ClinicPostActions() => new _$ClinicPostActions._();
+  _$ClinicPostActions._() : super._();
+
+  final ActionDispatcher<PostInfo> set =
+      new ActionDispatcher<PostInfo>('ClinicPostActions-set');
+  final ActionDispatcher<List<PostInfo>> setMany =
+      new ActionDispatcher<List<PostInfo>>('ClinicPostActions-setMany');
+  final ActionDispatcher<PostInfo> remove =
+      new ActionDispatcher<PostInfo>('ClinicPostActions-remove');
+  final ActionDispatcher<Null> load =
+      new ActionDispatcher<Null>('ClinicPostActions-load');
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {
+    set.setDispatcher(dispatcher);
+    setMany.setDispatcher(dispatcher);
+    remove.setDispatcher(dispatcher);
+    load.setDispatcher(dispatcher);
+  }
+}
+
+class ClinicPostActionsNames {
+  static final ActionName<PostInfo> set =
+      new ActionName<PostInfo>('ClinicPostActions-set');
+  static final ActionName<List<PostInfo>> setMany =
+      new ActionName<List<PostInfo>>('ClinicPostActions-setMany');
+  static final ActionName<PostInfo> remove =
+      new ActionName<PostInfo>('ClinicPostActions-remove');
+  static final ActionName<Null> load =
+      new ActionName<Null>('ClinicPostActions-load');
+}
+
+class _$ClientPostActions extends ClientPostActions {
+  factory _$ClientPostActions() => new _$ClientPostActions._();
+  _$ClientPostActions._() : super._();
 
   final ActionDispatcher<PostInfo> update =
-      new ActionDispatcher<PostInfo>('PostActions-update');
+      new ActionDispatcher<PostInfo>('ClientPostActions-update');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -22,7 +55,7 @@ class _$PostActions extends PostActions {
   }
 }
 
-class PostActionsNames {
+class ClientPostActionsNames {
   static final ActionName<PostInfo> update =
-      new ActionName<PostInfo>('PostActions-update');
+      new ActionName<PostInfo>('ClientPostActions-update');
 }

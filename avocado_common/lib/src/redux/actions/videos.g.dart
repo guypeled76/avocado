@@ -9,12 +9,12 @@ part of 'videos.dart';
 // ignore_for_file: avoid_classes_with_only_static_members
 // ignore_for_file: annotate_overrides
 
-class _$VideoActions extends VideoActions {
-  factory _$VideoActions() => new _$VideoActions._();
-  _$VideoActions._() : super._();
+class _$ClinicVideoActions extends ClinicVideoActions {
+  factory _$ClinicVideoActions() => new _$ClinicVideoActions._();
+  _$ClinicVideoActions._() : super._();
 
   final ActionDispatcher<VideoInfo> update =
-      new ActionDispatcher<VideoInfo>('VideoActions-update');
+      new ActionDispatcher<VideoInfo>('ClinicVideoActions-update');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -22,7 +22,25 @@ class _$VideoActions extends VideoActions {
   }
 }
 
-class VideoActionsNames {
+class ClinicVideoActionsNames {
   static final ActionName<VideoInfo> update =
-      new ActionName<VideoInfo>('VideoActions-update');
+      new ActionName<VideoInfo>('ClinicVideoActions-update');
+}
+
+class _$ClientVideoActions extends ClientVideoActions {
+  factory _$ClientVideoActions() => new _$ClientVideoActions._();
+  _$ClientVideoActions._() : super._();
+
+  final ActionDispatcher<VideoInfo> update =
+      new ActionDispatcher<VideoInfo>('ClientVideoActions-update');
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {
+    update.setDispatcher(dispatcher);
+  }
+}
+
+class ClientVideoActionsNames {
+  static final ActionName<VideoInfo> update =
+      new ActionName<VideoInfo>('ClientVideoActions-update');
 }

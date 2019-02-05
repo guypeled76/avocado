@@ -3,11 +3,20 @@ import 'package:avocado_common/common.dart';
 
 part 'videos.g.dart';
 
-abstract class VideoActions extends ReduxActions {
+abstract class ClinicVideoActions extends ReduxActions {
   ActionDispatcher<VideoInfo> update;
 
 
 
-  VideoActions._();
-  factory VideoActions() => new _$VideoActions();
+  ClinicVideoActions._();
+  factory ClinicVideoActions() => new _$ClinicVideoActions();
+}
+
+abstract class ClientVideoActions extends ReduxActions {
+  ActionDispatcher<VideoInfo> update;
+
+
+
+  ClientVideoActions._();
+  factory ClientVideoActions() => new _$ClientVideoActions();
 }

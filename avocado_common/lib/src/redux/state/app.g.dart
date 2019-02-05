@@ -8,22 +8,12 @@ part of 'app.dart';
 
 class _$AppState extends AppState {
   @override
-  final PostsState posts;
-  @override
-  final VideosState videos;
-  @override
   final ClinicState clinic;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.posts, this.videos, this.clinic}) : super._() {
-    if (posts == null) {
-      throw new BuiltValueNullFieldError('AppState', 'posts');
-    }
-    if (videos == null) {
-      throw new BuiltValueNullFieldError('AppState', 'videos');
-    }
+  _$AppState._({this.clinic}) : super._() {
     if (clinic == null) {
       throw new BuiltValueNullFieldError('AppState', 'clinic');
     }
@@ -39,38 +29,23 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState &&
-        posts == other.posts &&
-        videos == other.videos &&
-        clinic == other.clinic;
+    return other is AppState && clinic == other.clinic;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, posts.hashCode), videos.hashCode), clinic.hashCode));
+    return $jf($jc(0, clinic.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AppState')
-          ..add('posts', posts)
-          ..add('videos', videos)
-          ..add('clinic', clinic))
+    return (newBuiltValueToStringHelper('AppState')..add('clinic', clinic))
         .toString();
   }
 }
 
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
-
-  PostsStateBuilder _posts;
-  PostsStateBuilder get posts => _$this._posts ??= new PostsStateBuilder();
-  set posts(PostsStateBuilder posts) => _$this._posts = posts;
-
-  VideosStateBuilder _videos;
-  VideosStateBuilder get videos => _$this._videos ??= new VideosStateBuilder();
-  set videos(VideosStateBuilder videos) => _$this._videos = videos;
 
   ClinicStateBuilder _clinic;
   ClinicStateBuilder get clinic => _$this._clinic ??= new ClinicStateBuilder();
@@ -80,8 +55,6 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   AppStateBuilder get _$this {
     if (_$v != null) {
-      _posts = _$v.posts?.toBuilder();
-      _videos = _$v.videos?.toBuilder();
       _clinic = _$v.clinic?.toBuilder();
       _$v = null;
     }
@@ -105,18 +78,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result = _$v ??
-          new _$AppState._(
-              posts: posts.build(),
-              videos: videos.build(),
-              clinic: clinic.build());
+      _$result = _$v ?? new _$AppState._(clinic: clinic.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'posts';
-        posts.build();
-        _$failedField = 'videos';
-        videos.build();
         _$failedField = 'clinic';
         clinic.build();
       } catch (e) {

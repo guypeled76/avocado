@@ -10,8 +10,7 @@ part 'app.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
 
-  PostsState get posts;
-  VideosState get videos;
+
   ClinicState get clinic;
 
 
