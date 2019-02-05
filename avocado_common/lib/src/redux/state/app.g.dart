@@ -9,13 +9,18 @@ part of 'app.dart';
 class _$AppState extends AppState {
   @override
   final ClinicState clinic;
+  @override
+  final ClientState client;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.clinic}) : super._() {
+  _$AppState._({this.clinic, this.client}) : super._() {
     if (clinic == null) {
       throw new BuiltValueNullFieldError('AppState', 'clinic');
+    }
+    if (client == null) {
+      throw new BuiltValueNullFieldError('AppState', 'client');
     }
   }
 
@@ -29,17 +34,21 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && clinic == other.clinic;
+    return other is AppState &&
+        clinic == other.clinic &&
+        client == other.client;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, clinic.hashCode));
+    return $jf($jc($jc(0, clinic.hashCode), client.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AppState')..add('clinic', clinic))
+    return (newBuiltValueToStringHelper('AppState')
+          ..add('clinic', clinic)
+          ..add('client', client))
         .toString();
   }
 }
@@ -51,11 +60,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   ClinicStateBuilder get clinic => _$this._clinic ??= new ClinicStateBuilder();
   set clinic(ClinicStateBuilder clinic) => _$this._clinic = clinic;
 
+  ClientStateBuilder _client;
+  ClientStateBuilder get client => _$this._client ??= new ClientStateBuilder();
+  set client(ClientStateBuilder client) => _$this._client = client;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _clinic = _$v.clinic?.toBuilder();
+      _client = _$v.client?.toBuilder();
       _$v = null;
     }
     return this;
@@ -78,12 +92,15 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result = _$v ?? new _$AppState._(clinic: clinic.build());
+      _$result = _$v ??
+          new _$AppState._(clinic: clinic.build(), client: client.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'clinic';
         clinic.build();
+        _$failedField = 'client';
+        client.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

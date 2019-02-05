@@ -8,6 +8,7 @@ abstract class AppActions extends ReduxActions {
   ActionDispatcher<Null> clear;
 
   ClinicActions clinic;
+  ClientActions client;
 
 
   AppActions._();

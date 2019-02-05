@@ -22,6 +22,10 @@ abstract class ClientPostActions extends ReduxActions {
   ClientPostActions._();
   factory ClientPostActions() => new _$ClientPostActions();
 
-  ActionDispatcher<PostInfo> update;
+  ActionDispatcher<PostInfo> set;
+  ActionDispatcher<List<PostInfo>> setMany;
+  ActionDispatcher<PostInfo> remove;
+
+  ActionDispatcher<Null> load;
 
 }

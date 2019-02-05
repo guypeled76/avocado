@@ -1,4 +1,3 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:avocado_common/common.dart';
 
@@ -13,4 +12,7 @@ abstract class ClientState implements Built<ClientState, ClientStateBuilder> {
       new _$ClientState((ClientStateBuilder b) => b);
 
 
+  ProfileInfo get info;
+
+  PostsState get posts;
 }

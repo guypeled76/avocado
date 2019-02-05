@@ -18,6 +18,8 @@ abstract class ClinicState implements Built<ClinicState, ClinicStateBuilder> {
 
   VideosState get videos;
 
+  BuiltMap<String, ClientState> get clients;
+
 }
 
 

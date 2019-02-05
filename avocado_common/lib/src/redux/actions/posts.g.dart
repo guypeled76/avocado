@@ -46,16 +46,31 @@ class _$ClientPostActions extends ClientPostActions {
   factory _$ClientPostActions() => new _$ClientPostActions._();
   _$ClientPostActions._() : super._();
 
-  final ActionDispatcher<PostInfo> update =
-      new ActionDispatcher<PostInfo>('ClientPostActions-update');
+  final ActionDispatcher<PostInfo> set =
+      new ActionDispatcher<PostInfo>('ClientPostActions-set');
+  final ActionDispatcher<List<PostInfo>> setMany =
+      new ActionDispatcher<List<PostInfo>>('ClientPostActions-setMany');
+  final ActionDispatcher<PostInfo> remove =
+      new ActionDispatcher<PostInfo>('ClientPostActions-remove');
+  final ActionDispatcher<Null> load =
+      new ActionDispatcher<Null>('ClientPostActions-load');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
-    update.setDispatcher(dispatcher);
+    set.setDispatcher(dispatcher);
+    setMany.setDispatcher(dispatcher);
+    remove.setDispatcher(dispatcher);
+    load.setDispatcher(dispatcher);
   }
 }
 
 class ClientPostActionsNames {
-  static final ActionName<PostInfo> update =
-      new ActionName<PostInfo>('ClientPostActions-update');
+  static final ActionName<PostInfo> set =
+      new ActionName<PostInfo>('ClientPostActions-set');
+  static final ActionName<List<PostInfo>> setMany =
+      new ActionName<List<PostInfo>>('ClientPostActions-setMany');
+  static final ActionName<PostInfo> remove =
+      new ActionName<PostInfo>('ClientPostActions-remove');
+  static final ActionName<Null> load =
+      new ActionName<Null>('ClientPostActions-load');
 }

@@ -9,6 +9,7 @@ Reducer<AppState, AppStateBuilder, dynamic> createAppReducer(ServiceContainer co
 
   return (new ReducerBuilder<AppState, AppStateBuilder>()
         ..add<Null>(AppActionsNames.clear, _clear)
-        ..combineNested(createClinicsReducer(container)))
+        ..combineNested(createClinicsReducer(container))
+        ..combineNested(createClientReducer(container)))
       .build();
 }

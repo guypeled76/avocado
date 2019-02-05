@@ -13,11 +13,14 @@ class _$ClinicState extends ClinicState {
   final PostsState posts;
   @override
   final VideosState videos;
+  @override
+  final BuiltMap<String, ClientState> clients;
 
   factory _$ClinicState([void updates(ClinicStateBuilder b)]) =>
       (new ClinicStateBuilder()..update(updates)).build();
 
-  _$ClinicState._({this.info, this.posts, this.videos}) : super._() {
+  _$ClinicState._({this.info, this.posts, this.videos, this.clients})
+      : super._() {
     if (info == null) {
       throw new BuiltValueNullFieldError('ClinicState', 'info');
     }
@@ -26,6 +29,9 @@ class _$ClinicState extends ClinicState {
     }
     if (videos == null) {
       throw new BuiltValueNullFieldError('ClinicState', 'videos');
+    }
+    if (clients == null) {
+      throw new BuiltValueNullFieldError('ClinicState', 'clients');
     }
   }
 
@@ -42,13 +48,15 @@ class _$ClinicState extends ClinicState {
     return other is ClinicState &&
         info == other.info &&
         posts == other.posts &&
-        videos == other.videos;
+        videos == other.videos &&
+        clients == other.clients;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, info.hashCode), posts.hashCode), videos.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, info.hashCode), posts.hashCode), videos.hashCode),
+        clients.hashCode));
   }
 
   @override
@@ -56,7 +64,8 @@ class _$ClinicState extends ClinicState {
     return (newBuiltValueToStringHelper('ClinicState')
           ..add('info', info)
           ..add('posts', posts)
-          ..add('videos', videos))
+          ..add('videos', videos)
+          ..add('clients', clients))
         .toString();
   }
 }
@@ -76,6 +85,12 @@ class ClinicStateBuilder implements Builder<ClinicState, ClinicStateBuilder> {
   VideosStateBuilder get videos => _$this._videos ??= new VideosStateBuilder();
   set videos(VideosStateBuilder videos) => _$this._videos = videos;
 
+  MapBuilder<String, ClientState> _clients;
+  MapBuilder<String, ClientState> get clients =>
+      _$this._clients ??= new MapBuilder<String, ClientState>();
+  set clients(MapBuilder<String, ClientState> clients) =>
+      _$this._clients = clients;
+
   ClinicStateBuilder();
 
   ClinicStateBuilder get _$this {
@@ -83,6 +98,7 @@ class ClinicStateBuilder implements Builder<ClinicState, ClinicStateBuilder> {
       _info = _$v.info;
       _posts = _$v.posts?.toBuilder();
       _videos = _$v.videos?.toBuilder();
+      _clients = _$v.clients?.toBuilder();
       _$v = null;
     }
     return this;
@@ -107,7 +123,10 @@ class ClinicStateBuilder implements Builder<ClinicState, ClinicStateBuilder> {
     try {
       _$result = _$v ??
           new _$ClinicState._(
-              info: info, posts: posts.build(), videos: videos.build());
+              info: info,
+              posts: posts.build(),
+              videos: videos.build(),
+              clients: clients.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -115,6 +134,8 @@ class ClinicStateBuilder implements Builder<ClinicState, ClinicStateBuilder> {
         posts.build();
         _$failedField = 'videos';
         videos.build();
+        _$failedField = 'clients';
+        clients.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ClinicState', _$failedField, e.toString());
