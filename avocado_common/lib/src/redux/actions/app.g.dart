@@ -16,11 +16,13 @@ class _$AppActions extends AppActions {
   final ActionDispatcher<Null> clear =
       new ActionDispatcher<Null>('AppActions-clear');
   final ClinicActions clinic = new ClinicActions();
+  final ClientActions client = new ClientActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     clear.setDispatcher(dispatcher);
     clinic.setDispatcher(dispatcher);
+    client.setDispatcher(dispatcher);
   }
 }
 
