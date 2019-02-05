@@ -3,124 +3,113 @@
 part of 'app.dart';
 
 // **************************************************************************
-// BuiltReduxGenerator
-// **************************************************************************
-
-// ignore_for_file: avoid_classes_with_only_static_members
-// ignore_for_file: annotate_overrides
-
-class _$AppActions extends AppActions {
-  factory _$AppActions() => new _$AppActions._();
-  _$AppActions._() : super._();
-
-  final ActionDispatcher<Null> clear =
-      new ActionDispatcher<Null>('AppActions-clear');
-  final PostActions posts = new PostActions();
-  final VideoActions videos = new VideoActions();
-
-  @override
-  void setDispatcher(Dispatcher dispatcher) {
-    clear.setDispatcher(dispatcher);
-    posts.setDispatcher(dispatcher);
-    videos.setDispatcher(dispatcher);
-  }
-}
-
-class AppActionsNames {
-  static final ActionName<Null> clear =
-      new ActionName<Null>('AppActions-clear');
-}
-
-// **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$App extends App {
+class _$AppState extends AppState {
   @override
-  final Posts posts;
+  final PostsState posts;
   @override
-  final Videos videos;
+  final VideosState videos;
+  @override
+  final ClinicState clinic;
 
-  factory _$App([void updates(AppBuilder b)]) =>
-      (new AppBuilder()..update(updates)).build();
+  factory _$AppState([void updates(AppStateBuilder b)]) =>
+      (new AppStateBuilder()..update(updates)).build();
 
-  _$App._({this.posts, this.videos}) : super._() {
+  _$AppState._({this.posts, this.videos, this.clinic}) : super._() {
     if (posts == null) {
-      throw new BuiltValueNullFieldError('App', 'posts');
+      throw new BuiltValueNullFieldError('AppState', 'posts');
     }
     if (videos == null) {
-      throw new BuiltValueNullFieldError('App', 'videos');
+      throw new BuiltValueNullFieldError('AppState', 'videos');
+    }
+    if (clinic == null) {
+      throw new BuiltValueNullFieldError('AppState', 'clinic');
     }
   }
 
   @override
-  App rebuild(void updates(AppBuilder b)) =>
+  AppState rebuild(void updates(AppStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  AppBuilder toBuilder() => new AppBuilder()..replace(this);
+  AppStateBuilder toBuilder() => new AppStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is App && posts == other.posts && videos == other.videos;
+    return other is AppState &&
+        posts == other.posts &&
+        videos == other.videos &&
+        clinic == other.clinic;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, posts.hashCode), videos.hashCode));
+    return $jf(
+        $jc($jc($jc(0, posts.hashCode), videos.hashCode), clinic.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('App')
+    return (newBuiltValueToStringHelper('AppState')
           ..add('posts', posts)
-          ..add('videos', videos))
+          ..add('videos', videos)
+          ..add('clinic', clinic))
         .toString();
   }
 }
 
-class AppBuilder implements Builder<App, AppBuilder> {
-  _$App _$v;
+class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
+  _$AppState _$v;
 
-  PostsBuilder _posts;
-  PostsBuilder get posts => _$this._posts ??= new PostsBuilder();
-  set posts(PostsBuilder posts) => _$this._posts = posts;
+  PostsStateBuilder _posts;
+  PostsStateBuilder get posts => _$this._posts ??= new PostsStateBuilder();
+  set posts(PostsStateBuilder posts) => _$this._posts = posts;
 
-  VideosBuilder _videos;
-  VideosBuilder get videos => _$this._videos ??= new VideosBuilder();
-  set videos(VideosBuilder videos) => _$this._videos = videos;
+  VideosStateBuilder _videos;
+  VideosStateBuilder get videos => _$this._videos ??= new VideosStateBuilder();
+  set videos(VideosStateBuilder videos) => _$this._videos = videos;
 
-  AppBuilder();
+  ClinicStateBuilder _clinic;
+  ClinicStateBuilder get clinic => _$this._clinic ??= new ClinicStateBuilder();
+  set clinic(ClinicStateBuilder clinic) => _$this._clinic = clinic;
 
-  AppBuilder get _$this {
+  AppStateBuilder();
+
+  AppStateBuilder get _$this {
     if (_$v != null) {
       _posts = _$v.posts?.toBuilder();
       _videos = _$v.videos?.toBuilder();
+      _clinic = _$v.clinic?.toBuilder();
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(App other) {
+  void replace(AppState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$App;
+    _$v = other as _$AppState;
   }
 
   @override
-  void update(void updates(AppBuilder b)) {
+  void update(void updates(AppStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$App build() {
-    _$App _$result;
+  _$AppState build() {
+    _$AppState _$result;
     try {
-      _$result =
-          _$v ?? new _$App._(posts: posts.build(), videos: videos.build());
+      _$result = _$v ??
+          new _$AppState._(
+              posts: posts.build(),
+              videos: videos.build(),
+              clinic: clinic.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -128,9 +117,11 @@ class AppBuilder implements Builder<App, AppBuilder> {
         posts.build();
         _$failedField = 'videos';
         videos.build();
+        _$failedField = 'clinic';
+        clinic.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'App', _$failedField, e.toString());
+            'AppState', _$failedField, e.toString());
       }
       rethrow;
     }

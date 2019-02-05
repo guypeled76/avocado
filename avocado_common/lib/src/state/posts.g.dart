@@ -3,45 +3,20 @@
 part of 'posts.dart';
 
 // **************************************************************************
-// BuiltReduxGenerator
-// **************************************************************************
-
-// ignore_for_file: avoid_classes_with_only_static_members
-// ignore_for_file: annotate_overrides
-
-class _$PostActions extends PostActions {
-  factory _$PostActions() => new _$PostActions._();
-  _$PostActions._() : super._();
-
-  final ActionDispatcher<PostInfo> update =
-      new ActionDispatcher<PostInfo>('PostActions-update');
-
-  @override
-  void setDispatcher(Dispatcher dispatcher) {
-    update.setDispatcher(dispatcher);
-  }
-}
-
-class PostActionsNames {
-  static final ActionName<PostInfo> update =
-      new ActionName<PostInfo>('PostActions-update');
-}
-
-// **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$Posts extends Posts {
+class _$PostsState extends PostsState {
   @override
   final BuiltMap<String, PostInfo> map;
   BuiltList<PostInfo> __ordered;
 
-  factory _$Posts([void updates(PostsBuilder b)]) =>
-      (new PostsBuilder()..update(updates)).build();
+  factory _$PostsState([void updates(PostsStateBuilder b)]) =>
+      (new PostsStateBuilder()..update(updates)).build();
 
-  _$Posts._({this.map}) : super._() {
+  _$PostsState._({this.map}) : super._() {
     if (map == null) {
-      throw new BuiltValueNullFieldError('Posts', 'map');
+      throw new BuiltValueNullFieldError('PostsState', 'map');
     }
   }
 
@@ -49,16 +24,16 @@ class _$Posts extends Posts {
   BuiltList<PostInfo> get ordered => __ordered ??= super.ordered;
 
   @override
-  Posts rebuild(void updates(PostsBuilder b)) =>
+  PostsState rebuild(void updates(PostsStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  PostsBuilder toBuilder() => new PostsBuilder()..replace(this);
+  PostsStateBuilder toBuilder() => new PostsStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Posts && map == other.map;
+    return other is PostsState && map == other.map;
   }
 
   @override
@@ -68,21 +43,22 @@ class _$Posts extends Posts {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Posts')..add('map', map)).toString();
+    return (newBuiltValueToStringHelper('PostsState')..add('map', map))
+        .toString();
   }
 }
 
-class PostsBuilder implements Builder<Posts, PostsBuilder> {
-  _$Posts _$v;
+class PostsStateBuilder implements Builder<PostsState, PostsStateBuilder> {
+  _$PostsState _$v;
 
   MapBuilder<String, PostInfo> _map;
   MapBuilder<String, PostInfo> get map =>
       _$this._map ??= new MapBuilder<String, PostInfo>();
   set map(MapBuilder<String, PostInfo> map) => _$this._map = map;
 
-  PostsBuilder();
+  PostsStateBuilder();
 
-  PostsBuilder get _$this {
+  PostsStateBuilder get _$this {
     if (_$v != null) {
       _map = _$v.map?.toBuilder();
       _$v = null;
@@ -91,23 +67,23 @@ class PostsBuilder implements Builder<Posts, PostsBuilder> {
   }
 
   @override
-  void replace(Posts other) {
+  void replace(PostsState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$Posts;
+    _$v = other as _$PostsState;
   }
 
   @override
-  void update(void updates(PostsBuilder b)) {
+  void update(void updates(PostsStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$Posts build() {
-    _$Posts _$result;
+  _$PostsState build() {
+    _$PostsState _$result;
     try {
-      _$result = _$v ?? new _$Posts._(map: map.build());
+      _$result = _$v ?? new _$PostsState._(map: map.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -115,7 +91,7 @@ class PostsBuilder implements Builder<Posts, PostsBuilder> {
         map.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'Posts', _$failedField, e.toString());
+            'PostsState', _$failedField, e.toString());
       }
       rethrow;
     }

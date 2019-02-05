@@ -1,39 +1,39 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'videos.dart';
+part of 'clinic.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$VideosState extends VideosState {
+class _$ClinicState extends ClinicState {
   @override
-  final BuiltMap<String, VideoInfo> map;
-  BuiltList<VideoInfo> __ordered;
+  final BuiltMap<String, ClinicInfo> map;
+  BuiltList<ClinicInfo> __ordered;
 
-  factory _$VideosState([void updates(VideosStateBuilder b)]) =>
-      (new VideosStateBuilder()..update(updates)).build();
+  factory _$ClinicState([void updates(ClinicStateBuilder b)]) =>
+      (new ClinicStateBuilder()..update(updates)).build();
 
-  _$VideosState._({this.map}) : super._() {
+  _$ClinicState._({this.map}) : super._() {
     if (map == null) {
-      throw new BuiltValueNullFieldError('VideosState', 'map');
+      throw new BuiltValueNullFieldError('ClinicState', 'map');
     }
   }
 
   @override
-  BuiltList<VideoInfo> get ordered => __ordered ??= super.ordered;
+  BuiltList<ClinicInfo> get ordered => __ordered ??= super.ordered;
 
   @override
-  VideosState rebuild(void updates(VideosStateBuilder b)) =>
+  ClinicState rebuild(void updates(ClinicStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  VideosStateBuilder toBuilder() => new VideosStateBuilder()..replace(this);
+  ClinicStateBuilder toBuilder() => new ClinicStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is VideosState && map == other.map;
+    return other is ClinicState && map == other.map;
   }
 
   @override
@@ -43,22 +43,22 @@ class _$VideosState extends VideosState {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('VideosState')..add('map', map))
+    return (newBuiltValueToStringHelper('ClinicState')..add('map', map))
         .toString();
   }
 }
 
-class VideosStateBuilder implements Builder<VideosState, VideosStateBuilder> {
-  _$VideosState _$v;
+class ClinicStateBuilder implements Builder<ClinicState, ClinicStateBuilder> {
+  _$ClinicState _$v;
 
-  MapBuilder<String, VideoInfo> _map;
-  MapBuilder<String, VideoInfo> get map =>
-      _$this._map ??= new MapBuilder<String, VideoInfo>();
-  set map(MapBuilder<String, VideoInfo> map) => _$this._map = map;
+  MapBuilder<String, ClinicInfo> _map;
+  MapBuilder<String, ClinicInfo> get map =>
+      _$this._map ??= new MapBuilder<String, ClinicInfo>();
+  set map(MapBuilder<String, ClinicInfo> map) => _$this._map = map;
 
-  VideosStateBuilder();
+  ClinicStateBuilder();
 
-  VideosStateBuilder get _$this {
+  ClinicStateBuilder get _$this {
     if (_$v != null) {
       _map = _$v.map?.toBuilder();
       _$v = null;
@@ -67,23 +67,23 @@ class VideosStateBuilder implements Builder<VideosState, VideosStateBuilder> {
   }
 
   @override
-  void replace(VideosState other) {
+  void replace(ClinicState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$VideosState;
+    _$v = other as _$ClinicState;
   }
 
   @override
-  void update(void updates(VideosStateBuilder b)) {
+  void update(void updates(ClinicStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$VideosState build() {
-    _$VideosState _$result;
+  _$ClinicState build() {
+    _$ClinicState _$result;
     try {
-      _$result = _$v ?? new _$VideosState._(map: map.build());
+      _$result = _$v ?? new _$ClinicState._(map: map.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -91,7 +91,7 @@ class VideosStateBuilder implements Builder<VideosState, VideosStateBuilder> {
         map.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'VideosState', _$failedField, e.toString());
+            'ClinicState', _$failedField, e.toString());
       }
       rethrow;
     }

@@ -50,8 +50,31 @@ const _$EntityTypeEnumMap = <EntityType, dynamic>{
   EntityType.notification: 'notification',
   EntityType.video: 'video',
   EntityType.image: 'image',
-  EntityType.profile: 'profile'
+  EntityType.profile: 'profile',
+  EntityType.clinic: 'clinic'
 };
+
+ClinicInfo _$ClinicInfoFromJson(Map<String, dynamic> json) {
+  return ClinicInfo(
+      key: EntityInfo._undifinedToNull(json['key']),
+      hashtags:
+          (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
+}
+
+Map<String, dynamic> _$ClinicInfoToJson(ClinicInfo instance) {
+  final val = <String, dynamic>{
+    'key': instance.key,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hashtags', instance.hashtags);
+  return val;
+}
 
 TargetInfo _$TargetInfoFromJson(Map<String, dynamic> json) {
   return TargetInfo(

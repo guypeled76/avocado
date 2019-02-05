@@ -11,6 +11,8 @@ dependencies:
   resource: ^2.1.5 
   rxdart: ^0.20.0
   json_annotation: ^2.0.0
+  built_redux_rx:
+    git: https://github.com/guypeled76/built_redux_rx
   built_redux:
     git: https://github.com/guypeled76/built_redux
 #  path: ^1.4.1

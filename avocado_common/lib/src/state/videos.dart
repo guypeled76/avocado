@@ -8,56 +8,23 @@ import 'app.dart';
 part 'videos.g.dart';
 
 ////////////////////
-/// Actions
-///////////////////
-
-/// [VideosActions]
-abstract class VideoActions extends ReduxActions {
-  ActionDispatcher<VideoInfo> update;
-
-
-  // factory to create on instance of the generated implementation of VideosActions
-  VideoActions._();
-  factory VideoActions() => new _$VideoActions();
-}
-
-////////////////////
 /// State
 ///////////////////
 
-/// [Videos]
-abstract class Videos implements Built<Videos, VideosBuilder> {
+/// [VideosState]
+abstract class VideosState implements Built<VideosState, VideosStateBuilder> {
 
   /// [map] contains a map of post.key to VideoInfo
   BuiltMap<String, VideoInfo> get map;
 
   // Built value boilerplate
-  Videos._();
-  factory Videos([updates(VideosBuilder b)]) =>
-      new _$Videos((VideosBuilder b) => b);
+  VideosState._();
+  factory VideosState([updates(VideosStateBuilder b)]) =>
+      new _$VideosState((VideosStateBuilder b) => b);
 
 
   @memoized
   BuiltList<VideoInfo> get ordered =>
       new BuiltList<VideoInfo>(map.values);
 }
-
-////////////////////
-/// Main Reducer
-///////////////////
-
-NestedReducerBuilder<App, AppBuilder, Videos, VideosBuilder>
-createVideosReducer() =>
-    new NestedReducerBuilder<App, AppBuilder, Videos, VideosBuilder>(
-          (state) => state.videos,
-          (builder) => builder.videos,
-    )
-      ..add<VideoInfo>(VideoActionsNames.update, _updateVideo);
-
-////////////////////
-/// Reducers
-///////////////////
-
-_updateVideo(Videos state, Action<VideoInfo> action, VideosBuilder builder) =>
-    builder..map[action.payload.key] = action.payload;
 

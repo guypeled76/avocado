@@ -9,7 +9,8 @@ enum EntityType {
     notification,
     video,
     image,
-    profile
+    profile,
+    clinic
 }
 
 @JsonSerializable(nullable: false)
@@ -30,6 +31,16 @@ class EntityInfo {
   static _undifinedToNull(dynamic value) {
     return value ?? null;
   }
+}
+
+@JsonSerializable(nullable: false)
+class ClinicInfo extends EntityInfo {
+
+  ClinicInfo({String key, List<String> hashtags}) : super(
+      key:key,
+      type: EntityType.clinic,
+      hashtags:hashtags
+  );
 }
 
 @JsonSerializable(nullable: false)
