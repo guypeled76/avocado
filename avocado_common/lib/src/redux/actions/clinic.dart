@@ -4,12 +4,22 @@ import 'package:avocado_common/common.dart';
 part 'clinic.g.dart';
 
 
+abstract class ClinicEvents extends ReduxActions {
+
+  ActionDispatcher<EventPayload> postsPageLoaded;
+  ActionDispatcher<EventPayload> videosPageLoaded;
+
+
+  ClinicEvents._();
+  factory ClinicEvents() => new _$ClinicEvents();
+}
+
 abstract class ClinicActions extends ReduxActions {
 
   ClinicActions._();
   factory ClinicActions() => new _$ClinicActions();
 
-
+  ClinicEvents events;
   ClinicPostActions posts;
   ClinicVideoActions videos;
 

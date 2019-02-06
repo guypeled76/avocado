@@ -11,7 +11,7 @@ Iterable<Epic<AppState, AppStateBuilder, ReduxActions>> createEpicBuilder(Servic
 
 
   return (new EpicBuilder<AppState, AppStateBuilder, ReduxActions>()
-    ..add(AppActionsNames.clear, _httpRequestEpic))
+    ..add(AppEventsNames.close, _httpRequestEpic))
       .build();
 }
 

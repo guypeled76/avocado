@@ -13,20 +13,32 @@ class _$AppActions extends AppActions {
   factory _$AppActions() => new _$AppActions._();
   _$AppActions._() : super._();
 
-  final ActionDispatcher<Null> clear =
-      new ActionDispatcher<Null>('AppActions-clear');
   final ClinicActions clinic = new ClinicActions();
   final ClientActions client = new ClientActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
-    clear.setDispatcher(dispatcher);
     clinic.setDispatcher(dispatcher);
     client.setDispatcher(dispatcher);
   }
 }
 
-class AppActionsNames {
-  static final ActionName<Null> clear =
-      new ActionName<Null>('AppActions-clear');
+class AppActionsNames {}
+
+class _$AppEvents extends AppEvents {
+  factory _$AppEvents() => new _$AppEvents._();
+  _$AppEvents._() : super._();
+
+  final ActionDispatcher<EventPayload> close =
+      new ActionDispatcher<EventPayload>('AppEvents-close');
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {
+    close.setDispatcher(dispatcher);
+  }
+}
+
+class AppEventsNames {
+  static final ActionName<EventPayload> close =
+      new ActionName<EventPayload>('AppEvents-close');
 }

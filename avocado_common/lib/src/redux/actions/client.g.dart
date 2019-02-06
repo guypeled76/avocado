@@ -9,18 +9,30 @@ part of 'client.dart';
 // ignore_for_file: avoid_classes_with_only_static_members
 // ignore_for_file: annotate_overrides
 
+class _$ClientEvents extends ClientEvents {
+  factory _$ClientEvents() => new _$ClientEvents._();
+  _$ClientEvents._() : super._();
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {}
+}
+
+class ClientEventsNames {}
+
 class _$ClientActions extends ClientActions {
   factory _$ClientActions() => new _$ClientActions._();
   _$ClientActions._() : super._();
 
   final ActionDispatcher<ProfileInfo> set =
       new ActionDispatcher<ProfileInfo>('ClientActions-set');
+  final ClientEvents events = new ClientEvents();
   final ClientPostActions posts = new ClientPostActions();
   final ClientVideoActions videos = new ClientVideoActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     set.setDispatcher(dispatcher);
+    events.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
     videos.setDispatcher(dispatcher);
   }
