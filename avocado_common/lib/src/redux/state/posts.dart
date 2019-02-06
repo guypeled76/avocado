@@ -16,7 +16,11 @@ abstract class PostsState implements Built<PostsState, PostsStateBuilder> {
 
 
   @memoized
-  BuiltList<PostInfo> get ordered => new BuiltList<PostInfo>(map.values);
+  BuiltList<PostInfo> get ordered  {
+    return new BuiltList<PostInfo>(
+        EntityInfo.sortByDate(List.from(map.values))
+    );
+  }
 }
 
 

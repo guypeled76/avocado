@@ -8,7 +8,7 @@ part of 'info.dart';
 
 EntityInfo _$EntityInfoFromJson(Map<String, dynamic> json) {
   return EntityInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       type: _$enumDecode(_$EntityTypeEnumMap, json['type']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
@@ -56,7 +56,7 @@ const _$EntityTypeEnumMap = <EntityType, dynamic>{
 
 ClinicInfo _$ClinicInfoFromJson(Map<String, dynamic> json) {
   return ClinicInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
 }
@@ -78,7 +78,7 @@ Map<String, dynamic> _$ClinicInfoToJson(ClinicInfo instance) {
 
 TargetInfo _$TargetInfoFromJson(Map<String, dynamic> json) {
   return TargetInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       type: _$enumDecode(_$EntityTypeEnumMap, json['type']));
 }
 
@@ -90,14 +90,14 @@ Map<String, dynamic> _$TargetInfoToJson(TargetInfo instance) =>
 
 PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
   return PostInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      content: EntityInfo._undifinedToNull(json['content']),
+      content: EntityInfo._undefinedToNull(json['content']),
       user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
-      image: EntityInfo._undifinedToNull(json['image']),
-      video: EntityInfo._undifinedToNull(json['video']));
+      image: EntityInfo._undefinedToNull(json['image']),
+      video: EntityInfo._undefinedToNull(json['video']));
 }
 
 Map<String, dynamic> _$PostInfoToJson(PostInfo instance) {
@@ -122,13 +122,13 @@ Map<String, dynamic> _$PostInfoToJson(PostInfo instance) {
 
 ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
   return ImageContentInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      content: EntityInfo._undifinedToNull(json['content']),
+      content: EntityInfo._undefinedToNull(json['content']),
       user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
-      image: EntityInfo._undifinedToNull(json['image']));
+      image: EntityInfo._undefinedToNull(json['image']));
 }
 
 Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) {
@@ -152,14 +152,14 @@ Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) {
 
 VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
   return VideoInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      content: EntityInfo._undifinedToNull(json['content']),
+      content: EntityInfo._undefinedToNull(json['content']),
       user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
-      image: EntityInfo._undifinedToNull(json['image']),
-      video: EntityInfo._undifinedToNull(json['video']));
+      image: EntityInfo._undefinedToNull(json['image']),
+      video: EntityInfo._undefinedToNull(json['video']));
 }
 
 Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) {
@@ -184,12 +184,12 @@ Map<String, dynamic> _$VideoInfoToJson(VideoInfo instance) {
 
 NotificationInfo _$NotificationInfoFromJson(Map<String, dynamic> json) {
   return NotificationInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
       date: DateTime.parse(json['date'] as String),
       user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
-      content: EntityInfo._undifinedToNull(json['content']),
+      content: EntityInfo._undefinedToNull(json['content']),
       target: NotificationInfo._jsonToTarget(
           json['target'] as Map<String, dynamic>));
 }
@@ -215,13 +215,13 @@ Map<String, dynamic> _$NotificationInfoToJson(NotificationInfo instance) {
 
 MessageInfo _$MessageInfoFromJson(Map<String, dynamic> json) {
   return MessageInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      content: EntityInfo._undifinedToNull(json['content']),
+      content: EntityInfo._undefinedToNull(json['content']),
       user: ContentInfo._jsonToUser(json['user'] as Map<String, dynamic>),
       date: DateTime.parse(json['date'] as String),
-      image: EntityInfo._undifinedToNull(json['image']));
+      image: EntityInfo._undefinedToNull(json['image']));
 }
 
 Map<String, dynamic> _$MessageInfoToJson(MessageInfo instance) {
@@ -245,11 +245,11 @@ Map<String, dynamic> _$MessageInfoToJson(MessageInfo instance) {
 
 UserInfo _$UserInfoFromJson(Map<String, dynamic> json) {
   return UserInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      image: EntityInfo._undifinedToNull(json['image']),
-      displayName: EntityInfo._undifinedToNull(json['displayName']));
+      image: EntityInfo._undefinedToNull(json['image']),
+      displayName: EntityInfo._undefinedToNull(json['displayName']));
 }
 
 Map<String, dynamic> _$UserInfoToJson(UserInfo instance) {
@@ -271,12 +271,12 @@ Map<String, dynamic> _$UserInfoToJson(UserInfo instance) {
 
 ProfileInfo _$ProfileInfoFromJson(Map<String, dynamic> json) {
   return ProfileInfo(
-      key: EntityInfo._undifinedToNull(json['key']),
+      key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
-      image: EntityInfo._undifinedToNull(json['image']),
-      displayName: EntityInfo._undifinedToNull(json['displayName']),
-      email: EntityInfo._undifinedToNull(json['email']));
+      image: EntityInfo._undefinedToNull(json['image']),
+      displayName: EntityInfo._undefinedToNull(json['displayName']),
+      email: EntityInfo._undefinedToNull(json['email']));
 }
 
 Map<String, dynamic> _$ProfileInfoToJson(ProfileInfo instance) {
