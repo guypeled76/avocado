@@ -7,6 +7,7 @@ class AppStore {
   Store<AppState, AppStateBuilder, AppActions> _store;
   ClientStore _clientStore;
   ClinicStore _clinicStore;
+  BehaviorSubject<AppState> _state;
 
   AppStore(ServiceContainer container) {
     _store = new Store<AppState, AppStateBuilder, AppActions>(
@@ -22,6 +23,8 @@ class AppStore {
         ]
     );
 
+    _state = new BehaviorSubject()
+      ..addStream(_store.nextState);
     _clientStore = ClientStore(this);
     _clinicStore = ClinicStore(this);
   }
@@ -36,7 +39,7 @@ class AppStore {
 
 
   Observable<AppState> get state {
-    return this._store.nextState;
+    return this._state;
   }
 
   AppActions get actions {

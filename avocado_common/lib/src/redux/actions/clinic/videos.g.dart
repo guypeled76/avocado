@@ -26,21 +26,3 @@ class ClinicVideoActionsNames {
   static final ActionName<VideoInfo> update =
       new ActionName<VideoInfo>('ClinicVideoActions-update');
 }
-
-class _$ClientVideoActions extends ClientVideoActions {
-  factory _$ClientVideoActions() => new _$ClientVideoActions._();
-  _$ClientVideoActions._() : super._();
-
-  final ActionDispatcher<VideoInfo> update =
-      new ActionDispatcher<VideoInfo>('ClientVideoActions-update');
-
-  @override
-  void setDispatcher(Dispatcher dispatcher) {
-    update.setDispatcher(dispatcher);
-  }
-}
-
-class ClientVideoActionsNames {
-  static final ActionName<VideoInfo> update =
-      new ActionName<VideoInfo>('ClientVideoActions-update');
-}
