@@ -2,8 +2,6 @@ import 'package:avocado_common/common.dart';
 import 'package:built_value/built_value.dart';
 
 
-import 'clinic.dart';
-import 'client.dart';
 
 part 'app.g.dart';
 
