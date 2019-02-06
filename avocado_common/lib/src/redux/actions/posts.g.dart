@@ -13,14 +13,15 @@ class _$ClinicPostActions extends ClinicPostActions {
   factory _$ClinicPostActions() => new _$ClinicPostActions._();
   _$ClinicPostActions._() : super._();
 
-  final ActionDispatcher<PostInfo> set =
-      new ActionDispatcher<PostInfo>('ClinicPostActions-set');
-  final ActionDispatcher<List<PostInfo>> setMany =
-      new ActionDispatcher<List<PostInfo>>('ClinicPostActions-setMany');
-  final ActionDispatcher<PostInfo> remove =
-      new ActionDispatcher<PostInfo>('ClinicPostActions-remove');
-  final ActionDispatcher<Null> load =
-      new ActionDispatcher<Null>('ClinicPostActions-load');
+  final ActionDispatcher<EntityPayload<PostInfo>> set =
+      new ActionDispatcher<EntityPayload<PostInfo>>('ClinicPostActions-set');
+  final ActionDispatcher<EntitiesPayload<PostInfo>> setMany =
+      new ActionDispatcher<EntitiesPayload<PostInfo>>(
+          'ClinicPostActions-setMany');
+  final ActionDispatcher<EntityPayload<PostInfo>> remove =
+      new ActionDispatcher<EntityPayload<PostInfo>>('ClinicPostActions-remove');
+  final ActionDispatcher<CommandPayload> load =
+      new ActionDispatcher<CommandPayload>('ClinicPostActions-load');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -32,28 +33,29 @@ class _$ClinicPostActions extends ClinicPostActions {
 }
 
 class ClinicPostActionsNames {
-  static final ActionName<PostInfo> set =
-      new ActionName<PostInfo>('ClinicPostActions-set');
-  static final ActionName<List<PostInfo>> setMany =
-      new ActionName<List<PostInfo>>('ClinicPostActions-setMany');
-  static final ActionName<PostInfo> remove =
-      new ActionName<PostInfo>('ClinicPostActions-remove');
-  static final ActionName<Null> load =
-      new ActionName<Null>('ClinicPostActions-load');
+  static final ActionName<EntityPayload<PostInfo>> set =
+      new ActionName<EntityPayload<PostInfo>>('ClinicPostActions-set');
+  static final ActionName<EntitiesPayload<PostInfo>> setMany =
+      new ActionName<EntitiesPayload<PostInfo>>('ClinicPostActions-setMany');
+  static final ActionName<EntityPayload<PostInfo>> remove =
+      new ActionName<EntityPayload<PostInfo>>('ClinicPostActions-remove');
+  static final ActionName<CommandPayload> load =
+      new ActionName<CommandPayload>('ClinicPostActions-load');
 }
 
 class _$ClientPostActions extends ClientPostActions {
   factory _$ClientPostActions() => new _$ClientPostActions._();
   _$ClientPostActions._() : super._();
 
-  final ActionDispatcher<PostInfo> set =
-      new ActionDispatcher<PostInfo>('ClientPostActions-set');
-  final ActionDispatcher<List<PostInfo>> setMany =
-      new ActionDispatcher<List<PostInfo>>('ClientPostActions-setMany');
-  final ActionDispatcher<PostInfo> remove =
-      new ActionDispatcher<PostInfo>('ClientPostActions-remove');
-  final ActionDispatcher<Null> load =
-      new ActionDispatcher<Null>('ClientPostActions-load');
+  final ActionDispatcher<EntityPayload<PostInfo>> set =
+      new ActionDispatcher<EntityPayload<PostInfo>>('ClientPostActions-set');
+  final ActionDispatcher<EntitiesPayload<PostInfo>> setMany =
+      new ActionDispatcher<EntitiesPayload<PostInfo>>(
+          'ClientPostActions-setMany');
+  final ActionDispatcher<EntityPayload<PostInfo>> remove =
+      new ActionDispatcher<EntityPayload<PostInfo>>('ClientPostActions-remove');
+  final ActionDispatcher<CommandPayload> load =
+      new ActionDispatcher<CommandPayload>('ClientPostActions-load');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -65,12 +67,12 @@ class _$ClientPostActions extends ClientPostActions {
 }
 
 class ClientPostActionsNames {
-  static final ActionName<PostInfo> set =
-      new ActionName<PostInfo>('ClientPostActions-set');
-  static final ActionName<List<PostInfo>> setMany =
-      new ActionName<List<PostInfo>>('ClientPostActions-setMany');
-  static final ActionName<PostInfo> remove =
-      new ActionName<PostInfo>('ClientPostActions-remove');
-  static final ActionName<Null> load =
-      new ActionName<Null>('ClientPostActions-load');
+  static final ActionName<EntityPayload<PostInfo>> set =
+      new ActionName<EntityPayload<PostInfo>>('ClientPostActions-set');
+  static final ActionName<EntitiesPayload<PostInfo>> setMany =
+      new ActionName<EntitiesPayload<PostInfo>>('ClientPostActions-setMany');
+  static final ActionName<EntityPayload<PostInfo>> remove =
+      new ActionName<EntityPayload<PostInfo>>('ClientPostActions-remove');
+  static final ActionName<CommandPayload> load =
+      new ActionName<CommandPayload>('ClientPostActions-load');
 }

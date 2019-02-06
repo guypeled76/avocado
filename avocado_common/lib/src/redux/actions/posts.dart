@@ -9,11 +9,11 @@ abstract class ClinicPostActions extends ReduxActions {
   ClinicPostActions._();
   factory ClinicPostActions() => new _$ClinicPostActions();
 
-  ActionDispatcher<PostInfo> set;
-  ActionDispatcher<List<PostInfo>> setMany;
-  ActionDispatcher<PostInfo> remove;
+  ActionDispatcher<EntityPayload<PostInfo>> set;
+  ActionDispatcher<EntitiesPayload<PostInfo>> setMany;
+  ActionDispatcher<EntityPayload<PostInfo>> remove;
 
-  ActionDispatcher<Null> load;
+  ActionDispatcher<CommandPayload> load;
 
 }
 
@@ -22,10 +22,10 @@ abstract class ClientPostActions extends ReduxActions {
   ClientPostActions._();
   factory ClientPostActions() => new _$ClientPostActions();
 
-  ActionDispatcher<PostInfo> set;
-  ActionDispatcher<List<PostInfo>> setMany;
-  ActionDispatcher<PostInfo> remove;
+  ActionDispatcher<EntityPayload<PostInfo>> set;
+  ActionDispatcher<EntitiesPayload<PostInfo>> setMany;
+  ActionDispatcher<EntityPayload<PostInfo>> remove;
 
-  ActionDispatcher<Null> load;
+  ActionDispatcher<CommandPayload> load;
 
 }

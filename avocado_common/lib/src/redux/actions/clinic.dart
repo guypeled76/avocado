@@ -13,6 +13,7 @@ abstract class ClinicActions extends ReduxActions {
   ClinicPostActions posts;
   ClinicVideoActions videos;
 
-  ActionDispatcher<ClinicInfo> set;
+  ActionDispatcher<EntityPayload<ClinicInfo>> set;
+
 
 }

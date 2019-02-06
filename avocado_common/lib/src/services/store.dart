@@ -13,8 +13,11 @@ abstract class StoreService implements ServiceContainer {
         new AppState(),
         new AppActions(),
         middleware:
-          <Middleware<AppState, AppStateBuilder, dynamic>>[
-            createEpicMiddleware<AppState, AppStateBuilder, ReduxActions>([]),
+          <Middleware<AppState, AppStateBuilder, ReduxActions>>[
+            createEpicMiddleware<AppState, AppStateBuilder, ReduxActions>([]
+                ..addAll(createEpicBuilder(this))
+                ..addAll(createClinicEpicBuilder(this))
+            ),
           ]
         );
   }
@@ -28,3 +31,5 @@ abstract class StoreService implements ServiceContainer {
     return this._store.actions;
   }
 }
+
+

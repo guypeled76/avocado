@@ -4,16 +4,16 @@ import 'package:avocado_common/common.dart';
 NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuilder> createClinicPostsReducer(
     ServiceContainer container) {
 
-  setPost(PostsState state, Action<PostInfo> action, PostsStateBuilder builder) {
-    builder..map[action.payload.key] = action.payload;
+  setPost(PostsState state, Action<EntityPayload<PostInfo>> action, PostsStateBuilder builder) {
+    builder..map[action.payload.entity.key] = action.payload.entity;
   }
 
-  removePost(PostsState state, Action<PostInfo> action, PostsStateBuilder builder) {
-    builder..map.remove(action.payload.key);
+  removePost(PostsState state, Action<EntityPayload<PostInfo>> action, PostsStateBuilder builder) {
+    builder..map.remove(action.payload.entity.key);
   }
 
-  setManyPosts(PostsState state, Action<List<PostInfo>> action, PostsStateBuilder builder) {
-    action.payload.forEach((post) {
+  setManyPosts(PostsState state, Action<EntitiesPayload<PostInfo>> action, PostsStateBuilder builder) {
+    action.payload.entities.forEach((post) {
       builder..map[post.key] = post;
     });
 
@@ -22,7 +22,7 @@ NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuil
   return new NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuilder>(
     (state) => state.posts,
     (builder) => builder.posts,
-  )..add<PostInfo>(ClinicPostActionsNames.set, setPost)
-    ..add<PostInfo>(ClinicPostActionsNames.remove, removePost)
-    ..add<List<PostInfo>>(ClinicPostActionsNames.setMany, setManyPosts);
+  )..add<EntityPayload<PostInfo>>(ClinicPostActionsNames.set, setPost)
+    ..add<EntityPayload<PostInfo>>(ClinicPostActionsNames.remove, removePost)
+    ..add<EntitiesPayload<PostInfo>>(ClinicPostActionsNames.setMany, setManyPosts);
 }
