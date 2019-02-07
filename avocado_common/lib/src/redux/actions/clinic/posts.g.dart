@@ -46,14 +46,19 @@ class _$ClinicPostEvents extends ClinicPostEvents {
 
   final ActionDispatcher<EventPayload> load =
       new ActionDispatcher<EventPayload>('ClinicPostEvents-load');
+  final ActionDispatcher<EventPayload> unload =
+      new ActionDispatcher<EventPayload>('ClinicPostEvents-unload');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     load.setDispatcher(dispatcher);
+    unload.setDispatcher(dispatcher);
   }
 }
 
 class ClinicPostEventsNames {
   static final ActionName<EventPayload> load =
       new ActionName<EventPayload>('ClinicPostEvents-load');
+  static final ActionName<EventPayload> unload =
+      new ActionName<EventPayload>('ClinicPostEvents-unload');
 }

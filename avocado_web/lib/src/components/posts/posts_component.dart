@@ -14,7 +14,7 @@ import 'package:avocado_web/src/components/posts/post_component.dart';
     commonPipes
   ]
 )
-class PostsComponent implements OnInit {
+class PostsComponent implements OnInit, OnDestroy {
 
   ClinicPostsBLoC bloc;
 
@@ -29,6 +29,11 @@ class PostsComponent implements OnInit {
 
 
     bloc.actions.events.load(null);
+  }
+
+  @override
+  void ngOnDestroy() {
+    bloc.actions.events.unload(null);
   }
 
 }

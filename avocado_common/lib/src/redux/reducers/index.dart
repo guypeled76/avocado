@@ -1,5 +1,5 @@
 export 'app.dart';
-export 'clinic.dart';
+export 'clinic/clinic.dart';
 export 'posts.dart';
 export 'videos.dart';
-export 'client.dart';
+export 'client/client.dart';
