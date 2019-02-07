@@ -44,8 +44,8 @@ class _$ClinicPostEvents extends ClinicPostEvents {
   factory _$ClinicPostEvents() => new _$ClinicPostEvents._();
   _$ClinicPostEvents._() : super._();
 
-  final ActionDispatcher<CommandPayload> load =
-      new ActionDispatcher<CommandPayload>('ClinicPostEvents-load');
+  final ActionDispatcher<EventPayload> load =
+      new ActionDispatcher<EventPayload>('ClinicPostEvents-load');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -54,6 +54,6 @@ class _$ClinicPostEvents extends ClinicPostEvents {
 }
 
 class ClinicPostEventsNames {
-  static final ActionName<CommandPayload> load =
-      new ActionName<CommandPayload>('ClinicPostEvents-load');
+  static final ActionName<EventPayload> load =
+      new ActionName<EventPayload>('ClinicPostEvents-load');
 }

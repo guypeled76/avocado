@@ -4,17 +4,17 @@ import 'package:built_redux_rx/built_redux_rx.dart';
 import 'package:rxdart/rxdart.dart';
 
 
-Iterable<Epic<AppState, AppStateBuilder, ReduxActions>> createEpicBuilder(ServiceContainer container) {
+Iterable<Epic<AppState, AppStateBuilder, AppActions>> createEpicBuilder(ServiceContainer container) {
 
 
 
 
 
-  return (new EpicBuilder<AppState, AppStateBuilder, ReduxActions>()
+  return (new EpicBuilder<AppState, AppStateBuilder, AppActions>()
     ..add(AppEventsNames.close, _httpRequestEpic))
       .build();
 }
 
 Observable _httpRequestEpic(Observable<Action<dynamic>> stream,
-    MiddlewareApi<AppState, AppStateBuilder, ReduxActions> mwApi) =>
+    MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) =>
     stream.ofType(TypeToken<EntityPayload<PostInfo>>());

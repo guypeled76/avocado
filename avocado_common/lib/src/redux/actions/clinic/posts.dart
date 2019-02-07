@@ -19,7 +19,7 @@ abstract class ClinicPostActions extends ReduxActions {
 
 abstract class ClinicPostEvents extends ReduxActions {
 
-  ActionDispatcher<CommandPayload> load;
+  ActionDispatcher<EventPayload> load;
 
 
   ClinicPostEvents._();

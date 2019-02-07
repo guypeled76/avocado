@@ -15,9 +15,10 @@ class AppStore {
         new AppState(),
         new AppActions(),
         middleware:
-        <Middleware<AppState, AppStateBuilder, ReduxActions>>[
-          createEpicMiddleware<AppState, AppStateBuilder, ReduxActions>([]
+        <Middleware<AppState, AppStateBuilder, AppActions>>[
+          createEpicMiddleware<AppState, AppStateBuilder, AppActions>([]
             ..addAll(createEpicBuilder(container))
+            ..addAll(createClinicPostsEpicBuilder(container))
             ..addAll(createClinicEpicBuilder(container))
               ..add(logEpic)
           ),
