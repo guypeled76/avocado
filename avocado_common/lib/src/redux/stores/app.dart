@@ -19,6 +19,7 @@ class AppStore {
           createEpicMiddleware<AppState, AppStateBuilder, ReduxActions>([]
             ..addAll(createEpicBuilder(container))
             ..addAll(createClinicEpicBuilder(container))
+              ..add(logEpic)
           ),
         ]
     );

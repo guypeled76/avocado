@@ -16,9 +16,6 @@ class _$ClientState extends ClientState {
       (new ClientStateBuilder()..update(updates)).build();
 
   _$ClientState._({this.info, this.posts}) : super._() {
-    if (info == null) {
-      throw new BuiltValueNullFieldError('ClientState', 'info');
-    }
     if (posts == null) {
       throw new BuiltValueNullFieldError('ClientState', 'posts');
     }

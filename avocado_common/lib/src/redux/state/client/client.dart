@@ -12,6 +12,7 @@ abstract class ClientState implements Built<ClientState, ClientStateBuilder> {
       new _$ClientState((ClientStateBuilder b) => b);
 
 
+  @nullable
   ProfileInfo get info;
 
   PostsState get posts;

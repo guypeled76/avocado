@@ -14,14 +14,21 @@ import 'package:avocado_web/src/components/posts/post_component.dart';
     commonPipes
   ]
 )
-class PostsComponent {
+class PostsComponent implements OnInit {
 
-  PostsBLoC bloc;
+  ClinicPostsBLoC bloc;
 
-  final RepositoryService repository;
+  final StoreService store;
 
-  PostsComponent(this.repository) {
-    bloc = PostsBLoC(this.repository);
+  PostsComponent(this.store) {
+    bloc = ClinicPostsBLoC(this.store);
+  }
+
+  @override
+  void ngOnInit() {
+
+
+    bloc.actions.events.load(null);
   }
 
 }

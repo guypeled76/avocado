@@ -21,9 +21,6 @@ class _$ClinicState extends ClinicState {
 
   _$ClinicState._({this.info, this.posts, this.videos, this.clients})
       : super._() {
-    if (info == null) {
-      throw new BuiltValueNullFieldError('ClinicState', 'info');
-    }
     if (posts == null) {
       throw new BuiltValueNullFieldError('ClinicState', 'posts');
     }

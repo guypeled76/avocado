@@ -13,6 +13,15 @@ abstract class ClinicPostActions extends ReduxActions {
   ActionDispatcher<EntitiesPayload<PostInfo>> setMany;
   ActionDispatcher<EntityPayload<PostInfo>> remove;
 
+  ClinicPostEvents events;
+
+}
+
+abstract class ClinicPostEvents extends ReduxActions {
+
   ActionDispatcher<CommandPayload> load;
 
+
+  ClinicPostEvents._();
+  factory ClinicPostEvents() => new _$ClinicPostEvents();
 }

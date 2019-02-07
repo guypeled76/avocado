@@ -20,15 +20,14 @@ class _$ClinicPostActions extends ClinicPostActions {
           'ClinicPostActions-setMany');
   final ActionDispatcher<EntityPayload<PostInfo>> remove =
       new ActionDispatcher<EntityPayload<PostInfo>>('ClinicPostActions-remove');
-  final ActionDispatcher<CommandPayload> load =
-      new ActionDispatcher<CommandPayload>('ClinicPostActions-load');
+  final ClinicPostEvents events = new ClinicPostEvents();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     set.setDispatcher(dispatcher);
     setMany.setDispatcher(dispatcher);
     remove.setDispatcher(dispatcher);
-    load.setDispatcher(dispatcher);
+    events.setDispatcher(dispatcher);
   }
 }
 
@@ -39,6 +38,22 @@ class ClinicPostActionsNames {
       new ActionName<EntitiesPayload<PostInfo>>('ClinicPostActions-setMany');
   static final ActionName<EntityPayload<PostInfo>> remove =
       new ActionName<EntityPayload<PostInfo>>('ClinicPostActions-remove');
+}
+
+class _$ClinicPostEvents extends ClinicPostEvents {
+  factory _$ClinicPostEvents() => new _$ClinicPostEvents._();
+  _$ClinicPostEvents._() : super._();
+
+  final ActionDispatcher<CommandPayload> load =
+      new ActionDispatcher<CommandPayload>('ClinicPostEvents-load');
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {
+    load.setDispatcher(dispatcher);
+  }
+}
+
+class ClinicPostEventsNames {
   static final ActionName<CommandPayload> load =
-      new ActionName<CommandPayload>('ClinicPostActions-load');
+      new ActionName<CommandPayload>('ClinicPostEvents-load');
 }

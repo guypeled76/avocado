@@ -12,6 +12,7 @@ abstract class ClinicState implements Built<ClinicState, ClinicStateBuilder> {
   factory ClinicState([updates(ClinicStateBuilder b)]) =>
       new _$ClinicState((ClinicStateBuilder b) => b);
 
+  @nullable
   ClinicInfo get info;
 
   PostsState get posts;
