@@ -19,9 +19,7 @@ abstract class ClinicActions extends ReduxActions {
   ClinicActions._();
   factory ClinicActions() => new _$ClinicActions();
 
-  ClinicEvents events;
-  ClinicPostActions posts;
-  ClinicVideoActions videos;
+
 
   ActionDispatcher<EntityPayload<ClinicInfo>> set;
 

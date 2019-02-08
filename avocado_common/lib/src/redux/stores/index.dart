@@ -1,4 +1,4 @@
-export 'client/client.dart';
-export 'clinic/clinic.dart';
-export 'clinic/posts.dart';
+export 'client.dart';
+export 'clinic.dart';
+export 'posts.dart';
 export 'app.dart';

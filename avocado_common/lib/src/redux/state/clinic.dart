@@ -15,10 +15,6 @@ abstract class ClinicState implements Built<ClinicState, ClinicStateBuilder> {
   @nullable
   ClinicInfo get info;
 
-  PostsState get posts;
-
-  VideosState get videos;
-
   BuiltMap<String, ClientState> get clients;
 
 }

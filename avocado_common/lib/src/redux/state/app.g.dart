@@ -11,16 +11,27 @@ class _$AppState extends AppState {
   final ClinicState clinic;
   @override
   final ClientState client;
+  @override
+  final PostsState posts;
+  @override
+  final VideosState videos;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.clinic, this.client}) : super._() {
+  _$AppState._({this.clinic, this.client, this.posts, this.videos})
+      : super._() {
     if (clinic == null) {
       throw new BuiltValueNullFieldError('AppState', 'clinic');
     }
     if (client == null) {
       throw new BuiltValueNullFieldError('AppState', 'client');
+    }
+    if (posts == null) {
+      throw new BuiltValueNullFieldError('AppState', 'posts');
+    }
+    if (videos == null) {
+      throw new BuiltValueNullFieldError('AppState', 'videos');
     }
   }
 
@@ -36,19 +47,25 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         clinic == other.clinic &&
-        client == other.client;
+        client == other.client &&
+        posts == other.posts &&
+        videos == other.videos;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, clinic.hashCode), client.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, clinic.hashCode), client.hashCode), posts.hashCode),
+        videos.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('clinic', clinic)
-          ..add('client', client))
+          ..add('client', client)
+          ..add('posts', posts)
+          ..add('videos', videos))
         .toString();
   }
 }
@@ -64,12 +81,22 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   ClientStateBuilder get client => _$this._client ??= new ClientStateBuilder();
   set client(ClientStateBuilder client) => _$this._client = client;
 
+  PostsStateBuilder _posts;
+  PostsStateBuilder get posts => _$this._posts ??= new PostsStateBuilder();
+  set posts(PostsStateBuilder posts) => _$this._posts = posts;
+
+  VideosStateBuilder _videos;
+  VideosStateBuilder get videos => _$this._videos ??= new VideosStateBuilder();
+  set videos(VideosStateBuilder videos) => _$this._videos = videos;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _clinic = _$v.clinic?.toBuilder();
       _client = _$v.client?.toBuilder();
+      _posts = _$v.posts?.toBuilder();
+      _videos = _$v.videos?.toBuilder();
       _$v = null;
     }
     return this;
@@ -93,7 +120,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     _$AppState _$result;
     try {
       _$result = _$v ??
-          new _$AppState._(clinic: clinic.build(), client: client.build());
+          new _$AppState._(
+              clinic: clinic.build(),
+              client: client.build(),
+              posts: posts.build(),
+              videos: videos.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -101,6 +132,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         clinic.build();
         _$failedField = 'client';
         client.build();
+        _$failedField = 'posts';
+        posts.build();
+        _$failedField = 'videos';
+        videos.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

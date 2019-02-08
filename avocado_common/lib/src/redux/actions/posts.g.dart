@@ -9,18 +9,17 @@ part of 'posts.dart';
 // ignore_for_file: avoid_classes_with_only_static_members
 // ignore_for_file: annotate_overrides
 
-class _$ClinicPostActions extends ClinicPostActions {
-  factory _$ClinicPostActions() => new _$ClinicPostActions._();
-  _$ClinicPostActions._() : super._();
+class _$PostActions extends PostActions {
+  factory _$PostActions() => new _$PostActions._();
+  _$PostActions._() : super._();
 
   final ActionDispatcher<EntityPayload<PostInfo>> set =
-      new ActionDispatcher<EntityPayload<PostInfo>>('ClinicPostActions-set');
+      new ActionDispatcher<EntityPayload<PostInfo>>('PostActions-set');
   final ActionDispatcher<EntitiesPayload<PostInfo>> setMany =
-      new ActionDispatcher<EntitiesPayload<PostInfo>>(
-          'ClinicPostActions-setMany');
+      new ActionDispatcher<EntitiesPayload<PostInfo>>('PostActions-setMany');
   final ActionDispatcher<EntityPayload<PostInfo>> remove =
-      new ActionDispatcher<EntityPayload<PostInfo>>('ClinicPostActions-remove');
-  final ClinicPostEvents events = new ClinicPostEvents();
+      new ActionDispatcher<EntityPayload<PostInfo>>('PostActions-remove');
+  final PostEvents events = new PostEvents();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -31,23 +30,23 @@ class _$ClinicPostActions extends ClinicPostActions {
   }
 }
 
-class ClinicPostActionsNames {
+class PostActionsNames {
   static final ActionName<EntityPayload<PostInfo>> set =
-      new ActionName<EntityPayload<PostInfo>>('ClinicPostActions-set');
+      new ActionName<EntityPayload<PostInfo>>('PostActions-set');
   static final ActionName<EntitiesPayload<PostInfo>> setMany =
-      new ActionName<EntitiesPayload<PostInfo>>('ClinicPostActions-setMany');
+      new ActionName<EntitiesPayload<PostInfo>>('PostActions-setMany');
   static final ActionName<EntityPayload<PostInfo>> remove =
-      new ActionName<EntityPayload<PostInfo>>('ClinicPostActions-remove');
+      new ActionName<EntityPayload<PostInfo>>('PostActions-remove');
 }
 
-class _$ClinicPostEvents extends ClinicPostEvents {
-  factory _$ClinicPostEvents() => new _$ClinicPostEvents._();
-  _$ClinicPostEvents._() : super._();
+class _$PostEvents extends PostEvents {
+  factory _$PostEvents() => new _$PostEvents._();
+  _$PostEvents._() : super._();
 
   final ActionDispatcher<EventPayload> load =
-      new ActionDispatcher<EventPayload>('ClinicPostEvents-load');
+      new ActionDispatcher<EventPayload>('PostEvents-load');
   final ActionDispatcher<EventPayload> unload =
-      new ActionDispatcher<EventPayload>('ClinicPostEvents-unload');
+      new ActionDispatcher<EventPayload>('PostEvents-unload');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -56,9 +55,9 @@ class _$ClinicPostEvents extends ClinicPostEvents {
   }
 }
 
-class ClinicPostEventsNames {
+class PostEventsNames {
   static final ActionName<EventPayload> load =
-      new ActionName<EventPayload>('ClinicPostEvents-load');
+      new ActionName<EventPayload>('PostEvents-load');
   static final ActionName<EventPayload> unload =
-      new ActionName<EventPayload>('ClinicPostEvents-unload');
+      new ActionName<EventPayload>('PostEvents-unload');
 }

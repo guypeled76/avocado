@@ -11,10 +11,5 @@ NestedReducerBuilder<AppState, AppStateBuilder, ClinicState, ClinicStateBuilder>
   return new NestedReducerBuilder<AppState, AppStateBuilder, ClinicState, ClinicStateBuilder>(
         (state) => state.clinic,
         (builder) => builder.clinic,
-  )..add<EntityPayload<ClinicInfo>>(ClinicActionsNames.set, setClinic)
-  ..combineReducerBuilder(
-    ReducerBuilder()
-        ..combineNested(createClinicPostsReducer(container))
-        ..combineNested(createClinicVideosReducer(container))
-  );
+  )..add<EntityPayload<ClinicInfo>>(ClinicActionsNames.set, setClinic);
 }

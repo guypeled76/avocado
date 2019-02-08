@@ -4,10 +4,9 @@ import 'package:avocado_common/common.dart';
 class ClinicStore {
   final AppStore _store;
 
-  ClinicPostsStore _postsStore;
+
 
   ClinicStore(this._store) {
-    _postsStore = ClinicPostsStore(this);
   }
 
   Stream<ClinicState> get state {
@@ -18,11 +17,8 @@ class ClinicStore {
     return this._store.actions.clinic;
   }
 
-  ClinicEvents get events {
-    return this._store.actions.clinic.events;
-  }
+  /*ClinicEvents get events {
+    return this._store.actions.events.;
+  }*/
 
-  ClinicPostsStore get postsStore {
-    return _postsStore;
-  }
 }

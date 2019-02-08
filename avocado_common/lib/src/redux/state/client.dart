@@ -15,5 +15,4 @@ abstract class ClientState implements Built<ClientState, ClientStateBuilder> {
   @nullable
   ProfileInfo get info;
 
-  PostsState get posts;
 }

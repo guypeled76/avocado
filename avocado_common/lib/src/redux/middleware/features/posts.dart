@@ -10,11 +10,11 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createClinicPostsEpicBuild
   Observable _handlePostsPageLoaded(Observable<Action<EventPayload>> stream,
       MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
     return stream.map((action) {
-      if(mwApi.state.clinic.posts.map.length == 0) {
+      if(mwApi.state.posts.map.length == 0) {
         RepositoryService repository = container.getService<
             RepositoryService>();
         repository.collection("posts").get().then((list) {
-          mwApi.actions.clinic.posts.setMany(EntitiesPayload(
+          mwApi.actions.posts.setMany(EntitiesPayload(
               list.map((json) => PostInfo.fromJson(json)).toList()));
           ;
         }).catchError((error) {
@@ -26,7 +26,7 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createClinicPostsEpicBuild
 
 
   return (new EpicBuilder<AppState, AppStateBuilder, AppActions>()
-    ..add(ClinicPostEventsNames.load, _handlePostsPageLoaded))
+    ..add(PostEventsNames.load, _handlePostsPageLoaded))
       .build();
 }
 

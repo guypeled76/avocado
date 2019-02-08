@@ -7,6 +7,8 @@ class AppStore {
   Store<AppState, AppStateBuilder, AppActions> _store;
   ClientStore _clientStore;
   ClinicStore _clinicStore;
+  PostsStore _postsStore;
+
   BehaviorSubject<AppState> _state;
 
   AppStore(ServiceContainer container) {
@@ -29,6 +31,7 @@ class AppStore {
       ..addStream(_store.nextState);
     _clientStore = ClientStore(this);
     _clinicStore = ClinicStore(this);
+    _postsStore = PostsStore(this);
   }
 
   ClinicStore get clinicStore {
@@ -37,6 +40,11 @@ class AppStore {
 
   ClientStore get clientStore {
     return _clientStore;
+  }
+
+
+  PostsStore get postsStore {
+    return _postsStore;
   }
 
 

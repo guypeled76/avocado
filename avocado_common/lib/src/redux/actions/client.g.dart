@@ -26,15 +26,11 @@ class _$ClientActions extends ClientActions {
   final ActionDispatcher<ProfileInfo> set =
       new ActionDispatcher<ProfileInfo>('ClientActions-set');
   final ClientEvents events = new ClientEvents();
-  final ClientPostActions posts = new ClientPostActions();
-  final ClientVideoActions videos = new ClientVideoActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     set.setDispatcher(dispatcher);
     events.setDispatcher(dispatcher);
-    posts.setDispatcher(dispatcher);
-    videos.setDispatcher(dispatcher);
   }
 }
 

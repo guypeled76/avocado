@@ -38,16 +38,10 @@ class _$ClinicActions extends ClinicActions {
 
   final ActionDispatcher<EntityPayload<ClinicInfo>> set =
       new ActionDispatcher<EntityPayload<ClinicInfo>>('ClinicActions-set');
-  final ClinicEvents events = new ClinicEvents();
-  final ClinicPostActions posts = new ClinicPostActions();
-  final ClinicVideoActions videos = new ClinicVideoActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     set.setDispatcher(dispatcher);
-    events.setDispatcher(dispatcher);
-    posts.setDispatcher(dispatcher);
-    videos.setDispatcher(dispatcher);
   }
 }
 

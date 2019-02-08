@@ -4,25 +4,25 @@ import 'package:avocado_common/common.dart';
 part 'posts.g.dart';
 
 
-abstract class ClinicPostActions extends ReduxActions {
+abstract class PostActions extends ReduxActions {
 
-  ClinicPostActions._();
-  factory ClinicPostActions() => new _$ClinicPostActions();
+  PostActions._();
+  factory PostActions() => new _$PostActions();
 
   ActionDispatcher<EntityPayload<PostInfo>> set;
   ActionDispatcher<EntitiesPayload<PostInfo>> setMany;
   ActionDispatcher<EntityPayload<PostInfo>> remove;
 
-  ClinicPostEvents events;
+  PostEvents events;
 
 }
 
-abstract class ClinicPostEvents extends ReduxActions {
+abstract class PostEvents extends ReduxActions {
 
   ActionDispatcher<EventPayload> load;
   ActionDispatcher<EventPayload> unload;
 
 
-  ClinicPostEvents._();
-  factory ClinicPostEvents() => new _$ClinicPostEvents();
+  PostEvents._();
+  factory PostEvents() => new _$PostEvents();
 }

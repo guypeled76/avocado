@@ -9,17 +9,11 @@ part of 'client.dart';
 class _$ClientState extends ClientState {
   @override
   final ProfileInfo info;
-  @override
-  final PostsState posts;
 
   factory _$ClientState([void updates(ClientStateBuilder b)]) =>
       (new ClientStateBuilder()..update(updates)).build();
 
-  _$ClientState._({this.info, this.posts}) : super._() {
-    if (posts == null) {
-      throw new BuiltValueNullFieldError('ClientState', 'posts');
-    }
-  }
+  _$ClientState._({this.info}) : super._();
 
   @override
   ClientState rebuild(void updates(ClientStateBuilder b)) =>
@@ -31,19 +25,17 @@ class _$ClientState extends ClientState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ClientState && info == other.info && posts == other.posts;
+    return other is ClientState && info == other.info;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, info.hashCode), posts.hashCode));
+    return $jf($jc(0, info.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('ClientState')
-          ..add('info', info)
-          ..add('posts', posts))
+    return (newBuiltValueToStringHelper('ClientState')..add('info', info))
         .toString();
   }
 }
@@ -55,16 +47,11 @@ class ClientStateBuilder implements Builder<ClientState, ClientStateBuilder> {
   ProfileInfo get info => _$this._info;
   set info(ProfileInfo info) => _$this._info = info;
 
-  PostsStateBuilder _posts;
-  PostsStateBuilder get posts => _$this._posts ??= new PostsStateBuilder();
-  set posts(PostsStateBuilder posts) => _$this._posts = posts;
-
   ClientStateBuilder();
 
   ClientStateBuilder get _$this {
     if (_$v != null) {
       _info = _$v.info;
-      _posts = _$v.posts?.toBuilder();
       _$v = null;
     }
     return this;
@@ -85,20 +72,7 @@ class ClientStateBuilder implements Builder<ClientState, ClientStateBuilder> {
 
   @override
   _$ClientState build() {
-    _$ClientState _$result;
-    try {
-      _$result = _$v ?? new _$ClientState._(info: info, posts: posts.build());
-    } catch (_) {
-      String _$failedField;
-      try {
-        _$failedField = 'posts';
-        posts.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            'ClientState', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ?? new _$ClientState._(info: info);
     replace(_$result);
     return _$result;
   }

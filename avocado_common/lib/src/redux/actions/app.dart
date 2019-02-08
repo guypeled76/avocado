@@ -6,11 +6,12 @@ part 'app.g.dart';
 
 abstract class AppActions extends ReduxActions {
 
-  AppEventsNames events;
+  AppEvents events;
   ClinicActions clinic;
   ClientActions client;
 
-
+  PostActions posts;
+  VideoActions videos;
 
 
   AppActions._();
@@ -21,7 +22,7 @@ abstract class AppEvents extends ReduxActions {
 
 
 
-
+  ClinicEvents events;
 
 
   ActionDispatcher<EventPayload> close;

@@ -1,7 +1,7 @@
 import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
-NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuilder> createClinicPostsReducer(
+NestedReducerBuilder<AppState, AppStateBuilder, PostsState, PostsStateBuilder> createClinicPostsReducer(
     ServiceContainer container) {
 
   setPost(PostsState state, Action<EntityPayload<PostInfo>> action, PostsStateBuilder builder) {
@@ -19,10 +19,10 @@ NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuil
 
   }
 
-  return new NestedReducerBuilder<ClinicState, ClinicStateBuilder, PostsState, PostsStateBuilder>(
+  return new NestedReducerBuilder<AppState, AppStateBuilder, PostsState, PostsStateBuilder>(
     (state) => state.posts,
     (builder) => builder.posts,
-  )..add<EntityPayload<PostInfo>>(ClinicPostActionsNames.set, setPost)
-    ..add<EntityPayload<PostInfo>>(ClinicPostActionsNames.remove, removePost)
-    ..add<EntitiesPayload<PostInfo>>(ClinicPostActionsNames.setMany, setManyPosts);
+  )..add<EntityPayload<PostInfo>>(PostActionsNames.set, setPost)
+    ..add<EntityPayload<PostInfo>>(PostActionsNames.remove, removePost)
+    ..add<EntitiesPayload<PostInfo>>(PostActionsNames.setMany, setManyPosts);
 }

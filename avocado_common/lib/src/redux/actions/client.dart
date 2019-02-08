@@ -18,8 +18,7 @@ abstract class ClientActions extends ReduxActions {
   factory ClientActions() => new _$ClientActions();
 
   ClientEvents events;
-  ClientPostActions posts;
-  ClientVideoActions videos;
+
 
   ActionDispatcher<ProfileInfo> set;
 
