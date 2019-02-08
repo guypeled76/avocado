@@ -21,6 +21,8 @@ class _$AppState extends AppState {
   final ChatsState chats;
   @override
   final WaterfallsState waterfalls;
+  @override
+  final NotificationsState notifications;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -32,7 +34,8 @@ class _$AppState extends AppState {
       this.videos,
       this.images,
       this.chats,
-      this.waterfalls})
+      this.waterfalls,
+      this.notifications})
       : super._() {
     if (clinic == null) {
       throw new BuiltValueNullFieldError('AppState', 'clinic');
@@ -55,6 +58,9 @@ class _$AppState extends AppState {
     if (waterfalls == null) {
       throw new BuiltValueNullFieldError('AppState', 'waterfalls');
     }
+    if (notifications == null) {
+      throw new BuiltValueNullFieldError('AppState', 'notifications');
+    }
   }
 
   @override
@@ -74,7 +80,8 @@ class _$AppState extends AppState {
         videos == other.videos &&
         images == other.images &&
         chats == other.chats &&
-        waterfalls == other.waterfalls;
+        waterfalls == other.waterfalls &&
+        notifications == other.notifications;
   }
 
   @override
@@ -83,12 +90,14 @@ class _$AppState extends AppState {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, clinic.hashCode), client.hashCode),
-                        posts.hashCode),
-                    videos.hashCode),
-                images.hashCode),
-            chats.hashCode),
-        waterfalls.hashCode));
+                    $jc(
+                        $jc($jc($jc(0, clinic.hashCode), client.hashCode),
+                            posts.hashCode),
+                        videos.hashCode),
+                    images.hashCode),
+                chats.hashCode),
+            waterfalls.hashCode),
+        notifications.hashCode));
   }
 
   @override
@@ -100,7 +109,8 @@ class _$AppState extends AppState {
           ..add('videos', videos)
           ..add('images', images)
           ..add('chats', chats)
-          ..add('waterfalls', waterfalls))
+          ..add('waterfalls', waterfalls)
+          ..add('notifications', notifications))
         .toString();
   }
 }
@@ -138,6 +148,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set waterfalls(WaterfallsStateBuilder waterfalls) =>
       _$this._waterfalls = waterfalls;
 
+  NotificationsStateBuilder _notifications;
+  NotificationsStateBuilder get notifications =>
+      _$this._notifications ??= new NotificationsStateBuilder();
+  set notifications(NotificationsStateBuilder notifications) =>
+      _$this._notifications = notifications;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -149,6 +165,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _images = _$v.images?.toBuilder();
       _chats = _$v.chats?.toBuilder();
       _waterfalls = _$v.waterfalls?.toBuilder();
+      _notifications = _$v.notifications?.toBuilder();
       _$v = null;
     }
     return this;
@@ -179,7 +196,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               videos: videos.build(),
               images: images.build(),
               chats: chats.build(),
-              waterfalls: waterfalls.build());
+              waterfalls: waterfalls.build(),
+              notifications: notifications.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -197,6 +215,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         chats.build();
         _$failedField = 'waterfalls';
         waterfalls.build();
+        _$failedField = 'notifications';
+        notifications.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

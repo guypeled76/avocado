@@ -23,6 +23,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   WaterfallsState get waterfalls;
 
+  NotificationsState get notifications;
+
+
 
 
   AppState._();
