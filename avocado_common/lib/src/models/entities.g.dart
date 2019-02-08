@@ -54,7 +54,10 @@ const _$EntityTypeEnumMap = <EntityType, dynamic>{
   EntityType.clinic: 'clinic',
   EntityType.chat: 'chat',
   EntityType.waterfall: 'waterfall',
-  EntityType.waterfallItem: 'waterfallItem'
+  EntityType.waterfallItem: 'waterfallItem',
+  EntityType.ingredient: 'ingredient',
+  EntityType.course: 'course',
+  EntityType.meal: 'meal'
 };
 
 ClinicInfo _$ClinicInfoFromJson(Map<String, dynamic> json) {

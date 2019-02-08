@@ -14,7 +14,10 @@ enum EntityType {
     clinic,
     chat,
     waterfall,
-    waterfallItem
+    waterfallItem,
+    ingredient,
+    course,
+    meal
 }
 
 @JsonSerializable(nullable: false)
