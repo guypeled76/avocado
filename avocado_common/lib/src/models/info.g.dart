@@ -51,7 +51,10 @@ const _$EntityTypeEnumMap = <EntityType, dynamic>{
   EntityType.video: 'video',
   EntityType.image: 'image',
   EntityType.profile: 'profile',
-  EntityType.clinic: 'clinic'
+  EntityType.clinic: 'clinic',
+  EntityType.chat: 'chat',
+  EntityType.waterfall: 'waterfall',
+  EntityType.waterfallItem: 'waterfallItem'
 };
 
 ClinicInfo _$ClinicInfoFromJson(Map<String, dynamic> json) {
@@ -62,6 +65,72 @@ ClinicInfo _$ClinicInfoFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ClinicInfoToJson(ClinicInfo instance) {
+  final val = <String, dynamic>{
+    'key': instance.key,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hashtags', instance.hashtags);
+  return val;
+}
+
+ChatInfo _$ChatInfoFromJson(Map<String, dynamic> json) {
+  return ChatInfo(
+      key: EntityInfo._undefinedToNull(json['key']),
+      hashtags:
+          (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
+}
+
+Map<String, dynamic> _$ChatInfoToJson(ChatInfo instance) {
+  final val = <String, dynamic>{
+    'key': instance.key,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hashtags', instance.hashtags);
+  return val;
+}
+
+WaterfallInfo _$WaterfallInfoFromJson(Map<String, dynamic> json) {
+  return WaterfallInfo(
+      key: EntityInfo._undefinedToNull(json['key']),
+      hashtags:
+          (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
+}
+
+Map<String, dynamic> _$WaterfallInfoToJson(WaterfallInfo instance) {
+  final val = <String, dynamic>{
+    'key': instance.key,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('hashtags', instance.hashtags);
+  return val;
+}
+
+WaterfallItemInfo _$WaterfallItemInfoFromJson(Map<String, dynamic> json) {
+  return WaterfallItemInfo(
+      key: EntityInfo._undefinedToNull(json['key']),
+      hashtags:
+          (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? []);
+}
+
+Map<String, dynamic> _$WaterfallItemInfoToJson(WaterfallItemInfo instance) {
   final val = <String, dynamic>{
     'key': instance.key,
   };
@@ -120,8 +189,8 @@ Map<String, dynamic> _$PostInfoToJson(PostInfo instance) {
   return val;
 }
 
-ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
-  return ImageContentInfo(
+ImageInfo _$ImageInfoFromJson(Map<String, dynamic> json) {
+  return ImageInfo(
       key: EntityInfo._undefinedToNull(json['key']),
       hashtags:
           (json['hashtags'] as List)?.map((e) => e as String)?.toList() ?? [],
@@ -131,7 +200,7 @@ ImageContentInfo _$ImageContentInfoFromJson(Map<String, dynamic> json) {
       image: EntityInfo._undefinedToNull(json['image']));
 }
 
-Map<String, dynamic> _$ImageContentInfoToJson(ImageContentInfo instance) {
+Map<String, dynamic> _$ImageInfoToJson(ImageInfo instance) {
   final val = <String, dynamic>{
     'key': instance.key,
   };

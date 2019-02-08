@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageViewDialog extends StatelessWidget {
-  final ImageContentInfo imageInfo;
+  final ImageInfo imageInfo;
   final File imageFile;
 
 
@@ -74,7 +74,7 @@ class ImageViewDialog extends StatelessWidget {
         ));
   }
 
-  static void show(BuildContext context, ImageContentInfo imageInfo) {
+  static void show(BuildContext context, ImageInfo imageInfo) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ImageViewDialog(
@@ -83,7 +83,7 @@ class ImageViewDialog extends StatelessWidget {
     );
   }
 
-  static void showFromFile(BuildContext context, ImageContentInfo imageInfo, File imageFile) {
+  static void showFromFile(BuildContext context, ImageInfo imageInfo, File imageFile) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ImageViewDialog(

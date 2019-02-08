@@ -3,5 +3,8 @@ export 'clinic.dart';
 export 'posts.dart';
 export 'videos.dart';
 export 'client.dart';
+export 'chats.dart';
+export 'waterfalls.dart';
+export 'images.dart';
 export '../reducers/index.dart';
 export '../middleware/index.dart';

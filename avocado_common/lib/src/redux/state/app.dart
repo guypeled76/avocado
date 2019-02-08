@@ -17,6 +17,14 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   VideosState get videos;
 
+  ImagesState get images;
+
+  ChatsState get chats;
+
+  WaterfallsState get waterfalls;
+
+
+
   AppState._();
   factory AppState([updates(AppStateBuilder b)]) => new _$AppState((AppStateBuilder b) => b);
 

@@ -10,7 +10,10 @@ enum EntityType {
     video,
     image,
     profile,
-    clinic
+    clinic,
+    chat,
+    waterfall,
+    waterfallItem
 }
 
 @JsonSerializable(nullable: false)
@@ -47,6 +50,38 @@ class ClinicInfo extends EntityInfo {
       hashtags:hashtags
   );
 }
+
+
+@JsonSerializable(nullable: false)
+class ChatInfo extends EntityInfo {
+
+  ChatInfo({String key, List<String> hashtags}) : super(
+      key:key,
+      type: EntityType.chat,
+      hashtags:hashtags
+  );
+}
+
+@JsonSerializable(nullable: false)
+class WaterfallInfo extends EntityInfo {
+
+  WaterfallInfo({String key, List<String> hashtags}) : super(
+      key:key,
+      type: EntityType.waterfall,
+      hashtags:hashtags
+  );
+}
+
+@JsonSerializable(nullable: false)
+class WaterfallItemInfo extends EntityInfo {
+
+  WaterfallItemInfo({String key, List<String> hashtags}) : super(
+      key:key,
+      type: EntityType.waterfallItem,
+      hashtags:hashtags
+  );
+}
+
 
 @JsonSerializable(nullable: false)
 class TargetInfo {
@@ -85,7 +120,7 @@ abstract class ContentInfo extends EntityInfo {
 }
 
 @JsonSerializable(nullable: false)
-class PostInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+class PostInfo extends ContentInfo implements ImageInfo, SearchInfo {
   @JsonKey(fromJson: EntityInfo._undefinedToNull)
   final String image;
 
@@ -106,12 +141,12 @@ class PostInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
 }
 
 @JsonSerializable(nullable: false)
-class ImageContentInfo extends ContentInfo
+class ImageInfo extends ContentInfo
 {
   @JsonKey(fromJson: EntityInfo._undefinedToNull)
   final String image;
 
-  ImageContentInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
+  ImageInfo({String key, List<String> hashtags, String content, UserInfo user, DateTime date, this.image}) : super(
       key:key,
       type:EntityType.image,
       hashtags:hashtags,
@@ -120,13 +155,13 @@ class ImageContentInfo extends ContentInfo
       user:user
   );
 
-  factory ImageContentInfo.fromJson(Map<String, dynamic> json) => _$ImageContentInfoFromJson(json);
-  Map<String, dynamic> toJson() => _$ImageContentInfoToJson(this);
+  factory ImageInfo.fromJson(Map<String, dynamic> json) => _$ImageInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ImageInfoToJson(this);
 
 }
 
 @JsonSerializable(nullable: false)
-class VideoInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+class VideoInfo extends ContentInfo implements ImageInfo, SearchInfo {
 
   @JsonKey(fromJson: EntityInfo._undefinedToNull)
   final String image;
@@ -180,7 +215,7 @@ abstract class SearchInfo implements ContentInfo {
 }
 
 @JsonSerializable(nullable: false)
-class MessageInfo extends ContentInfo implements ImageContentInfo, SearchInfo {
+class MessageInfo extends ContentInfo implements ImageInfo, SearchInfo {
 
   @JsonKey(fromJson: EntityInfo._undefinedToNull)
   final String image;
