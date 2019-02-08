@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'info.dart';
+import 'entities.dart';
 import 'package:rxdart/rxdart.dart';
 import 'mocks/mocks.dart';
+import 'package:avocado_common/common.dart';
+
 
 
 Stream<Map<String, dynamic>> loadJSONEntities(Map<String, dynamic> data) {

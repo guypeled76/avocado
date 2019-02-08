@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:avocado_client/dialogs/comments.dart';
 import 'package:avocado_common/common.dart';
+import 'package:avocado_common/common.dart' as common;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageViewDialog extends StatelessWidget {
-  final ImageInfo imageInfo;
+  final common.ImageInfo imageInfo;
   final File imageFile;
 
 
@@ -74,7 +75,7 @@ class ImageViewDialog extends StatelessWidget {
         ));
   }
 
-  static void show(BuildContext context, ImageInfo imageInfo) {
+  static void show(BuildContext context, common.ImageInfo imageInfo) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ImageViewDialog(
@@ -83,7 +84,7 @@ class ImageViewDialog extends StatelessWidget {
     );
   }
 
-  static void showFromFile(BuildContext context, ImageInfo imageInfo, File imageFile) {
+  static void showFromFile(BuildContext context, common.ImageInfo imageInfo, File imageFile) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ImageViewDialog(
