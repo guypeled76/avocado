@@ -4,3 +4,4 @@ export 'app.dart';
 export 'videos.dart';
 export 'notifications.dart';
 export 'auth.dart';
+export 'waterfalls.dart';

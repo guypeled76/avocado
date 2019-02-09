@@ -10,6 +10,7 @@ class AppStore {
   VideosStore _videosStore;
   NotificationsStore _notificationsStore;
   AuthStore _authStore;
+  WaterfallsStore _waterfallsStore;
 
   BehaviorSubject<AppState> _state;
 
@@ -35,10 +36,15 @@ class AppStore {
     _notificationsStore = NotificationsStore(this);
     _videosStore = VideosStore(this);
     _authStore = AuthStore(this);
+    _waterfallsStore = WaterfallsStore(this);
   }
 
   AuthStore get authStore {
     return _authStore;
+  }
+
+  WaterfallsStore get waterfallsStore {
+    return _waterfallsStore;
   }
 
 
