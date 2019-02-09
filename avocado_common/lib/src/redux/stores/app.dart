@@ -9,6 +9,7 @@ class AppStore {
   PostsStore _postsStore;
   VideosStore _videosStore;
   NotificationsStore _notificationsStore;
+  AuthStore _authStore;
 
   BehaviorSubject<AppState> _state;
 
@@ -33,6 +34,11 @@ class AppStore {
     _postsStore = PostsStore(this);
     _notificationsStore = NotificationsStore(this);
     _videosStore = VideosStore(this);
+    _authStore = AuthStore(this);
+  }
+
+  AuthStore get authStore {
+    return _authStore;
   }
 
 

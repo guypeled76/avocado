@@ -8,6 +8,8 @@ part of 'app.dart';
 
 class _$AppState extends AppState {
   @override
+  final AuthState auth;
+  @override
   final ClientsState clients;
   @override
   final PostsState posts;
@@ -26,7 +28,8 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.clients,
+      {this.auth,
+      this.clients,
       this.posts,
       this.videos,
       this.images,
@@ -34,6 +37,9 @@ class _$AppState extends AppState {
       this.waterfalls,
       this.notifications})
       : super._() {
+    if (auth == null) {
+      throw new BuiltValueNullFieldError('AppState', 'auth');
+    }
     if (clients == null) {
       throw new BuiltValueNullFieldError('AppState', 'clients');
     }
@@ -68,6 +74,7 @@ class _$AppState extends AppState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AppState &&
+        auth == other.auth &&
         clients == other.clients &&
         posts == other.posts &&
         videos == other.videos &&
@@ -83,7 +90,9 @@ class _$AppState extends AppState {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, clients.hashCode), posts.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, auth.hashCode), clients.hashCode),
+                            posts.hashCode),
                         videos.hashCode),
                     images.hashCode),
                 chats.hashCode),
@@ -94,6 +103,7 @@ class _$AppState extends AppState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
+          ..add('auth', auth)
           ..add('clients', clients)
           ..add('posts', posts)
           ..add('videos', videos)
@@ -107,6 +117,10 @@ class _$AppState extends AppState {
 
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
+
+  AuthStateBuilder _auth;
+  AuthStateBuilder get auth => _$this._auth ??= new AuthStateBuilder();
+  set auth(AuthStateBuilder auth) => _$this._auth = auth;
 
   ClientsStateBuilder _clients;
   ClientsStateBuilder get clients =>
@@ -145,6 +159,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   AppStateBuilder get _$this {
     if (_$v != null) {
+      _auth = _$v.auth?.toBuilder();
       _clients = _$v.clients?.toBuilder();
       _posts = _$v.posts?.toBuilder();
       _videos = _$v.videos?.toBuilder();
@@ -176,6 +191,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
+              auth: auth.build(),
               clients: clients.build(),
               posts: posts.build(),
               videos: videos.build(),
@@ -186,6 +202,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'auth';
+        auth.build();
         _$failedField = 'clients';
         clients.build();
         _$failedField = 'posts';

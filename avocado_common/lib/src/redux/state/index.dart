@@ -8,3 +8,4 @@ export 'images.dart';
 export 'notifications.dart';
 export '../reducers/index.dart';
 export '../middleware/index.dart';
+export 'auth.dart';

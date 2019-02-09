@@ -14,18 +14,22 @@ class _$AppActions extends AppActions {
   _$AppActions._() : super._();
 
   final AppEvents events = new AppEvents();
+  final AuthActions auth = new AuthActions();
   final PostActions posts = new PostActions();
   final VideoActions videos = new VideoActions();
   final ClientsActions clients = new ClientsActions();
   final NotificationsActions notifications = new NotificationsActions();
+  final WaterfallActions waterfalls = new WaterfallActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     events.setDispatcher(dispatcher);
+    auth.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
     videos.setDispatcher(dispatcher);
     clients.setDispatcher(dispatcher);
     notifications.setDispatcher(dispatcher);
+    waterfalls.setDispatcher(dispatcher);
   }
 }
 

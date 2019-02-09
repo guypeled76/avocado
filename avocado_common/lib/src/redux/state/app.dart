@@ -8,6 +8,7 @@ part 'app.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
 
+  AuthState get auth;
 
   ClientsState get clients;
 

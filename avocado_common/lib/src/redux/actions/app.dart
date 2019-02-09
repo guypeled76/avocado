@@ -8,10 +8,14 @@ abstract class AppActions extends ReduxActions {
 
   AppEvents events;
 
+  AuthActions auth;
   PostActions posts;
   VideoActions videos;
   ClientsActions clients;
   NotificationsActions notifications;
+  WaterfallActions waterfalls;
+
+
 
 
   AppActions._();
