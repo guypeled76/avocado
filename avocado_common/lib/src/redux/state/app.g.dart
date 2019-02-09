@@ -8,9 +8,7 @@ part of 'app.dart';
 
 class _$AppState extends AppState {
   @override
-  final ClinicState clinic;
-  @override
-  final ClientState client;
+  final ClientsState clients;
   @override
   final PostsState posts;
   @override
@@ -28,8 +26,7 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.clinic,
-      this.client,
+      {this.clients,
       this.posts,
       this.videos,
       this.images,
@@ -37,11 +34,8 @@ class _$AppState extends AppState {
       this.waterfalls,
       this.notifications})
       : super._() {
-    if (clinic == null) {
-      throw new BuiltValueNullFieldError('AppState', 'clinic');
-    }
-    if (client == null) {
-      throw new BuiltValueNullFieldError('AppState', 'client');
+    if (clients == null) {
+      throw new BuiltValueNullFieldError('AppState', 'clients');
     }
     if (posts == null) {
       throw new BuiltValueNullFieldError('AppState', 'posts');
@@ -74,8 +68,7 @@ class _$AppState extends AppState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AppState &&
-        clinic == other.clinic &&
-        client == other.client &&
+        clients == other.clients &&
         posts == other.posts &&
         videos == other.videos &&
         images == other.images &&
@@ -90,9 +83,7 @@ class _$AppState extends AppState {
         $jc(
             $jc(
                 $jc(
-                    $jc(
-                        $jc($jc($jc(0, clinic.hashCode), client.hashCode),
-                            posts.hashCode),
+                    $jc($jc($jc(0, clients.hashCode), posts.hashCode),
                         videos.hashCode),
                     images.hashCode),
                 chats.hashCode),
@@ -103,8 +94,7 @@ class _$AppState extends AppState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
-          ..add('clinic', clinic)
-          ..add('client', client)
+          ..add('clients', clients)
           ..add('posts', posts)
           ..add('videos', videos)
           ..add('images', images)
@@ -118,13 +108,10 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
-  ClinicStateBuilder _clinic;
-  ClinicStateBuilder get clinic => _$this._clinic ??= new ClinicStateBuilder();
-  set clinic(ClinicStateBuilder clinic) => _$this._clinic = clinic;
-
-  ClientStateBuilder _client;
-  ClientStateBuilder get client => _$this._client ??= new ClientStateBuilder();
-  set client(ClientStateBuilder client) => _$this._client = client;
+  ClientsStateBuilder _clients;
+  ClientsStateBuilder get clients =>
+      _$this._clients ??= new ClientsStateBuilder();
+  set clients(ClientsStateBuilder clients) => _$this._clients = clients;
 
   PostsStateBuilder _posts;
   PostsStateBuilder get posts => _$this._posts ??= new PostsStateBuilder();
@@ -158,8 +145,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   AppStateBuilder get _$this {
     if (_$v != null) {
-      _clinic = _$v.clinic?.toBuilder();
-      _client = _$v.client?.toBuilder();
+      _clients = _$v.clients?.toBuilder();
       _posts = _$v.posts?.toBuilder();
       _videos = _$v.videos?.toBuilder();
       _images = _$v.images?.toBuilder();
@@ -190,8 +176,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
-              clinic: clinic.build(),
-              client: client.build(),
+              clients: clients.build(),
               posts: posts.build(),
               videos: videos.build(),
               images: images.build(),
@@ -201,10 +186,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'clinic';
-        clinic.build();
-        _$failedField = 'client';
-        client.build();
+        _$failedField = 'clients';
+        clients.build();
         _$failedField = 'posts';
         posts.build();
         _$failedField = 'videos';

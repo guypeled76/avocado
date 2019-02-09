@@ -14,18 +14,18 @@ class _$AppActions extends AppActions {
   _$AppActions._() : super._();
 
   final AppEvents events = new AppEvents();
-  final ClinicActions clinic = new ClinicActions();
-  final ClientActions client = new ClientActions();
   final PostActions posts = new PostActions();
   final VideoActions videos = new VideoActions();
+  final ClientsActions clients = new ClientsActions();
+  final NotificationsActions notifications = new NotificationsActions();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     events.setDispatcher(dispatcher);
-    clinic.setDispatcher(dispatcher);
-    client.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
     videos.setDispatcher(dispatcher);
+    clients.setDispatcher(dispatcher);
+    notifications.setDispatcher(dispatcher);
   }
 }
 
@@ -37,12 +37,10 @@ class _$AppEvents extends AppEvents {
 
   final ActionDispatcher<EventPayload> close =
       new ActionDispatcher<EventPayload>('AppEvents-close');
-  final ClinicEvents events = new ClinicEvents();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     close.setDispatcher(dispatcher);
-    events.setDispatcher(dispatcher);
   }
 }
 

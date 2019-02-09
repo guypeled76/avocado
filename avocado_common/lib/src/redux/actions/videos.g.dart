@@ -15,14 +15,39 @@ class _$VideoActions extends VideoActions {
 
   final ActionDispatcher<VideoInfo> update =
       new ActionDispatcher<VideoInfo>('VideoActions-update');
+  final VideoEvents events = new VideoEvents();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     update.setDispatcher(dispatcher);
+    events.setDispatcher(dispatcher);
   }
 }
 
 class VideoActionsNames {
   static final ActionName<VideoInfo> update =
       new ActionName<VideoInfo>('VideoActions-update');
+}
+
+class _$VideoEvents extends VideoEvents {
+  factory _$VideoEvents() => new _$VideoEvents._();
+  _$VideoEvents._() : super._();
+
+  final ActionDispatcher<EventPayload> load =
+      new ActionDispatcher<EventPayload>('VideoEvents-load');
+  final ActionDispatcher<EventPayload> unload =
+      new ActionDispatcher<EventPayload>('VideoEvents-unload');
+
+  @override
+  void setDispatcher(Dispatcher dispatcher) {
+    load.setDispatcher(dispatcher);
+    unload.setDispatcher(dispatcher);
+  }
+}
+
+class VideoEventsNames {
+  static final ActionName<EventPayload> load =
+      new ActionName<EventPayload>('VideoEvents-load');
+  static final ActionName<EventPayload> unload =
+      new ActionName<EventPayload>('VideoEvents-unload');
 }

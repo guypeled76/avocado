@@ -14,12 +14,8 @@ abstract class StoreService implements ServiceContainer {
     return this._store;
   }
 
-  ClientStore get clientStore {
-    return this._store.clientStore;
-  }
-
-  ClinicStore get clinicStore {
-    return this._store.clinicStore;
+  ClientsStore get clientsStore {
+    return this._store.clientsStore;
   }
 
   PostsStore get postsStore {

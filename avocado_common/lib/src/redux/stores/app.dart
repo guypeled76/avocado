@@ -5,9 +5,10 @@ import 'package:rxdart/rxdart.dart';
 
 class AppStore {
   Store<AppState, AppStateBuilder, AppActions> _store;
-  ClientStore _clientStore;
-  ClinicStore _clinicStore;
+  ClientsStore _clientsStore;
   PostsStore _postsStore;
+  VideosStore _videosStore;
+  NotificationsStore _notificationsStore;
 
   BehaviorSubject<AppState> _state;
 
@@ -21,7 +22,6 @@ class AppStore {
           createEpicMiddleware<AppState, AppStateBuilder, AppActions>([]
             ..addAll(createEpicBuilder(container))
             ..addAll(createClinicPostsEpicBuilder(container))
-            ..addAll(createClinicEpicBuilder(container))
               ..add(logEpic)
           ),
         ]
@@ -29,24 +29,28 @@ class AppStore {
 
     _state = new BehaviorSubject()
       ..addStream(_store.nextState);
-    _clientStore = ClientStore(this);
-    _clinicStore = ClinicStore(this);
+    _clientsStore = ClientsStore(this);
     _postsStore = PostsStore(this);
+    _notificationsStore = NotificationsStore(this);
+    _videosStore = VideosStore(this);
   }
 
-  ClinicStore get clinicStore {
-    return _clinicStore;
-  }
 
-  ClientStore get clientStore {
-    return _clientStore;
+  ClientsStore get clientsStore {
+    return _clientsStore;
   }
-
 
   PostsStore get postsStore {
     return _postsStore;
   }
 
+  VideosStore get videosStore {
+    return _videosStore;
+  }
+
+  NotificationsStore get notificationStore {
+    return _notificationsStore;
+  }
 
   Observable<AppState> get state {
     return this._state;

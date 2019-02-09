@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'client.dart';
+part of 'clients.dart';
 
 // **************************************************************************
 // BuiltReduxGenerator
@@ -9,23 +9,23 @@ part of 'client.dart';
 // ignore_for_file: avoid_classes_with_only_static_members
 // ignore_for_file: annotate_overrides
 
-class _$ClientEvents extends ClientEvents {
-  factory _$ClientEvents() => new _$ClientEvents._();
-  _$ClientEvents._() : super._();
+class _$ClientsEvents extends ClientsEvents {
+  factory _$ClientsEvents() => new _$ClientsEvents._();
+  _$ClientsEvents._() : super._();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {}
 }
 
-class ClientEventsNames {}
+class ClientsEventsNames {}
 
-class _$ClientActions extends ClientActions {
-  factory _$ClientActions() => new _$ClientActions._();
-  _$ClientActions._() : super._();
+class _$ClientsActions extends ClientsActions {
+  factory _$ClientsActions() => new _$ClientsActions._();
+  _$ClientsActions._() : super._();
 
   final ActionDispatcher<ProfileInfo> set =
-      new ActionDispatcher<ProfileInfo>('ClientActions-set');
-  final ClientEvents events = new ClientEvents();
+      new ActionDispatcher<ProfileInfo>('ClientsActions-set');
+  final ClientsEvents events = new ClientsEvents();
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
@@ -34,7 +34,7 @@ class _$ClientActions extends ClientActions {
   }
 }
 
-class ClientActionsNames {
+class ClientsActionsNames {
   static final ActionName<ProfileInfo> set =
-      new ActionName<ProfileInfo>('ClientActions-set');
+      new ActionName<ProfileInfo>('ClientsActions-set');
 }

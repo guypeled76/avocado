@@ -1,8 +1,7 @@
 export 'app.dart';
-export 'clinic.dart';
 export 'posts.dart';
 export 'videos.dart';
-export 'client.dart';
+export 'clients.dart';
 export 'chats.dart';
 export 'waterfalls.dart';
 export 'images.dart';
