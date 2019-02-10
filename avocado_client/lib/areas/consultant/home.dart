@@ -35,13 +35,13 @@ class ConsultantHomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              FeedPage(bloc: new FeedBloC(ServiceProvider.get<RepositoryService>(context))),
+              FeedPage(bloc: new FeedBLoC(ServiceProvider.get<StoreService>(context).postsStore)),
               TimelinePage(),
               NotificationsWidget(),
               FoodPage(),
               ChatWidget(
                 bloc: ChatBLoC(
-                  chatId: "c1"
+                    ServiceProvider.get<StoreService>(context).chatsStore["c1"]
                 ),
               ),
             ],

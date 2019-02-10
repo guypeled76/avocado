@@ -37,7 +37,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
           ),
           body: TabBarView(children: [
                   FeedPage(
-                    bloc: FeedBloC(ServiceProvider.get<RepositoryService>(context)),
+                    bloc: FeedBLoC(ServiceProvider.get<StoreService>(context).postsStore),
                   ),
                   TimelinePage(),
                   NotificationsWidget(
@@ -46,7 +46,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   FoodPage(),
                   ChatWidget(
                     bloc: ChatBLoC(
-                        chatId: "c1"),
+                        ServiceProvider.get<StoreService>(context).chatsStore["c1"]),
                   ),
                 ]),
           floatingActionButton: FloatingActionButton(

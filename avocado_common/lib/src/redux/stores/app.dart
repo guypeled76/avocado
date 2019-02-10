@@ -11,6 +11,7 @@ class AppStore {
   NotificationsStore _notificationsStore;
   AuthStore _authStore;
   WaterfallsStore _waterfallsStore;
+  ChatsStore _chatsStore;
 
   BehaviorSubject<AppState> _state;
 
@@ -37,6 +38,7 @@ class AppStore {
     _videosStore = VideosStore(this);
     _authStore = AuthStore(this);
     _waterfallsStore = WaterfallsStore(this);
+    _chatsStore = ChatsStore(this);
   }
 
   AuthStore get authStore {
@@ -62,6 +64,10 @@ class AppStore {
 
   NotificationsStore get notificationStore {
     return _notificationsStore;
+  }
+
+  ChatsStore get chatsStore {
+    return _chatsStore;
   }
 
   Observable<AppState> get state {

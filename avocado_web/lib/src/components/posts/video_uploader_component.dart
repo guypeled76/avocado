@@ -26,9 +26,9 @@ class VideoUploaderComponent {
   @Input()
   VideosBLoC bloc;
 
-  final RepositoryService repository;
+  final StoreService store;
 
-  VideoUploaderComponent(this.repository);
+  VideoUploaderComponent(this.store);
 
 
   var progress = 20;
@@ -45,7 +45,7 @@ class VideoUploaderComponent {
   FileUploadInputElement upload;
 
   void create() {
-
+/*
     bloc.add(VideoInfo(
         content: content,
         user: UserInfo(
@@ -87,7 +87,7 @@ class VideoUploaderComponent {
 
         });
       }
-    });
+    });*/
   }
 }
 

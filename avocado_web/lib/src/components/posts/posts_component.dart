@@ -16,12 +16,12 @@ import 'package:avocado_web/src/components/posts/post_component.dart';
 )
 class PostsComponent implements OnInit, OnDestroy {
 
-  ClinicPostsBLoC bloc;
+  PostsBLoC bloc;
 
   final StoreService store;
 
   PostsComponent(this.store) {
-    bloc = ClinicPostsBLoC(this.store);
+    bloc = PostsBLoC(this.store.postsStore);
   }
 
   @override

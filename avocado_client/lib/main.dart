@@ -11,13 +11,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
-
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 
 void main() {
-
-
-
   TargetPlatform targetPlatform;
   if (Platform.isMacOS) {
     targetPlatform = TargetPlatform.iOS;
@@ -31,44 +28,38 @@ void main() {
   runApp(AvocadoApp());
 }
 
-
 class AvocadoApp extends StatelessWidget {
-
   final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Avocado',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      home: StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (BuildContext context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SplashPage();
-            } else {
-              if (snapshot.hasData) {
-                return ServiceProvider(
-                  services: [
-                    ServiceInstance(AuthService, AuthServiceImpl(snapshot.data)),
-                    ServiceInstance(RepositoryService, RepositoryServiceImpl()),
-                    ServiceClass<StoreService>((container) => StoreServiceImpl(container)),
-                  ],
-                    child: ClientHomePage()
-                );
-              } else {
-                return AuthPage();
-              }
-            }
-          }
-
-      ),
-    );
+        title: 'Avocado',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
+        home: ServiceProvider(
+          services: [
+            ServiceClass<StoreService>(
+                (container) => StoreServiceImpl(container)),
+          ],
+          child: StreamBuilder<ProfileInfo>(
+              stream: ServiceProvider.get<StoreService>(context).authProfile,
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SplashPage();
+                } else {
+                  if (snapshot.hasData) {
+                    return ClientHomePage();
+                  } else {
+                    return AuthPage();
+                  }
+                }
+              }),
+        ));
   }
 }

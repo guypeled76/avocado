@@ -68,7 +68,7 @@ class ChatWidget extends StatelessWidget {
   }
 
   Widget buildChat(BuildContext context) {
-    return StreamBuilder<List<MessageInfo>>(
+    return StreamBuilder<BuiltList<MessageInfo>>(
         stream: this.bloc.messages,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {

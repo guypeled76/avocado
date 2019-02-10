@@ -4,7 +4,7 @@ import 'dart:convert';
 Future<String> testJSON()async {
 
 
-  FeedBloC bloc = FeedBloC(null);
+  FeedBLoC bloc = FeedBLoC(null);
 
   String result = "";
   List<PostInfo> posts = await bloc.posts.first;

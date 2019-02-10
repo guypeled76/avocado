@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:avocado_common/common.dart';
 
-class FeedBloC extends BaseBLoC {
+class FeedBLoC extends BaseBLoC {
 
   Stream<List<PostInfo>> pinned;
   Stream<List<PostInfo>> posts;
@@ -9,11 +9,11 @@ class FeedBloC extends BaseBLoC {
   PostsBLoC _postsBLoC;
   PostsBLoC _pinnedBLoC;
 
-  final RepositoryService repository;
+  final PostsStore _store;
 
-  FeedBloC(this.repository) {
-    _postsBLoC = PostsBLoC(this.repository, pinned: false);
-    _pinnedBLoC = PostsBLoC(this.repository, pinned: true);
+  FeedBLoC(this._store) {
+    _postsBLoC = PostsBLoC(this._store);
+    _pinnedBLoC = PostsBLoC(this._store,);
     pinned = _pinnedBLoC.posts;
     posts = _postsBLoC.posts;
   }

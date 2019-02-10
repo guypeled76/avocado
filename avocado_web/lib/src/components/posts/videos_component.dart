@@ -22,12 +22,12 @@ class VideosComponent {
 
   final VideosBLoC bloc;
 
-  VideosComponent(RepositoryService repository) :
-        bloc = VideosBLoC(repository);
+  VideosComponent(StoreService store) :
+        bloc = VideosBLoC(store.videosStore);
 
 
   delete(VideoInfo video) {
 
-    bloc.delete(video);
+    //bloc.delete(video);
   }
 }

@@ -4,7 +4,7 @@ import 'posts.dart';
 import 'stories.dart';
 
 class FeedPage extends StatelessWidget {
-  final FeedBloC bloc;
+  final FeedBLoC bloc;
 
   FeedPage({Key key, @required this.bloc}) : super(key: key);
 

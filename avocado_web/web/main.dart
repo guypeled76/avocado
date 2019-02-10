@@ -10,8 +10,6 @@ import 'package:avocado_web/src/services/services.dart';
 import 'main.template.dart' as self;
 
 @GenerateInjector([
-  ClassProvider(AuthService, useClass:AuthServiceImpl),
-  ClassProvider(RepositoryService, useClass: RepositoryServiceImpl),
   ClassProvider(StoreService, useClass: StoreServiceImpl),
   routerProvidersHash
 ])
