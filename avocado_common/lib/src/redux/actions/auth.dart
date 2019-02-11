@@ -19,7 +19,12 @@ abstract class AuthActions extends ReduxActions {
 
   AuthEvents events;
 
+  ActionDispatcher<CommandPayload> signInWithGoogle;
 
-  ActionDispatcher<ProfileInfo> set;
+  ActionDispatcher<CommandPayload> signInWithFacebook;
+
+  ActionDispatcher<CommandPayload> signOut;
+
+  ActionDispatcher<EntitiesPayload<ProfileInfo>> set;
 
 }

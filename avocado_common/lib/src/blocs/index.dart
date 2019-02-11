@@ -6,3 +6,4 @@ export 'VideosBLoC.dart';
 export 'BaseBLoC.dart';
 export 'EntitiesBLoC.dart';
 export 'PostsBLoC.dart';
+export 'AuthBLoC.dart';

@@ -38,7 +38,7 @@ class AppComponent {
   bool end = false;
   bool basicPopupVisible = false;
 
-  final AuthService auth;
+  final AuthBLoC auth;
 
-  AppComponent(AuthService this.auth);
+  AppComponent(StoreService store) : auth = AuthBLoC(store.authStore);
 }
