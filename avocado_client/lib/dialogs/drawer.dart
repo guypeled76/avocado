@@ -15,40 +15,41 @@ class DrawerDialog extends StatefulWidget {
 }
 
 class _DrawerDialogState extends State<DrawerDialog> {
-
-
   @override
   Widget build(BuildContext context) {
-
-    AuthService authContext = ServiceProvider.get<AuthService>(context);
-
+    AuthBLoC auth =
+        AuthBLoC(ServiceProvider.get<StoreService>(context));
 
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              authContext.profile.displayName,
-            ),
-            accountEmail: Text(
-              authContext.profile.email,
-            ),
-            currentAccountPicture: new CircleAvatar(
-              backgroundImage: new CachedNetworkImageProvider(
-                  authContext.profile.image),
-            ),
-          ),
+          StreamBuilder<ProfileInfo>(
+              stream: auth.profile,
+              builder: (context, snapshot) {
+
+                ProfileInfo profile = snapshot.data;
+
+                return UserAccountsDrawerHeader(
+                  accountName: Text(
+                    profile?.displayName,
+                  ),
+                  accountEmail: Text(
+                    profile?.email,
+                  ),
+                  currentAccountPicture: new CircleAvatar(
+                    backgroundImage: new CachedNetworkImageProvider(
+                        profile?.image),
+                  ),
+                );
+              }),
           new ListTile(
             title: Text(
               "Profile",
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0),
             ),
-            leading: Icon(
-                Icons.person
-            ),
+            leading: Icon(Icons.person),
             onTap: () {
-
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TestingDialog()),
@@ -74,9 +75,7 @@ class _DrawerDialogState extends State<DrawerDialog> {
               Icons.dashboard,
               color: Colors.red,
             ),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
           new ListTile(
             title: Text(

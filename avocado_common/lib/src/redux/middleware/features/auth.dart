@@ -11,7 +11,7 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
   Observable signOut(Observable<Action<CommandPayload>> stream,
       MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
       return stream.map((action)  {
-        return authService.signOut().then((value) {
+        authService.signOut().then((value) {
           mwApi.actions.auth.set(EntityPayload(null));
         }).catchError((error) {
 
@@ -22,7 +22,7 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
   Observable signInWithFacebook(Observable<Action<CommandPayload>> stream,
       MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
     return stream.map((action) {
-      return authService.signInWithFacebook().then((value) {
+      authService.signInWithFacebook().then((value) {
         mwApi.actions.auth.set(EntityPayload(value));
       }).catchError((error) {
 
@@ -33,7 +33,7 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
   Observable signInWithGoogle(Observable<Action<CommandPayload>> stream,
       MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
     return stream.map((action) {
-      return authService.signInWithGoogle().then((value) {
+      authService.signInWithGoogle().then((value) {
         mwApi.actions.auth.set(EntityPayload(value));
       }).catchError((error) {
 

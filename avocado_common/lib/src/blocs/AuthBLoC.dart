@@ -8,8 +8,9 @@ class AuthBLoC extends BaseBLoC {
     final Stream<ProfileInfo> profile;
 
 
-    AuthBLoC(this._store) :
-        profile = _store.profile;
+    AuthBLoC(StoreService service) :
+        _store = service.authStore,
+        profile = service.authStore.profile;
 
 
 

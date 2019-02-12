@@ -43,5 +43,6 @@ class AppComponent {
 
   final AuthBLoC auth;
 
-  AppComponent(StoreService store) : auth = AuthBLoC(store.authStore);
+  AppComponent(StoreService store) :
+        auth = AuthBLoC(store);
 }
