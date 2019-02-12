@@ -6,6 +6,7 @@ Reducer<AppState, AppStateBuilder, dynamic> createAppReducer(
   return (new ReducerBuilder<AppState, AppStateBuilder>()
         ..combineNested(createClientReducer(container))
         ..combineNested(createClinicPostsReducer(container))
-        ..combineNested(createClinicVideosReducer(container)))
-      .build();
+        ..combineNested(createClinicVideosReducer(container))
+        ..combineNested(createAuthReducer(container))
+  ).build();
 }

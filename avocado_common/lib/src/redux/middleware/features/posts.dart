@@ -3,7 +3,7 @@ import 'package:built_redux/built_redux.dart';
 import 'package:built_redux_rx/built_redux_rx.dart';
 import 'package:rxdart/rxdart.dart';
 
-Iterable<Epic<AppState, AppStateBuilder, AppActions>> createClinicPostsEpicBuilder(
+Iterable<Epic<AppState, AppStateBuilder, AppActions>> createPostsEpicBuilder(
     ServiceContainer container) {
 
 

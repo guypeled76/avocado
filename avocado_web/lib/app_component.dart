@@ -10,6 +10,7 @@ import 'package:angular_router/angular_router.dart';
 import 'package:avocado_common/common.dart';
 import 'package:avocado_web/app_routes.dart';
 import 'src/todo_list/todo_list_component.dart';
+import 'src/pipes/index.dart';
 
 @Component(
   selector: 'my-app',
@@ -23,6 +24,7 @@ import 'src/todo_list/todo_list_component.dart';
     MaterialListItemComponent,
     TodoListComponent,
     routerDirectives,
+    NgFor,
     NgIf
   ],
   templateUrl: 'app_component.html',
@@ -32,6 +34,7 @@ import 'src/todo_list/todo_list_component.dart';
   ],
   providers: [],
   exports: [RoutePaths, Routes],
+  pipes: [commonPipes, NotNull, IsNull],
 )
 class AppComponent {
   bool customWidth = false;

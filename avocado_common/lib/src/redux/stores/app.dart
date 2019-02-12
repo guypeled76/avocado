@@ -24,7 +24,8 @@ class AppStore {
         <Middleware<AppState, AppStateBuilder, AppActions>>[
           createEpicMiddleware<AppState, AppStateBuilder, AppActions>([]
             ..addAll(createEpicBuilder(container))
-            ..addAll(createClinicPostsEpicBuilder(container))
+            ..addAll(createPostsEpicBuilder(container))
+            ..addAll(createAuthEpicBuilder(container))
               ..add(logEpic)
           ),
         ]

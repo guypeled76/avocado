@@ -5,13 +5,10 @@ import 'package:avocado_common/common.dart';
 abstract class AuthService  {
 
 
+  Future<ProfileInfo> signInWithGoogle();
 
-  ProfileInfo get profile;
+  Future<ProfileInfo> signInWithFacebook();
 
-  void signInWithGoogle();
-
-  void signInWithFacebook();
-
-  void signOut();
+  Future signOut();
 
 }

@@ -25,6 +25,6 @@ abstract class AuthActions extends ReduxActions {
 
   ActionDispatcher<CommandPayload> signOut;
 
-  ActionDispatcher<EntitiesPayload<ProfileInfo>> set;
+  ActionDispatcher<EntityPayload<ProfileInfo>> set;
 
 }

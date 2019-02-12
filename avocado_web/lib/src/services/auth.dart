@@ -43,26 +43,30 @@ class AuthServiceImpl implements AuthService {
     }
   }
 
-  void signInWithGoogle() async {
+  Future<ProfileInfo> signInWithGoogle() async {
     try {
       var _fbGoogleAuthProvider = new fb.GoogleAuthProvider();
       await _fbAuth.signInWithPopup(_fbGoogleAuthProvider);
+      return _profile;
     } catch (error) {
       print("$runtimeType::login() -- $error");
     }
+    return null;
   }
 
-  void signInWithFacebook() async {
+  Future<ProfileInfo>  signInWithFacebook() async {
     try {
       var _fbFacebookAuthProvider = new fb.FacebookAuthProvider();
       await _fbAuth.signInWithPopup(_fbFacebookAuthProvider);
+      return _profile;
     } catch (error) {
       print("$runtimeType::login() -- $error");
     }
+    return null;
   }
 
-  void signOut() {
-    _fbAuth.signOut();
+  Future signOut() async {
+    return _fbAuth.signOut();
   }
 
 

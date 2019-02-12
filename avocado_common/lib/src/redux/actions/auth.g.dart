@@ -29,8 +29,8 @@ class _$AuthActions extends AuthActions {
       new ActionDispatcher<CommandPayload>('AuthActions-signInWithFacebook');
   final ActionDispatcher<CommandPayload> signOut =
       new ActionDispatcher<CommandPayload>('AuthActions-signOut');
-  final ActionDispatcher<EntitiesPayload<ProfileInfo>> set =
-      new ActionDispatcher<EntitiesPayload<ProfileInfo>>('AuthActions-set');
+  final ActionDispatcher<EntityPayload<ProfileInfo>> set =
+      new ActionDispatcher<EntityPayload<ProfileInfo>>('AuthActions-set');
   final AuthEvents events = new AuthEvents();
 
   @override
@@ -50,6 +50,6 @@ class AuthActionsNames {
       new ActionName<CommandPayload>('AuthActions-signInWithFacebook');
   static final ActionName<CommandPayload> signOut =
       new ActionName<CommandPayload>('AuthActions-signOut');
-  static final ActionName<EntitiesPayload<ProfileInfo>> set =
-      new ActionName<EntitiesPayload<ProfileInfo>>('AuthActions-set');
+  static final ActionName<EntityPayload<ProfileInfo>> set =
+      new ActionName<EntityPayload<ProfileInfo>>('AuthActions-set');
 }

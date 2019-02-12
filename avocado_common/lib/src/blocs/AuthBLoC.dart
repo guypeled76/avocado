@@ -1,14 +1,19 @@
 import 'package:avocado_common/common.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AuthBLoC extends BaseBLoC {
 
     final AuthStore _store;
 
-    AuthBLoC(this._store);
+    final Stream<ProfileInfo> profile;
 
-    Stream<ProfileInfo> get profile {
-      return this._store.profile;
-    }
+
+    AuthBLoC(this._store) :
+        profile = _store.profile;
+
+
+
+
 
     void signInWithGoogle() {
         this._store.actions.signInWithGoogle(CommandPayload.empty);

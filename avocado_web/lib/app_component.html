@@ -58,12 +58,14 @@
             </nav>
             <nav class="material-navigation">
 
-                <material-button class="material-drawer-button" icon (trigger)="auth.signInWithFacebook()" *ngIf="auth.profile == null">
-                    <material-icon icon="face"></material-icon>
+
+
+                <material-button class="material-drawer-button" icon (trigger)="auth.signOut()" *ngIf="auth.profile | async | notnull">
+                    <material-icon icon="cancel"></material-icon>
                 </material-button>
 
-                <material-button class="material-drawer-button" icon (trigger)="auth.signOut()" *ngIf="auth.profile != null">
-                    <material-icon icon="cancel"></material-icon>
+                <material-button class="material-drawer-button" icon (trigger)="auth.signInWithFacebook()" *ngIf="auth.profile | async | isnull">
+                    <material-icon icon="face"></material-icon>
                 </material-button>
 
             </nav>
@@ -71,8 +73,6 @@
     </header>
     <div class="content-area">
         <router-outlet [routes]="Routes.all"></router-outlet>
-        <!--todo-list></todo-list-->
-
     </div>
 
 </material-content>
