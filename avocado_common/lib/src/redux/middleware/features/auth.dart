@@ -9,9 +9,16 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
   AuthService authService = container.getService<AuthService>();
   StoreService storeService = container.getService<StoreService>();
 
-  authService.profile.forEach((profile) {
-    storeService.authStore.events.profileChanged(EntityPayload(profile));
-  });
+
+
+
+  Observable initialize(Observable<Action<CommandPayload>> stream,
+      MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
+    authService.profile.distinct().listen((profile) {
+      mwApi.actions.auth.set(EntityPayload(profile));
+    });
+    return stream;
+  }
 
   Observable signOut(Observable<Action<CommandPayload>> stream,
       MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
@@ -21,6 +28,8 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
         }).catchError((error) {
 
         });
+
+        return action;
       });
   }
 
@@ -32,6 +41,8 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
       }).catchError((error) {
 
       });
+
+      return action;
     });
   }
 
@@ -43,22 +54,19 @@ Iterable<Epic<AppState, AppStateBuilder, AppActions>> createAuthEpicBuilder(
       }).catchError((error) {
 
       });
+
+      return action;
     });
   }
 
 
-  Observable onProfileChanged(Observable<Action<EntityPayload<ProfileInfo>>> stream,
-      MiddlewareApi<AppState, AppStateBuilder, AppActions> mwApi) {
-    return stream.map((action) {
-      mwApi.actions.auth.set(EntityPayload(action.payload.entity));
-    });
-  }
+
 
   return (new EpicBuilder<AppState, AppStateBuilder, AppActions>()
+    ..add<CommandPayload>(AppActionsNames.initialize, initialize)
     ..add<CommandPayload>(AuthActionsNames.signOut, signOut)
     ..add<CommandPayload>(AuthActionsNames.signInWithFacebook, signInWithFacebook)
     ..add<CommandPayload>(AuthActionsNames.signInWithGoogle, signInWithGoogle)
-    ..add<EntityPayload<ProfileInfo>>(AuthEventsNames.profileChanged, onProfileChanged)
   ).build();
 }
 

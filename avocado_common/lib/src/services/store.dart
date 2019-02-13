@@ -8,6 +8,7 @@ abstract class StoreService implements ServiceContainer {
 
   StoreService() {
     _store = AppStore(this);
+    _store.actions.initialize(CommandPayload.empty);
   }
 
   AppStore get store {

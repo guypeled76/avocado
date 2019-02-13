@@ -23,10 +23,10 @@ class AppStore {
         middleware:
         <Middleware<AppState, AppStateBuilder, AppActions>>[
           createEpicMiddleware<AppState, AppStateBuilder, AppActions>([]
+            ..addAll(createLogEpicBuilder(container))
             ..addAll(createEpicBuilder(container))
             ..addAll(createPostsEpicBuilder(container))
             ..addAll(createAuthEpicBuilder(container))
-              ..add(logEpic)
           ),
         ]
     );

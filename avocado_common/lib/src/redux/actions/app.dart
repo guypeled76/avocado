@@ -15,6 +15,8 @@ abstract class AppActions extends ReduxActions {
   NotificationsActions notifications;
   WaterfallActions waterfalls;
 
+  ActionDispatcher<CommandPayload> initialize;
+
 
 
 

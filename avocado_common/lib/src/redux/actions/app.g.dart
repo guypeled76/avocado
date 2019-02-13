@@ -13,6 +13,8 @@ class _$AppActions extends AppActions {
   factory _$AppActions() => new _$AppActions._();
   _$AppActions._() : super._();
 
+  final ActionDispatcher<CommandPayload> initialize =
+      new ActionDispatcher<CommandPayload>('AppActions-initialize');
   final AppEvents events = new AppEvents();
   final AuthActions auth = new AuthActions();
   final PostActions posts = new PostActions();
@@ -23,6 +25,7 @@ class _$AppActions extends AppActions {
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
+    initialize.setDispatcher(dispatcher);
     events.setDispatcher(dispatcher);
     auth.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
@@ -33,7 +36,10 @@ class _$AppActions extends AppActions {
   }
 }
 
-class AppActionsNames {}
+class AppActionsNames {
+  static final ActionName<CommandPayload> initialize =
+      new ActionName<CommandPayload>('AppActions-initialize');
+}
 
 class _$AppEvents extends AppEvents {
   factory _$AppEvents() => new _$AppEvents._();

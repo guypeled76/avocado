@@ -13,7 +13,6 @@ abstract class AuthEvents extends ReduxActions {
 
   ActionDispatcher<EventPayload> signedOut;
   ActionDispatcher<SignedInPayload> signedIn;
-  ActionDispatcher<EntityPayload<ProfileInfo>> profileChanged;
 }
 
 abstract class AuthActions extends ReduxActions {

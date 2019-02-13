@@ -17,15 +17,11 @@ class _$AuthEvents extends AuthEvents {
       new ActionDispatcher<EventPayload>('AuthEvents-signedOut');
   final ActionDispatcher<SignedInPayload> signedIn =
       new ActionDispatcher<SignedInPayload>('AuthEvents-signedIn');
-  final ActionDispatcher<EntityPayload<ProfileInfo>> profileChanged =
-      new ActionDispatcher<EntityPayload<ProfileInfo>>(
-          'AuthEvents-profileChanged');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     signedOut.setDispatcher(dispatcher);
     signedIn.setDispatcher(dispatcher);
-    profileChanged.setDispatcher(dispatcher);
   }
 }
 
@@ -34,8 +30,6 @@ class AuthEventsNames {
       new ActionName<EventPayload>('AuthEvents-signedOut');
   static final ActionName<SignedInPayload> signedIn =
       new ActionName<SignedInPayload>('AuthEvents-signedIn');
-  static final ActionName<EntityPayload<ProfileInfo>> profileChanged =
-      new ActionName<EntityPayload<ProfileInfo>>('AuthEvents-profileChanged');
 }
 
 class _$AuthActions extends AuthActions {
