@@ -6,3 +6,4 @@ export 'posts.dart';
 export 'waterfalls.dart';
 export 'users.dart';
 export 'notifications.dart';
+export 'auth.dart';

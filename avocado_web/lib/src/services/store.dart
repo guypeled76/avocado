@@ -17,11 +17,12 @@ class StoreServiceImpl extends StoreService {
 
   @override
   ServiceType getService<ServiceType>() {
-
-    if(repositoryService is ServiceType) {
+    if (repositoryService is ServiceType) {
       return repositoryService as ServiceType;
-    } else if(authService is ServiceType) {
+    } else if (authService is ServiceType) {
       return authService as ServiceType;
+    } else if (this is ServiceType) {
+      return this as ServiceType;
     }
     return injector.provideType<ServiceType>(ServiceType.runtimeType);
   }

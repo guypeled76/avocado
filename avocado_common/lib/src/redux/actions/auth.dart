@@ -10,6 +10,10 @@ abstract class AuthEvents extends ReduxActions {
 
   AuthEvents._();
   factory AuthEvents() => new _$AuthEvents();
+
+  ActionDispatcher<EventPayload> signedOut;
+  ActionDispatcher<SignedInPayload> signedIn;
+  ActionDispatcher<EntityPayload<ProfileInfo>> profileChanged;
 }
 
 abstract class AuthActions extends ReduxActions {
