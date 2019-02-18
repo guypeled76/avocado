@@ -9,23 +9,27 @@ Iterable<Runnable> postsSaga() sync* {
 
 
 Iterable<Runnable> _handlePostsLoad() sync* {
-  yield take(PostEventsNames.load);
+  try {
+    yield take(PostEventsNames.load);
 
-  RepositoryService repositoryService;
-  yield select<RepositoryService>((result) {
-    repositoryService = result;
-  });
+    RepositoryService repositoryService;
+    yield select<RepositoryService>((result) {
+      repositoryService = result;
+    });
 
-  List<Map> maps;
-  yield call(repositoryService.collection("posts").get(), (result) {
-    maps = result;
-  }, (error) {
-    print(error);
-  });
+    List<Map> maps;
+    yield call(repositoryService.collection("posts").get(), (result) {
+      maps = result;
+    }, (error) {
+      print(error);
+    });
 
-  List<PostInfo> posts = maps.map((json) => PostInfo.fromJson(json)).toList();
+    List<PostInfo> posts = maps.map((json) => PostInfo.fromJson(json)).toList();
 
-  yield put(PostActionsNames.setMany, EntitiesPayload(posts));
+    yield put(PostActionsNames.setMany, EntitiesPayload(posts));
+  } catch(e) {
+    yield put(AppActionsNames.error, ErrorPayload("Failed to load posts.", e));
+  }
 }
 
 

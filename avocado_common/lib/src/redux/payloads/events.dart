@@ -11,3 +11,9 @@ class SignedInPayload extends EventPayload {
   SignedInStatus status;
   SignedInPayload(this.status);
 }
+
+class ErrorPayload extends EventPayload {
+  Object error;
+  String message;
+  ErrorPayload(this.message, this.error);
+}

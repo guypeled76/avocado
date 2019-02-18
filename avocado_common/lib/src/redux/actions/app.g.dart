@@ -15,6 +15,8 @@ class _$AppActions extends AppActions {
 
   final ActionDispatcher<CommandPayload> initialize =
       new ActionDispatcher<CommandPayload>('AppActions-initialize');
+  final ActionDispatcher<ErrorPayload> error =
+      new ActionDispatcher<ErrorPayload>('AppActions-error');
   final AppEvents events = new AppEvents();
   final AuthActions auth = new AuthActions();
   final PostActions posts = new PostActions();
@@ -26,6 +28,7 @@ class _$AppActions extends AppActions {
   @override
   void setDispatcher(Dispatcher dispatcher) {
     initialize.setDispatcher(dispatcher);
+    error.setDispatcher(dispatcher);
     events.setDispatcher(dispatcher);
     auth.setDispatcher(dispatcher);
     posts.setDispatcher(dispatcher);
@@ -39,6 +42,8 @@ class _$AppActions extends AppActions {
 class AppActionsNames {
   static final ActionName<CommandPayload> initialize =
       new ActionName<CommandPayload>('AppActions-initialize');
+  static final ActionName<ErrorPayload> error =
+      new ActionName<ErrorPayload>('AppActions-error');
 }
 
 class _$AppEvents extends AppEvents {

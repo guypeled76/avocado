@@ -16,6 +16,7 @@ abstract class AppActions extends ReduxActions {
   WaterfallActions waterfalls;
 
   ActionDispatcher<CommandPayload> initialize;
+  ActionDispatcher<ErrorPayload> error;
 
 
 
