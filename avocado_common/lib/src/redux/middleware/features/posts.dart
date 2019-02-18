@@ -1,5 +1,6 @@
 import 'package:avocado_common/common.dart';
 import 'package:built_redux_saga/built_redux_saga.dart';
+import 'package:avocado_common/src/redux/middleware/api/index.dart';
 
 Iterable<Runnable> postsSaga() sync* {
   yield all([
@@ -17,14 +18,12 @@ Iterable<Runnable> _handlePostsLoad() sync* {
       repositoryService = result;
     });
 
-    List<Map> maps;
-    yield call(repositoryService.collection("posts").get(), (result) {
-      maps = result;
+    List<PostInfo> posts;
+    yield call(loadPosts(repositoryService), (results) {
+      posts = results;
     }, (error) {
       print(error);
     });
-
-    List<PostInfo> posts = maps.map((json) => PostInfo.fromJson(json)).toList();
 
     yield put(PostActionsNames.setMany, EntitiesPayload(posts));
   } catch(e) {
