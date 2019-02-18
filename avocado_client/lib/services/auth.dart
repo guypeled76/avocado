@@ -6,7 +6,6 @@ import 'package:avocado_client/utils.dart';
 
 class AuthServiceImpl implements AuthService {
 
-  ProfileInfo _profile;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -17,12 +16,18 @@ class AuthServiceImpl implements AuthService {
   AuthServiceImpl();
 
   @override
-  ProfileInfo get profile {
-    return _profile;
+  Stream<ProfileInfo> get profile {
+    return _auth.onAuthStateChanged
+        .map((user)=> user != null ? new ProfileInfo(
+            key:user.uid,
+            hashtags:[],
+            image:user.photoUrl,
+            displayName:user.displayName
+    ) : null);
   }
 
   @override
-  void signInWithFacebook() async {
+  Future signInWithFacebook() async {
     try {
       final FacebookLoginResult result =
           await _facebookSignIn.logInWithReadPermissions(['email']);
@@ -43,7 +48,7 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  void signInWithGoogle() async {
+  Future signInWithGoogle() async {
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -58,7 +63,7 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  void signOut() {
+  Future signOut() async {
 
   }
 
