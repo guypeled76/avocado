@@ -1,6 +1,6 @@
 import 'package:avocado_common/common.dart';
 import 'package:built_redux/built_redux.dart';
-import 'package:built_redux_rx/built_redux_rx.dart';
+import 'package:built_redux_saga/built_redux_saga.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AppStore {
@@ -22,11 +22,11 @@ class AppStore {
         new AppActions(),
         middleware:
         <Middleware<AppState, AppStateBuilder, AppActions>>[
-          createEpicMiddleware<AppState, AppStateBuilder, AppActions>([]
-            ..addAll(createLogEpicBuilder(container))
-            ..addAll(createEpicBuilder(container))
-            ..addAll(createPostsEpicBuilder(container))
-            ..addAll(createAuthEpicBuilder(container))
+          createSagaMiddleware<AppState, AppStateBuilder, AppActions>(<Iterable<Runnable>>[]
+            ..add(logSaga())
+            ..add(appSaga(container))
+            ..add(postsSaga())
+            ..add(authSaga())
           ),
         ]
     );
