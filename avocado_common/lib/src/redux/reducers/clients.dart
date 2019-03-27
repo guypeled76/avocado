@@ -1,8 +1,7 @@
 import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
-NestedReducerBuilder<AppState, AppStateBuilder, ClientsState, ClientsStateBuilder> createClientReducer(
-    ServiceContainer container) {
+NestedReducerBuilder<AppState, AppStateBuilder, ClientsState, ClientsStateBuilder> createClientReducer() {
 
   setClient(ClientsState state, Action<ProfileInfo> action, ClientsStateBuilder builder) {
 

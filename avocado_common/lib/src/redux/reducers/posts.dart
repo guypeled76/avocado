@@ -1,8 +1,7 @@
 import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
-NestedReducerBuilder<AppState, AppStateBuilder, PostsState, PostsStateBuilder> createClinicPostsReducer(
-    ServiceContainer container) {
+NestedReducerBuilder<AppState, AppStateBuilder, PostsState, PostsStateBuilder> createClinicPostsReducer() {
 
   setPost(PostsState state, Action<EntityPayload<PostInfo>> action, PostsStateBuilder builder) {
     builder..map[action.payload.entity.key] = action.payload.entity;

@@ -27,6 +27,7 @@ class AppStore {
             ..add(appSaga(container))
             ..add(postsSaga())
             ..add(authSaga())
+            ..add(videosSaga())
           ),
         ]
     );

@@ -1,5 +1,4 @@
 import 'package:angular/angular.dart';
-import 'package:angular_forms/angular_forms.dart';
 import 'package:avocado_common/common.dart';
 import 'dart:html';
 
@@ -26,9 +25,8 @@ class VideoUploaderComponent {
   @Input()
   VideosBLoC bloc;
 
-  final StoreService store;
 
-  VideoUploaderComponent(this.store);
+  VideoUploaderComponent(StoreService store) : bloc = VideosBLoC(store.videosStore);
 
 
   var progress = 20;
@@ -41,10 +39,27 @@ class VideoUploaderComponent {
 
   String status = "done.";
 
-  @ViewChild("upload")
-  FileUploadInputElement upload;
+  @ViewChild("imageUpload")
+  FileUploadInputElement imageUpload;
+
+  @ViewChild("videoUpload")
+  FileUploadInputElement videoUpload;
 
   void create() {
+
+    bloc.create(VideoInfo(
+          key: null,
+          hashtags: [],
+          content: content,
+          user: null,
+          date: DateTime.now(),
+          video: null,
+          image:null
+        ),
+        null,//imageUpload.files.first,
+        null//videoUpload.files.first
+    );
+
 /*
     bloc.add(VideoInfo(
         content: content,

@@ -1,8 +1,7 @@
 import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
-NestedReducerBuilder<AppState, AppStateBuilder, AuthState, AuthStateBuilder> createAuthReducer(
-    ServiceContainer container) {
+NestedReducerBuilder<AppState, AppStateBuilder, AuthState, AuthStateBuilder> createAuthReducer() {
 
   setProfile(AuthState state, Action<EntityPayload<ProfileInfo>> action, AuthStateBuilder builder) {
     builder.profile = action.payload.entity;

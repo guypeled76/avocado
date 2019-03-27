@@ -2,15 +2,17 @@ import 'package:built_redux/built_redux.dart';
 import 'package:avocado_common/common.dart';
 
 NestedReducerBuilder<AppState, AppStateBuilder, VideosState, VideosStateBuilder>
-createClinicVideosReducer(ServiceContainer container) {
-  _updateVideo(VideosState state, Action<VideoInfo> action, VideosStateBuilder builder) =>
-      builder..map[action.payload.key] = action.payload;
+createClinicVideosReducer() {
+
+  _updateVideo(VideosState state, Action<EntityPayload<VideoInfo>> action, VideosStateBuilder builder) {
+    builder..map[action.payload.entity.key] = action.payload.entity;
+  }
 
   return new NestedReducerBuilder<AppState, AppStateBuilder, VideosState, VideosStateBuilder>(
         (state) => state.videos,
         (builder) => builder.videos,
   )
-    ..add<VideoInfo>(VideoActionsNames.update, _updateVideo);
+    ..add<EntityPayload<VideoInfo>>(VideoActionsNames.set, _updateVideo);
 }
 
 

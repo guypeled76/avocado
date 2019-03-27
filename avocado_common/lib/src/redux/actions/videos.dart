@@ -5,7 +5,12 @@ part 'videos.g.dart';
 
 
 abstract class VideoActions extends ReduxActions {
-  ActionDispatcher<VideoInfo> update;
+
+  ActionDispatcher<EntityPayload<VideoInfo>> set;
+  ActionDispatcher<EntitiesPayload<VideoInfo>> setMany;
+
+  ActionDispatcher<EntityWithImageAndVideoPayload<VideoInfo>> update;
+  ActionDispatcher<EntityWithImageAndVideoPayload<VideoInfo>> create;
 
   VideoEvents events;
 
@@ -18,6 +23,8 @@ abstract class VideoEvents extends ReduxActions {
 
   ActionDispatcher<EventPayload> load;
   ActionDispatcher<EventPayload> unload;
+
+
 
 
   VideoEvents._();

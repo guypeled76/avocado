@@ -4,9 +4,9 @@ import 'package:avocado_common/common.dart';
 Reducer<AppState, AppStateBuilder, dynamic> createAppReducer(
     ServiceContainer container) {
   return (new ReducerBuilder<AppState, AppStateBuilder>()
-        ..combineNested(createClientReducer(container))
-        ..combineNested(createClinicPostsReducer(container))
-        ..combineNested(createClinicVideosReducer(container))
-        ..combineNested(createAuthReducer(container))
+        ..combineNested(createClientReducer())
+        ..combineNested(createClinicPostsReducer())
+        ..combineNested(createClinicVideosReducer())
+        ..combineNested(createAuthReducer())
   ).build();
 }

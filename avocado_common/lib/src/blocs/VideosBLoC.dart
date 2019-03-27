@@ -14,6 +14,10 @@ class VideosBLoC extends BaseBLoC {
     this.videos = _store.orderedVideos;;
   }
 
+  void create(VideoInfo entity, Object image, Object video) {
+    _store.actions.create(EntityWithImageAndVideoPayload(entity, image, video));
+  }
+
 
 
 
