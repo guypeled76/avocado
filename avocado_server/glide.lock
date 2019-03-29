@@ -1,0 +1,188 @@
+hash: e4e2bf7189b76d063912e3d3dd6a10f2a544e59bfe8550b9e758e62f1129c9f8
+updated: 2019-03-29T06:46:47.668962+03:00
+imports:
+- name: cloud.google.com/go
+  version: 4b031de94b32c3a6b8cf7d64fd2b377ac5859eef
+  subpackages:
+  - compute/metadata
+  - firestore
+  - firestore/apiv1
+  - iam
+  - internal
+  - internal/btree
+  - internal/fields
+  - internal/optional
+  - internal/trace
+  - internal/version
+  - storage
+- name: firebase.google.com/go
+  version: c9b5e064033ed12864bf07d9bb34249087617130
+  subpackages:
+  - auth
+  - db
+  - iid
+  - internal
+  - messaging
+  - storage
+- name: github.com/99designs/gqlgen
+  version: ee06517c25deb254fa6708609ee5fd3fb3fbdbf2
+  subpackages:
+  - complexity
+  - graphql
+  - graphql/introspection
+  - handler
+- name: github.com/agnivade/levenshtein
+  version: 58e879ee01832d9369b8120ad55d6fc946fd8d2b
+- name: github.com/golang/protobuf
+  version: d3c38a4eb4970272b87a425ae00ccc4548e2f9bb
+  subpackages:
+  - proto
+  - protoc-gen-go/descriptor
+  - ptypes
+  - ptypes/any
+  - ptypes/duration
+  - ptypes/empty
+  - ptypes/struct
+  - ptypes/timestamp
+  - ptypes/wrappers
+- name: github.com/googleapis/gax-go
+  version: beaecbbdd8af86aa3acf14180d53828ce69400b2
+  subpackages:
+  - v2
+- name: github.com/gorilla/websocket
+  version: 0ec3d1bd7fe50c503d6df98ee649d81f4857c564
+- name: github.com/hashicorp/golang-lru
+  version: 7087cb70de9f7a8bc0a10c375cb0d2280a8edf9c
+  subpackages:
+  - simplelru
+- name: github.com/vektah/gqlparser
+  version: 05741cdb0871330d8bc980d4afd21ab34eceee83
+  subpackages:
+  - ast
+  - gqlerror
+  - lexer
+  - parser
+  - validator
+  - validator/rules
+- name: go.opencensus.io
+  version: 41e54b832491efe97a2aafe696f6e7d812f136bb
+  subpackages:
+  - internal
+  - internal/tagencoding
+  - metric/metricdata
+  - metric/metricproducer
+  - plugin/ocgrpc
+  - plugin/ochttp
+  - plugin/ochttp/propagation/b3
+  - resource
+  - stats
+  - stats/internal
+  - stats/view
+  - tag
+  - trace
+  - trace/internal
+  - trace/propagation
+  - trace/tracestate
+- name: golang.org/x/net
+  version: 74de082e2cca95839e88aa0aeee5aadf6ce7710f
+  subpackages:
+  - context
+  - context/ctxhttp
+  - http/httpguts
+  - http2
+  - http2/hpack
+  - idna
+  - internal/timeseries
+  - trace
+- name: golang.org/x/oauth2
+  version: c85d3e98c914e3a33234ad863dcbff5dbc425bb8
+  subpackages:
+  - google
+  - internal
+  - jws
+  - jwt
+- name: golang.org/x/sys
+  version: f49334f85ddcf0f08d7fb6dd7363e9e6d6b777eb
+  subpackages:
+  - unix
+- name: golang.org/x/text
+  version: e3703dcdd614d2d7488fff034c75c551ea25da95
+  subpackages:
+  - secure/bidirule
+  - transform
+  - unicode/bidi
+  - unicode/norm
+- name: google.golang.org/api
+  version: af986cd59464c8245c96ea197dd3de71d5930b8e
+  subpackages:
+  - gensupport
+  - googleapi
+  - googleapi/internal/uritemplates
+  - googleapi/transport
+  - identitytoolkit/v3
+  - internal
+  - iterator
+  - option
+  - storage/v1
+  - transport
+  - transport/grpc
+  - transport/http
+  - transport/http/internal/propagation
+- name: google.golang.org/appengine
+  version: 54a98f90d1c46b7731eb8fb305d2a321c30ef610
+  subpackages:
+  - internal
+  - internal/app_identity
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/modules
+  - internal/remote_api
+  - internal/socket
+  - internal/urlfetch
+  - socket
+  - urlfetch
+- name: google.golang.org/genproto
+  version: d831d65fe17df2e52bcc4316d4a9f7a418701f43
+  subpackages:
+  - googleapis/api/annotations
+  - googleapis/firestore/v1
+  - googleapis/iam/v1
+  - googleapis/rpc/code
+  - googleapis/rpc/status
+  - googleapis/type/latlng
+- name: google.golang.org/grpc
+  version: f1437f7cc5fa7525032e27aa5fdc15e288220c4e
+  subpackages:
+  - balancer
+  - balancer/base
+  - balancer/roundrobin
+  - binarylog/grpc_binarylog_v1
+  - codes
+  - connectivity
+  - credentials
+  - credentials/internal
+  - credentials/oauth
+  - encoding
+  - encoding/proto
+  - grpclog
+  - internal
+  - internal/backoff
+  - internal/binarylog
+  - internal/channelz
+  - internal/envconfig
+  - internal/grpcrand
+  - internal/grpcsync
+  - internal/syscall
+  - internal/transport
+  - keepalive
+  - metadata
+  - naming
+  - peer
+  - resolver
+  - resolver/dns
+  - resolver/passthrough
+  - stats
+  - status
+  - tap
+testImports: []
