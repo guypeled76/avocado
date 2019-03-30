@@ -8,6 +8,15 @@ type Job {
     deletedAt: Timestamp
 }
 
+
+type Ingredient {
+    id: ID!
+    name: String!
+    createdBy: User!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
 type User {
     id: ID!
     name: String!
@@ -37,15 +46,25 @@ input NewApplication {
     cvURL: String!
 }
 
+
+
+input NewIngredient {
+    name: String!
+    createdByID: String!
+}
+
 type Mutation {
     createJob(input: NewJob!): Job!
+    createIngredient(input: NewIngredient!): Ingredient!
     deleteJob(id: ID!): String!
     createApplication(input: NewApplication!): Application!
 }
 
 type Query {
     jobs: [Job!]!
+    ingredients: [Ingredient!]!
     applications(jobID: ID!): [Application!]!
 }
+
 
 scalar Timestamp

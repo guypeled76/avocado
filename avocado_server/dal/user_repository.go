@@ -3,6 +3,7 @@ package dal
 import (
 	"context"
 	"firebase.google.com/go"
+	"github.com/gremlinsapps/avocado_server/models"
 	"log"
 )
 
@@ -18,11 +19,11 @@ func NewUserFirebaseRepository(fbAPP *firebase.App, ctx context.Context) (*UserF
 	}, nil
 }
 
-func (userRepo UserFirebaseRepository) GetAll() ([]User, error) {
+func (userRepo UserFirebaseRepository) GetAll() ([]models.User, error) {
 	panic("YTI")
 }
 
-func (userRepo UserFirebaseRepository) GetByID(id string) (User, error) {
+func (userRepo UserFirebaseRepository) GetByID(id string) (models.User, error) {
 	client, err := userRepo.FBApp.Auth(userRepo.Context)
 	if err != nil {
 		log.Printf("error getting Auth client: %v\n", err)
@@ -33,5 +34,5 @@ func (userRepo UserFirebaseRepository) GetByID(id string) (User, error) {
 		log.Printf("error getting user %s: %v\n", id, err)
 	}
 	log.Printf("Successfully fetched user data: %v\n", u)
-	return User{ID: id, Name: u.DisplayName, Email: u.Email}, err
+	return models.User{ID: id, Name: u.DisplayName, Email: u.Email}, err
 }

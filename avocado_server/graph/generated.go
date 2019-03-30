@@ -36,8 +36,6 @@ type Config struct {
 }
 
 type ResolverRoot interface {
-	Application() ApplicationResolver
-	Job() JobResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -55,6 +53,14 @@ type ComplexityRoot struct {
 		Name      func(childComplexity int) int
 	}
 
+	Ingredient struct {
+		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+	}
+
 	Job struct {
 		CreatedAt   func(childComplexity int) int
 		CreatedBy   func(childComplexity int) int
@@ -67,12 +73,14 @@ type ComplexityRoot struct {
 
 	Mutation struct {
 		CreateApplication func(childComplexity int, input models.NewApplication) int
+		CreateIngredient  func(childComplexity int, input models.NewIngredient) int
 		CreateJob         func(childComplexity int, input models.NewJob) int
 		DeleteJob         func(childComplexity int, id string) int
 	}
 
 	Query struct {
 		Applications func(childComplexity int, jobID string) int
+		Ingredients  func(childComplexity int) int
 		Jobs         func(childComplexity int) int
 	}
 
@@ -83,20 +91,16 @@ type ComplexityRoot struct {
 	}
 }
 
-type ApplicationResolver interface {
-	Job(ctx context.Context, obj *dal.Application) (*dal.Job, error)
-}
-type JobResolver interface {
-	CreatedBy(ctx context.Context, obj *dal.Job) (*dal.User, error)
-}
 type MutationResolver interface {
-	CreateJob(ctx context.Context, input models.NewJob) (*dal.Job, error)
+	CreateJob(ctx context.Context, input models.NewJob) (*models.Job, error)
+	CreateIngredient(ctx context.Context, input models.NewIngredient) (*models.Ingredient, error)
 	DeleteJob(ctx context.Context, id string) (string, error)
-	CreateApplication(ctx context.Context, input models.NewApplication) (*dal.Application, error)
+	CreateApplication(ctx context.Context, input models.NewApplication) (*models.Application, error)
 }
 type QueryResolver interface {
-	Jobs(ctx context.Context) ([]dal.Job, error)
-	Applications(ctx context.Context, jobID string) ([]dal.Application, error)
+	Jobs(ctx context.Context) ([]models.Job, error)
+	Ingredients(ctx context.Context) ([]models.Ingredient, error)
+	Applications(ctx context.Context, jobID string) ([]models.Application, error)
 }
 
 type executableSchema struct {
@@ -155,6 +159,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Application.Name(childComplexity), true
+
+	case "Ingredient.CreatedAt":
+		if e.complexity.Ingredient.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.CreatedAt(childComplexity), true
+
+	case "Ingredient.CreatedBy":
+		if e.complexity.Ingredient.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.CreatedBy(childComplexity), true
+
+	case "Ingredient.DeletedAt":
+		if e.complexity.Ingredient.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.DeletedAt(childComplexity), true
+
+	case "Ingredient.ID":
+		if e.complexity.Ingredient.ID == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.ID(childComplexity), true
+
+	case "Ingredient.Name":
+		if e.complexity.Ingredient.Name == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.Name(childComplexity), true
 
 	case "Job.CreatedAt":
 		if e.complexity.Job.CreatedAt == nil {
@@ -217,6 +256,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateApplication(childComplexity, args["input"].(models.NewApplication)), true
 
+	case "Mutation.CreateIngredient":
+		if e.complexity.Mutation.CreateIngredient == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createIngredient_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateIngredient(childComplexity, args["input"].(models.NewIngredient)), true
+
 	case "Mutation.CreateJob":
 		if e.complexity.Mutation.CreateJob == nil {
 			break
@@ -252,6 +303,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Applications(childComplexity, args["jobID"].(string)), true
+
+	case "Query.Ingredients":
+		if e.complexity.Query.Ingredients == nil {
+			break
+		}
+
+		return e.complexity.Query.Ingredients(childComplexity), true
 
 	case "Query.Jobs":
 		if e.complexity.Query.Jobs == nil {
@@ -368,6 +426,15 @@ var parsedSchema = gqlparser.MustLoadSchema(
     deletedAt: Timestamp
 }
 
+
+type Ingredient {
+    id: ID!
+    name: String!
+    createdBy: User!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
 type User {
     id: ID!
     name: String!
@@ -397,16 +464,26 @@ input NewApplication {
     cvURL: String!
 }
 
+
+
+input NewIngredient {
+    name: String!
+    createdByID: String!
+}
+
 type Mutation {
     createJob(input: NewJob!): Job!
+    createIngredient(input: NewIngredient!): Ingredient!
     deleteJob(id: ID!): String!
     createApplication(input: NewApplication!): Application!
 }
 
 type Query {
     jobs: [Job!]!
+    ingredients: [Ingredient!]!
     applications(jobID: ID!): [Application!]!
 }
+
 
 scalar Timestamp
 `},
@@ -422,6 +499,20 @@ func (ec *executionContext) field_Mutation_createApplication_args(ctx context.Co
 	var arg0 models.NewApplication
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNNewApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewApplication(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createIngredient_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.NewIngredient
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewIngredient(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -518,7 +609,7 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Application_id(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_id(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -545,7 +636,7 @@ func (ec *executionContext) _Application_id(ctx context.Context, field graphql.C
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Application_name(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_name(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -572,7 +663,7 @@ func (ec *executionContext) _Application_name(ctx context.Context, field graphql
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Application_email(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_email(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -599,7 +690,7 @@ func (ec *executionContext) _Application_email(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Application_cvURL(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_cvURL(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -626,20 +717,20 @@ func (ec *executionContext) _Application_cvURL(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Application_job(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_job(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
 		Object:   "Application",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Application().Job(rctx, obj)
+		return obj.Job, nil
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -647,13 +738,13 @@ func (ec *executionContext) _Application_job(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*dal.Job)
+	res := resTmp.(models.Job)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx, field.Selections, res)
+	return ec.marshalNJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Application_createdAt(ctx context.Context, field graphql.CollectedField, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Application) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -680,7 +771,139 @@ func (ec *executionContext) _Application_createdAt(ctx context.Context, field gr
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_id(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Ingredient_id(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_name(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Job_id(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -707,7 +930,7 @@ func (ec *executionContext) _Job_id(ctx context.Context, field graphql.Collected
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_name(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_name(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -734,7 +957,7 @@ func (ec *executionContext) _Job_name(ctx context.Context, field graphql.Collect
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_description(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_description(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -761,7 +984,7 @@ func (ec *executionContext) _Job_description(ctx context.Context, field graphql.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_location(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_location(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -788,20 +1011,20 @@ func (ec *executionContext) _Job_location(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_createdBy(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
 		Object:   "Job",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Job().CreatedBy(rctx, obj)
+		return obj.CreatedBy, nil
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -809,13 +1032,13 @@ func (ec *executionContext) _Job_createdBy(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*dal.User)
+	res := resTmp.(models.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_createdAt(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -842,7 +1065,7 @@ func (ec *executionContext) _Job_createdAt(ctx context.Context, field graphql.Co
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Job_deletedAt(ctx context.Context, field graphql.CollectedField, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Job) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -894,10 +1117,44 @@ func (ec *executionContext) _Mutation_createJob(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*dal.Job)
+	res := resTmp.(*models.Job)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx, field.Selections, res)
+	return ec.marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createIngredient(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createIngredient_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateIngredient(rctx, args["input"].(models.NewIngredient))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Ingredient)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteJob(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -962,10 +1219,10 @@ func (ec *executionContext) _Mutation_createApplication(ctx context.Context, fie
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*dal.Application)
+	res := resTmp.(*models.Application)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNApplication2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx, field.Selections, res)
+	return ec.marshalNApplication2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_jobs(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -989,10 +1246,37 @@ func (ec *executionContext) _Query_jobs(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]dal.Job)
+	res := resTmp.([]models.Job)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx, field.Selections, res)
+	return ec.marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_ingredients(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Ingredients(rctx)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]models.Ingredient)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNIngredient2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_applications(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -1023,10 +1307,10 @@ func (ec *executionContext) _Query_applications(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]dal.Application)
+	res := resTmp.([]models.Application)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNApplication2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx, field.Selections, res)
+	return ec.marshalNApplication2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -1084,7 +1368,7 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *dal.User) graphql.Marshaler {
+func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -1111,7 +1395,7 @@ func (ec *executionContext) _User_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *dal.User) graphql.Marshaler {
+func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -1138,7 +1422,7 @@ func (ec *executionContext) _User_name(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *dal.User) graphql.Marshaler {
+func (ec *executionContext) _User_email(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -2032,6 +2316,30 @@ func (ec *executionContext) unmarshalInputNewApplication(ctx context.Context, v 
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNewIngredient(ctx context.Context, v interface{}) (models.NewIngredient, error) {
+	var it models.NewIngredient
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "name":
+			var err error
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdByID":
+			var err error
+			it.CreatedByID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNewJob(ctx context.Context, v interface{}) (models.NewJob, error) {
 	var it models.NewJob
 	var asMap = v.(map[string]interface{})
@@ -2078,7 +2386,7 @@ func (ec *executionContext) unmarshalInputNewJob(ctx context.Context, v interfac
 
 var applicationImplementors = []string{"Application"}
 
-func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionSet, obj *dal.Application) graphql.Marshaler {
+func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionSet, obj *models.Application) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, applicationImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2108,19 +2416,10 @@ func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionS
 				invalid = true
 			}
 		case "job":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Application_job(ctx, field, obj)
-				if res == graphql.Null {
-					invalid = true
-				}
-				return res
-			})
+			out.Values[i] = ec._Application_job(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "createdAt":
 			out.Values[i] = ec._Application_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -2137,9 +2436,53 @@ func (ec *executionContext) _Application(ctx context.Context, sel ast.SelectionS
 	return out
 }
 
+var ingredientImplementors = []string{"Ingredient"}
+
+func (ec *executionContext) _Ingredient(ctx context.Context, sel ast.SelectionSet, obj *models.Ingredient) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, ingredientImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Ingredient")
+		case "id":
+			out.Values[i] = ec._Ingredient_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "name":
+			out.Values[i] = ec._Ingredient_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdBy":
+			out.Values[i] = ec._Ingredient_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Ingredient_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Ingredient_deletedAt(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
 var jobImplementors = []string{"Job"}
 
-func (ec *executionContext) _Job(ctx context.Context, sel ast.SelectionSet, obj *dal.Job) graphql.Marshaler {
+func (ec *executionContext) _Job(ctx context.Context, sel ast.SelectionSet, obj *models.Job) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, jobImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2169,19 +2512,10 @@ func (ec *executionContext) _Job(ctx context.Context, sel ast.SelectionSet, obj 
 				invalid = true
 			}
 		case "createdBy":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Job_createdBy(ctx, field, obj)
-				if res == graphql.Null {
-					invalid = true
-				}
-				return res
-			})
+			out.Values[i] = ec._Job_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "createdAt":
 			out.Values[i] = ec._Job_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -2217,6 +2551,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = graphql.MarshalString("Mutation")
 		case "createJob":
 			out.Values[i] = ec._Mutation_createJob(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createIngredient":
+			out.Values[i] = ec._Mutation_createIngredient(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -2270,6 +2609,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "ingredients":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_ingredients(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "applications":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -2301,7 +2654,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var userImplementors = []string{"User"}
 
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *dal.User) graphql.Marshaler {
+func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *models.User) graphql.Marshaler {
 	fields := graphql.CollectFields(ctx, sel, userImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2581,11 +2934,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx context.Context, sel ast.SelectionSet, v dal.Application) graphql.Marshaler {
+func (ec *executionContext) marshalNApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx context.Context, sel ast.SelectionSet, v models.Application) graphql.Marshaler {
 	return ec._Application(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNApplication2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx context.Context, sel ast.SelectionSet, v []dal.Application) graphql.Marshaler {
+func (ec *executionContext) marshalNApplication2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx context.Context, sel ast.SelectionSet, v []models.Application) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2609,7 +2962,7 @@ func (ec *executionContext) marshalNApplication2ᚕgithubᚗcomᚋgremlinsapps�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx, sel, v[i])
+			ret[i] = ec.marshalNApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2622,7 +2975,7 @@ func (ec *executionContext) marshalNApplication2ᚕgithubᚗcomᚋgremlinsapps�
 	return ret
 }
 
-func (ec *executionContext) marshalNApplication2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐApplication(ctx context.Context, sel ast.SelectionSet, v *dal.Application) graphql.Marshaler {
+func (ec *executionContext) marshalNApplication2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐApplication(ctx context.Context, sel ast.SelectionSet, v *models.Application) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2648,11 +3001,11 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return graphql.MarshalID(v)
 }
 
-func (ec *executionContext) marshalNJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx context.Context, sel ast.SelectionSet, v dal.Job) graphql.Marshaler {
-	return ec._Job(ctx, sel, &v)
+func (ec *executionContext) marshalNIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx context.Context, sel ast.SelectionSet, v models.Ingredient) graphql.Marshaler {
+	return ec._Ingredient(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx context.Context, sel ast.SelectionSet, v []dal.Job) graphql.Marshaler {
+func (ec *executionContext) marshalNIngredient2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx context.Context, sel ast.SelectionSet, v []models.Ingredient) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2676,7 +3029,7 @@ func (ec *executionContext) marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx, sel, v[i])
+			ret[i] = ec.marshalNIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2689,7 +3042,58 @@ func (ec *executionContext) marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado
 	return ret
 }
 
-func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐJob(ctx context.Context, sel ast.SelectionSet, v *dal.Job) graphql.Marshaler {
+func (ec *executionContext) marshalNIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx context.Context, sel ast.SelectionSet, v *models.Ingredient) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Ingredient(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx context.Context, sel ast.SelectionSet, v models.Job) graphql.Marshaler {
+	return ec._Job(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNJob2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx context.Context, sel ast.SelectionSet, v []models.Job) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐJob(ctx context.Context, sel ast.SelectionSet, v *models.Job) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2701,6 +3105,10 @@ func (ec *executionContext) marshalNJob2ᚖgithubᚗcomᚋgremlinsappsᚋavocado
 
 func (ec *executionContext) unmarshalNNewApplication2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewApplication(ctx context.Context, v interface{}) (models.NewApplication, error) {
 	return ec.unmarshalInputNewApplication(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNNewIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewIngredient(ctx context.Context, v interface{}) (models.NewIngredient, error) {
+	return ec.unmarshalInputNewIngredient(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNNewJob2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewJob(ctx context.Context, v interface{}) (models.NewJob, error) {
@@ -2729,18 +3137,8 @@ func (ec *executionContext) marshalNTimestamp2timeᚐTime(ctx context.Context, s
 	return dal.MarshalTimestamp(v)
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐUser(ctx context.Context, sel ast.SelectionSet, v dal.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUser(ctx context.Context, sel ast.SelectionSet, v models.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚐUser(ctx context.Context, sel ast.SelectionSet, v *dal.User) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._User(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {

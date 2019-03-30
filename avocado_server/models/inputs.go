@@ -2,6 +2,37 @@
 
 package models
 
+import (
+	"time"
+)
+
+type Application struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CvURL     string    `json:"cvURL"`
+	Job       Job       `json:"job"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type Ingredient struct {
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	CreatedBy User       `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+type Job struct {
+	ID          string     `json:"id"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Location    string     `json:"location"`
+	CreatedBy   User       `json:"createdBy"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	DeletedAt   *time.Time `json:"deletedAt"`
+}
+
 type NewApplication struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
@@ -9,9 +40,20 @@ type NewApplication struct {
 	CvURL string `json:"cvURL"`
 }
 
+type NewIngredient struct {
+	Name        string `json:"name"`
+	CreatedByID string `json:"createdByID"`
+}
+
 type NewJob struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
 	CreatedByID string `json:"createdByID"`
+}
+
+type User struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
