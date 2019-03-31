@@ -7,6 +7,7 @@ import (
 )
 
 func AuthHandler(next http.Handler) http.Handler {
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		dbConn := firebase.Connect()
 		header := r.Header.Get("Authorization")

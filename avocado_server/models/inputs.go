@@ -3,22 +3,29 @@
 package models
 
 import (
+	"fmt"
+	"io"
+	"strconv"
 	"time"
 )
-
-type Application struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	CvURL     string    `json:"cvURL"`
-	Job       Job       `json:"job"`
-	CreatedAt time.Time `json:"createdAt"`
-}
 
 type Chat struct {
 	ID        string    `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	Messages  []Message `json:"messages"`
+}
+
+type DeleteIngredient struct {
+	ID string `json:"id"`
+}
+
+type DeleteMessage struct {
+	Chat    string `json:"chat"`
+	Message string `json:"message"`
+}
+
+type DeletePost struct {
+	ID string `json:"id"`
 }
 
 type Ingredient struct {
@@ -29,16 +36,6 @@ type Ingredient struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
-type Job struct {
-	ID          string     `json:"id"`
-	Name        string     `json:"name"`
-	Description string     `json:"description"`
-	Location    string     `json:"location"`
-	CreatedBy   User       `json:"createdBy"`
-	CreatedAt   time.Time  `json:"createdAt"`
-	DeletedAt   *time.Time `json:"deletedAt"`
-}
-
 type Message struct {
 	ID        string     `json:"id"`
 	Message   string     `json:"message"`
@@ -47,22 +44,8 @@ type Message struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
-type NewApplication struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	JobID string `json:"jobID"`
-	CvURL string `json:"cvURL"`
-}
-
 type NewIngredient struct {
 	Name        string `json:"name"`
-	CreatedByID string `json:"createdByID"`
-}
-
-type NewJob struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Location    string `json:"location"`
 	CreatedByID string `json:"createdByID"`
 }
 
@@ -71,9 +54,77 @@ type NewMessage struct {
 	Message string `json:"message"`
 }
 
+type NewPost struct {
+	Text string `json:"text"`
+}
+
+type Post struct {
+	ID   string `json:"id"`
+	Text string `json:"text"`
+}
+
+type Result struct {
+	Status ResultStatus `json:"status"`
+}
+
+type UpdateIngredient struct {
+	ID   string  `json:"id"`
+	Name *string `json:"name"`
+}
+
+type UpdateMessage struct {
+	Message *string `json:"message"`
+}
+
+type UpdatePost struct {
+	ID   string `json:"id"`
+	Text string `json:"text"`
+}
+
 type User struct {
 	ID    string `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	Image string `json:"image"`
+}
+
+type ResultStatus string
+
+const (
+	ResultStatusFailure ResultStatus = "FAILURE"
+	ResultStatusSuccess ResultStatus = "SUCCESS"
+)
+
+var AllResultStatus = []ResultStatus{
+	ResultStatusFailure,
+	ResultStatusSuccess,
+}
+
+func (e ResultStatus) IsValid() bool {
+	switch e {
+	case ResultStatusFailure, ResultStatusSuccess:
+		return true
+	}
+	return false
+}
+
+func (e ResultStatus) String() string {
+	return string(e)
+}
+
+func (e *ResultStatus) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ResultStatus(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ResultStatus", str)
+	}
+	return nil
+}
+
+func (e ResultStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -1,23 +1,36 @@
 
 type Mutation {
     createIngredient(input: NewIngredient!): Ingredient!
+    updateIngredient(input: UpdateIngredient!) : Result
+    deleteIngredient(input: DeleteIngredient!) : Result
+    
     createChat : Chat!
-    createMessage(input: NewMessage!) : Message!
 
-    createJob(input: NewJob!): Job!
-    deleteJob(id: ID!): String!
-    createApplication(input: NewApplication!): Application!
+    createMessage(input: NewMessage!) : Message!
+    updateMessage(input: UpdateMessage!) : Result
+    deleteMessage(input: DeleteMessage!) : Result
+
+    createPost(input: NewPost!): Post!
+    updatePost(input: UpdatePost!) : Result
+    deletePost(input: DeletePost!) : Result
 }
 
 type Query {
-    jobs: [Job!]!
     ingredients: [Ingredient!]!
     chats: [Chat!]!
     chat(chatID:ID!): Chat!
-    applications(jobID: ID!): [Application!]!
 }
 
 scalar Timestamp
+
+type Result {
+    status:ResultStatus!
+}
+
+enum ResultStatus {
+    FAILURE,
+    SUCCESS
+}
 
 type Ingredient {
     id: ID!
@@ -32,10 +45,37 @@ input NewIngredient {
     createdByID: String!
 }
 
+input UpdateIngredient {
+    id: String!
+    name: String
+}
+
+input DeleteIngredient {
+    id: String!
+}
+
 type Chat {
     id: ID!
     createdAt:Timestamp!
-    messages:[Message!]!
+    messages(first:Int, after:String):[Message!]!
+}
+
+type Post {
+    id: ID!
+    text: String!
+}
+
+input NewPost {
+    text: String!
+}
+
+input UpdatePost {
+    id:String!
+    text: String!
+}
+
+input DeletePost {
+    id:String!
 }
 
 
@@ -47,7 +87,16 @@ type Message {
     deletedAt: Timestamp
 }
 
+input UpdateMessage {
+    message: String
+}
+
 input NewMessage {
+    chat: String!
+    message: String!
+}
+
+input DeleteMessage {
     chat: String!
     message: String!
 }
@@ -57,66 +106,6 @@ type User {
     name: String!
     email: String!
     image: String!
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-type Job {
-    id: ID!
-    name: String!
-    description: String!
-    location: String!
-    createdBy: User!
-    createdAt: Timestamp!
-    deletedAt: Timestamp
-}
-
-
-type Application {
-    id: ID!
-    name: String!
-    email: String!
-    cvURL: String!
-    job: Job!
-    createdAt: Timestamp!
-}
-
-input NewJob {
-    name: String!
-    description: String!
-    location: String!
-    createdByID: String!
-}
-
-input NewApplication {
-    name: String!
-    email:  String!
-    jobID: String!
-    cvURL: String!
 }
 
 
