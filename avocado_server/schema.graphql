@@ -1,3 +1,90 @@
+
+type Mutation {
+    createIngredient(input: NewIngredient!): Ingredient!
+    createChat : Chat!
+    createMessage(input: NewMessage!) : Message!
+
+    createJob(input: NewJob!): Job!
+    deleteJob(id: ID!): String!
+    createApplication(input: NewApplication!): Application!
+}
+
+type Query {
+    jobs: [Job!]!
+    ingredients: [Ingredient!]!
+    chats: [Chat!]!
+    chat(chatID:ID!): Chat!
+    applications(jobID: ID!): [Application!]!
+}
+
+scalar Timestamp
+
+type Ingredient {
+    id: ID!
+    name: String!
+    createdBy: String!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewIngredient {
+    name: String!
+    createdByID: String!
+}
+
+type Chat {
+    id: ID!
+    createdAt:Timestamp!
+    messages:[Message!]!
+}
+
+
+type Message {
+    id: ID!
+    message: String!
+    createdBy: String!
+    createAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewMessage {
+    chat: String!
+    message: String!
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    image: String!
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 type Job {
     id: ID!
     name: String!
@@ -8,20 +95,6 @@ type Job {
     deletedAt: Timestamp
 }
 
-
-type Ingredient {
-    id: ID!
-    name: String!
-    createdBy: User!
-    createdAt: Timestamp!
-    deletedAt: Timestamp
-}
-
-type User {
-    id: ID!
-    name: String!
-    email: String!
-}
 
 type Application {
     id: ID!
@@ -48,23 +121,4 @@ input NewApplication {
 
 
 
-input NewIngredient {
-    name: String!
-    createdByID: String!
-}
 
-type Mutation {
-    createJob(input: NewJob!): Job!
-    createIngredient(input: NewIngredient!): Ingredient!
-    deleteJob(id: ID!): String!
-    createApplication(input: NewApplication!): Application!
-}
-
-type Query {
-    jobs: [Job!]!
-    ingredients: [Ingredient!]!
-    applications(jobID: ID!): [Application!]!
-}
-
-
-scalar Timestamp

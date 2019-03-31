@@ -26,6 +26,35 @@ func (r *Resolver) Query() graph.QueryResolver {
 // Mutations
 type mutationResolver struct{ *Resolver }
 
+func (r *mutationResolver) CreateChat(ctx context.Context) (*models.Chat, error) {
+	return &models.Chat{
+		ID: "ddd",
+		Messages: []models.Message{{
+			ID:        "dd",
+			Message:   "222",
+			CreatedBy: "fr",
+			CreateAt:  time.Now().UTC(),
+		},
+			{
+				ID:        "dd1",
+				Message:   "333",
+				CreatedBy: "fr",
+				CreateAt:  time.Now().UTC(),
+			},
+		},
+		CreatedAt: time.Now().UTC(),
+	}, nil
+}
+
+func (r *mutationResolver) CreateMessage(ctx context.Context, input models.NewMessage) (*models.Message, error) {
+	return &models.Message{
+		ID:        "dd",
+		Message:   input.Message,
+		CreatedBy: "ddd",
+		CreateAt:  time.Now().UTC(),
+	}, nil
+}
+
 func (r *mutationResolver) CreateIngredient(ctx context.Context, input models.NewIngredient) (*models.Ingredient, error) {
 	ingredientRepository, err := dal.NewIngredientFirebaseRepository(r.db.Conn, r.db.Context)
 	if err != nil {
@@ -39,11 +68,10 @@ func (r *mutationResolver) CreateIngredient(ctx context.Context, input models.Ne
 		return &models.Ingredient{}, err
 	}
 
-	// Create job object from request
 	ingredient := models.Ingredient{
 		ID:        ingredientID,
 		Name:      input.Name,
-		CreatedBy: models.User{Name: input.CreatedByID},
+		CreatedBy: input.CreatedByID,
 		CreatedAt: time.Now().UTC(),
 	}
 
@@ -95,6 +123,47 @@ func (r *mutationResolver) CreateApplication(ctx context.Context, input models.N
 
 // Queries
 type queryResolver struct{ *Resolver }
+
+func (r *queryResolver) Chats(ctx context.Context) ([]models.Chat, error) {
+	return []models.Chat{{
+		ID: "ddd",
+		Messages: []models.Message{{
+			ID:        "dd",
+			Message:   "222",
+			CreatedBy: "fr",
+			CreateAt:  time.Now().UTC(),
+		},
+			{
+				ID:        "dd1",
+				Message:   "333",
+				CreatedBy: "fr",
+				CreateAt:  time.Now().UTC(),
+			},
+		},
+		CreatedAt: time.Now().UTC(),
+	},
+	}, nil
+}
+
+func (r *queryResolver) Chat(ctx context.Context, chatID string) (*models.Chat, error) {
+	return &models.Chat{
+		ID: "ddd",
+		Messages: []models.Message{{
+			ID:        "dd",
+			Message:   "222",
+			CreatedBy: "fr",
+			CreateAt:  time.Now().UTC(),
+		},
+			{
+				ID:        "dd1",
+				Message:   "333",
+				CreatedBy: "fr",
+				CreateAt:  time.Now().UTC(),
+			},
+		},
+		CreatedAt: time.Now().UTC(),
+	}, nil
+}
 
 func (r *queryResolver) Ingredients(ctx context.Context) ([]models.Ingredient, error) {
 	var allIngredients []models.Ingredient

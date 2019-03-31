@@ -15,10 +15,16 @@ type Application struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+type Chat struct {
+	ID        string    `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	Messages  []Message `json:"messages"`
+}
+
 type Ingredient struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
-	CreatedBy User       `json:"createdBy"`
+	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }
@@ -31,6 +37,14 @@ type Job struct {
 	CreatedBy   User       `json:"createdBy"`
 	CreatedAt   time.Time  `json:"createdAt"`
 	DeletedAt   *time.Time `json:"deletedAt"`
+}
+
+type Message struct {
+	ID        string     `json:"id"`
+	Message   string     `json:"message"`
+	CreatedBy string     `json:"createdBy"`
+	CreateAt  time.Time  `json:"createAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type NewApplication struct {
@@ -52,8 +66,14 @@ type NewJob struct {
 	CreatedByID string `json:"createdByID"`
 }
 
+type NewMessage struct {
+	Chat    string `json:"chat"`
+	Message string `json:"message"`
+}
+
 type User struct {
 	ID    string `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
+	Image string `json:"image"`
 }
