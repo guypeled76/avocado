@@ -1,0 +1,33 @@
+
+extend type Mutation {
+    createWaterfall(input: NewWaterfall!): Waterfall!
+    updateWaterfall(input: UpdateWaterfall!) : Result
+    deleteWaterfall(input: DeleteWaterfall!) : Result
+}
+
+extend type Query {
+    waterfallByUserId(waterfallId:ID!): Waterfall!
+}
+
+type Waterfall {
+    id: ID!
+    text: String!
+    createdBy: String!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input UpdateWaterfall {
+    id:String!
+    text: String!
+}
+
+input DeleteWaterfall {
+    id:String!
+}
+
+
+input NewWaterfall {
+    text: String!
+}
+

@@ -1,0 +1,26 @@
+
+type Mutation {
+    logon: Result
+}
+
+type Query {
+    currentUser: User!
+}
+
+scalar Timestamp
+
+type Result {
+    status:ResultStatus!
+}
+
+enum ResultStatus {
+    FAILURE,
+    SUCCESS
+}
+
+
+
+
+
+
+

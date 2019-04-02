@@ -1,0 +1,43 @@
+
+
+extend type Mutation {
+    createChat : Chat!
+
+    createMessage(input: NewMessage!) : Message!
+    updateMessage(input: UpdateMessage!) : Result
+    deleteMessage(input: DeleteMessage!) : Result
+}
+
+extend type Query {
+    chatsByUserId(userID:ID!): [Chat!]!
+    chatById(chatID:ID!): Chat!
+}
+
+
+type Chat {
+    id: ID!
+    createdAt:Timestamp!
+    messages(first:Int, after:String):[Message!]!
+}
+
+type Message {
+    id: ID!
+    message: String!
+    createdBy: String!
+    createAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input UpdateMessage {
+    message: String
+}
+
+input NewMessage {
+    chat: String!
+    message: String!
+}
+
+input DeleteMessage {
+    chat: String!
+    message: String!
+}

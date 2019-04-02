@@ -1,0 +1,34 @@
+
+
+extend type Mutation {
+    createIngredient(input: NewIngredient!): Ingredient!
+    updateIngredient(input: UpdateIngredient!) : Result
+    deleteIngredient(input: DeleteIngredient!) : Result
+}
+
+extend type Query {
+    ingredients: [Ingredient!]!
+}
+
+
+type Ingredient {
+    id: ID!
+    name: String!
+    createdBy: String!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewIngredient {
+    name: String!
+    createdByID: String!
+}
+
+input UpdateIngredient {
+    id: String!
+    name: String
+}
+
+input DeleteIngredient {
+    id: String!
+}

@@ -1,0 +1,9 @@
+
+
+extend type Query {
+    clinicById(clinicID:ID!): Clinic!
+}
+
+type Clinic {
+    id: ID!
+}

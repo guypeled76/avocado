@@ -1,0 +1,10 @@
+
+extend type Query {
+    notificationsByUserId(userID:ID!): [Notification!]!
+}
+
+type Notification {
+    id: ID!
+    text: String!
+    reference: Reference!
+}

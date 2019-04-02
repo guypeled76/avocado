@@ -1,0 +1,28 @@
+
+extend type Mutation {
+    createPost(input: NewPost!): Post!
+    updatePost(input: UpdatePost!) : Result
+    deletePost(input: DeletePost!) : Result
+}
+
+extend type Query {
+    postsByUserId(userId:ID!): [Post!]!
+}
+
+type Post {
+    id: ID!
+    text: String!
+}
+
+input NewPost {
+    text: String!
+}
+
+input UpdatePost {
+    id:String!
+    text: String!
+}
+
+input DeletePost {
+    id:String!
+}

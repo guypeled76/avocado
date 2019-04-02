@@ -15,6 +15,10 @@ type Chat struct {
 	Messages  []Message `json:"messages"`
 }
 
+type Clinic struct {
+	ID string `json:"id"`
+}
+
 type DeleteIngredient struct {
 	ID string `json:"id"`
 }
@@ -25,6 +29,10 @@ type DeleteMessage struct {
 }
 
 type DeletePost struct {
+	ID string `json:"id"`
+}
+
+type DeleteWaterfall struct {
 	ID string `json:"id"`
 }
 
@@ -58,9 +66,28 @@ type NewPost struct {
 	Text string `json:"text"`
 }
 
+type NewWaterfall struct {
+	Text string `json:"text"`
+}
+
+type Notification struct {
+	ID        string    `json:"id"`
+	Text      string    `json:"text"`
+	Reference Reference `json:"reference"`
+}
+
 type Post struct {
 	ID   string `json:"id"`
 	Text string `json:"text"`
+}
+
+type Profile struct {
+	ID string `json:"id"`
+}
+
+type Reference struct {
+	ID   string        `json:"id"`
+	Type ReferenceType `json:"type"`
 }
 
 type Result struct {
@@ -81,11 +108,67 @@ type UpdatePost struct {
 	Text string `json:"text"`
 }
 
+type UpdateWaterfall struct {
+	ID   string `json:"id"`
+	Text string `json:"text"`
+}
+
 type User struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Image string `json:"image"`
+	ID            string         `json:"id"`
+	Name          string         `json:"name"`
+	Email         string         `json:"email"`
+	Image         string         `json:"image"`
+	Notifications []Notification `json:"notifications"`
+	Profile       Profile        `json:"profile"`
+}
+
+type Waterfall struct {
+	ID        string     `json:"id"`
+	Text      string     `json:"text"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+type ReferenceType string
+
+const (
+	ReferenceTypePost    ReferenceType = "POST"
+	ReferenceTypeMessage ReferenceType = "MESSAGE"
+)
+
+var AllReferenceType = []ReferenceType{
+	ReferenceTypePost,
+	ReferenceTypeMessage,
+}
+
+func (e ReferenceType) IsValid() bool {
+	switch e {
+	case ReferenceTypePost, ReferenceTypeMessage:
+		return true
+	}
+	return false
+}
+
+func (e ReferenceType) String() string {
+	return string(e)
+}
+
+func (e *ReferenceType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ReferenceType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ReferenceType", str)
+	}
+	return nil
+}
+
+func (e ReferenceType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type ResultStatus string
