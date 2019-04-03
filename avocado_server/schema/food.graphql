@@ -4,12 +4,71 @@ extend type Mutation {
     createIngredient(input: NewIngredient!): Ingredient!
     updateIngredient(input: UpdateIngredient!) : Result
     deleteIngredient(input: DeleteIngredient!) : Result
+
+    createRecipe(input: NewRecipe!): Recipe!
+    updateRecipe(input: UpdateRecipe!) : Result
+    deleteRecipe(input: DeleteRecipe!) : Result
+
+    createMeal(input: NewMeal!): Meal!
+    updateMeal(input: UpdateMeal!) : Result
+    deleteMeal(input: DeleteMeal!) : Result
 }
 
 extend type Query {
     ingredients: [Ingredient!]!
+    meals:[Meal!]!
+    recipes:[Recipe!]!
 }
 
+type Meal {
+    id: ID!
+    name: String!
+    hashtags:[String!]!
+    recipes:[Recipe!]!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewMeal {
+    name: String!
+    hashtags:[String!]!
+}
+
+input UpdateMeal {
+    id: String!
+    name: String
+    hashtags:[String!]!
+}
+
+input DeleteMeal {
+    id: String!
+}
+
+type Recipe {
+    id: ID!
+    name: String!
+    hashtags:[String!]!
+    ingredients:[Ingredient!]!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewRecipe {
+    name: String!
+    hashtags:[String!]!
+}
+
+input UpdateRecipe {
+    id: String!
+    name: String
+    hashtags:[String!]!
+}
+
+input DeleteRecipe {
+    id: String!
+}
 
 type Ingredient {
     id: ID!
@@ -19,6 +78,8 @@ type Ingredient {
     createdAt: Timestamp!
     deletedAt: Timestamp
 }
+
+
 
 input NewIngredient {
     name: String!

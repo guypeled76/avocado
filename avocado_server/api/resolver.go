@@ -24,12 +24,12 @@ func (r *Resolver) Query() graph.QueryResolver {
 // Mutations
 type mutationResolver struct{ *Resolver }
 
+// Queries
+type queryResolver struct{ *Resolver }
+
 func (r *mutationResolver) Logon(ctx context.Context) (*models.Result, error) {
 	panic("implement me")
 }
-
-// Queries
-type queryResolver struct{ *Resolver }
 
 func NewRootResolvers() graph.Config {
 	resolver := Resolver{}

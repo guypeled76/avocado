@@ -31,12 +31,20 @@ type DeleteIngredient struct {
 	ID string `json:"id"`
 }
 
+type DeleteMeal struct {
+	ID string `json:"id"`
+}
+
 type DeleteMessage struct {
 	Chat    string `json:"chat"`
 	Message string `json:"message"`
 }
 
 type DeletePost struct {
+	ID string `json:"id"`
+}
+
+type DeleteRecipe struct {
 	ID string `json:"id"`
 }
 
@@ -66,6 +74,16 @@ type Ingredient struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
+type Meal struct {
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	Hashtags  []string   `json:"hashtags"`
+	Recipes   []Recipe   `json:"recipes"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
 type Message struct {
 	ID        string     `json:"id"`
 	Message   string     `json:"message"`
@@ -84,6 +102,11 @@ type NewIngredient struct {
 	Hashtags []string `json:"hashtags"`
 }
 
+type NewMeal struct {
+	Name     string   `json:"name"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type NewMessage struct {
 	Chat    string `json:"chat"`
 	Message string `json:"message"`
@@ -91,6 +114,11 @@ type NewMessage struct {
 
 type NewPost struct {
 	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type NewRecipe struct {
+	Name     string   `json:"name"`
 	Hashtags []string `json:"hashtags"`
 }
 
@@ -127,6 +155,16 @@ type Profile struct {
 	ID string `json:"id"`
 }
 
+type Recipe struct {
+	ID          string       `json:"id"`
+	Name        string       `json:"name"`
+	Hashtags    []string     `json:"hashtags"`
+	Ingredients []Ingredient `json:"ingredients"`
+	CreatedBy   string       `json:"createdBy"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	DeletedAt   *time.Time   `json:"deletedAt"`
+}
+
 type Reference struct {
 	ID   string        `json:"id"`
 	Type ReferenceType `json:"type"`
@@ -153,6 +191,12 @@ type UpdateIngredient struct {
 	Hashtags []string `json:"hashtags"`
 }
 
+type UpdateMeal struct {
+	ID       string   `json:"id"`
+	Name     *string  `json:"name"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type UpdateMessage struct {
 	Message *string `json:"message"`
 }
@@ -160,6 +204,12 @@ type UpdateMessage struct {
 type UpdatePost struct {
 	ID       string   `json:"id"`
 	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type UpdateRecipe struct {
+	ID       string   `json:"id"`
+	Name     *string  `json:"name"`
 	Hashtags []string `json:"hashtags"`
 }
 
