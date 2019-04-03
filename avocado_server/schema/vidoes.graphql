@@ -1,0 +1,41 @@
+extend type Mutation {
+    createVideo(input: NewVideo!): Video!
+    updateVideo(input: UpdateVideo!) : Result
+    updateVideoHashTags(input: UpdateVideoHashTags!) : Result
+    deleteVideo(input: DeleteVideo!) : Result
+}
+
+extend type Query {
+    videosByHashTags(hashTags:[String!]!): [Video!]!
+    videoById(id:ID!) : Video!
+}
+
+type Video {
+    id: ID!
+    hashtags:[String!]!
+    video: String!
+}
+
+input NewVideo {
+    video: String!
+    hashtags:[String!]!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input UpdateVideo {
+    id:String!
+    video: String!
+    hashtags:[String!]!
+}
+
+input UpdateVideoHashTags {
+    id:String!
+    hashtags:[String!]!
+}
+
+
+input DeleteVideo {
+    id:String!
+}

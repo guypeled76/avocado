@@ -16,6 +16,14 @@ type Chat struct {
 }
 
 type Clinic struct {
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+type DeleteImage struct {
 	ID string `json:"id"`
 }
 
@@ -32,13 +40,27 @@ type DeletePost struct {
 	ID string `json:"id"`
 }
 
+type DeleteVideo struct {
+	ID string `json:"id"`
+}
+
 type DeleteWaterfall struct {
 	ID string `json:"id"`
+}
+
+type Image struct {
+	ID        string     `json:"id"`
+	Hashtags  []string   `json:"hashtags"`
+	Image     string     `json:"image"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Ingredient struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
+	Hashtags  []string   `json:"hashtags"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
@@ -52,9 +74,14 @@ type Message struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
+type NewImage struct {
+	Image    string   `json:"image"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type NewIngredient struct {
-	Name        string `json:"name"`
-	CreatedByID string `json:"createdByID"`
+	Name     string   `json:"name"`
+	Hashtags []string `json:"hashtags"`
 }
 
 type NewMessage struct {
@@ -63,11 +90,21 @@ type NewMessage struct {
 }
 
 type NewPost struct {
-	Text string `json:"text"`
+	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type NewVideo struct {
+	Video     string     `json:"video"`
+	Hashtags  []string   `json:"hashtags"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type NewWaterfall struct {
-	Text string `json:"text"`
+	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
 }
 
 type Notification struct {
@@ -77,8 +114,13 @@ type Notification struct {
 }
 
 type Post struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	ID        string     `json:"id"`
+	Text      string     `json:"text"`
+	Hashtags  []string   `json:"hashtags"`
+	Chat      Chat       `json:"chat"`
+	CreatedBy string     `json:"createdBy"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Profile struct {
@@ -94,9 +136,21 @@ type Result struct {
 	Status ResultStatus `json:"status"`
 }
 
+type UpdateImage struct {
+	ID       string   `json:"id"`
+	Image    string   `json:"image"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type UpdateImageHashTags struct {
+	ID       string   `json:"id"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type UpdateIngredient struct {
-	ID   string  `json:"id"`
-	Name *string `json:"name"`
+	ID       string   `json:"id"`
+	Name     *string  `json:"name"`
+	Hashtags []string `json:"hashtags"`
 }
 
 type UpdateMessage struct {
@@ -104,13 +158,26 @@ type UpdateMessage struct {
 }
 
 type UpdatePost struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	ID       string   `json:"id"`
+	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type UpdateVideo struct {
+	ID       string   `json:"id"`
+	Video    string   `json:"video"`
+	Hashtags []string `json:"hashtags"`
+}
+
+type UpdateVideoHashTags struct {
+	ID       string   `json:"id"`
+	Hashtags []string `json:"hashtags"`
 }
 
 type UpdateWaterfall struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
+	ID       string   `json:"id"`
+	Text     string   `json:"text"`
+	Hashtags []string `json:"hashtags"`
 }
 
 type User struct {
@@ -118,13 +185,21 @@ type User struct {
 	Name          string         `json:"name"`
 	Email         string         `json:"email"`
 	Image         string         `json:"image"`
+	Hashtags      []string       `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
 	Profile       Profile        `json:"profile"`
+}
+
+type Video struct {
+	ID       string   `json:"id"`
+	Hashtags []string `json:"hashtags"`
+	Video    string   `json:"video"`
 }
 
 type Waterfall struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
+	Hashtags  []string   `json:"hashtags"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`

@@ -9,6 +9,7 @@ type User {
     name: String!
     email: String!
     image: String!
+    hashtags:[String!]!
     notifications: [Notification!]!
     profile: Profile!
 }

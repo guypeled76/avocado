@@ -36,7 +36,6 @@ func (r *mutationResolver) CreateIngredient(ctx context.Context, input models.Ne
 	ingredient := models.Ingredient{
 		ID:        ingredientID,
 		Name:      input.Name,
-		CreatedBy: input.CreatedByID,
 		CreatedAt: time.Now().UTC(),
 	}
 

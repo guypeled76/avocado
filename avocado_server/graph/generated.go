@@ -51,13 +51,27 @@ type ComplexityRoot struct {
 	}
 
 	Clinic struct {
-		ID func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+	}
+
+	Image struct {
+		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		Hashtags  func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Image     func(childComplexity int) int
 	}
 
 	Ingredient struct {
 		CreatedAt func(childComplexity int) int
 		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		Hashtags  func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 	}
@@ -71,20 +85,28 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateChat       func(childComplexity int) int
-		CreateIngredient func(childComplexity int, input models.NewIngredient) int
-		CreateMessage    func(childComplexity int, input models.NewMessage) int
-		CreatePost       func(childComplexity int, input models.NewPost) int
-		CreateWaterfall  func(childComplexity int, input models.NewWaterfall) int
-		DeleteIngredient func(childComplexity int, input models.DeleteIngredient) int
-		DeleteMessage    func(childComplexity int, input models.DeleteMessage) int
-		DeletePost       func(childComplexity int, input models.DeletePost) int
-		DeleteWaterfall  func(childComplexity int, input models.DeleteWaterfall) int
-		Logon            func(childComplexity int) int
-		UpdateIngredient func(childComplexity int, input models.UpdateIngredient) int
-		UpdateMessage    func(childComplexity int, input models.UpdateMessage) int
-		UpdatePost       func(childComplexity int, input models.UpdatePost) int
-		UpdateWaterfall  func(childComplexity int, input models.UpdateWaterfall) int
+		CreateChat          func(childComplexity int) int
+		CreateImage         func(childComplexity int, input models.NewImage) int
+		CreateIngredient    func(childComplexity int, input models.NewIngredient) int
+		CreateMessage       func(childComplexity int, input models.NewMessage) int
+		CreatePost          func(childComplexity int, input models.NewPost) int
+		CreateVideo         func(childComplexity int, input models.NewVideo) int
+		CreateWaterfall     func(childComplexity int, input models.NewWaterfall) int
+		DeleteImage         func(childComplexity int, input models.DeleteImage) int
+		DeleteIngredient    func(childComplexity int, input models.DeleteIngredient) int
+		DeleteMessage       func(childComplexity int, input models.DeleteMessage) int
+		DeletePost          func(childComplexity int, input models.DeletePost) int
+		DeleteVideo         func(childComplexity int, input models.DeleteVideo) int
+		DeleteWaterfall     func(childComplexity int, input models.DeleteWaterfall) int
+		Logon               func(childComplexity int) int
+		UpdateImage         func(childComplexity int, input models.UpdateImage) int
+		UpdateImageHashTags func(childComplexity int, input models.UpdateImageHashTags) int
+		UpdateIngredient    func(childComplexity int, input models.UpdateIngredient) int
+		UpdateMessage       func(childComplexity int, input models.UpdateMessage) int
+		UpdatePost          func(childComplexity int, input models.UpdatePost) int
+		UpdateVideo         func(childComplexity int, input models.UpdateVideo) int
+		UpdateVideoHashTags func(childComplexity int, input models.UpdateVideoHashTags) int
+		UpdateWaterfall     func(childComplexity int, input models.UpdateWaterfall) int
 	}
 
 	Notification struct {
@@ -94,8 +116,13 @@ type ComplexityRoot struct {
 	}
 
 	Post struct {
-		ID   func(childComplexity int) int
-		Text func(childComplexity int) int
+		Chat      func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		Hashtags  func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Text      func(childComplexity int) int
 	}
 
 	Profile struct {
@@ -106,11 +133,16 @@ type ComplexityRoot struct {
 		ChatByID              func(childComplexity int, chatID string) int
 		ChatsByUserID         func(childComplexity int, userID string) int
 		ClinicByID            func(childComplexity int, clinicID string) int
+		Clinics               func(childComplexity int) int
 		CurrentUser           func(childComplexity int) int
+		ImageByID             func(childComplexity int, id string) int
+		ImagesByHashTags      func(childComplexity int, hashTags []string) int
 		Ingredients           func(childComplexity int) int
 		NotificationsByUserID func(childComplexity int, userID string) int
 		PostsByUserID         func(childComplexity int, userID string) int
 		UserByID              func(childComplexity int, userID string) int
+		VideoByID             func(childComplexity int, id string) int
+		VideosByHashTags      func(childComplexity int, hashTags []string) int
 		WaterfallByUserID     func(childComplexity int, waterfallID string) int
 	}
 
@@ -125,6 +157,7 @@ type ComplexityRoot struct {
 
 	User struct {
 		Email         func(childComplexity int) int
+		Hashtags      func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Image         func(childComplexity int) int
 		Name          func(childComplexity int) int
@@ -132,10 +165,17 @@ type ComplexityRoot struct {
 		Profile       func(childComplexity int) int
 	}
 
+	Video struct {
+		Hashtags func(childComplexity int) int
+		ID       func(childComplexity int) int
+		Video    func(childComplexity int) int
+	}
+
 	Waterfall struct {
 		CreatedAt func(childComplexity int) int
 		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		Hashtags  func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Text      func(childComplexity int) int
 	}
@@ -150,9 +190,17 @@ type MutationResolver interface {
 	CreateIngredient(ctx context.Context, input models.NewIngredient) (*models.Ingredient, error)
 	UpdateIngredient(ctx context.Context, input models.UpdateIngredient) (*models.Result, error)
 	DeleteIngredient(ctx context.Context, input models.DeleteIngredient) (*models.Result, error)
+	CreateImage(ctx context.Context, input models.NewImage) (*models.Image, error)
+	UpdateImage(ctx context.Context, input models.UpdateImage) (*models.Result, error)
+	UpdateImageHashTags(ctx context.Context, input models.UpdateImageHashTags) (*models.Result, error)
+	DeleteImage(ctx context.Context, input models.DeleteImage) (*models.Result, error)
 	CreatePost(ctx context.Context, input models.NewPost) (*models.Post, error)
 	UpdatePost(ctx context.Context, input models.UpdatePost) (*models.Result, error)
 	DeletePost(ctx context.Context, input models.DeletePost) (*models.Result, error)
+	CreateVideo(ctx context.Context, input models.NewVideo) (*models.Video, error)
+	UpdateVideo(ctx context.Context, input models.UpdateVideo) (*models.Result, error)
+	UpdateVideoHashTags(ctx context.Context, input models.UpdateVideoHashTags) (*models.Result, error)
+	DeleteVideo(ctx context.Context, input models.DeleteVideo) (*models.Result, error)
 	CreateWaterfall(ctx context.Context, input models.NewWaterfall) (*models.Waterfall, error)
 	UpdateWaterfall(ctx context.Context, input models.UpdateWaterfall) (*models.Result, error)
 	DeleteWaterfall(ctx context.Context, input models.DeleteWaterfall) (*models.Result, error)
@@ -162,10 +210,15 @@ type QueryResolver interface {
 	ChatsByUserID(ctx context.Context, userID string) ([]models.Chat, error)
 	ChatByID(ctx context.Context, chatID string) (*models.Chat, error)
 	ClinicByID(ctx context.Context, clinicID string) (*models.Clinic, error)
+	Clinics(ctx context.Context) ([]models.Clinic, error)
 	Ingredients(ctx context.Context) ([]models.Ingredient, error)
+	ImagesByHashTags(ctx context.Context, hashTags []string) ([]models.Image, error)
+	ImageByID(ctx context.Context, id string) (*models.Image, error)
 	NotificationsByUserID(ctx context.Context, userID string) ([]models.Notification, error)
 	PostsByUserID(ctx context.Context, userID string) ([]models.Post, error)
 	UserByID(ctx context.Context, userID string) (*models.User, error)
+	VideosByHashTags(ctx context.Context, hashTags []string) ([]models.Video, error)
+	VideoByID(ctx context.Context, id string) (*models.Video, error)
 	WaterfallByUserID(ctx context.Context, waterfallID string) (*models.Waterfall, error)
 }
 
@@ -210,12 +263,82 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Chat.Messages(childComplexity, args["first"].(*int), args["after"].(*string)), true
 
+	case "Clinic.CreatedAt":
+		if e.complexity.Clinic.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Clinic.CreatedAt(childComplexity), true
+
+	case "Clinic.CreatedBy":
+		if e.complexity.Clinic.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Clinic.CreatedBy(childComplexity), true
+
+	case "Clinic.DeletedAt":
+		if e.complexity.Clinic.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Clinic.DeletedAt(childComplexity), true
+
 	case "Clinic.ID":
 		if e.complexity.Clinic.ID == nil {
 			break
 		}
 
 		return e.complexity.Clinic.ID(childComplexity), true
+
+	case "Clinic.Name":
+		if e.complexity.Clinic.Name == nil {
+			break
+		}
+
+		return e.complexity.Clinic.Name(childComplexity), true
+
+	case "Image.CreatedAt":
+		if e.complexity.Image.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Image.CreatedAt(childComplexity), true
+
+	case "Image.CreatedBy":
+		if e.complexity.Image.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Image.CreatedBy(childComplexity), true
+
+	case "Image.DeletedAt":
+		if e.complexity.Image.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Image.DeletedAt(childComplexity), true
+
+	case "Image.Hashtags":
+		if e.complexity.Image.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Image.Hashtags(childComplexity), true
+
+	case "Image.ID":
+		if e.complexity.Image.ID == nil {
+			break
+		}
+
+		return e.complexity.Image.ID(childComplexity), true
+
+	case "Image.Image":
+		if e.complexity.Image.Image == nil {
+			break
+		}
+
+		return e.complexity.Image.Image(childComplexity), true
 
 	case "Ingredient.CreatedAt":
 		if e.complexity.Ingredient.CreatedAt == nil {
@@ -237,6 +360,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Ingredient.DeletedAt(childComplexity), true
+
+	case "Ingredient.Hashtags":
+		if e.complexity.Ingredient.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.Hashtags(childComplexity), true
 
 	case "Ingredient.ID":
 		if e.complexity.Ingredient.ID == nil {
@@ -294,6 +424,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateChat(childComplexity), true
 
+	case "Mutation.CreateImage":
+		if e.complexity.Mutation.CreateImage == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createImage_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateImage(childComplexity, args["input"].(models.NewImage)), true
+
 	case "Mutation.CreateIngredient":
 		if e.complexity.Mutation.CreateIngredient == nil {
 			break
@@ -330,6 +472,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreatePost(childComplexity, args["input"].(models.NewPost)), true
 
+	case "Mutation.CreateVideo":
+		if e.complexity.Mutation.CreateVideo == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createVideo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateVideo(childComplexity, args["input"].(models.NewVideo)), true
+
 	case "Mutation.CreateWaterfall":
 		if e.complexity.Mutation.CreateWaterfall == nil {
 			break
@@ -341,6 +495,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateWaterfall(childComplexity, args["input"].(models.NewWaterfall)), true
+
+	case "Mutation.DeleteImage":
+		if e.complexity.Mutation.DeleteImage == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteImage_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteImage(childComplexity, args["input"].(models.DeleteImage)), true
 
 	case "Mutation.DeleteIngredient":
 		if e.complexity.Mutation.DeleteIngredient == nil {
@@ -378,6 +544,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeletePost(childComplexity, args["input"].(models.DeletePost)), true
 
+	case "Mutation.DeleteVideo":
+		if e.complexity.Mutation.DeleteVideo == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteVideo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteVideo(childComplexity, args["input"].(models.DeleteVideo)), true
+
 	case "Mutation.DeleteWaterfall":
 		if e.complexity.Mutation.DeleteWaterfall == nil {
 			break
@@ -396,6 +574,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.Logon(childComplexity), true
+
+	case "Mutation.UpdateImage":
+		if e.complexity.Mutation.UpdateImage == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateImage_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateImage(childComplexity, args["input"].(models.UpdateImage)), true
+
+	case "Mutation.UpdateImageHashTags":
+		if e.complexity.Mutation.UpdateImageHashTags == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateImageHashTags_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateImageHashTags(childComplexity, args["input"].(models.UpdateImageHashTags)), true
 
 	case "Mutation.UpdateIngredient":
 		if e.complexity.Mutation.UpdateIngredient == nil {
@@ -433,6 +635,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdatePost(childComplexity, args["input"].(models.UpdatePost)), true
 
+	case "Mutation.UpdateVideo":
+		if e.complexity.Mutation.UpdateVideo == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateVideo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateVideo(childComplexity, args["input"].(models.UpdateVideo)), true
+
+	case "Mutation.UpdateVideoHashTags":
+		if e.complexity.Mutation.UpdateVideoHashTags == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateVideoHashTags_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateVideoHashTags(childComplexity, args["input"].(models.UpdateVideoHashTags)), true
+
 	case "Mutation.UpdateWaterfall":
 		if e.complexity.Mutation.UpdateWaterfall == nil {
 			break
@@ -465,6 +691,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Notification.Text(childComplexity), true
+
+	case "Post.Chat":
+		if e.complexity.Post.Chat == nil {
+			break
+		}
+
+		return e.complexity.Post.Chat(childComplexity), true
+
+	case "Post.CreatedAt":
+		if e.complexity.Post.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Post.CreatedAt(childComplexity), true
+
+	case "Post.CreatedBy":
+		if e.complexity.Post.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Post.CreatedBy(childComplexity), true
+
+	case "Post.DeletedAt":
+		if e.complexity.Post.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Post.DeletedAt(childComplexity), true
+
+	case "Post.Hashtags":
+		if e.complexity.Post.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Post.Hashtags(childComplexity), true
 
 	case "Post.ID":
 		if e.complexity.Post.ID == nil {
@@ -523,12 +784,43 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.ClinicByID(childComplexity, args["clinicID"].(string)), true
 
+	case "Query.Clinics":
+		if e.complexity.Query.Clinics == nil {
+			break
+		}
+
+		return e.complexity.Query.Clinics(childComplexity), true
+
 	case "Query.CurrentUser":
 		if e.complexity.Query.CurrentUser == nil {
 			break
 		}
 
 		return e.complexity.Query.CurrentUser(childComplexity), true
+
+	case "Query.ImageByID":
+		if e.complexity.Query.ImageByID == nil {
+			break
+		}
+
+		args, err := ec.field_Query_imageById_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ImageByID(childComplexity, args["id"].(string)), true
+
+	case "Query.ImagesByHashTags":
+		if e.complexity.Query.ImagesByHashTags == nil {
+			break
+		}
+
+		args, err := ec.field_Query_imagesByHashTags_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.ImagesByHashTags(childComplexity, args["hashTags"].([]string)), true
 
 	case "Query.Ingredients":
 		if e.complexity.Query.Ingredients == nil {
@@ -573,6 +865,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.UserByID(childComplexity, args["userId"].(string)), true
 
+	case "Query.VideoByID":
+		if e.complexity.Query.VideoByID == nil {
+			break
+		}
+
+		args, err := ec.field_Query_videoById_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.VideoByID(childComplexity, args["id"].(string)), true
+
+	case "Query.VideosByHashTags":
+		if e.complexity.Query.VideosByHashTags == nil {
+			break
+		}
+
+		args, err := ec.field_Query_videosByHashTags_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.VideosByHashTags(childComplexity, args["hashTags"].([]string)), true
+
 	case "Query.WaterfallByUserID":
 		if e.complexity.Query.WaterfallByUserID == nil {
 			break
@@ -613,6 +929,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Email(childComplexity), true
 
+	case "User.Hashtags":
+		if e.complexity.User.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.User.Hashtags(childComplexity), true
+
 	case "User.ID":
 		if e.complexity.User.ID == nil {
 			break
@@ -648,6 +971,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Profile(childComplexity), true
 
+	case "Video.Hashtags":
+		if e.complexity.Video.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Video.Hashtags(childComplexity), true
+
+	case "Video.ID":
+		if e.complexity.Video.ID == nil {
+			break
+		}
+
+		return e.complexity.Video.ID(childComplexity), true
+
+	case "Video.Video":
+		if e.complexity.Video.Video == nil {
+			break
+		}
+
+		return e.complexity.Video.Video(childComplexity), true
+
 	case "Waterfall.CreatedAt":
 		if e.complexity.Waterfall.CreatedAt == nil {
 			break
@@ -668,6 +1012,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Waterfall.DeletedAt(childComplexity), true
+
+	case "Waterfall.Hashtags":
+		if e.complexity.Waterfall.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Waterfall.Hashtags(childComplexity), true
 
 	case "Waterfall.ID":
 		if e.complexity.Waterfall.ID == nil {
@@ -807,10 +1158,15 @@ input DeleteMessage {
 
 extend type Query {
     clinicById(clinicID:ID!): Clinic!
+    clinics:[Clinic!]!
 }
 
 type Clinic {
     id: ID!
+    name: String!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
 }
 `},
 	&ast.Source{Name: "schema/food.graphql", Input: `
@@ -829,24 +1185,69 @@ extend type Query {
 type Ingredient {
     id: ID!
     name: String!
-    createdBy: String!
+    hashtags:[String!]!
+    createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
 }
 
 input NewIngredient {
     name: String!
-    createdByID: String!
+    hashtags:[String!]!
 }
 
 input UpdateIngredient {
     id: String!
     name: String
+    hashtags:[String!]!
 }
 
 input DeleteIngredient {
     id: String!
 }`},
+	&ast.Source{Name: "schema/images.graphql", Input: `extend type Mutation {
+    createImage(input: NewImage!): Image!
+    updateImage(input: UpdateImage!) : Result
+    updateImageHashTags(input: UpdateImageHashTags!) : Result
+    deleteImage(input: DeleteImage!) : Result
+}
+
+extend type Query {
+    imagesByHashTags(hashTags:[String!]!): [Image!]!
+    imageById(id:ID!) : Image!
+}
+
+type Image {
+    id: ID!
+    hashtags:[String!]!
+    image: String!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewImage {
+    image: String!
+    hashtags:[String!]!
+}
+
+
+input UpdateImage {
+    id:String!
+    image: String!
+    hashtags:[String!]!
+}
+
+input UpdateImageHashTags {
+    id:String!
+    hashtags:[String!]!
+}
+
+
+input DeleteImage {
+    id:String!
+}
+`},
 	&ast.Source{Name: "schema/notifications.graphql", Input: `
 extend type Query {
     notificationsByUserId(userID:ID!): [Notification!]!
@@ -871,15 +1272,22 @@ extend type Query {
 type Post {
     id: ID!
     text: String!
+    hashtags:[String!]!
+    chat: Chat!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
 }
 
 input NewPost {
     text: String!
+    hashtags:[String!]!
 }
 
 input UpdatePost {
     id:String!
     text: String!
+    hashtags:[String!]!
 }
 
 input DeletePost {
@@ -937,6 +1345,7 @@ type User {
     name: String!
     email: String!
     image: String!
+    hashtags:[String!]!
     notifications: [Notification!]!
     profile: Profile!
 }
@@ -944,6 +1353,48 @@ type User {
 type Profile {
     id: ID!
 }`},
+	&ast.Source{Name: "schema/vidoes.graphql", Input: `extend type Mutation {
+    createVideo(input: NewVideo!): Video!
+    updateVideo(input: UpdateVideo!) : Result
+    updateVideoHashTags(input: UpdateVideoHashTags!) : Result
+    deleteVideo(input: DeleteVideo!) : Result
+}
+
+extend type Query {
+    videosByHashTags(hashTags:[String!]!): [Video!]!
+    videoById(id:ID!) : Video!
+}
+
+type Video {
+    id: ID!
+    hashtags:[String!]!
+    video: String!
+}
+
+input NewVideo {
+    video: String!
+    hashtags:[String!]!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input UpdateVideo {
+    id:String!
+    video: String!
+    hashtags:[String!]!
+}
+
+input UpdateVideoHashTags {
+    id:String!
+    hashtags:[String!]!
+}
+
+
+input DeleteVideo {
+    id:String!
+}
+`},
 	&ast.Source{Name: "schema/waterfalls.graphql", Input: `
 extend type Mutation {
     createWaterfall(input: NewWaterfall!): Waterfall!
@@ -958,7 +1409,8 @@ extend type Query {
 type Waterfall {
     id: ID!
     text: String!
-    createdBy: String!
+    hashtags:[String!]!
+    createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
 }
@@ -966,6 +1418,7 @@ type Waterfall {
 input UpdateWaterfall {
     id:String!
     text: String!
+    hashtags:[String!]!
 }
 
 input DeleteWaterfall {
@@ -975,6 +1428,7 @@ input DeleteWaterfall {
 
 input NewWaterfall {
     text: String!
+    hashtags:[String!]!
 }
 
 `},
@@ -1003,6 +1457,20 @@ func (ec *executionContext) field_Chat_messages_args(ctx context.Context, rawArg
 		}
 	}
 	args["after"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createImage_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.NewImage
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewImage(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1048,12 +1516,40 @@ func (ec *executionContext) field_Mutation_createPost_args(ctx context.Context, 
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_createVideo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.NewVideo
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewVideo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_createWaterfall_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 models.NewWaterfall
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNNewWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewWaterfall(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteImage_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.DeleteImage
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNDeleteImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteImage(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1104,12 +1600,54 @@ func (ec *executionContext) field_Mutation_deletePost_args(ctx context.Context, 
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_deleteVideo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.DeleteVideo
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNDeleteVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteVideo(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteWaterfall_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 models.DeleteWaterfall
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNDeleteWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteWaterfall(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateImageHashTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.UpdateImageHashTags
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateImageHashTags2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateImageHashTags(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateImage_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.UpdateImage
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateImage(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1152,6 +1690,34 @@ func (ec *executionContext) field_Mutation_updatePost_args(ctx context.Context, 
 	var arg0 models.UpdatePost
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNUpdatePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdatePost(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateVideoHashTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.UpdateVideoHashTags
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateVideoHashTags2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateVideoHashTags(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateVideo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 models.UpdateVideo
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateVideo(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1230,6 +1796,34 @@ func (ec *executionContext) field_Query_clinicById_args(ctx context.Context, raw
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_imageById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_imagesByHashTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 []string
+	if tmp, ok := rawArgs["hashTags"]; ok {
+		arg0, err = ec.unmarshalNString2ᚕstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["hashTags"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_notificationsByUserId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -1269,6 +1863,34 @@ func (ec *executionContext) field_Query_userById_args(ctx context.Context, rawAr
 		}
 	}
 	args["userId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_videoById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_videosByHashTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 []string
+	if tmp, ok := rawArgs["hashTags"]; ok {
+		arg0, err = ec.unmarshalNString2ᚕstring(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["hashTags"] = arg0
 	return args, nil
 }
 
@@ -1433,6 +2055,270 @@ func (ec *executionContext) _Clinic_id(ctx context.Context, field graphql.Collec
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Clinic_name(ctx context.Context, field graphql.CollectedField, obj *models.Clinic) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Clinic",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Clinic_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Clinic) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Clinic",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Clinic_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Clinic) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Clinic",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Clinic_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Clinic) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Clinic",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_id(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_image(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Image, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Image_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Image) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Image",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Ingredient_id(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -1487,6 +2373,33 @@ func (ec *executionContext) _Ingredient_name(ctx context.Context, field graphql.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Ingredient_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -1511,7 +2424,7 @@ func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field gra
 	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Ingredient_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Ingredient) graphql.Marshaler {
@@ -1940,6 +2853,133 @@ func (ec *executionContext) _Mutation_deleteIngredient(ctx context.Context, fiel
 	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createImage(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createImage_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateImage(rctx, args["input"].(models.NewImage))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Image)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNImage2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateImage(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateImage_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateImage(rctx, args["input"].(models.UpdateImage))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateImageHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateImageHashTags_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateImageHashTags(rctx, args["input"].(models.UpdateImageHashTags))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteImage(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteImage_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteImage(rctx, args["input"].(models.DeleteImage))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Mutation_createPost(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2026,6 +3066,133 @@ func (ec *executionContext) _Mutation_deletePost(ctx context.Context, field grap
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Mutation().DeletePost(rctx, args["input"].(models.DeletePost))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createVideo(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createVideo_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateVideo(rctx, args["input"].(models.NewVideo))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Video)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNVideo2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateVideo(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateVideo_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateVideo(rctx, args["input"].(models.UpdateVideo))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateVideoHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateVideoHashTags_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateVideoHashTags(rctx, args["input"].(models.UpdateVideoHashTags))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*models.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteVideo(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteVideo_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteVideo(rctx, args["input"].(models.DeleteVideo))
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -2267,6 +3434,138 @@ func (ec *executionContext) _Post_text(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Post_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.Post) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Post",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Post_chat(ctx context.Context, field graphql.CollectedField, obj *models.Post) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Post",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Chat, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(models.Chat)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNChat2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐChat(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Post_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Post) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Post",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Post_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Post) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Post",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Post_deletedAt(ctx context.Context, field graphql.CollectedField, obj *models.Post) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Post",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Profile_id(ctx context.Context, field graphql.CollectedField, obj *models.Profile) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2423,6 +3722,33 @@ func (ec *executionContext) _Query_clinicById(ctx context.Context, field graphql
 	return ec.marshalNClinic2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐClinic(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_clinics(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Clinics(rctx)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]models.Clinic)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNClinic2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐClinic(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_ingredients(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2448,6 +3774,74 @@ func (ec *executionContext) _Query_ingredients(ctx context.Context, field graphq
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNIngredient2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_imagesByHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_imagesByHashTags_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().ImagesByHashTags(rctx, args["hashTags"].([]string))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]models.Image)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNImage2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_imageById(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_imageById_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().ImageByID(rctx, args["id"].(string))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Image)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNImage2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_notificationsByUserId(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -2550,6 +3944,74 @@ func (ec *executionContext) _Query_userById(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_videosByHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_videosByHashTags_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().VideosByHashTags(rctx, args["hashTags"].([]string))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]models.Video)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNVideo2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_videoById(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_videoById_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().VideoByID(rctx, args["id"].(string))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.Video)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNVideo2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_waterfallByUserId(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -2830,6 +4292,33 @@ func (ec *executionContext) _User_image(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _User_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _User_notifications(ctx context.Context, field graphql.CollectedField, obj *models.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2882,6 +4371,87 @@ func (ec *executionContext) _User_profile(ctx context.Context, field graphql.Col
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNProfile2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐProfile(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Video_id(ctx context.Context, field graphql.CollectedField, obj *models.Video) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Video",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Video_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.Video) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Video",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Video_video(ctx context.Context, field graphql.CollectedField, obj *models.Video) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Video",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Video, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Waterfall_id(ctx context.Context, field graphql.CollectedField, obj *models.Waterfall) graphql.Marshaler {
@@ -2938,6 +4508,33 @@ func (ec *executionContext) _Waterfall_text(ctx context.Context, field graphql.C
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Waterfall_hashtags(ctx context.Context, field graphql.CollectedField, obj *models.Waterfall) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Waterfall",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2ᚕstring(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Waterfall_createdBy(ctx context.Context, field graphql.CollectedField, obj *models.Waterfall) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -2962,7 +4559,7 @@ func (ec *executionContext) _Waterfall_createdBy(ctx context.Context, field grap
 	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Waterfall_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Waterfall) graphql.Marshaler {
@@ -3847,6 +5444,24 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputDeleteImage(ctx context.Context, v interface{}) (models.DeleteImage, error) {
+	var it models.DeleteImage
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputDeleteIngredient(ctx context.Context, v interface{}) (models.DeleteIngredient, error) {
 	var it models.DeleteIngredient
 	var asMap = v.(map[string]interface{})
@@ -3907,6 +5522,24 @@ func (ec *executionContext) unmarshalInputDeletePost(ctx context.Context, v inte
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputDeleteVideo(ctx context.Context, v interface{}) (models.DeleteVideo, error) {
+	var it models.DeleteVideo
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputDeleteWaterfall(ctx context.Context, v interface{}) (models.DeleteWaterfall, error) {
 	var it models.DeleteWaterfall
 	var asMap = v.(map[string]interface{})
@@ -3916,6 +5549,30 @@ func (ec *executionContext) unmarshalInputDeleteWaterfall(ctx context.Context, v
 		case "id":
 			var err error
 			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewImage(ctx context.Context, v interface{}) (models.NewImage, error) {
+	var it models.NewImage
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3937,9 +5594,9 @@ func (ec *executionContext) unmarshalInputNewIngredient(ctx context.Context, v i
 			if err != nil {
 				return it, err
 			}
-		case "createdByID":
+		case "hashtags":
 			var err error
-			it.CreatedByID, err = ec.unmarshalNString2string(ctx, v)
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3985,6 +5642,54 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, v interfa
 			if err != nil {
 				return it, err
 			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewVideo(ctx context.Context, v interface{}) (models.NewVideo, error) {
+	var it models.NewVideo
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdBy":
+			var err error
+			it.CreatedBy, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalNTimestamp2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "deletedAt":
+			var err error
+			it.DeletedAt, err = ec.unmarshalOTimestamp2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -4000,6 +5705,66 @@ func (ec *executionContext) unmarshalInputNewWaterfall(ctx context.Context, v in
 		case "text":
 			var err error
 			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateImage(ctx context.Context, v interface{}) (models.UpdateImage, error) {
+	var it models.UpdateImage
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateImageHashTags(ctx context.Context, v interface{}) (models.UpdateImageHashTags, error) {
+	var it models.UpdateImageHashTags
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4024,6 +5789,12 @@ func (ec *executionContext) unmarshalInputUpdateIngredient(ctx context.Context, 
 		case "name":
 			var err error
 			it.Name, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4069,6 +5840,66 @@ func (ec *executionContext) unmarshalInputUpdatePost(ctx context.Context, v inte
 			if err != nil {
 				return it, err
 			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateVideo(ctx context.Context, v interface{}) (models.UpdateVideo, error) {
+	var it models.UpdateVideo
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateVideoHashTags(ctx context.Context, v interface{}) (models.UpdateVideoHashTags, error) {
+	var it models.UpdateVideoHashTags
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -4090,6 +5921,12 @@ func (ec *executionContext) unmarshalInputUpdateWaterfall(ctx context.Context, v
 		case "text":
 			var err error
 			it.Text, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4160,6 +5997,72 @@ func (ec *executionContext) _Clinic(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "name":
+			out.Values[i] = ec._Clinic_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdBy":
+			out.Values[i] = ec._Clinic_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Clinic_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Clinic_deletedAt(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var imageImplementors = []string{"Image"}
+
+func (ec *executionContext) _Image(ctx context.Context, sel ast.SelectionSet, obj *models.Image) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, imageImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Image")
+		case "id":
+			out.Values[i] = ec._Image_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Image_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "image":
+			out.Values[i] = ec._Image_image(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdBy":
+			out.Values[i] = ec._Image_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Image_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Image_deletedAt(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4189,6 +6092,11 @@ func (ec *executionContext) _Ingredient(ctx context.Context, sel ast.SelectionSe
 			}
 		case "name":
 			out.Values[i] = ec._Ingredient_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Ingredient_hashtags(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -4299,6 +6207,17 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_updateIngredient(ctx, field)
 		case "deleteIngredient":
 			out.Values[i] = ec._Mutation_deleteIngredient(ctx, field)
+		case "createImage":
+			out.Values[i] = ec._Mutation_createImage(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updateImage":
+			out.Values[i] = ec._Mutation_updateImage(ctx, field)
+		case "updateImageHashTags":
+			out.Values[i] = ec._Mutation_updateImageHashTags(ctx, field)
+		case "deleteImage":
+			out.Values[i] = ec._Mutation_deleteImage(ctx, field)
 		case "createPost":
 			out.Values[i] = ec._Mutation_createPost(ctx, field)
 			if out.Values[i] == graphql.Null {
@@ -4308,6 +6227,17 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_updatePost(ctx, field)
 		case "deletePost":
 			out.Values[i] = ec._Mutation_deletePost(ctx, field)
+		case "createVideo":
+			out.Values[i] = ec._Mutation_createVideo(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updateVideo":
+			out.Values[i] = ec._Mutation_updateVideo(ctx, field)
+		case "updateVideoHashTags":
+			out.Values[i] = ec._Mutation_updateVideoHashTags(ctx, field)
+		case "deleteVideo":
+			out.Values[i] = ec._Mutation_deleteVideo(ctx, field)
 		case "createWaterfall":
 			out.Values[i] = ec._Mutation_createWaterfall(ctx, field)
 			if out.Values[i] == graphql.Null {
@@ -4386,6 +6316,28 @@ func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "hashtags":
+			out.Values[i] = ec._Post_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "chat":
+			out.Values[i] = ec._Post_chat(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdBy":
+			out.Values[i] = ec._Post_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Post_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Post_deletedAt(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4495,6 +6447,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "clinics":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_clinics(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "ingredients":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -4504,6 +6470,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_ingredients(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "imagesByHashTags":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_imagesByHashTags(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "imageById":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_imageById(ctx, field)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -4546,6 +6540,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_userById(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "videosByHashTags":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_videosByHashTags(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "videoById":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_videoById(ctx, field)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -4670,6 +6692,11 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "hashtags":
+			out.Values[i] = ec._User_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "notifications":
 			out.Values[i] = ec._User_notifications(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -4677,6 +6704,43 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			}
 		case "profile":
 			out.Values[i] = ec._User_profile(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var videoImplementors = []string{"Video"}
+
+func (ec *executionContext) _Video(ctx context.Context, sel ast.SelectionSet, obj *models.Video) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, videoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Video")
+		case "id":
+			out.Values[i] = ec._Video_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Video_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "video":
+			out.Values[i] = ec._Video_video(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -4709,6 +6773,11 @@ func (ec *executionContext) _Waterfall(ctx context.Context, sel ast.SelectionSet
 			}
 		case "text":
 			out.Values[i] = ec._Waterfall_text(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Waterfall_hashtags(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
@@ -5043,6 +7112,43 @@ func (ec *executionContext) marshalNClinic2githubᚗcomᚋgremlinsappsᚋavocado
 	return ec._Clinic(ctx, sel, &v)
 }
 
+func (ec *executionContext) marshalNClinic2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐClinic(ctx context.Context, sel ast.SelectionSet, v []models.Clinic) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNClinic2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐClinic(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
 func (ec *executionContext) marshalNClinic2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐClinic(ctx context.Context, sel ast.SelectionSet, v *models.Clinic) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
@@ -5051,6 +7157,10 @@ func (ec *executionContext) marshalNClinic2ᚖgithubᚗcomᚋgremlinsappsᚋavoc
 		return graphql.Null
 	}
 	return ec._Clinic(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNDeleteImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteImage(ctx context.Context, v interface{}) (models.DeleteImage, error) {
+	return ec.unmarshalInputDeleteImage(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNDeleteIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteIngredient(ctx context.Context, v interface{}) (models.DeleteIngredient, error) {
@@ -5065,6 +7175,10 @@ func (ec *executionContext) unmarshalNDeletePost2githubᚗcomᚋgremlinsappsᚋa
 	return ec.unmarshalInputDeletePost(ctx, v)
 }
 
+func (ec *executionContext) unmarshalNDeleteVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteVideo(ctx context.Context, v interface{}) (models.DeleteVideo, error) {
+	return ec.unmarshalInputDeleteVideo(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNDeleteWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐDeleteWaterfall(ctx context.Context, v interface{}) (models.DeleteWaterfall, error) {
 	return ec.unmarshalInputDeleteWaterfall(ctx, v)
 }
@@ -5075,6 +7189,57 @@ func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface
 
 func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	return graphql.MarshalID(v)
+}
+
+func (ec *executionContext) marshalNImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx context.Context, sel ast.SelectionSet, v models.Image) graphql.Marshaler {
+	return ec._Image(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNImage2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx context.Context, sel ast.SelectionSet, v []models.Image) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNImage2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐImage(ctx context.Context, sel ast.SelectionSet, v *models.Image) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Image(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐIngredient(ctx context.Context, sel ast.SelectionSet, v models.Ingredient) graphql.Marshaler {
@@ -5179,6 +7344,10 @@ func (ec *executionContext) marshalNMessage2ᚖgithubᚗcomᚋgremlinsappsᚋavo
 	return ec._Message(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNNewImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewImage(ctx context.Context, v interface{}) (models.NewImage, error) {
+	return ec.unmarshalInputNewImage(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNNewIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewIngredient(ctx context.Context, v interface{}) (models.NewIngredient, error) {
 	return ec.unmarshalInputNewIngredient(ctx, v)
 }
@@ -5189,6 +7358,10 @@ func (ec *executionContext) unmarshalNNewMessage2githubᚗcomᚋgremlinsappsᚋa
 
 func (ec *executionContext) unmarshalNNewPost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewPost(ctx context.Context, v interface{}) (models.NewPost, error) {
 	return ec.unmarshalInputNewPost(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNNewVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewVideo(ctx context.Context, v interface{}) (models.NewVideo, error) {
+	return ec.unmarshalInputNewVideo(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNNewWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐNewWaterfall(ctx context.Context, v interface{}) (models.NewWaterfall, error) {
@@ -5321,6 +7494,35 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return graphql.MarshalString(v)
 }
 
+func (ec *executionContext) unmarshalNString2ᚕstring(ctx context.Context, v interface{}) ([]string, error) {
+	var vSlice []interface{}
+	if v != nil {
+		if tmp1, ok := v.([]interface{}); ok {
+			vSlice = tmp1
+		} else {
+			vSlice = []interface{}{v}
+		}
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalNString2ᚕstring(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalNTimestamp2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {
 	return dal.UnmarshalTimestamp(v)
 }
@@ -5335,6 +7537,14 @@ func (ec *executionContext) marshalNTimestamp2timeᚐTime(ctx context.Context, s
 	return dal.MarshalTimestamp(v)
 }
 
+func (ec *executionContext) unmarshalNUpdateImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateImage(ctx context.Context, v interface{}) (models.UpdateImage, error) {
+	return ec.unmarshalInputUpdateImage(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNUpdateImageHashTags2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateImageHashTags(ctx context.Context, v interface{}) (models.UpdateImageHashTags, error) {
+	return ec.unmarshalInputUpdateImageHashTags(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNUpdateIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateIngredient(ctx context.Context, v interface{}) (models.UpdateIngredient, error) {
 	return ec.unmarshalInputUpdateIngredient(ctx, v)
 }
@@ -5345,6 +7555,14 @@ func (ec *executionContext) unmarshalNUpdateMessage2githubᚗcomᚋgremlinsapps�
 
 func (ec *executionContext) unmarshalNUpdatePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdatePost(ctx context.Context, v interface{}) (models.UpdatePost, error) {
 	return ec.unmarshalInputUpdatePost(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNUpdateVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateVideo(ctx context.Context, v interface{}) (models.UpdateVideo, error) {
+	return ec.unmarshalInputUpdateVideo(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNUpdateVideoHashTags2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateVideoHashTags(ctx context.Context, v interface{}) (models.UpdateVideoHashTags, error) {
+	return ec.unmarshalInputUpdateVideoHashTags(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNUpdateWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐUpdateWaterfall(ctx context.Context, v interface{}) (models.UpdateWaterfall, error) {
@@ -5363,6 +7581,57 @@ func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocad
 		return graphql.Null
 	}
 	return ec._User(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx context.Context, sel ast.SelectionSet, v models.Video) graphql.Marshaler {
+	return ec._Video(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNVideo2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx context.Context, sel ast.SelectionSet, v []models.Video) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNVideo2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐVideo(ctx context.Context, sel ast.SelectionSet, v *models.Video) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Video(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNWaterfall2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋmodelsᚐWaterfall(ctx context.Context, sel ast.SelectionSet, v models.Waterfall) graphql.Marshaler {

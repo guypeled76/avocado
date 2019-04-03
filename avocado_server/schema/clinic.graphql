@@ -2,8 +2,13 @@
 
 extend type Query {
     clinicById(clinicID:ID!): Clinic!
+    clinics:[Clinic!]!
 }
 
 type Clinic {
     id: ID!
+    name: String!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
 }

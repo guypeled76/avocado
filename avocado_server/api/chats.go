@@ -6,6 +6,14 @@ import (
 	"time"
 )
 
+func (r *queryResolver) ChatsByUserID(ctx context.Context, userID string) ([]models.Chat, error) {
+	panic("implement me")
+}
+
+func (r *queryResolver) ChatByID(ctx context.Context, chatID string) (*models.Chat, error) {
+	panic("implement me")
+}
+
 func (r *mutationResolver) CreateChat(ctx context.Context) (*models.Chat, error) {
 	return &models.Chat{
 		ID: "ddd",

@@ -5,6 +5,10 @@ import (
 	"github.com/gremlinsapps/avocado_server/models"
 )
 
+func (r *queryResolver) PostsByUserID(ctx context.Context, userID string) ([]models.Post, error) {
+	panic("implement me")
+}
+
 func (r *mutationResolver) CreatePost(ctx context.Context, input models.NewPost) (*models.Post, error) {
 	panic("implement me")
 }

@@ -12,15 +12,22 @@ extend type Query {
 type Post {
     id: ID!
     text: String!
+    hashtags:[String!]!
+    chat: Chat!
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
 }
 
 input NewPost {
     text: String!
+    hashtags:[String!]!
 }
 
 input UpdatePost {
     id:String!
     text: String!
+    hashtags:[String!]!
 }
 
 input DeletePost {

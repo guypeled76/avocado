@@ -14,19 +14,21 @@ extend type Query {
 type Ingredient {
     id: ID!
     name: String!
-    createdBy: String!
+    hashtags:[String!]!
+    createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
 }
 
 input NewIngredient {
     name: String!
-    createdByID: String!
+    hashtags:[String!]!
 }
 
 input UpdateIngredient {
     id: String!
     name: String
+    hashtags:[String!]!
 }
 
 input DeleteIngredient {
