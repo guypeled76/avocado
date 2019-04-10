@@ -25,6 +25,7 @@ type Message {
     message: String!
     createdBy: String!
     createAt: Timestamp!
+    updatedAt: Timestamp!
     deletedAt: Timestamp
 }
 

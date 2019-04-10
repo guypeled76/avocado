@@ -12,10 +12,11 @@ extend type Query {
 type Post {
     id: ID!
     text: String!
-    hashtags:[String!]!
+    hashtags:[HashTag!]!
     chat: Chat!
     createdBy: ID!
     createdAt: Timestamp!
+    updatedAt: Timestamp!
     deletedAt: Timestamp
 }
 

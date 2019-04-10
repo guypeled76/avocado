@@ -10,5 +10,6 @@ type Clinic {
     name: String!
     createdBy: ID!
     createdAt: Timestamp!
+    updatedAt: Timestamp!
     deletedAt: Timestamp
 }

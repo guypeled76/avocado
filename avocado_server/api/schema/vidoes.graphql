@@ -6,33 +6,33 @@ extend type Mutation {
 }
 
 extend type Query {
-    videosByHashTags(hashTags:[String!]!): [Video!]!
+    videosByHashTags(hashTags:[ID!]!): [Video!]!
     videoById(id:ID!) : Video!
 }
 
 type Video {
     id: ID!
-    hashtags:[String!]!
+    hashtags:[HashTag!]!
     video: String!
-}
-
-input NewVideo {
-    video: String!
-    hashtags:[String!]!
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
 }
 
+input NewVideo {
+    video: String!
+    hashtags:[ID!]!
+}
+
 input UpdateVideo {
     id:String!
     video: String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 input UpdateVideoHashTags {
     id:String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 

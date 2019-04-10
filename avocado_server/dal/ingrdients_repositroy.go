@@ -4,8 +4,8 @@ import (
 	"context"
 	"firebase.google.com/go/db"
 	"fmt"
+	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/firebase"
-	"github.com/gremlinsapps/avocado_server/models"
 )
 
 var ingredientsPath = firebase.IngredientsPath
@@ -22,22 +22,22 @@ func NewIngredientFirebaseRepository(db *db.Client, ctx context.Context) (*Ingre
 	}, nil
 }
 
-func (IngredientRepo IngredientFirebaseRepository) GetAll() ([]models.Ingredient, error) {
-	var results map[string]models.Ingredient
+func (IngredientRepo IngredientFirebaseRepository) GetAll() ([]apimodel.Ingredient, error) {
+	var results map[string]apimodel.Ingredient
 	err := IngredientRepo.Conn.NewRef(ingredientsPath).Get(IngredientRepo.Context, &results)
 	if err != nil {
 		fmt.Printf("firebase error", err)
 		return nil, err
 	}
 
-	var Ingredients []models.Ingredient
+	var Ingredients []apimodel.Ingredient
 	for _, r := range results {
 		Ingredients = append(Ingredients, r)
 	}
 	return Ingredients, nil
 }
 
-func (IngredientRepo IngredientFirebaseRepository) Insert(newIngredient models.Ingredient) error {
+func (IngredientRepo IngredientFirebaseRepository) Insert(newIngredient apimodel.Ingredient) error {
 	err := IngredientRepo.Conn.NewRef(ingredientsPath).Child(newIngredient.ID).Set(IngredientRepo.Context, newIngredient)
 	return err
 }

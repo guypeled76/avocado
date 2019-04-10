@@ -6,13 +6,13 @@ extend type Mutation {
 }
 
 extend type Query {
-    imagesByHashTags(hashTags:[String!]!): [Image!]!
+    imagesByHashTags(hashTags:[ID!]!): [Image!]!
     imageById(id:ID!) : Image!
 }
 
 type Image {
     id: ID!
-    hashtags:[String!]!
+    hashtags:[HashTag!]!
     image: String!
     createdBy: ID!
     createdAt: Timestamp!
@@ -21,19 +21,19 @@ type Image {
 
 input NewImage {
     image: String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 
 input UpdateImage {
     id:String!
     image: String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 input UpdateImageHashTags {
     id:String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 

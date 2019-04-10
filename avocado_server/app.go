@@ -1,24 +1,29 @@
 package main
 
 import (
+	"github.com/gremlinsapps/avocado_server/api"
+	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/99designs/gqlgen/handler"
-	"github.com/gremlinsapps/avocado_server/api"
-	"github.com/gremlinsapps/avocado_server/graph"
+	"github.com/gremlinsapps/avocado_server/api/graph"
 )
 
 const defaultPort = "8090"
 
 func main() {
+
+	sql.InitializeDB()
+	return
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	queryHandler := http.HandlerFunc(handler.Playground("Job", "/query"))
+	queryHandler := http.HandlerFunc(handler.Playground("Avocado", "/query"))
 	rootHandler := http.HandlerFunc(handler.GraphQL(graph.NewExecutableSchema(api.NewRootResolvers())))
 
 	http.Handle("/", queryHandler)

@@ -9,11 +9,15 @@ type User {
     name: String!
     email: String!
     image: String!
-    hashtags:[String!]!
+    hashtags:[HashTag!]!
     notifications: [Notification!]!
     profile: Profile!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
 }
 
 type Profile {
     id: ID!
+    updatedAt: Timestamp!
 }

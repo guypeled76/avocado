@@ -4,9 +4,9 @@ package api
 
 import (
 	"context"
+	"github.com/gremlinsapps/avocado_server/api/graph"
+	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/firebase"
-	"github.com/gremlinsapps/avocado_server/graph"
-	"github.com/gremlinsapps/avocado_server/models"
 )
 
 type Resolver struct {
@@ -27,7 +27,7 @@ type mutationResolver struct{ *Resolver }
 // Queries
 type queryResolver struct{ *Resolver }
 
-func (r *mutationResolver) Logon(ctx context.Context) (*models.Result, error) {
+func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) {
 	panic("implement me")
 }
 

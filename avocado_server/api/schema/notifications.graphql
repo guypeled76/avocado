@@ -7,4 +7,5 @@ type Notification {
     id: ID!
     text: String!
     reference: Reference!
+    createdAt: Timestamp!
 }

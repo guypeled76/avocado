@@ -2,22 +2,22 @@ package api
 
 import (
 	"context"
-	"github.com/gremlinsapps/avocado_server/models"
+	"github.com/gremlinsapps/avocado_server/api/model"
 	"time"
 )
 
-func (r *queryResolver) ChatsByUserID(ctx context.Context, userID string) ([]models.Chat, error) {
+func (r *queryResolver) ChatsByUserID(ctx context.Context, userID string) ([]apimodel.Chat, error) {
 	panic("implement me")
 }
 
-func (r *queryResolver) ChatByID(ctx context.Context, chatID string) (*models.Chat, error) {
+func (r *queryResolver) ChatByID(ctx context.Context, chatID string) (*apimodel.Chat, error) {
 	panic("implement me")
 }
 
-func (r *mutationResolver) CreateChat(ctx context.Context) (*models.Chat, error) {
-	return &models.Chat{
+func (r *mutationResolver) CreateChat(ctx context.Context) (*apimodel.Chat, error) {
+	return &apimodel.Chat{
 		ID: "ddd",
-		Messages: []models.Message{{
+		Messages: []apimodel.Message{{
 			ID:        "dd",
 			Message:   "222",
 			CreatedBy: "fr",
@@ -34,8 +34,8 @@ func (r *mutationResolver) CreateChat(ctx context.Context) (*models.Chat, error)
 	}, nil
 }
 
-func (r *mutationResolver) CreateMessage(ctx context.Context, input models.NewMessage) (*models.Message, error) {
-	return &models.Message{
+func (r *mutationResolver) CreateMessage(ctx context.Context, input apimodel.NewMessage) (*apimodel.Message, error) {
+	return &apimodel.Message{
 		ID:        "dd",
 		Message:   input.Message,
 		CreatedBy: "ddd",
@@ -43,11 +43,11 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input models.NewMe
 	}, nil
 }
 
-func (r *queryResolver) Chats(ctx context.Context) ([]models.Chat, error) {
+func (r *queryResolver) Chats(ctx context.Context) ([]apimodel.Chat, error) {
 
-	return []models.Chat{{
+	return []apimodel.Chat{{
 		ID: "ddd",
-		Messages: []models.Message{{
+		Messages: []apimodel.Message{{
 			ID:        "dd",
 			Message:   "222",
 			CreatedBy: "fr",
@@ -65,22 +65,22 @@ func (r *queryResolver) Chats(ctx context.Context) ([]models.Chat, error) {
 	}, nil
 }
 
-func (r *mutationResolver) UpdateMessage(ctx context.Context, input models.UpdateMessage) (*models.Result, error) {
-	return &models.Result{
-		Status: models.ResultStatusSuccess,
+func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error) {
+	return &apimodel.Result{
+		Status: apimodel.ResultStatusSuccess,
 	}, nil
 }
 
-func (r *mutationResolver) DeleteMessage(ctx context.Context, input models.DeleteMessage) (*models.Result, error) {
-	return &models.Result{
-		Status: models.ResultStatusSuccess,
+func (r *mutationResolver) DeleteMessage(ctx context.Context, input apimodel.DeleteMessage) (*apimodel.Result, error) {
+	return &apimodel.Result{
+		Status: apimodel.ResultStatusSuccess,
 	}, nil
 }
 
-func (r *queryResolver) Chat(ctx context.Context, chatID string) (*models.Chat, error) {
-	return &models.Chat{
+func (r *queryResolver) Chat(ctx context.Context, chatID string) (*apimodel.Chat, error) {
+	return &apimodel.Chat{
 		ID: "ddd",
-		Messages: []models.Message{{
+		Messages: []apimodel.Message{{
 			ID:        "dd",
 			Message:   "222",
 			CreatedBy: "fr",

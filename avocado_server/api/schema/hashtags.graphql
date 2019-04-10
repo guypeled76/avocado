@@ -1,0 +1,17 @@
+extend type Mutation {
+    createHashTag(name:String!): HashTag
+
+}
+
+extend type Query {
+    hashTags : HashTag!
+}
+
+
+type HashTag {
+    id:ID!
+    name:String!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}

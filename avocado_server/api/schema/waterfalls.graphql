@@ -12,7 +12,7 @@ extend type Query {
 type Waterfall {
     id: ID!
     text: String!
-    hashtags:[String!]!
+    hashtags:[HashTag!]!
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
@@ -21,7 +21,7 @@ type Waterfall {
 input UpdateWaterfall {
     id:String!
     text: String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 
 input DeleteWaterfall {
@@ -31,6 +31,6 @@ input DeleteWaterfall {
 
 input NewWaterfall {
     text: String!
-    hashtags:[String!]!
+    hashtags:[ID!]!
 }
 

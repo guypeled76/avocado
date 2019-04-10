@@ -1,18 +1,18 @@
-schema: schema/*.graphql
+schema: api/schema/*.graphql
 
 # Let gqlgen know where to put the generated server
 exec:
-  filename: graph/generated.go
+  filename: api/graph/generated.go
   package: graph
 
 # Let gqlgen know where to the generated models (if any)
 model:
-  filename: models/inputs.go
-  package: models
+  filename: api/model/generated.go
+  package: apimodel
 
 # Optional, turns on resolver stub generation
 resolver:
-  filename: resolver.go # where to write them
+  filename: api/resolver.go # where to write them
   type: Resolver  # whats the resolver root implementation type called?
 
 # Tell gqlgen about any existing models you want to reuse for
