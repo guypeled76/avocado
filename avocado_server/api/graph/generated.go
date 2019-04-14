@@ -271,7 +271,7 @@ type QueryResolver interface {
 	Ingredients(ctx context.Context) ([]apimodel.Ingredient, error)
 	Meals(ctx context.Context) ([]apimodel.Meal, error)
 	Recipes(ctx context.Context) ([]apimodel.Recipe, error)
-	HashTags(ctx context.Context) (*apimodel.HashTag, error)
+	HashTags(ctx context.Context) ([]apimodel.HashTag, error)
 	ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error)
 	ImageByID(ctx context.Context, id string) (*apimodel.Image, error)
 	NotificationsByUserID(ctx context.Context, userID string) ([]apimodel.Notification, error)
@@ -1493,7 +1493,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var parsedSchema = gqlparser.MustLoadSchema(
-	&ast.Source{Name: "schema/chats.graphql", Input: `
+	&ast.Source{Name: "api/schema/chats.graphql", Input: `
 
 extend type Mutation {
     createChat : Chat!
@@ -1537,7 +1537,7 @@ input DeleteMessage {
     chat: String!
     message: String!
 }`},
-	&ast.Source{Name: "schema/clinic.graphql", Input: `
+	&ast.Source{Name: "api/schema/clinic.graphql", Input: `
 
 extend type Query {
     clinicById(clinicID:ID!): Clinic!
@@ -1553,7 +1553,7 @@ type Clinic {
     deletedAt: Timestamp
 }
 `},
-	&ast.Source{Name: "schema/food.graphql", Input: `
+	&ast.Source{Name: "api/schema/food.graphql", Input: `
 
 extend type Mutation {
     createIngredient(input: NewIngredient!): Ingredient!
@@ -1651,13 +1651,13 @@ input UpdateIngredient {
 input DeleteIngredient {
     id: String!
 }`},
-	&ast.Source{Name: "schema/hashtags.graphql", Input: `extend type Mutation {
+	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashTag(name:String!): HashTag
 
 }
 
 extend type Query {
-    hashTags : HashTag!
+    hashTags : [HashTag!]!
 }
 
 
@@ -1668,7 +1668,7 @@ type HashTag {
     updatedAt: Timestamp!
     deletedAt: Timestamp
 }`},
-	&ast.Source{Name: "schema/images.graphql", Input: `extend type Mutation {
+	&ast.Source{Name: "api/schema/images.graphql", Input: `extend type Mutation {
     createImage(input: NewImage!): Image!
     updateImage(input: UpdateImage!) : Result
     updateImageHashTags(input: UpdateImageHashTags!) : Result
@@ -1711,7 +1711,7 @@ input DeleteImage {
     id:String!
 }
 `},
-	&ast.Source{Name: "schema/notifications.graphql", Input: `
+	&ast.Source{Name: "api/schema/notifications.graphql", Input: `
 extend type Query {
     notificationsByUserId(userID:ID!): [Notification!]!
 }
@@ -1722,7 +1722,7 @@ type Notification {
     reference: Reference!
     createdAt: Timestamp!
 }`},
-	&ast.Source{Name: "schema/posts.graphql", Input: `
+	&ast.Source{Name: "api/schema/posts.graphql", Input: `
 extend type Mutation {
     createPost(input: NewPost!): Post!
     updatePost(input: UpdatePost!) : Result
@@ -1759,7 +1759,7 @@ input DeletePost {
     id:String!
 }
 `},
-	&ast.Source{Name: "schema/references.graphql", Input: `
+	&ast.Source{Name: "api/schema/references.graphql", Input: `
 
 
 
@@ -1772,7 +1772,7 @@ enum ReferenceType {
     POST,
     MESSAGE,
 }`},
-	&ast.Source{Name: "schema/schema.graphql", Input: `
+	&ast.Source{Name: "api/schema/schema.graphql", Input: `
 type Mutation {
     logon: Result
 }
@@ -1799,7 +1799,7 @@ enum ResultStatus {
 
 
 `},
-	&ast.Source{Name: "schema/users.graphql", Input: `
+	&ast.Source{Name: "api/schema/users.graphql", Input: `
 
 extend type Query {
     userById(userId:ID!): User!
@@ -1822,7 +1822,7 @@ type Profile {
     id: ID!
     updatedAt: Timestamp!
 }`},
-	&ast.Source{Name: "schema/vidoes.graphql", Input: `extend type Mutation {
+	&ast.Source{Name: "api/schema/vidoes.graphql", Input: `extend type Mutation {
     createVideo(input: NewVideo!): Video!
     updateVideo(input: UpdateVideo!) : Result
     updateVideoHashTags(input: UpdateVideoHashTags!) : Result
@@ -1864,7 +1864,7 @@ input DeleteVideo {
     id:String!
 }
 `},
-	&ast.Source{Name: "schema/waterfalls.graphql", Input: `
+	&ast.Source{Name: "api/schema/waterfalls.graphql", Input: `
 extend type Mutation {
     createWaterfall(input: NewWaterfall!): Waterfall!
     updateWaterfall(input: UpdateWaterfall!) : Result
@@ -5094,10 +5094,10 @@ func (ec *executionContext) _Query_hashTags(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*apimodel.HashTag)
+	res := resTmp.([]apimodel.HashTag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_imagesByHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -9317,16 +9317,6 @@ func (ec *executionContext) marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavo
 	}
 	wg.Wait()
 	return ret
-}
-
-func (ec *executionContext) marshalNHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx context.Context, sel ast.SelectionSet, v *apimodel.HashTag) graphql.Marshaler {
-	if v == nil {
-		if !ec.HasError(graphql.GetResolverContext(ctx)) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	return ec._HashTag(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {

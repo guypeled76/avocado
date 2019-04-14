@@ -10,6 +10,10 @@ type DBConnection struct {
 	db *gorm.DB
 }
 
+type DBConnectionContainer interface {
+	GetDBConnection() *DBConnection
+}
+
 var instance *DBConnection
 var once sync.Once
 
