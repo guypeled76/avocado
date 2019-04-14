@@ -11,7 +11,7 @@ import (
 func (r *queryResolver) Ingredients(ctx context.Context) ([]apimodel.Ingredient, error) {
 	var allIngredients []apimodel.Ingredient
 
-	ingredientRepository, err := dal.NewIngredientFirebaseRepository(r.db.Conn, r.db.Context)
+	ingredientRepository, err := dal.NewIngredientFirebaseRepository(r.firebase.Conn, r.firebase.Context)
 
 	if allIngredients, err = ingredientRepository.GetAll(); err != nil {
 		fmt.Printf("firebase error", err)
@@ -21,7 +21,7 @@ func (r *queryResolver) Ingredients(ctx context.Context) ([]apimodel.Ingredient,
 }
 
 func (r *mutationResolver) CreateIngredient(ctx context.Context, input apimodel.NewIngredient) (*apimodel.Ingredient, error) {
-	ingredientRepository, err := dal.NewIngredientFirebaseRepository(r.db.Conn, r.db.Context)
+	ingredientRepository, err := dal.NewIngredientFirebaseRepository(r.firebase.Conn, r.firebase.Context)
 	if err != nil {
 		fmt.Print("firebase error: ", err)
 		return &apimodel.Ingredient{}, err

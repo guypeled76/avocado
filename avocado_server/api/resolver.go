@@ -7,10 +7,12 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/graph"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/firebase"
+	"github.com/gremlinsapps/avocado_server/dal/sql"
 )
 
 type Resolver struct {
-	db *firebase.DBConnection
+	firebase *firebase.FBConnection
+	database *sql.DBConnection
 }
 
 func (r *Resolver) Mutation() graph.MutationResolver {
@@ -33,8 +35,8 @@ func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) 
 
 func NewRootResolvers() graph.Config {
 	resolver := Resolver{}
-	resolver.db = firebase.Connect()
-
+	resolver.firebase = firebase.Connect()
+	resolver.database = sql.Connect()
 	c := graph.Config{
 		Resolvers: &resolver,
 	}

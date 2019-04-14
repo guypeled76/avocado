@@ -15,8 +15,7 @@ const defaultPort = "8090"
 
 func main() {
 
-	sql.InitializeDB()
-	return
+	sql.AutoMigrate()
 
 	port := os.Getenv("PORT")
 	if port == "" {

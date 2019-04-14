@@ -10,18 +10,18 @@ import (
 	"sync"
 )
 
-type DBConnection struct {
+type FBConnection struct {
 	Conn    *db.Client
 	App     *firebase.App
 	Context context.Context
 	Auth    *auth.Client
 }
 
-var instance *DBConnection
+var instance *FBConnection
 var once sync.Once
 
 // BEWARE: Singleton method to get DB connection parameters
-func Connect() *DBConnection {
+func Connect() *FBConnection {
 	once.Do(func() {
 		context := context.Background()
 
@@ -51,7 +51,7 @@ func Connect() *DBConnection {
 			log.Fatalf("Error initializing database client:", err)
 		}
 
-		instance = &DBConnection{
+		instance = &FBConnection{
 			Context: context,
 			Conn:    client,
 			App:     firebaseApp,

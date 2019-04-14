@@ -4,16 +4,13 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type HashTag struct {
-	gorm.Model
-	Name string
-}
-
 type User struct {
 	gorm.Model
 	Name          string
+	DisplayName   string
 	Email         string
 	Image         string
+	Clinic        Clinic
 	Hashtags      []HashTag
 	Notifications []Notification
 	Profile       Profile
@@ -21,9 +18,4 @@ type User struct {
 
 type Profile struct {
 	gorm.Model
-}
-
-type Notification struct {
-	gorm.Model
-	Text string
 }
