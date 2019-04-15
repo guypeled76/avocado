@@ -1,5 +1,6 @@
 extend type Mutation {
     createHashTag(name:String!): HashTag
+    deleteHashTag(id:ID!): Result
 
 }
 

@@ -12,7 +12,7 @@ type DBConnection struct {
 }
 
 type DBConnectionContainer interface {
-	GetDBConnection() *DBConnection
+	GetDBConnection() (*DBConnection, error)
 }
 
 var instance *DBConnection
@@ -32,14 +32,21 @@ func Connect() *DBConnection {
 	return instance
 }
 
-func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter) error {
+func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter, repo Repository) error {
 	db := conn.db.Model(out)
-	db, err := Filter(db, filter)
+	db, err := Filter(db, filter, repo)
 	if err != nil {
 		return err
 	}
-	db.Find(out)
-	return nil
+	return db.Find(out).Error
+}
+
+func (conn *DBConnection) Delete(in interface{}) error {
+	return conn.db.Delete(in).Error
+}
+
+func (conn *DBConnection) Create(out interface{}) error {
+	return conn.db.Create(out).Error
 }
 
 func (conn *DBConnection) Close() {

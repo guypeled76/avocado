@@ -115,6 +115,7 @@ type ComplexityRoot struct {
 		CreateRecipe        func(childComplexity int, input apimodel.NewRecipe) int
 		CreateVideo         func(childComplexity int, input apimodel.NewVideo) int
 		CreateWaterfall     func(childComplexity int, input apimodel.NewWaterfall) int
+		DeleteHashTag       func(childComplexity int, id string) int
 		DeleteImage         func(childComplexity int, input apimodel.DeleteImage) int
 		DeleteIngredient    func(childComplexity int, input apimodel.DeleteIngredient) int
 		DeleteMeal          func(childComplexity int, input apimodel.DeleteMeal) int
@@ -247,6 +248,7 @@ type MutationResolver interface {
 	UpdateMeal(ctx context.Context, input apimodel.UpdateMeal) (*apimodel.Result, error)
 	DeleteMeal(ctx context.Context, input apimodel.DeleteMeal) (*apimodel.Result, error)
 	CreateHashTag(ctx context.Context, name string) (*apimodel.HashTag, error)
+	DeleteHashTag(ctx context.Context, id string) (*apimodel.Result, error)
 	CreateImage(ctx context.Context, input apimodel.NewImage) (*apimodel.Image, error)
 	UpdateImage(ctx context.Context, input apimodel.UpdateImage) (*apimodel.Result, error)
 	UpdateImageHashTags(ctx context.Context, input apimodel.UpdateImageHashTags) (*apimodel.Result, error)
@@ -689,6 +691,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateWaterfall(childComplexity, args["input"].(apimodel.NewWaterfall)), true
+
+	case "Mutation.DeleteHashTag":
+		if e.complexity.Mutation.DeleteHashTag == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteHashTag_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteHashTag(childComplexity, args["id"].(string)), true
 
 	case "Mutation.DeleteImage":
 		if e.complexity.Mutation.DeleteImage == nil {
@@ -1658,6 +1672,7 @@ input DeleteIngredient {
 }`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashTag(name:String!): HashTag
+    deleteHashTag(id:ID!): Result
 
 }
 
@@ -2080,6 +2095,20 @@ func (ec *executionContext) field_Mutation_createWaterfall_args(ctx context.Cont
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteHashTag_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -4055,6 +4084,37 @@ func (ec *executionContext) _Mutation_createHashTag(ctx context.Context, field g
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteHashTag(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteHashTag_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteHashTag(rctx, args["id"].(string))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createImage(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -8263,6 +8323,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_deleteMeal(ctx, field)
 		case "createHashTag":
 			out.Values[i] = ec._Mutation_createHashTag(ctx, field)
+		case "deleteHashTag":
+			out.Values[i] = ec._Mutation_deleteHashTag(ctx, field)
 		case "createImage":
 			out.Values[i] = ec._Mutation_createImage(ctx, field)
 			if out.Values[i] == graphql.Null {
