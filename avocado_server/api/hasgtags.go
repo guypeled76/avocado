@@ -26,14 +26,14 @@ func (r *mutationResolver) CreateHashTag(ctx context.Context, name string) (*api
 	}, nil
 }
 
-func (r *queryResolver) HashTags(ctx context.Context) ([]apimodel.HashTag, error) {
+func (r *queryResolver) HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.HashTag, error) {
 
 	db, err := r.GetDBConnection()
 	if err != nil {
 		return []apimodel.HashTag{}, err
 	}
 
-	hashtags, err := db.GetHashTags()
+	hashtags, err := db.GetHashTags(filter)
 	if err != nil {
 		return []apimodel.HashTag{}, err
 	}
@@ -41,7 +41,7 @@ func (r *queryResolver) HashTags(ctx context.Context) ([]apimodel.HashTag, error
 	var results []apimodel.HashTag
 	for _, hashtag := range hashtags {
 		results = append(results, apimodel.HashTag{
-			ID:   string(hashtag.ID),
+			ID:   fmt.Sprint(hashtag.ID),
 			Name: hashtag.Name,
 		})
 	}

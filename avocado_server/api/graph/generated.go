@@ -165,7 +165,7 @@ type ComplexityRoot struct {
 		ClinicByID            func(childComplexity int, clinicID string) int
 		Clinics               func(childComplexity int) int
 		CurrentUser           func(childComplexity int) int
-		HashTags              func(childComplexity int) int
+		HashTags              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		ImageByID             func(childComplexity int, id string) int
 		ImagesByHashTags      func(childComplexity int, hashTags []string) int
 		Ingredients           func(childComplexity int) int
@@ -271,7 +271,7 @@ type QueryResolver interface {
 	Ingredients(ctx context.Context) ([]apimodel.Ingredient, error)
 	Meals(ctx context.Context) ([]apimodel.Meal, error)
 	Recipes(ctx context.Context) ([]apimodel.Recipe, error)
-	HashTags(ctx context.Context) ([]apimodel.HashTag, error)
+	HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.HashTag, error)
 	ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error)
 	ImageByID(ctx context.Context, id string) (*apimodel.Image, error)
 	NotificationsByUserID(ctx context.Context, userID string) ([]apimodel.Notification, error)
@@ -1066,7 +1066,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.HashTags(childComplexity), true
+		args, err := ec.field_Query_hashTags_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.HashTags(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
 	case "Query.ImageByID":
 		if e.complexity.Query.ImageByID == nil {
@@ -1657,7 +1662,7 @@ input DeleteIngredient {
 }
 
 extend type Query {
-    hashTags : [HashTag!]!
+    hashTags(filter:ResultsFilter) : [HashTag!]!
 }
 
 
@@ -1790,6 +1795,29 @@ type Result {
 enum ResultStatus {
     FAILURE,
     SUCCESS
+}
+
+input ResultsFilter {
+    sortOrder:ResultsOrder
+    sortBy:ResultsSortBy
+    contains:String
+    startsWith:String
+    endsWith:String
+    limit:Int
+    after:Timestamp
+    before:Timestamp
+}
+
+enum ResultsOrder {
+    Descending,
+    Ascending
+}
+
+enum ResultsSortBy {
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+    Name,
 }
 
 
@@ -2360,6 +2388,20 @@ func (ec *executionContext) field_Query_clinicById_args(ctx context.Context, raw
 		}
 	}
 	args["clinicID"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_hashTags_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -5083,10 +5125,17 @@ func (ec *executionContext) _Query_hashTags(ctx context.Context, field graphql.C
 		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_hashTags_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().HashTags(rctx)
+		return ec.resolvers.Query().HashTags(rctx, args["filter"].(*apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -7470,6 +7519,66 @@ func (ec *executionContext) unmarshalInputNewWaterfall(ctx context.Context, v in
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalNID2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputResultsFilter(ctx context.Context, v interface{}) (apimodel.ResultsFilter, error) {
+	var it apimodel.ResultsFilter
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "sortOrder":
+			var err error
+			it.SortOrder, err = ec.unmarshalOResultsOrder2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "sortBy":
+			var err error
+			it.SortBy, err = ec.unmarshalOResultsSortBy2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "contains":
+			var err error
+			it.Contains, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "startsWith":
+			var err error
+			it.StartsWith, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "endsWith":
+			var err error
+			it.EndsWith, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "limit":
+			var err error
+			it.Limit, err = ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "after":
+			var err error
+			it.After, err = ec.unmarshalOTimestamp2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "before":
+			var err error
+			it.Before, err = ec.unmarshalOTimestamp2ᚖtimeᚐTime(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -10211,6 +10320,66 @@ func (ec *executionContext) marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavoc
 		return graphql.Null
 	}
 	return ec._Result(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx context.Context, v interface{}) (apimodel.ResultsFilter, error) {
+	return ec.unmarshalInputResultsFilter(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx context.Context, v interface{}) (*apimodel.ResultsFilter, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) unmarshalOResultsOrder2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx context.Context, v interface{}) (apimodel.ResultsOrder, error) {
+	var res apimodel.ResultsOrder
+	return res, res.UnmarshalGQL(v)
+}
+
+func (ec *executionContext) marshalOResultsOrder2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx context.Context, sel ast.SelectionSet, v apimodel.ResultsOrder) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalOResultsOrder2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx context.Context, v interface{}) (*apimodel.ResultsOrder, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOResultsOrder2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOResultsOrder2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsOrder(ctx context.Context, sel ast.SelectionSet, v *apimodel.ResultsOrder) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
+func (ec *executionContext) unmarshalOResultsSortBy2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx context.Context, v interface{}) (apimodel.ResultsSortBy, error) {
+	var res apimodel.ResultsSortBy
+	return res, res.UnmarshalGQL(v)
+}
+
+func (ec *executionContext) marshalOResultsSortBy2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx context.Context, sel ast.SelectionSet, v apimodel.ResultsSortBy) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalOResultsSortBy2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx context.Context, v interface{}) (*apimodel.ResultsSortBy, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOResultsSortBy2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOResultsSortBy2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsSortBy(ctx context.Context, sel ast.SelectionSet, v *apimodel.ResultsSortBy) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

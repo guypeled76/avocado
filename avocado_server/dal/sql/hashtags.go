@@ -1,10 +1,18 @@
 package sql
 
-import "github.com/gremlinsapps/avocado_server/dal/model"
+import (
+	"github.com/gremlinsapps/avocado_server/api/model"
+	"github.com/gremlinsapps/avocado_server/dal/model"
+)
 
-func (conn *DBConnection) GetHashTags() ([]dalmodel.HashTag, error) {
+func (conn *DBConnection) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.HashTag, error) {
 	var hashtags []dalmodel.HashTag
-	conn.db.Model(&dalmodel.HashTag{}).Find(&hashtags)
+	db := conn.db.Model(&hashtags)
+	db, err := Filter(db, filter)
+	if err != nil {
+		return hashtags, err
+	}
+	db.Find(&hashtags)
 	return hashtags, nil
 }
 

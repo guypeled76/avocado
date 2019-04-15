@@ -185,6 +185,17 @@ type Result struct {
 	Status ResultStatus `json:"status"`
 }
 
+type ResultsFilter struct {
+	SortOrder  *ResultsOrder  `json:"sortOrder"`
+	SortBy     *ResultsSortBy `json:"sortBy"`
+	Contains   *string        `json:"contains"`
+	StartsWith *string        `json:"startsWith"`
+	EndsWith   *string        `json:"endsWith"`
+	Limit      *int           `json:"limit"`
+	After      *time.Time     `json:"after"`
+	Before     *time.Time     `json:"before"`
+}
+
 type UpdateImage struct {
 	ID       string   `json:"id"`
 	Image    string   `json:"image"`
@@ -351,5 +362,91 @@ func (e *ResultStatus) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ResultStatus) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type ResultsOrder string
+
+const (
+	ResultsOrderDescending ResultsOrder = "Descending"
+	ResultsOrderAscending  ResultsOrder = "Ascending"
+)
+
+var AllResultsOrder = []ResultsOrder{
+	ResultsOrderDescending,
+	ResultsOrderAscending,
+}
+
+func (e ResultsOrder) IsValid() bool {
+	switch e {
+	case ResultsOrderDescending, ResultsOrderAscending:
+		return true
+	}
+	return false
+}
+
+func (e ResultsOrder) String() string {
+	return string(e)
+}
+
+func (e *ResultsOrder) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ResultsOrder(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ResultsOrder", str)
+	}
+	return nil
+}
+
+func (e ResultsOrder) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type ResultsSortBy string
+
+const (
+	ResultsSortByCreatedAt ResultsSortBy = "CreatedAt"
+	ResultsSortByUpdatedAt ResultsSortBy = "UpdatedAt"
+	ResultsSortByDeletedAt ResultsSortBy = "DeletedAt"
+	ResultsSortByName      ResultsSortBy = "Name"
+)
+
+var AllResultsSortBy = []ResultsSortBy{
+	ResultsSortByCreatedAt,
+	ResultsSortByUpdatedAt,
+	ResultsSortByDeletedAt,
+	ResultsSortByName,
+}
+
+func (e ResultsSortBy) IsValid() bool {
+	switch e {
+	case ResultsSortByCreatedAt, ResultsSortByUpdatedAt, ResultsSortByDeletedAt, ResultsSortByName:
+		return true
+	}
+	return false
+}
+
+func (e ResultsSortBy) String() string {
+	return string(e)
+}
+
+func (e *ResultsSortBy) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ResultsSortBy(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ResultsSortBy", str)
+	}
+	return nil
+}
+
+func (e ResultsSortBy) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

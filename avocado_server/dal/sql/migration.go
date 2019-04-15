@@ -6,7 +6,7 @@ import (
 
 func AutoMigrate() {
 	conn := Connect()
-	defer conn.Close()
+	//defer conn.Close()
 	conn.db.AutoMigrate(
 		&dalmodel.HashTag{},
 		&dalmodel.Notification{},

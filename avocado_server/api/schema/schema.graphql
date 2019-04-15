@@ -18,6 +18,29 @@ enum ResultStatus {
     SUCCESS
 }
 
+input ResultsFilter {
+    sortOrder:ResultsOrder
+    sortBy:ResultsSortBy
+    contains:String
+    startsWith:String
+    endsWith:String
+    limit:Int
+    after:Timestamp
+    before:Timestamp
+}
+
+enum ResultsOrder {
+    Descending,
+    Ascending
+}
+
+enum ResultsSortBy {
+    CreatedAt,
+    UpdatedAt,
+    DeletedAt,
+    Name,
+}
+
 
 
 
