@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"sync"
@@ -29,6 +30,16 @@ func Connect() *DBConnection {
 		}
 	})
 	return instance
+}
+
+func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter) error {
+	db := conn.db.Model(out)
+	db, err := Filter(db, filter)
+	if err != nil {
+		return err
+	}
+	db.Find(out)
+	return nil
 }
 
 func (conn *DBConnection) Close() {

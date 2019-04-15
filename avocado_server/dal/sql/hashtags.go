@@ -6,14 +6,9 @@ import (
 )
 
 func (conn *DBConnection) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.HashTag, error) {
-	var hashtags []dalmodel.HashTag
-	db := conn.db.Model(&hashtags)
-	db, err := Filter(db, filter)
-	if err != nil {
-		return hashtags, err
-	}
-	db.Find(&hashtags)
-	return hashtags, nil
+	hashtags := make([]dalmodel.HashTag, 0)
+	err := conn.Select(&hashtags, filter)
+	return hashtags, err
 }
 
 func (conn *DBConnection) CreateHashTag(name string) (*dalmodel.HashTag, error) {
