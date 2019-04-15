@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
@@ -18,7 +19,7 @@ func (r *mutationResolver) DeleteHashTag(ctx context.Context, id string) (*apimo
 
 	uid, err := strconv.ParseUint(id, 10, 32)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("could not parse uint from hash tag id")
 	}
 
 	err = repo.DeleteHashTag(uint(uid))
