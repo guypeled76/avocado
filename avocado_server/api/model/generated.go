@@ -102,6 +102,10 @@ type Message struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
+type NewChat struct {
+	Description *string `json:"description"`
+}
+
 type NewImage struct {
 	Image    string   `json:"image"`
 	Hashtags []string `json:"hashtags"`

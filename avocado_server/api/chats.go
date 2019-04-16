@@ -14,7 +14,7 @@ func (r *queryResolver) ChatByID(ctx context.Context, chatID string) (*apimodel.
 	panic("implement me")
 }
 
-func (r *mutationResolver) CreateChat(ctx context.Context) (*apimodel.Chat, error) {
+func (r *mutationResolver) CreateChat(ctx context.Context, input apimodel.NewChat) (*apimodel.Chat, error) {
 	return &apimodel.Chat{
 		ID: "ddd",
 		Messages: []apimodel.Message{{

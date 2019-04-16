@@ -1,7 +1,7 @@
 
 
 extend type Mutation {
-    createChat : Chat!
+    createChat(input: NewChat!) : Chat!
 
     createMessage(input: NewMessage!) : Message!
     updateMessage(input: UpdateMessage!) : Result
@@ -17,7 +17,11 @@ extend type Query {
 type Chat {
     id: ID!
     createdAt:Timestamp!
-    messages(first:Int, after:String):[Message!]!
+    messages(filter: ResultsFilter!):[Message!]!
+}
+
+input NewChat {
+    description:String
 }
 
 type Message {

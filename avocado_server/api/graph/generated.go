@@ -47,7 +47,7 @@ type ComplexityRoot struct {
 	Chat struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
-		Messages  func(childComplexity int, first *int, after *string) int
+		Messages  func(childComplexity int, filter apimodel.ResultsFilter) int
 	}
 
 	Clinic struct {
@@ -105,7 +105,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateChat          func(childComplexity int) int
+		CreateChat          func(childComplexity int, input apimodel.NewChat) int
 		CreateHashTag       func(childComplexity int, name string) int
 		CreateImage         func(childComplexity int, input apimodel.NewImage) int
 		CreateIngredient    func(childComplexity int, input apimodel.NewIngredient) int
@@ -238,7 +238,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	Logon(ctx context.Context) (*apimodel.Result, error)
-	CreateChat(ctx context.Context) (*apimodel.Chat, error)
+	CreateChat(ctx context.Context, input apimodel.NewChat) (*apimodel.Chat, error)
 	CreateMessage(ctx context.Context, input apimodel.NewMessage) (*apimodel.Message, error)
 	UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error)
 	DeleteMessage(ctx context.Context, input apimodel.DeleteMessage) (*apimodel.Result, error)
@@ -330,7 +330,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Chat.Messages(childComplexity, args["first"].(*int), args["after"].(*string)), true
+		return e.complexity.Chat.Messages(childComplexity, args["filter"].(apimodel.ResultsFilter)), true
 
 	case "Clinic.CreatedAt":
 		if e.complexity.Clinic.CreatedAt == nil {
@@ -589,7 +589,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Mutation.CreateChat(childComplexity), true
+		args, err := ec.field_Mutation_createChat_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateChat(childComplexity, args["input"].(apimodel.NewChat)), true
 
 	case "Mutation.CreateHashTag":
 		if e.complexity.Mutation.CreateHashTag == nil {
@@ -1565,7 +1570,7 @@ var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "api/schema/chats.graphql", Input: `
 
 extend type Mutation {
-    createChat : Chat!
+    createChat(input: NewChat!) : Chat!
 
     createMessage(input: NewMessage!) : Message!
     updateMessage(input: UpdateMessage!) : Result
@@ -1581,7 +1586,11 @@ extend type Query {
 type Chat {
     id: ID!
     createdAt:Timestamp!
-    messages(first:Int, after:String):[Message!]!
+    messages(filter: ResultsFilter!):[Message!]!
+}
+
+input NewChat {
+    description:String
 }
 
 type Message {
@@ -2018,22 +2027,28 @@ input NewWaterfall {
 func (ec *executionContext) field_Chat_messages_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *int
-	if tmp, ok := rawArgs["first"]; ok {
-		arg0, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+	var arg0 apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["first"] = arg0
-	var arg1 *string
-	if tmp, ok := rawArgs["after"]; ok {
-		arg1, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createChat_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.NewChat
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewChat2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewChat(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["after"] = arg1
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -3761,10 +3776,17 @@ func (ec *executionContext) _Mutation_createChat(ctx context.Context, field grap
 		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createChat_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateChat(rctx)
+		return ec.resolvers.Mutation().CreateChat(rctx, args["input"].(apimodel.NewChat))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -7626,6 +7648,24 @@ func (ec *executionContext) unmarshalInputDeleteWaterfall(ctx context.Context, v
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNewChat(ctx context.Context, v interface{}) (apimodel.NewChat, error) {
+	var it apimodel.NewChat
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "description":
+			var err error
+			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNewImage(ctx context.Context, v interface{}) (apimodel.NewImage, error) {
 	var it apimodel.NewImage
 	var asMap = v.(map[string]interface{})
@@ -10020,6 +10060,10 @@ func (ec *executionContext) marshalNMessage2ᚖgithubᚗcomᚋgremlinsappsᚋavo
 	return ec._Message(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalNNewChat2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewChat(ctx context.Context, v interface{}) (apimodel.NewChat, error) {
+	return ec.unmarshalInputNewChat(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNNewImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewImage(ctx context.Context, v interface{}) (apimodel.NewImage, error) {
 	return ec.unmarshalInputNewImage(ctx, v)
 }
@@ -10223,6 +10267,10 @@ func (ec *executionContext) unmarshalNResultStatus2githubᚗcomᚋgremlinsapps�
 
 func (ec *executionContext) marshalNResultStatus2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultStatus(ctx context.Context, sel ast.SelectionSet, v apimodel.ResultStatus) graphql.Marshaler {
 	return v
+}
+
+func (ec *executionContext) unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx context.Context, v interface{}) (apimodel.ResultsFilter, error) {
+	return ec.unmarshalInputResultsFilter(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
