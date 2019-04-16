@@ -1,12 +1,27 @@
 
 
+extend type Mutation {
+    createUser(input:NewUser!): User
+    deleteUser(id:ID!): Result
+
+}
+
 extend type Query {
+    users(filter:ResultsFilter) : [User!]!
     userById(userId:ID!): User!
+}
+
+input NewUser {
+    name: String!
+    displayName: String!
+    email: String!
+    image: String
 }
 
 type User {
     id: ID!
     name: String!
+    displayName: String!
     email: String!
     image: String!
     hashtags:[HashTag!]!

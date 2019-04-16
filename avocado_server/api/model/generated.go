@@ -132,6 +132,13 @@ type NewRecipe struct {
 	Hashtags []string `json:"hashtags"`
 }
 
+type NewUser struct {
+	Name        string  `json:"name"`
+	DisplayName string  `json:"displayName"`
+	Email       string  `json:"email"`
+	Image       *string `json:"image"`
+}
+
 type NewVideo struct {
 	Video    string   `json:"video"`
 	Hashtags []string `json:"hashtags"`
@@ -255,6 +262,7 @@ type UpdateWaterfall struct {
 type User struct {
 	ID            string         `json:"id"`
 	Name          string         `json:"name"`
+	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
 	Image         string         `json:"image"`
 	Hashtags      []HashTag      `json:"hashtags"`
