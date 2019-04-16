@@ -21,3 +21,15 @@ models:
   # Custom scalars point to the name without the Marshal|Unmarshal in front
   Timestamp:
     model: github.com/gremlinsapps/avocado_server/dal.Timestamp
+  User:
+    fields:
+      notifications:
+        resolver: true
+      hashtags:
+        resolver: true
+  Post:
+    fields:
+      chat:
+        resolver: true
+      hashtags:
+        resolver: true

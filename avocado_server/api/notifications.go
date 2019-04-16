@@ -8,3 +8,7 @@ import (
 func (r *queryResolver) NotificationsByUserID(ctx context.Context, userID string) ([]apimodel.Notification, error) {
 	panic("implement me")
 }
+
+func (r *userResolver) Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error) {
+	panic("implement me")
+}

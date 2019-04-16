@@ -64,6 +64,20 @@ func (r *queryResolver) HashTags(ctx context.Context, filter *apimodel.ResultsFi
 	return results, nil
 }
 
+func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.HashTag, error) {
+	return []apimodel.HashTag{
+		{ID: "1", Name: "fff"},
+		{ID: "2", Name: "ggg"},
+	}, nil
+}
+
+func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.HashTag, error) {
+	return []apimodel.HashTag{
+		{ID: "1", Name: "fff"},
+		{ID: "2", Name: "ggg"},
+	}, nil
+}
+
 func convertHashTag(hashtag *dalmodel.HashTag) *apimodel.HashTag {
 	return &apimodel.HashTag{
 		ID:        fmt.Sprint(hashtag.ID),

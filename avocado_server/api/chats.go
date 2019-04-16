@@ -96,3 +96,7 @@ func (r *queryResolver) Chat(ctx context.Context, chatID string) (*apimodel.Chat
 		CreatedAt: time.Now().UTC(),
 	}, nil
 }
+
+func (r *postResolver) Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error) {
+	panic("implement me")
+}

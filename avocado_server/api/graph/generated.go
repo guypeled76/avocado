@@ -37,7 +37,9 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
+	Post() PostResolver
 	Query() QueryResolver
+	User() UserResolver
 }
 
 type DirectiveRoot struct {
@@ -270,6 +272,10 @@ type MutationResolver interface {
 	UpdateWaterfall(ctx context.Context, input apimodel.UpdateWaterfall) (*apimodel.Result, error)
 	DeleteWaterfall(ctx context.Context, input apimodel.DeleteWaterfall) (*apimodel.Result, error)
 }
+type PostResolver interface {
+	Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.HashTag, error)
+	Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error)
+}
 type QueryResolver interface {
 	CurrentUser(ctx context.Context) (*apimodel.User, error)
 	ChatsByUserID(ctx context.Context, userID string) ([]apimodel.Chat, error)
@@ -289,6 +295,10 @@ type QueryResolver interface {
 	VideosByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Video, error)
 	VideoByID(ctx context.Context, id string) (*apimodel.Video, error)
 	WaterfallByUserID(ctx context.Context, waterfallID string) (*apimodel.Waterfall, error)
+}
+type UserResolver interface {
+	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.HashTag, error)
+	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
 }
 
 type executableSchema struct {
@@ -4923,13 +4933,13 @@ func (ec *executionContext) _Post_hashtags(ctx context.Context, field graphql.Co
 		Object:   "Post",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Hashtags, nil
+		return ec.resolvers.Post().Hashtags(rctx, obj)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -4950,13 +4960,13 @@ func (ec *executionContext) _Post_chat(ctx context.Context, field graphql.Collec
 		Object:   "Post",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Chat, nil
+		return ec.resolvers.Post().Chat(rctx, obj)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -4964,10 +4974,10 @@ func (ec *executionContext) _Post_chat(ctx context.Context, field graphql.Collec
 		}
 		return graphql.Null
 	}
-	res := resTmp.(apimodel.Chat)
+	res := resTmp.(*apimodel.Chat)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNChat2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
+	return ec.marshalNChat2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Post_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Post) graphql.Marshaler {
@@ -6197,13 +6207,13 @@ func (ec *executionContext) _User_hashtags(ctx context.Context, field graphql.Co
 		Object:   "User",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Hashtags, nil
+		return ec.resolvers.User().Hashtags(rctx, obj)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -6224,13 +6234,13 @@ func (ec *executionContext) _User_notifications(ctx context.Context, field graph
 		Object:   "User",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Notifications, nil
+		return ec.resolvers.User().Notifications(rctx, obj)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -8750,15 +8760,33 @@ func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj
 				invalid = true
 			}
 		case "hashtags":
-			out.Values[i] = ec._Post_hashtags(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Post_hashtags(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "chat":
-			out.Values[i] = ec._Post_chat(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Post_chat(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "createdBy":
 			out.Values[i] = ec._Post_createdBy(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -9256,15 +9284,33 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 				invalid = true
 			}
 		case "hashtags":
-			out.Values[i] = ec._User_hashtags(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_hashtags(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "notifications":
-			out.Values[i] = ec._User_notifications(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_notifications(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "profile":
 			out.Values[i] = ec._User_profile(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
