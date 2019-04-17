@@ -2,6 +2,7 @@
 
 extend type Mutation {
     createUser(input:NewUser!): User
+    updateUser(input:UpdateUser!): Result
     deleteUser(id:ID!): Result
 
 }
@@ -30,6 +31,14 @@ type User {
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
+}
+
+input UpdateUser {
+    id: ID!
+    name: String
+    displayName: String
+    email: String
+    hashtags:[ID!]
 }
 
 type Profile {

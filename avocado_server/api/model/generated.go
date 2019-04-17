@@ -246,6 +246,14 @@ type UpdateRecipe struct {
 	Hashtags []string `json:"hashtags"`
 }
 
+type UpdateUser struct {
+	ID          string   `json:"id"`
+	Name        *string  `json:"name"`
+	DisplayName *string  `json:"displayName"`
+	Email       *string  `json:"email"`
+	Hashtags    []string `json:"hashtags"`
+}
+
 type UpdateVideo struct {
 	ID       string   `json:"id"`
 	Video    string   `json:"video"`

@@ -66,7 +66,61 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 }
 
 func (r *queryResolver) UserByID(ctx context.Context, userID string) (*apimodel.User, error) {
-	panic("implement me")
+	repo, err := sql.CreateUserRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	uid, err := strconv.ParseUint(userID, 10, 32)
+	if err != nil {
+		return nil, errors.New("could not parse uint from hash tag id")
+	}
+
+	user, err := repo.GetUser(uint(uid))
+	if err != nil {
+		return nil, err
+	}
+
+	return convertUser(user), nil
+}
+
+func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error) {
+	repo, err := sql.CreateUserRepo(r)
+	if err != nil {
+		return &apimodel.Result{Status: "error"}, err
+	}
+
+	uid, err := strconv.ParseUint(input.ID, 10, 32)
+	if err != nil {
+		return nil, errors.New("could not parse uint from hash tag id")
+	}
+
+	data := make(map[string]interface{})
+
+	if input.Name != nil {
+		data["Name"] = *input.Name
+	}
+
+	if input.DisplayName != nil {
+		data["DisplayName"] = *input.DisplayName
+	}
+
+	if input.Email != nil {
+		data["Email"] = *input.Email
+	}
+
+	if len(data) > 0 {
+		err = repo.UpdateUser(uint(uid), data)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if input.Hashtags != nil {
+
+	}
+
+	return &apimodel.Result{Status: "ok"}, nil
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {

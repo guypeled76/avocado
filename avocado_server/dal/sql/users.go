@@ -47,3 +47,14 @@ func (repo *UserRepository) DeleteUser(ID uint) error {
 	err := repo.conn.Delete(&hashtag)
 	return err
 }
+
+func (repo *UserRepository) GetUser(ID uint) (*dalmodel.User, error) {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	err := repo.conn.Get(&user)
+	return &user, err
+}
+
+func (repo *UserRepository) UpdateUser(ID uint, data map[string]interface{}) error {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	return repo.conn.Update(&user, data)
+}

@@ -41,6 +41,11 @@ func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter
 	return db.Find(out).Error
 }
 
+func (conn *DBConnection) Get(out interface{}) error {
+	db := conn.db.Model(out)
+	return db.First(out).Error
+}
+
 func (conn *DBConnection) Delete(in interface{}) error {
 	return conn.db.Delete(in).Error
 }
@@ -51,4 +56,8 @@ func (conn *DBConnection) Create(out interface{}) error {
 
 func (conn *DBConnection) Close() {
 	conn.db.Close()
+}
+
+func (conn *DBConnection) Update(in interface{}, data map[string]interface{}) error {
+	return conn.db.Model(in).Updates(data).Error
 }

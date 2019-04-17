@@ -136,6 +136,7 @@ type ComplexityRoot struct {
 		UpdateMessage       func(childComplexity int, input apimodel.UpdateMessage) int
 		UpdatePost          func(childComplexity int, input apimodel.UpdatePost) int
 		UpdateRecipe        func(childComplexity int, input apimodel.UpdateRecipe) int
+		UpdateUser          func(childComplexity int, input apimodel.UpdateUser) int
 		UpdateVideo         func(childComplexity int, input apimodel.UpdateVideo) int
 		UpdateVideoHashTags func(childComplexity int, input apimodel.UpdateVideoHashTags) int
 		UpdateWaterfall     func(childComplexity int, input apimodel.UpdateWaterfall) int
@@ -263,6 +264,7 @@ type MutationResolver interface {
 	UpdatePost(ctx context.Context, input apimodel.UpdatePost) (*apimodel.Result, error)
 	DeletePost(ctx context.Context, input apimodel.DeletePost) (*apimodel.Result, error)
 	CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error)
+	UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error)
 	DeleteUser(ctx context.Context, id string) (*apimodel.Result, error)
 	CreateVideo(ctx context.Context, input apimodel.NewVideo) (*apimodel.Video, error)
 	UpdateVideo(ctx context.Context, input apimodel.UpdateVideo) (*apimodel.Result, error)
@@ -936,6 +938,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateRecipe(childComplexity, args["input"].(apimodel.UpdateRecipe)), true
+
+	case "Mutation.UpdateUser":
+		if e.complexity.Mutation.UpdateUser == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateUser_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateUser(childComplexity, args["input"].(apimodel.UpdateUser)), true
 
 	case "Mutation.UpdateVideo":
 		if e.complexity.Mutation.UpdateVideo == nil {
@@ -1915,6 +1929,7 @@ enum ResultsSortBy {
 
 extend type Mutation {
     createUser(input:NewUser!): User
+    updateUser(input:UpdateUser!): Result
     deleteUser(id:ID!): Result
 
 }
@@ -1943,6 +1958,14 @@ type User {
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
+}
+
+input UpdateUser {
+    id: ID!
+    name: String
+    displayName: String
+    email: String
+    hashtags:[ID!]
 }
 
 type Profile {
@@ -2432,6 +2455,20 @@ func (ec *executionContext) field_Mutation_updateRecipe_args(ctx context.Context
 	var arg0 apimodel.UpdateRecipe
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNUpdateRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateRecipe(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.UpdateUser
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateUser(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -4508,6 +4545,37 @@ func (ec *executionContext) _Mutation_createUser(ctx context.Context, field grap
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateUser(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateUser_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateUser(rctx, args["input"].(apimodel.UpdateUser))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -8156,6 +8224,48 @@ func (ec *executionContext) unmarshalInputUpdateRecipe(ctx context.Context, v in
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdateUser(ctx context.Context, v interface{}) (apimodel.UpdateUser, error) {
+	var it apimodel.UpdateUser
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+			it.Name, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "displayName":
+			var err error
+			it.DisplayName, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "email":
+			var err error
+			it.Email, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalOID2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateVideo(ctx context.Context, v interface{}) (apimodel.UpdateVideo, error) {
 	var it apimodel.UpdateVideo
 	var asMap = v.(map[string]interface{})
@@ -8663,6 +8773,8 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_deletePost(ctx, field)
 		case "createUser":
 			out.Values[i] = ec._Mutation_createUser(ctx, field)
+		case "updateUser":
+			out.Values[i] = ec._Mutation_updateUser(ctx, field)
 		case "deleteUser":
 			out.Values[i] = ec._Mutation_deleteUser(ctx, field)
 		case "createVideo":
@@ -10398,6 +10510,10 @@ func (ec *executionContext) unmarshalNUpdateRecipe2githubᚗcomᚋgremlinsapps�
 	return ec.unmarshalInputUpdateRecipe(ctx, v)
 }
 
+func (ec *executionContext) unmarshalNUpdateUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateUser(ctx context.Context, v interface{}) (apimodel.UpdateUser, error) {
+	return ec.unmarshalInputUpdateUser(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNUpdateVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateVideo(ctx context.Context, v interface{}) (apimodel.UpdateVideo, error) {
 	return ec.unmarshalInputUpdateVideo(ctx, v)
 }
@@ -10772,6 +10888,38 @@ func (ec *executionContext) marshalOHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavo
 		return graphql.Null
 	}
 	return ec._HashTag(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOID2ᚕstring(ctx context.Context, v interface{}) ([]string, error) {
+	var vSlice []interface{}
+	if v != nil {
+		if tmp1, ok := v.([]interface{}); ok {
+			vSlice = tmp1
+		} else {
+			vSlice = []interface{}{v}
+		}
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		res[i], err = ec.unmarshalNID2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOID2ᚕstring(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNID2string(ctx, sel, v[i])
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
