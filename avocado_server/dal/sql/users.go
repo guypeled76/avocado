@@ -33,7 +33,6 @@ func (repo *UserRepository) CreateUser(input apimodel.NewUser) (*dalmodel.User, 
 		Name:        input.Name,
 		DisplayName: input.DisplayName,
 		Email:       input.Email,
-		//Image: input.Image,
 	}
 	err := repo.conn.Create(&hashtag)
 	if err != nil {

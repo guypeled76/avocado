@@ -2,12 +2,10 @@ package api
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
-	"strconv"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error) {
@@ -30,12 +28,12 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*apimodel
 		return nil, err
 	}
 
-	uid, err := strconv.ParseUint(id, 10, 32)
+	uid, err := sql.ParseUint(id)
 	if err != nil {
-		return nil, errors.New("could not parse uint from hash tag id")
+		return nil, err
 	}
 
-	err = repo.DeleteUser(uint(uid))
+	err = repo.DeleteUser(uid)
 	if err != nil {
 		return nil, err
 	}
@@ -65,18 +63,18 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 	panic("implement me")
 }
 
-func (r *queryResolver) UserByID(ctx context.Context, userID string) (*apimodel.User, error) {
+func (r *queryResolver) UserByID(ctx context.Context, id string) (*apimodel.User, error) {
 	repo, err := sql.CreateUserRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := strconv.ParseUint(userID, 10, 32)
+	uid, err := sql.ParseUint(id)
 	if err != nil {
-		return nil, errors.New("could not parse uint from hash tag id")
+		return nil, err
 	}
 
-	user, err := repo.GetUser(uint(uid))
+	user, err := repo.GetUser(uid)
 	if err != nil {
 		return nil, err
 	}
@@ -90,9 +88,9 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		return &apimodel.Result{Status: "error"}, err
 	}
 
-	uid, err := strconv.ParseUint(input.ID, 10, 32)
+	uid, err := sql.ParseUint(input.ID)
 	if err != nil {
-		return nil, errors.New("could not parse uint from hash tag id")
+		return nil, err
 	}
 
 	data := make(map[string]interface{})
@@ -110,7 +108,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	}
 
 	if len(data) > 0 {
-		err = repo.UpdateUser(uint(uid), data)
+		err = repo.UpdateUser(uid, data)
 		if err != nil {
 			return nil, err
 		}
