@@ -9,7 +9,7 @@ extend type Mutation {
 
 extend type Query {
     users(filter:ResultsFilter) : [User!]!
-    userById(userId:ID!): User!
+    userById(id:ID!): User!
 }
 
 input NewUser {

@@ -1,0 +1,79 @@
+
+extend type Mutation {
+    createMeasurement(input:NewMeasurement!): Measurement
+    updateMeasurement(input:UpdateMeasurement!): Result
+    deleteMeasurement(id:ID!): Result
+
+}
+
+extend type Query {
+    measurements(filter:ResultsFilter) : [Measurement!]!
+    measurementById(id:ID!): Measurement!
+}
+
+type Measurement {
+    id: ID!
+    name:String!
+    chat: Chat!
+    unit:MeasurementUnit!
+    description: String!
+    hashtags:[Hashtag!]!
+    results:[ MeasurementResult!]!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+enum MeasurementUnit {
+    CENTIMETER
+    INCH
+    KILO
+    POUNDS
+    REPETITIONS
+}
+
+input NewMeasurement{
+    id: ID!
+    name:String!
+    unit:MeasurementUnit!
+    description: String!
+    hashtags:[ID!]
+}
+
+input UpdateMeasurement{
+    id: ID!
+    name:String
+    description: String
+    hashtags:[ID!]
+}
+
+interface MeasurementResult {
+    id:ID!
+    chat: Chat!
+    text: String!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+type NumericMeasurementResult implements MeasurementResult {
+    id:ID!
+    chat: Chat!
+    text: String!
+    value: Float!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+
+
+type TextMeasurementResult implements MeasurementResult {
+    id:ID!
+    chat: Chat!
+    text: String!
+    value: String!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}

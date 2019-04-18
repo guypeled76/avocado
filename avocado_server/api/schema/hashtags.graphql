@@ -1,11 +1,11 @@
 extend type Mutation {
-    createHashTag(name:String!): Hashtag
-    deleteHashTag(id:ID!): Result
+    createHashtag(name:String!): Hashtag
+    deleteHashtag(id:ID!): Result
 
 }
 
 extend type Query {
-    hashTags(filter:ResultsFilter) : [Hashtag!]!
+    hashtags(filter:ResultsFilter) : [Hashtag!]!
 }
 
 

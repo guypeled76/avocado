@@ -150,7 +150,7 @@ func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apim
 		return nil, err
 	}
 
-	return convertHashTags(hashTags), nil
+	return convertHashtags(hashTags), nil
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {

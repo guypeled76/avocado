@@ -6,33 +6,33 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type HashTagRepository struct {
+type HashtagRepository struct {
 	conn *DBConnection
 }
 
-func CreateHashTagRepo(container DBConnectionContainer) (*HashTagRepository, error) {
+func CreateHashtagRepo(container DBConnectionContainer) (*HashtagRepository, error) {
 	conn, err := container.GetDBConnection()
 	if err != nil {
 		return nil, err
 	}
-	return &HashTagRepository{conn}, nil
+	return &HashtagRepository{conn}, nil
 }
 
-func (repo *HashTagRepository) GetTextColumn() string {
+func (repo *HashtagRepository) GetTextColumn() string {
 	return "name"
 }
 
-func (repo *HashTagRepository) GetBaseName() string {
+func (repo *HashtagRepository) GetBaseName() string {
 	return "hashtag"
 }
 
-func (repo *HashTagRepository) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	hashtags := make([]dalmodel.Hashtag, 0)
 	err := repo.conn.Select(&hashtags, filter, repo)
 	return hashtags, err
 }
 
-func (repo *HashTagRepository) CreateHashTag(name string) (*dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) CreateHashtag(name string) (*dalmodel.Hashtag, error) {
 	hashtag := dalmodel.Hashtag{
 		Name: name,
 	}
@@ -43,7 +43,7 @@ func (repo *HashTagRepository) CreateHashTag(name string) (*dalmodel.Hashtag, er
 	return &hashtag, nil
 }
 
-func (repo *HashTagRepository) DeleteHashTag(ID uint) error {
+func (repo *HashtagRepository) DeleteHashtag(ID uint) error {
 	hashtag := dalmodel.Hashtag{Model: gorm.Model{ID: ID}}
 	err := repo.conn.Delete(&hashtag)
 	return err

@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+type MeasurementResult interface {
+	IsMeasurementResult()
+}
+
 type Chat struct {
 	ID        string    `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
@@ -93,6 +97,19 @@ type Meal struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
+type Measurement struct {
+	ID          string              `json:"id"`
+	Name        string              `json:"name"`
+	Chat        Chat                `json:"chat"`
+	Unit        MeasurementUnit     `json:"unit"`
+	Description string              `json:"description"`
+	Hashtags    []Hashtag           `json:"hashtags"`
+	Results     []MeasurementResult `json:"results"`
+	CreatedAt   time.Time           `json:"createdAt"`
+	UpdatedAt   time.Time           `json:"updatedAt"`
+	DeletedAt   *time.Time          `json:"deletedAt"`
+}
+
 type Message struct {
 	ID        string     `json:"id"`
 	Message   string     `json:"message"`
@@ -119,6 +136,14 @@ type NewIngredient struct {
 type NewMeal struct {
 	Name     string   `json:"name"`
 	Hashtags []string `json:"hashtags"`
+}
+
+type NewMeasurement struct {
+	ID          string          `json:"id"`
+	Name        string          `json:"name"`
+	Unit        MeasurementUnit `json:"unit"`
+	Description string          `json:"description"`
+	Hashtags    []string        `json:"hashtags"`
 }
 
 type NewMessage struct {
@@ -159,6 +184,18 @@ type Notification struct {
 	Reference Reference `json:"reference"`
 	CreatedAt time.Time `json:"createdAt"`
 }
+
+type NumericMeasurementResult struct {
+	ID        string     `json:"id"`
+	Chat      Chat       `json:"chat"`
+	Text      string     `json:"text"`
+	Value     float64    `json:"value"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+func (NumericMeasurementResult) IsMeasurementResult() {}
 
 type Post struct {
 	ID        string     `json:"id"`
@@ -208,6 +245,18 @@ type ResultsFilter struct {
 	Hashtags   []string       `json:"hashtags"`
 }
 
+type TextMeasurementResult struct {
+	ID        string     `json:"id"`
+	Chat      Chat       `json:"chat"`
+	Text      string     `json:"text"`
+	Value     string     `json:"value"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+func (TextMeasurementResult) IsMeasurementResult() {}
+
 type UpdateImage struct {
 	ID       string   `json:"id"`
 	Image    string   `json:"image"`
@@ -229,6 +278,13 @@ type UpdateMeal struct {
 	ID       string   `json:"id"`
 	Name     *string  `json:"name"`
 	Hashtags []string `json:"hashtags"`
+}
+
+type UpdateMeasurement struct {
+	ID          string   `json:"id"`
+	Name        *string  `json:"name"`
+	Description *string  `json:"description"`
+	Hashtags    []string `json:"hashtags"`
 }
 
 type UpdateMessage struct {
@@ -302,6 +358,53 @@ type Waterfall struct {
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+type MeasurementUnit string
+
+const (
+	MeasurementUnitCentimeter  MeasurementUnit = "CENTIMETER"
+	MeasurementUnitInch        MeasurementUnit = "INCH"
+	MeasurementUnitKilo        MeasurementUnit = "KILO"
+	MeasurementUnitPounds      MeasurementUnit = "POUNDS"
+	MeasurementUnitRepetitions MeasurementUnit = "REPETITIONS"
+)
+
+var AllMeasurementUnit = []MeasurementUnit{
+	MeasurementUnitCentimeter,
+	MeasurementUnitInch,
+	MeasurementUnitKilo,
+	MeasurementUnitPounds,
+	MeasurementUnitRepetitions,
+}
+
+func (e MeasurementUnit) IsValid() bool {
+	switch e {
+	case MeasurementUnitCentimeter, MeasurementUnitInch, MeasurementUnitKilo, MeasurementUnitPounds, MeasurementUnitRepetitions:
+		return true
+	}
+	return false
+}
+
+func (e MeasurementUnit) String() string {
+	return string(e)
+}
+
+func (e *MeasurementUnit) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = MeasurementUnit(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid MeasurementUnit", str)
+	}
+	return nil
+}
+
+func (e MeasurementUnit) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type ReferenceType string

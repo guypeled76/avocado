@@ -10,9 +10,9 @@ import (
 	"strconv"
 )
 
-func (r *mutationResolver) DeleteHashTag(ctx context.Context, id string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteHashtag(ctx context.Context, id string) (*apimodel.Result, error) {
 
-	repo, err := sql.CreateHashTagRepo(r)
+	repo, err := sql.CreateHashtagRepo(r)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func (r *mutationResolver) DeleteHashTag(ctx context.Context, id string) (*apimo
 		return nil, errors.New("could not parse uint from hash tag id")
 	}
 
-	err = repo.DeleteHashTag(uint(uid))
+	err = repo.DeleteHashtag(uint(uid))
 	if err != nil {
 		return nil, err
 	}
@@ -30,36 +30,36 @@ func (r *mutationResolver) DeleteHashTag(ctx context.Context, id string) (*apimo
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *mutationResolver) CreateHashTag(ctx context.Context, name string) (*apimodel.Hashtag, error) {
+func (r *mutationResolver) CreateHashtag(ctx context.Context, name string) (*apimodel.Hashtag, error) {
 
-	repo, err := sql.CreateHashTagRepo(r)
+	repo, err := sql.CreateHashtagRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	hashtag, err := repo.CreateHashTag(name)
+	hashtag, err := repo.CreateHashtag(name)
 	if err != nil {
 		return nil, err
 	}
 
-	return convertHashTag(hashtag), nil
+	return convertHashtag(hashtag), nil
 }
 
-func (r *queryResolver) HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error) {
+func (r *queryResolver) Hashtags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error) {
 
-	repo, err := sql.CreateHashTagRepo(r)
+	repo, err := sql.CreateHashtagRepo(r)
 	if err != nil {
 		return []apimodel.Hashtag{}, err
 	}
 
-	hashtags, err := repo.GetHashTags(filter)
+	hashtags, err := repo.GetHashtags(filter)
 	if err != nil {
 		return []apimodel.Hashtag{}, err
 	}
 
 	var results []apimodel.Hashtag
 	for _, hashtag := range hashtags {
-		results = append(results, *convertHashTag(&hashtag))
+		results = append(results, *convertHashtag(&hashtag))
 	}
 	return results, nil
 }
@@ -71,17 +71,17 @@ func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apim
 	}, nil
 }
 
-func convertHashTags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
+func convertHashtags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
 	result := make([]apimodel.Hashtag, 0)
 
 	for _, hashtag := range hashtags {
-		result = append(result, *convertHashTag(&hashtag))
+		result = append(result, *convertHashtag(&hashtag))
 	}
 
 	return result
 }
 
-func convertHashTag(hashtag *dalmodel.Hashtag) *apimodel.Hashtag {
+func convertHashtag(hashtag *dalmodel.Hashtag) *apimodel.Hashtag {
 	return &apimodel.Hashtag{
 		ID:        fmt.Sprint(hashtag.ID),
 		Name:      hashtag.Name,

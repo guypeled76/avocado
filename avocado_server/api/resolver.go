@@ -32,6 +32,10 @@ func (r *Resolver) Post() graph.PostResolver {
 	return &postResolver{r}
 }
 
+func (r *Resolver) Measurement() graph.MeasurementResolver {
+	return &measurementResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -43,6 +47,9 @@ type userResolver struct{ *Resolver }
 
 // Posts
 type postResolver struct{ *Resolver }
+
+// Measurements
+type measurementResolver struct{ *Resolver }
 
 func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
 	if r.database == nil {
