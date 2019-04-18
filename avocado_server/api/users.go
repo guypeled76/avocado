@@ -125,7 +125,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 			hashTags = append(hashTags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
 		}
 
-		err = repo.UpdateHashTags(uid, hashTags)
+		err = repo.UpdateHashtags(uid, hashTags)
 		if err != nil {
 			return nil, err
 		}
@@ -145,7 +145,7 @@ func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apim
 		return nil, err
 	}
 
-	hashTags, err := repo.GetHashTags(uid)
+	hashTags, err := repo.GetUserHashtags(uid)
 	if err != nil {
 		return nil, err
 	}
