@@ -8,7 +8,7 @@ func AutoMigrate() {
 	conn := Connect()
 	//defer conn.Close()
 	conn.db.AutoMigrate(
-		&dalmodel.HashTag{},
+		&dalmodel.Hashtag{},
 		&dalmodel.Notification{},
 		&dalmodel.Profile{},
 		&dalmodel.User{},

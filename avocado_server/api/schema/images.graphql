@@ -12,7 +12,7 @@ extend type Query {
 
 type Image {
     id: ID!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     image: String!
     createdBy: ID!
     createdAt: Timestamp!

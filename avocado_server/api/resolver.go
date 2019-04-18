@@ -51,6 +51,13 @@ func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
 	return r.database, nil
 }
 
+func (r *userResolver) GetDBConnection() (*sql.DBConnection, error) {
+	if r.database == nil {
+		return nil, errors.New("DB connection was not initialized")
+	}
+	return r.database, nil
+}
+
 func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) {
 	panic("implement me")
 }

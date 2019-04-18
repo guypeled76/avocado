@@ -1,15 +1,15 @@
 extend type Mutation {
-    createHashTag(name:String!): HashTag
+    createHashTag(name:String!): Hashtag
     deleteHashTag(id:ID!): Result
 
 }
 
 extend type Query {
-    hashTags(filter:ResultsFilter) : [HashTag!]!
+    hashTags(filter:ResultsFilter) : [Hashtag!]!
 }
 
 
-type HashTag {
+type Hashtag {
     id:ID!
     name:String!
     createdAt: Timestamp!

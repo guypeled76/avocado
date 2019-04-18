@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type Chat struct {
 	gorm.Model
 	OwnerModel
-	Hashtags []HashTag
+	Hashtags []Hashtag
 	Messages []Message
 }
 

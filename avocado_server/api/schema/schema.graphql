@@ -27,6 +27,7 @@ input ResultsFilter {
     limit:Int
     after:Timestamp
     before:Timestamp
+    hashtags:[ID!]
 }
 
 enum ResultsOrder {

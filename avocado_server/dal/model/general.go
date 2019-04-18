@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type HashTag struct {
+type Hashtag struct {
 	gorm.Model
 	OwnerModel
 	Name string `gorm:"not null;unique_index"`

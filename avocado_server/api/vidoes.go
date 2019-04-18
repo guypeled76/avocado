@@ -5,6 +5,10 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 )
 
+func (r *queryResolver) Videos(ctx context.Context, filter apimodel.ResultsFilter) ([]apimodel.Video, error) {
+	panic("implement me")
+}
+
 func (r *queryResolver) VideosByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Video, error) {
 	panic("implement me")
 }

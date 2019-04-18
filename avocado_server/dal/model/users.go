@@ -11,7 +11,7 @@ type User struct {
 	Email         string
 	Image         string
 	Clinic        Clinic
-	Hashtags      []HashTag
+	Hashtags      []Hashtag `gorm:"many2many:user_hashtags;"`
 	Notifications []Notification
 	Profile       Profile
 }

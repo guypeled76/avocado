@@ -61,7 +61,7 @@ type ComplexityRoot struct {
 		UpdatedAt func(childComplexity int) int
 	}
 
-	HashTag struct {
+	Hashtag struct {
 		CreatedAt func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
@@ -182,6 +182,7 @@ type ComplexityRoot struct {
 		UserByID              func(childComplexity int, userID string) int
 		Users                 func(childComplexity int, filter *apimodel.ResultsFilter) int
 		VideoByID             func(childComplexity int, id string) int
+		Videos                func(childComplexity int, filter apimodel.ResultsFilter) int
 		VideosByHashTags      func(childComplexity int, hashTags []string) int
 		WaterfallByUserID     func(childComplexity int, waterfallID string) int
 	}
@@ -254,7 +255,7 @@ type MutationResolver interface {
 	CreateMeal(ctx context.Context, input apimodel.NewMeal) (*apimodel.Meal, error)
 	UpdateMeal(ctx context.Context, input apimodel.UpdateMeal) (*apimodel.Result, error)
 	DeleteMeal(ctx context.Context, input apimodel.DeleteMeal) (*apimodel.Result, error)
-	CreateHashTag(ctx context.Context, name string) (*apimodel.HashTag, error)
+	CreateHashTag(ctx context.Context, name string) (*apimodel.Hashtag, error)
 	DeleteHashTag(ctx context.Context, id string) (*apimodel.Result, error)
 	CreateImage(ctx context.Context, input apimodel.NewImage) (*apimodel.Image, error)
 	UpdateImage(ctx context.Context, input apimodel.UpdateImage) (*apimodel.Result, error)
@@ -275,7 +276,7 @@ type MutationResolver interface {
 	DeleteWaterfall(ctx context.Context, input apimodel.DeleteWaterfall) (*apimodel.Result, error)
 }
 type PostResolver interface {
-	Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.HashTag, error)
+	Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.Hashtag, error)
 	Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error)
 }
 type QueryResolver interface {
@@ -287,7 +288,7 @@ type QueryResolver interface {
 	Ingredients(ctx context.Context) ([]apimodel.Ingredient, error)
 	Meals(ctx context.Context) ([]apimodel.Meal, error)
 	Recipes(ctx context.Context) ([]apimodel.Recipe, error)
-	HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.HashTag, error)
+	HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error)
 	ImageByID(ctx context.Context, id string) (*apimodel.Image, error)
 	NotificationsByUserID(ctx context.Context, userID string) ([]apimodel.Notification, error)
@@ -296,10 +297,11 @@ type QueryResolver interface {
 	UserByID(ctx context.Context, userID string) (*apimodel.User, error)
 	VideosByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Video, error)
 	VideoByID(ctx context.Context, id string) (*apimodel.Video, error)
+	Videos(ctx context.Context, filter apimodel.ResultsFilter) ([]apimodel.Video, error)
 	WaterfallByUserID(ctx context.Context, waterfallID string) (*apimodel.Waterfall, error)
 }
 type UserResolver interface {
-	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.HashTag, error)
+	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
 	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
 }
 
@@ -386,40 +388,40 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Clinic.UpdatedAt(childComplexity), true
 
-	case "HashTag.CreatedAt":
-		if e.complexity.HashTag.CreatedAt == nil {
+	case "Hashtag.CreatedAt":
+		if e.complexity.Hashtag.CreatedAt == nil {
 			break
 		}
 
-		return e.complexity.HashTag.CreatedAt(childComplexity), true
+		return e.complexity.Hashtag.CreatedAt(childComplexity), true
 
-	case "HashTag.DeletedAt":
-		if e.complexity.HashTag.DeletedAt == nil {
+	case "Hashtag.DeletedAt":
+		if e.complexity.Hashtag.DeletedAt == nil {
 			break
 		}
 
-		return e.complexity.HashTag.DeletedAt(childComplexity), true
+		return e.complexity.Hashtag.DeletedAt(childComplexity), true
 
-	case "HashTag.ID":
-		if e.complexity.HashTag.ID == nil {
+	case "Hashtag.ID":
+		if e.complexity.Hashtag.ID == nil {
 			break
 		}
 
-		return e.complexity.HashTag.ID(childComplexity), true
+		return e.complexity.Hashtag.ID(childComplexity), true
 
-	case "HashTag.Name":
-		if e.complexity.HashTag.Name == nil {
+	case "Hashtag.Name":
+		if e.complexity.Hashtag.Name == nil {
 			break
 		}
 
-		return e.complexity.HashTag.Name(childComplexity), true
+		return e.complexity.Hashtag.Name(childComplexity), true
 
-	case "HashTag.UpdatedAt":
-		if e.complexity.HashTag.UpdatedAt == nil {
+	case "Hashtag.UpdatedAt":
+		if e.complexity.Hashtag.UpdatedAt == nil {
 			break
 		}
 
-		return e.complexity.HashTag.UpdatedAt(childComplexity), true
+		return e.complexity.Hashtag.UpdatedAt(childComplexity), true
 
 	case "Image.CreatedAt":
 		if e.complexity.Image.CreatedAt == nil {
@@ -1252,6 +1254,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.VideoByID(childComplexity, args["id"].(string)), true
 
+	case "Query.Videos":
+		if e.complexity.Query.Videos == nil {
+			break
+		}
+
+		args, err := ec.field_Query_videos_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Videos(childComplexity, args["filter"].(apimodel.ResultsFilter)), true
+
 	case "Query.VideosByHashTags":
 		if e.complexity.Query.VideosByHashTags == nil {
 			break
@@ -1680,7 +1694,7 @@ extend type Query {
 type Meal {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     recipes:[Recipe!]!
     createdBy: ID!
     createdAt: Timestamp!
@@ -1705,7 +1719,7 @@ input DeleteMeal {
 type Recipe {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     ingredients:[Ingredient!]!
     createdBy: ID!
     createdAt: Timestamp!
@@ -1731,7 +1745,7 @@ input DeleteRecipe {
 type Ingredient {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
@@ -1754,17 +1768,17 @@ input DeleteIngredient {
     id: String!
 }`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
-    createHashTag(name:String!): HashTag
+    createHashTag(name:String!): Hashtag
     deleteHashTag(id:ID!): Result
 
 }
 
 extend type Query {
-    hashTags(filter:ResultsFilter) : [HashTag!]!
+    hashTags(filter:ResultsFilter) : [Hashtag!]!
 }
 
 
-type HashTag {
+type Hashtag {
     id:ID!
     name:String!
     createdAt: Timestamp!
@@ -1785,7 +1799,7 @@ extend type Query {
 
 type Image {
     id: ID!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     image: String!
     createdBy: ID!
     createdAt: Timestamp!
@@ -1839,7 +1853,7 @@ extend type Query {
 type Post {
     id: ID!
     text: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     chat: Chat!
     createdBy: ID!
     createdAt: Timestamp!
@@ -1904,6 +1918,7 @@ input ResultsFilter {
     limit:Int
     after:Timestamp
     before:Timestamp
+    hashtags:[ID!]
 }
 
 enum ResultsOrder {
@@ -1952,7 +1967,7 @@ type User {
     displayName: String!
     email: String!
     image: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     notifications: [Notification!]!
     profile: Profile!
     createdAt: Timestamp!
@@ -1982,11 +1997,12 @@ type Profile {
 extend type Query {
     videosByHashTags(hashTags:[ID!]!): [Video!]!
     videoById(id:ID!) : Video!
+    videos(filter:ResultsFilter!): [Video!]!
 }
 
 type Video {
     id: ID!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     video: String!
     createdBy: ID!
     createdAt: Timestamp!
@@ -2028,7 +2044,7 @@ extend type Query {
 type Waterfall {
     id: ID!
     text: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
@@ -2701,6 +2717,20 @@ func (ec *executionContext) field_Query_videosByHashTags_args(ctx context.Contex
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_videos_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_waterfallByUserId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -2994,11 +3024,11 @@ func (ec *executionContext) _Clinic_deletedAt(ctx context.Context, field graphql
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HashTag_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "HashTag",
+		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -3021,11 +3051,11 @@ func (ec *executionContext) _HashTag_id(ctx context.Context, field graphql.Colle
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HashTag_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "HashTag",
+		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -3048,11 +3078,11 @@ func (ec *executionContext) _HashTag_name(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HashTag_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "HashTag",
+		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -3075,11 +3105,11 @@ func (ec *executionContext) _HashTag_createdAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HashTag_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "HashTag",
+		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -3102,11 +3132,11 @@ func (ec *executionContext) _HashTag_updatedAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _HashTag_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "HashTag",
+		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -3174,10 +3204,10 @@ func (ec *executionContext) _Image_hashtags(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Image_image(ctx context.Context, field graphql.CollectedField, obj *apimodel.Image) graphql.Marshaler {
@@ -3360,10 +3390,10 @@ func (ec *executionContext) _Ingredient_hashtags(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
@@ -3519,10 +3549,10 @@ func (ec *executionContext) _Meal_hashtags(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Meal_recipes(ctx context.Context, field graphql.CollectedField, obj *apimodel.Meal) graphql.Marshaler {
@@ -4256,10 +4286,10 @@ func (ec *executionContext) _Mutation_createHashTag(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*apimodel.HashTag)
+	res := resTmp.(*apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalOHashtag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_deleteHashTag(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -5015,10 +5045,10 @@ func (ec *executionContext) _Post_hashtags(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Post_chat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Post) graphql.Marshaler {
@@ -5472,10 +5502,10 @@ func (ec *executionContext) _Query_hashTags(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_imagesByHashTags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -5750,6 +5780,40 @@ func (ec *executionContext) _Query_videoById(ctx context.Context, field graphql.
 	return ec.marshalNVideo2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐVideo(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_videos(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_videos_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Videos(rctx, args["filter"].(apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Video)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNVideo2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐVideo(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_waterfallByUserId(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -5914,10 +5978,10 @@ func (ec *executionContext) _Recipe_hashtags(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Recipe_ingredients(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
@@ -6289,10 +6353,10 @@ func (ec *executionContext) _User_hashtags(ctx context.Context, field graphql.Co
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_notifications(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -6475,10 +6539,10 @@ func (ec *executionContext) _Video_hashtags(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Video_video(ctx context.Context, field graphql.CollectedField, obj *apimodel.Video) graphql.Marshaler {
@@ -6661,10 +6725,10 @@ func (ec *executionContext) _Waterfall_hashtags(ctx context.Context, field graph
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]apimodel.HashTag)
+	res := resTmp.([]apimodel.Hashtag)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, field.Selections, res)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Waterfall_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Waterfall) graphql.Marshaler {
@@ -8026,6 +8090,12 @@ func (ec *executionContext) unmarshalInputResultsFilter(ctx context.Context, v i
 			if err != nil {
 				return it, err
 			}
+		case "hashtags":
+			var err error
+			it.Hashtags, err = ec.unmarshalOID2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -8444,39 +8514,39 @@ func (ec *executionContext) _Clinic(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
-var hashTagImplementors = []string{"HashTag"}
+var hashtagImplementors = []string{"Hashtag"}
 
-func (ec *executionContext) _HashTag(ctx context.Context, sel ast.SelectionSet, obj *apimodel.HashTag) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, hashTagImplementors)
+func (ec *executionContext) _Hashtag(ctx context.Context, sel ast.SelectionSet, obj *apimodel.Hashtag) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, hashtagImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	invalid := false
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("HashTag")
+			out.Values[i] = graphql.MarshalString("Hashtag")
 		case "id":
-			out.Values[i] = ec._HashTag_id(ctx, field, obj)
+			out.Values[i] = ec._Hashtag_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "name":
-			out.Values[i] = ec._HashTag_name(ctx, field, obj)
+			out.Values[i] = ec._Hashtag_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "createdAt":
-			out.Values[i] = ec._HashTag_createdAt(ctx, field, obj)
+			out.Values[i] = ec._Hashtag_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "updatedAt":
-			out.Values[i] = ec._HashTag_updatedAt(ctx, field, obj)
+			out.Values[i] = ec._Hashtag_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "deletedAt":
-			out.Values[i] = ec._HashTag_deletedAt(ctx, field, obj)
+			out.Values[i] = ec._Hashtag_deletedAt(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -9212,6 +9282,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "videos":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_videos(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "waterfallByUserId":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -9936,11 +10020,11 @@ func (ec *executionContext) unmarshalNDeleteWaterfall2githubᚗcomᚋgremlinsapp
 	return ec.unmarshalInputDeleteWaterfall(ctx, v)
 }
 
-func (ec *executionContext) marshalNHashTag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx context.Context, sel ast.SelectionSet, v apimodel.HashTag) graphql.Marshaler {
-	return ec._HashTag(ctx, sel, &v)
+func (ec *executionContext) marshalNHashtag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v apimodel.Hashtag) graphql.Marshaler {
+	return ec._Hashtag(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx context.Context, sel ast.SelectionSet, v []apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v []apimodel.Hashtag) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -9964,7 +10048,7 @@ func (ec *executionContext) marshalNHashTag2ᚕgithubᚗcomᚋgremlinsappsᚋavo
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNHashTag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx, sel, v[i])
+			ret[i] = ec.marshalNHashtag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -10879,15 +10963,15 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOHashTag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx context.Context, sel ast.SelectionSet, v apimodel.HashTag) graphql.Marshaler {
-	return ec._HashTag(ctx, sel, &v)
+func (ec *executionContext) marshalOHashtag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v apimodel.Hashtag) graphql.Marshaler {
+	return ec._Hashtag(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOHashTag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashTag(ctx context.Context, sel ast.SelectionSet, v *apimodel.HashTag) graphql.Marshaler {
+func (ec *executionContext) marshalOHashtag2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v *apimodel.Hashtag) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
-	return ec._HashTag(ctx, sel, v)
+	return ec._Hashtag(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOID2ᚕstring(ctx context.Context, v interface{}) ([]string, error) {

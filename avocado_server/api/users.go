@@ -6,6 +6,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/jinzhu/gorm"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error) {
@@ -115,10 +116,41 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	}
 
 	if input.Hashtags != nil {
+		hashTags := make([]dalmodel.Hashtag, 0)
+		for _, id := range input.Hashtags {
+			hashtagId, err := sql.ParseUint(id)
+			if err != nil {
+				return nil, err
+			}
+			hashTags = append(hashTags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
+		}
 
+		err = repo.UpdateHashTags(uid, hashTags)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return &apimodel.Result{Status: "ok"}, nil
+}
+
+func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error) {
+	repo, err := sql.CreateUserRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	uid, err := sql.ParseUint(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	hashTags, err := repo.GetHashTags(uid)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertHashTags(hashTags), nil
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {

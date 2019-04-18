@@ -22,14 +22,18 @@ func (repo *HashTagRepository) GetTextColumn() string {
 	return "name"
 }
 
-func (repo *HashTagRepository) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.HashTag, error) {
-	hashtags := make([]dalmodel.HashTag, 0)
+func (repo *HashTagRepository) GetBaseName() string {
+	return "chat"
+}
+
+func (repo *HashTagRepository) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	hashtags := make([]dalmodel.Hashtag, 0)
 	err := repo.conn.Select(&hashtags, filter, repo)
 	return hashtags, err
 }
 
-func (repo *HashTagRepository) CreateHashTag(name string) (*dalmodel.HashTag, error) {
-	hashtag := dalmodel.HashTag{
+func (repo *HashTagRepository) CreateHashTag(name string) (*dalmodel.Hashtag, error) {
+	hashtag := dalmodel.Hashtag{
 		Name: name,
 	}
 	err := repo.conn.Create(&hashtag)
@@ -40,7 +44,7 @@ func (repo *HashTagRepository) CreateHashTag(name string) (*dalmodel.HashTag, er
 }
 
 func (repo *HashTagRepository) DeleteHashTag(ID uint) error {
-	hashtag := dalmodel.HashTag{Model: gorm.Model{ID: ID}}
+	hashtag := dalmodel.Hashtag{Model: gorm.Model{ID: ID}}
 	err := repo.conn.Delete(&hashtag)
 	return err
 }

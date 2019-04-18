@@ -61,3 +61,11 @@ func (conn *DBConnection) Close() {
 func (conn *DBConnection) Update(in interface{}, data map[string]interface{}) error {
 	return conn.db.Model(in).Updates(data).Error
 }
+
+func (conn *DBConnection) UpdateAssociations(in interface{}, association string, values interface{}) error {
+	return conn.db.Model(in).Association(association).Replace(values).Error
+}
+
+func (conn *DBConnection) GetAssociations(in interface{}, association string, out interface{}) error {
+	return conn.db.Model(in).Association(association).Find(out).Error
+}

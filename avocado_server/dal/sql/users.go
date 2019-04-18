@@ -22,6 +22,10 @@ func (repo *UserRepository) GetTextColumn() string {
 	return "name"
 }
 
+func (repo *UserRepository) GetBaseName() string {
+	return "user"
+}
+
 func (repo *UserRepository) GetUsers(filter *apimodel.ResultsFilter) ([]dalmodel.User, error) {
 	hashtags := make([]dalmodel.User, 0)
 	err := repo.conn.Select(&hashtags, filter, repo)
@@ -56,4 +60,16 @@ func (repo *UserRepository) GetUser(ID uint) (*dalmodel.User, error) {
 func (repo *UserRepository) UpdateUser(ID uint, data map[string]interface{}) error {
 	user := dalmodel.User{Model: gorm.Model{ID: ID}}
 	return repo.conn.Update(&user, data)
+}
+
+func (repo *UserRepository) UpdateHashTags(ID uint, hashTags []dalmodel.Hashtag) error {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	return repo.conn.UpdateAssociations(user, "Hashtags", hashTags)
+}
+
+func (repo *UserRepository) GetHashTags(ID uint) ([]dalmodel.Hashtag, error) {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	hashTags := make([]dalmodel.Hashtag, 0)
+	err := repo.conn.GetAssociations(user, "Hashtags", &hashTags)
+	return hashTags, err
 }

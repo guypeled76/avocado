@@ -8,11 +8,12 @@ extend type Mutation {
 extend type Query {
     videosByHashTags(hashTags:[ID!]!): [Video!]!
     videoById(id:ID!) : Video!
+    videos(filter:ResultsFilter!): [Video!]!
 }
 
 type Video {
     id: ID!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     video: String!
     createdBy: ID!
     createdAt: Timestamp!

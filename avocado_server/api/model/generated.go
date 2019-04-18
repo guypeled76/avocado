@@ -57,7 +57,7 @@ type DeleteWaterfall struct {
 	ID string `json:"id"`
 }
 
-type HashTag struct {
+type Hashtag struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -67,7 +67,7 @@ type HashTag struct {
 
 type Image struct {
 	ID        string     `json:"id"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	Image     string     `json:"image"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -77,7 +77,7 @@ type Image struct {
 type Ingredient struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
@@ -86,7 +86,7 @@ type Ingredient struct {
 type Meal struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	Recipes   []Recipe   `json:"recipes"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -163,7 +163,7 @@ type Notification struct {
 type Post struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	Chat      Chat       `json:"chat"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -179,7 +179,7 @@ type Profile struct {
 type Recipe struct {
 	ID          string       `json:"id"`
 	Name        string       `json:"name"`
-	Hashtags    []HashTag    `json:"hashtags"`
+	Hashtags    []Hashtag    `json:"hashtags"`
 	Ingredients []Ingredient `json:"ingredients"`
 	CreatedBy   string       `json:"createdBy"`
 	CreatedAt   time.Time    `json:"createdAt"`
@@ -205,6 +205,7 @@ type ResultsFilter struct {
 	Limit      *int           `json:"limit"`
 	After      *time.Time     `json:"after"`
 	Before     *time.Time     `json:"before"`
+	Hashtags   []string       `json:"hashtags"`
 }
 
 type UpdateImage struct {
@@ -277,7 +278,7 @@ type User struct {
 	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
 	Image         string         `json:"image"`
-	Hashtags      []HashTag      `json:"hashtags"`
+	Hashtags      []Hashtag      `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
 	Profile       Profile        `json:"profile"`
 	CreatedAt     time.Time      `json:"createdAt"`
@@ -287,7 +288,7 @@ type User struct {
 
 type Video struct {
 	ID        string     `json:"id"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	Video     string     `json:"video"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -297,7 +298,7 @@ type Video struct {
 type Waterfall struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
-	Hashtags  []HashTag  `json:"hashtags"`
+	Hashtags  []Hashtag  `json:"hashtags"`
 	CreatedBy string     `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`

@@ -22,6 +22,10 @@ func (repo *ChatRepository) GetTextColumn() string {
 	return "name"
 }
 
+func (repo *ChatRepository) GetBaseName() string {
+	return "chat"
+}
+
 func (repo *ChatRepository) GetChats(filter *apimodel.ResultsFilter) ([]dalmodel.Chat, error) {
 	hashtags := make([]dalmodel.Chat, 0)
 	err := repo.conn.Select(&hashtags, filter, repo)

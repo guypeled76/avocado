@@ -23,7 +23,7 @@ extend type Query {
 type Meal {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     recipes:[Recipe!]!
     createdBy: ID!
     createdAt: Timestamp!
@@ -48,7 +48,7 @@ input DeleteMeal {
 type Recipe {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     ingredients:[Ingredient!]!
     createdBy: ID!
     createdAt: Timestamp!
@@ -74,7 +74,7 @@ input DeleteRecipe {
 type Ingredient {
     id: ID!
     name: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp

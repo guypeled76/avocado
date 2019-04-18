@@ -6,5 +6,5 @@ type Video struct {
 	gorm.Model
 	OwnerModel
 	Text     string
-	Hashtags []HashTag
+	Hashtags []Hashtag
 }

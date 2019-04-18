@@ -30,7 +30,7 @@ func (r *mutationResolver) DeleteHashTag(ctx context.Context, id string) (*apimo
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *mutationResolver) CreateHashTag(ctx context.Context, name string) (*apimodel.HashTag, error) {
+func (r *mutationResolver) CreateHashTag(ctx context.Context, name string) (*apimodel.Hashtag, error) {
 
 	repo, err := sql.CreateHashTagRepo(r)
 	if err != nil {
@@ -45,41 +45,44 @@ func (r *mutationResolver) CreateHashTag(ctx context.Context, name string) (*api
 	return convertHashTag(hashtag), nil
 }
 
-func (r *queryResolver) HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.HashTag, error) {
+func (r *queryResolver) HashTags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error) {
 
 	repo, err := sql.CreateHashTagRepo(r)
 	if err != nil {
-		return []apimodel.HashTag{}, err
+		return []apimodel.Hashtag{}, err
 	}
 
 	hashtags, err := repo.GetHashTags(filter)
 	if err != nil {
-		return []apimodel.HashTag{}, err
+		return []apimodel.Hashtag{}, err
 	}
 
-	var results []apimodel.HashTag
+	var results []apimodel.Hashtag
 	for _, hashtag := range hashtags {
 		results = append(results, *convertHashTag(&hashtag))
 	}
 	return results, nil
 }
 
-func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.HashTag, error) {
-	return []apimodel.HashTag{
+func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.Hashtag, error) {
+	return []apimodel.Hashtag{
 		{ID: "1", Name: "fff"},
 		{ID: "2", Name: "ggg"},
 	}, nil
 }
 
-func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.HashTag, error) {
-	return []apimodel.HashTag{
-		{ID: "1", Name: "fff"},
-		{ID: "2", Name: "ggg"},
-	}, nil
+func convertHashTags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
+	result := make([]apimodel.Hashtag, 0)
+
+	for _, hashtag := range hashtags {
+		result = append(result, *convertHashTag(&hashtag))
+	}
+
+	return result
 }
 
-func convertHashTag(hashtag *dalmodel.HashTag) *apimodel.HashTag {
-	return &apimodel.HashTag{
+func convertHashTag(hashtag *dalmodel.Hashtag) *apimodel.Hashtag {
+	return &apimodel.Hashtag{
 		ID:        fmt.Sprint(hashtag.ID),
 		Name:      hashtag.Name,
 		CreatedAt: hashtag.CreatedAt,

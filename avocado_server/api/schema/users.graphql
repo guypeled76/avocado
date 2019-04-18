@@ -25,7 +25,7 @@ type User {
     displayName: String!
     email: String!
     image: String!
-    hashtags:[HashTag!]!
+    hashtags:[Hashtag!]!
     notifications: [Notification!]!
     profile: Profile!
     createdAt: Timestamp!
