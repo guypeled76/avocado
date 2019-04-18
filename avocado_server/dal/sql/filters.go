@@ -18,13 +18,15 @@ func Filter(db *gorm.DB, filter *apimodel.ResultsFilter, repo Repository) (*gorm
 	}
 
 	if filter.Hashtags != nil {
+
 		uids, err := ParseAllUint(filter.Hashtags)
 		if err != nil {
 			return db, err
 		}
 
-		db = db.Joins(fmt.Sprintf("JOIN %s_hashtags on %s_hashtags.%s_id=%ss.id", repo.GetBaseName(), repo.GetBaseName(), repo.GetBaseName(), repo.GetBaseName()))
-		db = db.Where(fmt.Sprintf("%s_hashtags.hashtag_id in (?)", repo.GetBaseName()), uids)
+		baseName := repo.GetBaseName()
+		db = db.Joins(fmt.Sprintf("JOIN %s_hashtags on %s_hashtags.%s_id=%ss.id", baseName, baseName, baseName, baseName))
+		db = db.Where(fmt.Sprintf("%s_hashtags.hashtag_id in (?)", baseName), uids)
 		if db.Error != nil {
 			return db, db.Error
 		}

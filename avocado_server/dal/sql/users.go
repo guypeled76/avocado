@@ -64,7 +64,7 @@ func (repo *UserRepository) UpdateUser(ID uint, data map[string]interface{}) err
 
 func (repo *UserRepository) UpdateHashTags(ID uint, hashTags []dalmodel.Hashtag) error {
 	user := dalmodel.User{Model: gorm.Model{ID: ID}}
-	return repo.conn.UpdateAssociations(user, "Hashtags", hashTags)
+	return repo.conn.UpdateAssociations(&user, "Hashtags", hashTags)
 }
 
 func (repo *UserRepository) GetHashTags(ID uint) ([]dalmodel.Hashtag, error) {

@@ -23,7 +23,7 @@ func (repo *HashTagRepository) GetTextColumn() string {
 }
 
 func (repo *HashTagRepository) GetBaseName() string {
-	return "chat"
+	return "hashtag"
 }
 
 func (repo *HashTagRepository) GetHashTags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
