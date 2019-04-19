@@ -27,7 +27,7 @@ type User {
     image: String!
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
-    measurements: [Measurement!]!
+    measurements(input:ResultsFilter): [Measurement!]!
     chat: Chat!
     profile: Profile!
     createdAt: Timestamp!

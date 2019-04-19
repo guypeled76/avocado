@@ -256,7 +256,7 @@ type ComplexityRoot struct {
 		Hashtags      func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Image         func(childComplexity int) int
-		Measurements  func(childComplexity int) int
+		Measurements  func(childComplexity int, input *apimodel.ResultsFilter) int
 		Name          func(childComplexity int) int
 		Notifications func(childComplexity int) int
 		Profile       func(childComplexity int) int
@@ -356,7 +356,7 @@ type QueryResolver interface {
 type UserResolver interface {
 	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
 	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
-	Measurements(ctx context.Context, obj *apimodel.User) ([]apimodel.Measurement, error)
+	Measurements(ctx context.Context, obj *apimodel.User, input *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
 	Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error)
 }
 
@@ -1711,7 +1711,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.User.Measurements(childComplexity), true
+		args, err := ec.field_User_measurements_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Measurements(childComplexity, args["input"].(*apimodel.ResultsFilter)), true
 
 	case "User.Name":
 		if e.complexity.User.Name == nil {
@@ -2346,7 +2351,7 @@ type User {
     image: String!
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
-    measurements: [Measurement!]!
+    measurements(input:ResultsFilter): [Measurement!]!
     chat: Chat!
     profile: Profile!
     createdAt: Timestamp!
@@ -3191,6 +3196,20 @@ func (ec *executionContext) field_Query_waterfallByUserId_args(ctx context.Conte
 		}
 	}
 	args["waterfallId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_User_measurements_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -7645,10 +7664,17 @@ func (ec *executionContext) _User_measurements(ctx context.Context, field graphq
 		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_User_measurements_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.User().Measurements(rctx, obj)
+		return ec.resolvers.User().Measurements(rctx, obj, args["input"].(*apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
