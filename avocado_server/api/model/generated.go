@@ -336,6 +336,8 @@ type User struct {
 	Image         string         `json:"image"`
 	Hashtags      []Hashtag      `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
+	Measurements  []Measurement  `json:"measurements"`
+	Chat          Chat           `json:"chat"`
 	Profile       Profile        `json:"profile"`
 	CreatedAt     time.Time      `json:"createdAt"`
 	UpdatedAt     time.Time      `json:"updatedAt"`

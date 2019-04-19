@@ -27,6 +27,8 @@ type User {
     image: String!
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
+    measurements: [Measurement!]!
+    chat: Chat!
     profile: Profile!
     createdAt: Timestamp!
     updatedAt: Timestamp!

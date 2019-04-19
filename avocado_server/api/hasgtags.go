@@ -71,6 +71,25 @@ func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apim
 	}, nil
 }
 
+func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error) {
+	repo, err := sql.CreateHashtagRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	uid, err := sql.ParseUint(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	hashTags, err := repo.GetUserHashtags(uid)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertHashtags(hashTags), nil
+}
+
 func convertHashtags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
 	result := make([]apimodel.Hashtag, 0)
 

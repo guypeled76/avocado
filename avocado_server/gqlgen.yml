@@ -27,6 +27,10 @@ models:
         resolver: true
       hashtags:
         resolver: true
+      chat:
+        resolver: true
+      measurements:
+        resolver: true
   Post:
     fields:
       chat:

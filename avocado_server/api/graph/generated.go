@@ -248,6 +248,7 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
+		Chat          func(childComplexity int) int
 		CreatedAt     func(childComplexity int) int
 		DeletedAt     func(childComplexity int) int
 		DisplayName   func(childComplexity int) int
@@ -255,6 +256,7 @@ type ComplexityRoot struct {
 		Hashtags      func(childComplexity int) int
 		ID            func(childComplexity int) int
 		Image         func(childComplexity int) int
+		Measurements  func(childComplexity int) int
 		Name          func(childComplexity int) int
 		Notifications func(childComplexity int) int
 		Profile       func(childComplexity int) int
@@ -354,6 +356,8 @@ type QueryResolver interface {
 type UserResolver interface {
 	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
 	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
+	Measurements(ctx context.Context, obj *apimodel.User) ([]apimodel.Measurement, error)
+	Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error)
 }
 
 type executableSchema struct {
@@ -1646,6 +1650,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TextMeasurementResult.Value(childComplexity), true
 
+	case "User.Chat":
+		if e.complexity.User.Chat == nil {
+			break
+		}
+
+		return e.complexity.User.Chat(childComplexity), true
+
 	case "User.CreatedAt":
 		if e.complexity.User.CreatedAt == nil {
 			break
@@ -1694,6 +1705,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Image(childComplexity), true
+
+	case "User.Measurements":
+		if e.complexity.User.Measurements == nil {
+			break
+		}
+
+		return e.complexity.User.Measurements(childComplexity), true
 
 	case "User.Name":
 		if e.complexity.User.Name == nil {
@@ -2328,6 +2346,8 @@ type User {
     image: String!
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
+    measurements: [Measurement!]!
+    chat: Chat!
     profile: Profile!
     createdAt: Timestamp!
     updatedAt: Timestamp!
@@ -7615,6 +7635,60 @@ func (ec *executionContext) _User_notifications(ctx context.Context, field graph
 	return ec.marshalNNotification2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNotification(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _User_measurements(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().Measurements(rctx, obj)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Measurement)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNMeasurement2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐMeasurement(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_chat(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().Chat(rctx, obj)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Chat)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNChat2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _User_profile(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -11064,6 +11138,34 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_notifications(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "measurements":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_measurements(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "chat":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_chat(ctx, field, obj)
 				if res == graphql.Null {
 					invalid = true
 				}

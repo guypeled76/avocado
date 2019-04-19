@@ -48,3 +48,15 @@ func (repo *HashtagRepository) DeleteHashtag(ID uint) error {
 	err := repo.conn.Delete(&hashtag)
 	return err
 }
+
+func (repo *HashtagRepository) GetUserHashtags(ID uint) ([]dalmodel.Hashtag, error) {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	hashTags := make([]dalmodel.Hashtag, 0)
+	err := repo.conn.GetAssociations(user, "Hashtags", &hashTags)
+	return hashTags, err
+}
+
+func (repo *HashtagRepository) UpdateUserHashtags(ID uint, hashtags []dalmodel.Hashtag) error {
+	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+	return repo.conn.UpdateAssociations(&user, "Hashtags", hashtags)
+}

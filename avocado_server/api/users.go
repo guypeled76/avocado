@@ -116,16 +116,20 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	}
 
 	if input.Hashtags != nil {
-		hashTags := make([]dalmodel.Hashtag, 0)
+		hashtagRepo, err := sql.CreateHashtagRepo(r)
+		if err != nil {
+			return nil, err
+		}
+		hashtags := make([]dalmodel.Hashtag, 0)
 		for _, id := range input.Hashtags {
 			hashtagId, err := sql.ParseUint(id)
 			if err != nil {
 				return nil, err
 			}
-			hashTags = append(hashTags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
+			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
 		}
 
-		err = repo.UpdateHashtags(uid, hashTags)
+		err = hashtagRepo.UpdateUserHashtags(uid, hashtags)
 		if err != nil {
 			return nil, err
 		}
@@ -134,23 +138,12 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error) {
-	repo, err := sql.CreateUserRepo(r)
-	if err != nil {
-		return nil, err
-	}
+func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User) ([]apimodel.Measurement, error) {
+	panic("implement me")
+}
 
-	uid, err := sql.ParseUint(obj.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	hashTags, err := repo.GetUserHashtags(uid)
-	if err != nil {
-		return nil, err
-	}
-
-	return convertHashtags(hashTags), nil
+func (r *userResolver) Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error) {
+	panic("implement me")
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {
