@@ -17,5 +17,7 @@ func AutoMigrate() {
 		&dalmodel.Image{},
 		&dalmodel.Chat{},
 		&dalmodel.Message{},
+		&dalmodel.Measurement{},
+		&dalmodel.MeasurementResult{},
 	)
 }

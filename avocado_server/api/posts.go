@@ -24,7 +24,3 @@ func (r *mutationResolver) DeletePost(ctx context.Context, input apimodel.Delete
 		Status: apimodel.ResultStatusSuccess,
 	}, nil
 }
-
-func (r *postResolver) Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error) {
-	panic("implement me")
-}

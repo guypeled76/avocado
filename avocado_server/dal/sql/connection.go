@@ -69,3 +69,11 @@ func (conn *DBConnection) UpdateAssociations(in interface{}, association string,
 func (conn *DBConnection) GetAssociations(in interface{}, association string, out interface{}) error {
 	return conn.db.Model(in).Association(association).Find(out).Error
 }
+
+func (conn *DBConnection) GetRelated(in interface{}, out interface{}, filter *apimodel.ResultsFilter, repo Repository) error {
+	db, err := Filter(conn.db.Model(in), filter, repo)
+	if err != nil {
+		return err
+	}
+	return db.Related(out).Error
+}

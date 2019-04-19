@@ -138,14 +138,6 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User) ([]apimodel.Measurement, error) {
-	panic("implement me")
-}
-
-func (r *userResolver) Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error) {
-	panic("implement me")
-}
-
 func convertUser(user *dalmodel.User) *apimodel.User {
 	return &apimodel.User{
 		ID:          fmt.Sprint(user.ID),

@@ -36,3 +36,7 @@ func (measurementResolver) Hashtags(ctx context.Context, obj *apimodel.Measureme
 func (measurementResolver) Results(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.MeasurementResult, error) {
 	panic("implement me")
 }
+
+func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User) ([]apimodel.Measurement, error) {
+	panic("implement me")
+}
