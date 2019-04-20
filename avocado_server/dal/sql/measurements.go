@@ -26,7 +26,13 @@ func (repo *MeasurementRepository) GetBaseName() string {
 	return "measurement"
 }
 
-func (repo *HashtagRepository) DeleteMeasurement(ID uint) error {
+func (repo *MeasurementRepository) GetMeasurement(ID uint) (*dalmodel.Measurement, error) {
+	measurement := dalmodel.Measurement{Model: gorm.Model{ID: ID}}
+	err := repo.conn.Get(&measurement)
+	return &measurement, err
+}
+
+func (repo *MeasurementRepository) DeleteMeasurement(ID uint) error {
 	measurement := dalmodel.Measurement{Model: gorm.Model{ID: ID}}
 	err := repo.conn.Delete(&measurement)
 	return err
@@ -41,6 +47,12 @@ func (repo *MeasurementRepository) GetUserMeasurements(id uint, filter *apimodel
 	user := dalmodel.User{Model: gorm.Model{ID: id}}
 	measurements := make([]dalmodel.Measurement, 0)
 	err := repo.conn.GetRelated(user, &measurements, filter, repo)
+	return measurements, err
+}
+
+func (repo *MeasurementRepository) GetMeasurements(filter *apimodel.ResultsFilter) ([]dalmodel.Measurement, error) {
+	measurements := make([]dalmodel.Measurement, 0)
+	err := repo.conn.Select(&measurements, filter, repo)
 	return measurements, err
 }
 

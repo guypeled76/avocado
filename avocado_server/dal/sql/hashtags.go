@@ -60,3 +60,8 @@ func (repo *HashtagRepository) UpdateUserHashtags(ID uint, hashtags []dalmodel.H
 	user := dalmodel.User{Model: gorm.Model{ID: ID}}
 	return repo.conn.UpdateAssociations(&user, "Hashtags", hashtags)
 }
+
+func (repo *HashtagRepository) UpdateMeasurementHashtags(ID uint, hashtags []dalmodel.Hashtag) error {
+	measurement := dalmodel.Measurement{Model: gorm.Model{ID: ID}}
+	return repo.conn.UpdateAssociations(&measurement, "Measurements", hashtags)
+}
