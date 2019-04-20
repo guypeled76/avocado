@@ -5,7 +5,7 @@ extend type Mutation {
 
     createMessage(input: NewMessage!) : Message!
     updateMessage(input: UpdateMessage!) : Result
-    deleteMessage(input: DeleteMessage!) : Result
+    deleteMessage(messageId: ID!) : Result
 }
 
 extend type Query {
@@ -27,7 +27,7 @@ input NewChat {
 type Message {
     id: ID!
     message: String!
-    createdBy: String!
+    createdBy: User!
     createAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
@@ -38,11 +38,6 @@ input UpdateMessage {
 }
 
 input NewMessage {
-    chat: String!
-    message: String!
-}
-
-input DeleteMessage {
     chat: String!
     message: String!
 }

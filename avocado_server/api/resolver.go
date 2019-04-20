@@ -36,6 +36,10 @@ func (r *Resolver) Measurement() graph.MeasurementResolver {
 	return &measurementResolver{r}
 }
 
+func (r *Resolver) Chat() graph.ChatResolver {
+	return &chatResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -51,7 +55,17 @@ type postResolver struct{ *Resolver }
 // Measurements
 type measurementResolver struct{ *Resolver }
 
+// Chat
+type chatResolver struct{ *Resolver }
+
 func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
+	if r.database == nil {
+		return nil, errors.New("DB connection was not initialized")
+	}
+	return r.database, nil
+}
+
+func (r *postResolver) GetDBConnection() (*sql.DBConnection, error) {
 	if r.database == nil {
 		return nil, errors.New("DB connection was not initialized")
 	}

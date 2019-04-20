@@ -37,6 +37,14 @@ models:
         resolver: true
       hashtags:
         resolver: true
+  Chat:
+    fields:
+      messages:
+        resolver: true
+  Message:
+    fields:
+      messages:
+        resolver: true
   Measurement:
     fields:
       results:

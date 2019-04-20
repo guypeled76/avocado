@@ -37,6 +37,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Chat() ChatResolver
 	Measurement() MeasurementResolver
 	Mutation() MutationResolver
 	Post() PostResolver
@@ -139,7 +140,7 @@ type ComplexityRoot struct {
 		DeleteIngredient    func(childComplexity int, input apimodel.DeleteIngredient) int
 		DeleteMeal          func(childComplexity int, input apimodel.DeleteMeal) int
 		DeleteMeasurement   func(childComplexity int, id string) int
-		DeleteMessage       func(childComplexity int, input apimodel.DeleteMessage) int
+		DeleteMessage       func(childComplexity int, messageID string) int
 		DeletePost          func(childComplexity int, input apimodel.DeletePost) int
 		DeleteRecipe        func(childComplexity int, input apimodel.DeleteRecipe) int
 		DeleteUser          func(childComplexity int, id string) int
@@ -282,6 +283,9 @@ type ComplexityRoot struct {
 	}
 }
 
+type ChatResolver interface {
+	Messages(ctx context.Context, obj *apimodel.Chat, filter apimodel.ResultsFilter) ([]apimodel.Message, error)
+}
 type MeasurementResolver interface {
 	Chat(ctx context.Context, obj *apimodel.Measurement) (*apimodel.Chat, error)
 
@@ -293,7 +297,7 @@ type MutationResolver interface {
 	CreateChat(ctx context.Context, input apimodel.NewChat) (*apimodel.Chat, error)
 	CreateMessage(ctx context.Context, input apimodel.NewMessage) (*apimodel.Message, error)
 	UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error)
-	DeleteMessage(ctx context.Context, input apimodel.DeleteMessage) (*apimodel.Result, error)
+	DeleteMessage(ctx context.Context, messageID string) (*apimodel.Result, error)
 	CreateIngredient(ctx context.Context, input apimodel.NewIngredient) (*apimodel.Ingredient, error)
 	UpdateIngredient(ctx context.Context, input apimodel.UpdateIngredient) (*apimodel.Result, error)
 	DeleteIngredient(ctx context.Context, input apimodel.DeleteIngredient) (*apimodel.Result, error)
@@ -937,7 +941,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.DeleteMessage(childComplexity, args["input"].(apimodel.DeleteMessage)), true
+		return e.complexity.Mutation.DeleteMessage(childComplexity, args["messageId"].(string)), true
 
 	case "Mutation.DeletePost":
 		if e.complexity.Mutation.DeletePost == nil {
@@ -1914,7 +1918,7 @@ extend type Mutation {
 
     createMessage(input: NewMessage!) : Message!
     updateMessage(input: UpdateMessage!) : Result
-    deleteMessage(input: DeleteMessage!) : Result
+    deleteMessage(messageId: ID!) : Result
 }
 
 extend type Query {
@@ -1936,7 +1940,7 @@ input NewChat {
 type Message {
     id: ID!
     message: String!
-    createdBy: String!
+    createdBy: User!
     createAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
@@ -1947,11 +1951,6 @@ input UpdateMessage {
 }
 
 input NewMessage {
-    chat: String!
-    message: String!
-}
-
-input DeleteMessage {
     chat: String!
     message: String!
 }`},
@@ -2712,14 +2711,14 @@ func (ec *executionContext) field_Mutation_deleteMeasurement_args(ctx context.Co
 func (ec *executionContext) field_Mutation_deleteMessage_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 apimodel.DeleteMessage
-	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNDeleteMessage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteMessage(ctx, tmp)
+	var arg0 string
+	if tmp, ok := rawArgs["messageId"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["input"] = arg0
+	args["messageId"] = arg0
 	return args, nil
 }
 
@@ -3306,7 +3305,7 @@ func (ec *executionContext) _Chat_messages(ctx context.Context, field graphql.Co
 		Object:   "Chat",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	rawArgs := field.ArgumentMap(ec.Variables)
@@ -3319,7 +3318,7 @@ func (ec *executionContext) _Chat_messages(ctx context.Context, field graphql.Co
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Messages, nil
+		return ec.resolvers.Chat().Messages(rctx, obj, args["filter"].(apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -4470,10 +4469,10 @@ func (ec *executionContext) _Message_createdBy(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Message_createAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
@@ -4697,7 +4696,7 @@ func (ec *executionContext) _Mutation_deleteMessage(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteMessage(rctx, args["input"].(apimodel.DeleteMessage))
+		return ec.resolvers.Mutation().DeleteMessage(rctx, args["messageId"].(string))
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -9023,30 +9022,6 @@ func (ec *executionContext) unmarshalInputDeleteMeal(ctx context.Context, v inte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDeleteMessage(ctx context.Context, v interface{}) (apimodel.DeleteMessage, error) {
-	var it apimodel.DeleteMessage
-	var asMap = v.(map[string]interface{})
-
-	for k, v := range asMap {
-		switch k {
-		case "chat":
-			var err error
-			it.Chat, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "message":
-			var err error
-			it.Message, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputDeletePost(ctx context.Context, v interface{}) (apimodel.DeletePost, error) {
 	var it apimodel.DeletePost
 	var asMap = v.(map[string]interface{})
@@ -9874,10 +9849,19 @@ func (ec *executionContext) _Chat(ctx context.Context, sel ast.SelectionSet, obj
 				invalid = true
 			}
 		case "messages":
-			out.Values[i] = ec._Chat_messages(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Chat_messages(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -11688,10 +11672,6 @@ func (ec *executionContext) unmarshalNDeleteIngredient2githubᚗcomᚋgremlinsap
 
 func (ec *executionContext) unmarshalNDeleteMeal2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteMeal(ctx context.Context, v interface{}) (apimodel.DeleteMeal, error) {
 	return ec.unmarshalInputDeleteMeal(ctx, v)
-}
-
-func (ec *executionContext) unmarshalNDeleteMessage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteMessage(ctx context.Context, v interface{}) (apimodel.DeleteMessage, error) {
-	return ec.unmarshalInputDeleteMessage(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNDeletePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeletePost(ctx context.Context, v interface{}) (apimodel.DeletePost, error) {

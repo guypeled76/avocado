@@ -15,26 +15,32 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUse
 		return nil, err
 	}
 
-	hashtag, err := repo.CreateUser(input)
+	user := dalmodel.User{
+		Name:        input.Name,
+		DisplayName: input.DisplayName,
+		Email:       input.Email,
+	}
+
+	err = repo.CreateUser(&user)
 	if err != nil {
 		return nil, err
 	}
 
-	return convertUser(hashtag), nil
+	return convertUser(&user), nil
 }
 
-func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteUser(ctx context.Context, userId string) (*apimodel.Result, error) {
 	repo, err := sql.CreateUserRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(id)
+	id, err := sql.ParseUint(userId)
 	if err != nil {
 		return nil, err
 	}
 
-	err = repo.DeleteUser(uid)
+	err = repo.DeleteUser(id)
 	if err != nil {
 		return nil, err
 	}

@@ -32,17 +32,12 @@ func (repo *UserRepository) GetUsers(filter *apimodel.ResultsFilter) ([]dalmodel
 	return hashtags, err
 }
 
-func (repo *UserRepository) CreateUser(input apimodel.NewUser) (*dalmodel.User, error) {
-	hashtag := dalmodel.User{
-		Name:        input.Name,
-		DisplayName: input.DisplayName,
-		Email:       input.Email,
-	}
-	err := repo.conn.Create(&hashtag)
+func (repo *UserRepository) CreateUser(user *dalmodel.User) error {
+	err := repo.conn.Create(&user)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return &hashtag, nil
+	return nil
 }
 
 func (repo *UserRepository) DeleteUser(ID uint) error {

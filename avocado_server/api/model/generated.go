@@ -40,11 +40,6 @@ type DeleteMeal struct {
 	ID string `json:"id"`
 }
 
-type DeleteMessage struct {
-	Chat    string `json:"chat"`
-	Message string `json:"message"`
-}
-
 type DeletePost struct {
 	ID string `json:"id"`
 }
@@ -113,7 +108,7 @@ type Measurement struct {
 type Message struct {
 	ID        string     `json:"id"`
 	Message   string     `json:"message"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy User       `json:"createdBy"`
 	CreateAt  time.Time  `json:"createAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 	DeletedAt *time.Time `json:"deletedAt"`

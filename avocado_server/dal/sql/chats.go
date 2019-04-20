@@ -27,22 +27,49 @@ func (repo *ChatRepository) GetBaseName() string {
 }
 
 func (repo *ChatRepository) GetChats(filter *apimodel.ResultsFilter) ([]dalmodel.Chat, error) {
-	hashtags := make([]dalmodel.Chat, 0)
-	err := repo.conn.Select(&hashtags, filter, repo)
-	return hashtags, err
+	chats := make([]dalmodel.Chat, 0)
+	err := repo.conn.Select(&chats, filter, repo)
+	return chats, err
 }
 
-func (repo *ChatRepository) CreateChat(input apimodel.NewChat) (*dalmodel.Chat, error) {
-	hashtag := dalmodel.Chat{}
-	err := repo.conn.Create(&hashtag)
+func (repo *ChatRepository) CreateChat(chat *dalmodel.Chat) (*dalmodel.Chat, error) {
+	err := repo.conn.Create(chat)
 	if err != nil {
 		return nil, err
 	}
-	return &hashtag, nil
+	return chat, nil
 }
 
-func (repo *ChatRepository) DeleteChat(ID uint) error {
-	hashtag := dalmodel.Chat{Model: gorm.Model{ID: ID}}
+func (repo *ChatRepository) DeleteChat(id uint) error {
+	hashtag := dalmodel.Chat{Model: gorm.Model{ID: id}}
 	err := repo.conn.Delete(&hashtag)
 	return err
+}
+
+func (repo *ChatRepository) GetChatById(id uint) (*dalmodel.Chat, error) {
+	chat := dalmodel.Chat{Model: gorm.Model{ID: id}}
+	err := repo.conn.Get(&chat)
+	return &chat, err
+}
+
+func (repo *ChatRepository) GetChatByPostId(id uint) (*dalmodel.Chat, error) {
+	// TODO
+	chat := dalmodel.Chat{Model: gorm.Model{ID: id}}
+	err := repo.conn.Get(&chat)
+	return &chat, err
+}
+
+func (repo *ChatRepository) GetChatByUserId(id uint) (*dalmodel.Chat, error) {
+	// TODO
+	chat := dalmodel.Chat{Model: gorm.Model{ID: id}}
+	err := repo.conn.Get(&chat)
+	return &chat, err
+}
+
+func (repo *ChatRepository) CreateMessage(message *dalmodel.Message) (*dalmodel.Message, error) {
+	err := repo.conn.Create(message)
+	if err != nil {
+		return nil, err
+	}
+	return message, nil
 }
