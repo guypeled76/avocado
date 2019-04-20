@@ -52,6 +52,11 @@ func (repo *ChatRepository) GetChatById(id uint) (*dalmodel.Chat, error) {
 	return &chat, err
 }
 
+func (repo *ChatRepository) GetMessagesByChatId(id uint) ([]dalmodel.Message, error) {
+	// TODO
+	return []dalmodel.Message{}, nil
+}
+
 func (repo *ChatRepository) GetChatByPostId(id uint) (*dalmodel.Chat, error) {
 	// TODO
 	chat := dalmodel.Chat{Model: gorm.Model{ID: id}}

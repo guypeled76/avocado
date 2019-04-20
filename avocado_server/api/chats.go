@@ -124,13 +124,13 @@ func (r *queryResolver) Chat(ctx context.Context, chatID string) (*apimodel.Chat
 	return convertChat(chat), nil
 }
 
-func (r *postResolver) Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error) {
+func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel.Chat, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	postId, err := sql.ParseUint(obj.ID)
+	postId, err := sql.ParseUint(post.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -143,13 +143,13 @@ func (r *postResolver) Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.
 	return convertChat(chat), nil
 }
 
-func (r *userResolver) Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error) {
+func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel.Chat, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(obj.ID)
+	uid, err := sql.ParseUint(user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +162,33 @@ func (r *userResolver) Chat(ctx context.Context, obj *apimodel.User) (*apimodel.
 	return convertChat(chat), nil
 }
 
+func (r *chatResolver) Messages(ctx context.Context, chat *apimodel.Chat, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
+	repo, err := sql.CreateChatRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	chatId, err := sql.ParseUint(chat.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	messages, err := repo.GetMessagesByChatId(chatId)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertMessages(messages), nil
+}
+
+func convertMessages(messages []dalmodel.Message) []apimodel.Message {
+	result := make([]apimodel.Message, 0)
+	for _, message := range messages {
+		result = append(result, *convertMessage(&message))
+	}
+	return result
+}
+
 func convertMessage(message *dalmodel.Message) *apimodel.Message {
 	return &apimodel.Message{
 		ID: fmt.Sprint(message.ID),
@@ -172,8 +199,4 @@ func convertChat(chat *dalmodel.Chat) *apimodel.Chat {
 	return &apimodel.Chat{
 		ID: fmt.Sprint(chat.ID),
 	}
-}
-
-func (chatResolver) Messages(ctx context.Context, obj *apimodel.Chat, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
-	panic("implement me")
 }
