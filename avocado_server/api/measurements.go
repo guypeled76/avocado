@@ -17,7 +17,17 @@ func (r *queryResolver) MeasurementByID(ctx context.Context, id string) (*apimod
 }
 
 func (r *mutationResolver) CreateMeasurement(ctx context.Context, input apimodel.NewMeasurement) (*apimodel.Measurement, error) {
-	panic("implement me")
+	repo, err := sql.CreateMeasurementRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	hashtag, err := repo.CreateMeasurement(input)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertMeasurement(hashtag), nil
 }
 
 func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel.UpdateMeasurement) (*apimodel.Result, error) {
@@ -41,7 +51,7 @@ func (measurementResolver) Results(ctx context.Context, obj *apimodel.Measuremen
 }
 
 func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error) {
-	repo, err := sql.CreateMeasurementsRepo(r)
+	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
 		return nil, err
 	}
@@ -71,10 +81,11 @@ func convertMeasurements(measurements []dalmodel.Measurement) []apimodel.Measure
 
 func convertMeasurement(measurement *dalmodel.Measurement) *apimodel.Measurement {
 	return &apimodel.Measurement{
-		ID:        fmt.Sprint(measurement.ID),
-		Name:      measurement.Title,
-		CreatedAt: measurement.CreatedAt,
-		UpdatedAt: measurement.UpdatedAt,
-		DeletedAt: measurement.DeletedAt,
+		ID:          fmt.Sprint(measurement.ID),
+		Name:        measurement.Name,
+		Description: measurement.Description,
+		CreatedAt:   measurement.CreatedAt,
+		UpdatedAt:   measurement.UpdatedAt,
+		DeletedAt:   measurement.DeletedAt,
 	}
 }

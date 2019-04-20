@@ -4,7 +4,8 @@ import "github.com/jinzhu/gorm"
 
 type Measurement struct {
 	gorm.Model
-	Title        string
+	Name         string
+	Description  string
 	UserID       uint
 	Hashtags     []Hashtag           `gorm:"many2many:measurement_hashtags;"`
 	Measurements []MeasurementResult `gorm:"foreignkey:MeasurementID"`
