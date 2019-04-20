@@ -9,7 +9,22 @@ import (
 )
 
 func (r *queryResolver) ChatsByUserID(ctx context.Context, id string) ([]apimodel.Chat, error) {
-	panic("implement me")
+	repo, err := sql.CreateChatRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	uid, err := sql.ParseUint(id)
+	if err != nil {
+		return nil, err
+	}
+
+	chats, err := repo.GetChatsByUserId(uid)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertChats(chats), nil
 }
 
 func (r *queryResolver) ChatByID(ctx context.Context, id string) (*apimodel.Chat, error) {
@@ -81,9 +96,31 @@ func (r *queryResolver) Chats(ctx context.Context, filter *apimodel.ResultsFilte
 }
 
 func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error) {
-	return &apimodel.Result{
-		Status: apimodel.ResultStatusSuccess,
-	}, nil
+	repo, err := sql.CreateChatRepo(r)
+	if err != nil {
+		return &apimodel.Result{Status: "error"}, err
+	}
+
+	// TODO
+	messageId, err := sql.ParseUint("id")
+	if err != nil {
+		return nil, err
+	}
+
+	data := make(map[string]interface{})
+
+	if input.Message != nil {
+		data["Name"] = *input.Message
+	}
+
+	if len(data) > 0 {
+		err = repo.UpdateMessage(messageId, data)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return &apimodel.Result{Status: "ok"}, nil
 }
 
 func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId string) (*apimodel.Result, error) {
@@ -154,7 +191,7 @@ func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel
 		return nil, err
 	}
 
-	chat, err := repo.GetChatByUserId(uid)
+	chat, err := repo.GetPrimaryChatByUserId(uid)
 	if err != nil {
 		return nil, err
 	}
@@ -193,6 +230,14 @@ func convertMessage(message *dalmodel.Message) *apimodel.Message {
 	return &apimodel.Message{
 		ID: fmt.Sprint(message.ID),
 	}
+}
+
+func convertChats(chats []dalmodel.Chat) []apimodel.Chat {
+	result := make([]apimodel.Chat, 0)
+	for _, chat := range chats {
+		result = append(result, *convertChat(&chat))
+	}
+	return result
 }
 
 func convertChat(chat *dalmodel.Chat) *apimodel.Chat {
