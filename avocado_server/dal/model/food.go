@@ -7,8 +7,7 @@ type Ingredient struct {
 	Name               string
 	Description        string
 	Hashtags           []Hashtag `gorm:"many2many:ingredient_hashtags;"`
-	Recipe             Recipe
-	Ingredients        []IngredientPortion `gorm:"many2many:ingredient_ingredient_portions;"`
+	Portions           []Portion `gorm:"many2many:ingredient_portions;"`
 	Calories           float32
 	TotalFat           float32
 	SaturatedFat       float32
@@ -23,21 +22,24 @@ type Ingredient struct {
 	Protein            float32
 }
 
-type IngredientPortion struct {
+type Portion struct {
 	gorm.Model
-	Kind         IngredientPortionKind
-	Ingredient   Ingredient `gorm:"foreignkey:IngredientID;association_foreignkey:ID"`
-	IngredientID int
-	Amount       float32
+	PortionKind   PortionKind `gorm:"foreignkey:PortionKindID;association_foreignkey:ID"`
+	PortionKindID int
+	Ingredient    Ingredient `gorm:"foreignkey:IngredientID;association_foreignkey:ID"`
+	IngredientID  int
+	Amount        float32
 }
 
-type IngredientPortionKind struct {
+type PortionKind struct {
 	gorm.Model
 	Name string
 }
 
 type Recipe struct {
 	gorm.Model
-	Title       string
-	Description string
+	Title        string
+	Description  string
+	Ingredient   Ingredient `gorm:"foreignkey:IngredientID;association_foreignkey:ID"`
+	IngredientID int
 }

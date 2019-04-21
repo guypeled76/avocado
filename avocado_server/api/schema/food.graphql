@@ -4,10 +4,20 @@ extend type Mutation {
     createIngredient(input: NewIngredient!): Ingredient!
     updateIngredient(input: UpdateIngredient!) : Result
     deleteIngredient(id: ID!) : Result
+
+    createPortion(input: NewPortion!): Portion!
+    updatePortion(input: UpdatePortion!) : Result
+    deletePortion(id: ID!) : Result
+
+    createRecipe(input: NewRecipe!): Recipe!
+    updateRecipe(input: UpdateRecipe!) : Result
+    deleteRecipe(id: ID!) : Result
 }
 
 extend type Query {
-    ingredients: [Ingredient!]!
+    ingredients(filter:ResultsFilter): [Ingredient!]!
+    portions(filter:ResultsFilter): [Portion!]!
+    recipes(filter:ResultsFilter): [Recipe!]!
 }
 
 type Ingredient {
@@ -17,6 +27,7 @@ type Ingredient {
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
+    portions: [Portion!]!
     calories: Float
     totalFat: Float
     saturatedFat: Float
@@ -64,4 +75,66 @@ input UpdateIngredient {
     dietaryFiber: Float
     sugar: Float
     protein: Float
+}
+
+type Portion {
+    id: ID!
+    name: String!
+    hashtags:[ID!]
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+    amount: Float!
+    calories: Float
+    totalFat: Float
+    saturatedFat: Float
+    monounsaturatedFat: Float
+    transFat: Float
+    cholesterol: Float
+    sodium: Float
+    potassium: Float
+    totalCarbohydrate: Float
+    dietaryFiber: Float
+    sugar: Float
+    protein: Float
+}
+
+input NewPortion {
+    ingredientId: ID!
+    amount: Float!
+}
+
+input UpdatePortion {
+    id: String!
+    amount: Float!
+}
+
+type Recipe {
+    id: ID!
+    name: String!
+    hashtags:[ID!]
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+    portions: [Portion!]!
+    calories: Float
+    totalFat: Float
+    saturatedFat: Float
+    monounsaturatedFat: Float
+    transFat: Float
+    cholesterol: Float
+    sodium: Float
+    potassium: Float
+    totalCarbohydrate: Float
+    dietaryFiber: Float
+    sugar: Float
+    protein: Float
+}
+
+input NewRecipe {
+    ingredientId: ID!
+}
+
+input UpdateRecipe {
+    id: String!
 }

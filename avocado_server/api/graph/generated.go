@@ -92,6 +92,7 @@ type ComplexityRoot struct {
 		ID                 func(childComplexity int) int
 		MonounsaturatedFat func(childComplexity int) int
 		Name               func(childComplexity int) int
+		Portions           func(childComplexity int) int
 		Potassium          func(childComplexity int) int
 		Protein            func(childComplexity int) int
 		SaturatedFat       func(childComplexity int) int
@@ -131,7 +132,9 @@ type ComplexityRoot struct {
 		CreateIngredient    func(childComplexity int, input apimodel.NewIngredient) int
 		CreateMeasurement   func(childComplexity int, input apimodel.NewMeasurement) int
 		CreateMessage       func(childComplexity int, input apimodel.NewMessage) int
+		CreatePortion       func(childComplexity int, input apimodel.NewPortion) int
 		CreatePost          func(childComplexity int, input apimodel.NewPost) int
+		CreateRecipe        func(childComplexity int, input apimodel.NewRecipe) int
 		CreateUser          func(childComplexity int, input apimodel.NewUser) int
 		CreateVideo         func(childComplexity int, input apimodel.NewVideo) int
 		CreateWaterfall     func(childComplexity int, input apimodel.NewWaterfall) int
@@ -140,7 +143,9 @@ type ComplexityRoot struct {
 		DeleteIngredient    func(childComplexity int, id string) int
 		DeleteMeasurement   func(childComplexity int, id string) int
 		DeleteMessage       func(childComplexity int, messageID string) int
+		DeletePortion       func(childComplexity int, id string) int
 		DeletePost          func(childComplexity int, input apimodel.DeletePost) int
+		DeleteRecipe        func(childComplexity int, id string) int
 		DeleteUser          func(childComplexity int, id string) int
 		DeleteVideo         func(childComplexity int, input apimodel.DeleteVideo) int
 		DeleteWaterfall     func(childComplexity int, input apimodel.DeleteWaterfall) int
@@ -150,7 +155,9 @@ type ComplexityRoot struct {
 		UpdateIngredient    func(childComplexity int, input apimodel.UpdateIngredient) int
 		UpdateMeasurement   func(childComplexity int, input apimodel.UpdateMeasurement) int
 		UpdateMessage       func(childComplexity int, input apimodel.UpdateMessage) int
+		UpdatePortion       func(childComplexity int, input apimodel.UpdatePortion) int
 		UpdatePost          func(childComplexity int, input apimodel.UpdatePost) int
+		UpdateRecipe        func(childComplexity int, input apimodel.UpdateRecipe) int
 		UpdateUser          func(childComplexity int, input apimodel.UpdateUser) int
 		UpdateVideo         func(childComplexity int, input apimodel.UpdateVideo) int
 		UpdateVideoHashTags func(childComplexity int, input apimodel.UpdateVideoHashTags) int
@@ -172,6 +179,28 @@ type ComplexityRoot struct {
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 		Value     func(childComplexity int) int
+	}
+
+	Portion struct {
+		Amount             func(childComplexity int) int
+		Calories           func(childComplexity int) int
+		Cholesterol        func(childComplexity int) int
+		CreatedAt          func(childComplexity int) int
+		CreatedBy          func(childComplexity int) int
+		DeletedAt          func(childComplexity int) int
+		DietaryFiber       func(childComplexity int) int
+		Hashtags           func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		MonounsaturatedFat func(childComplexity int) int
+		Name               func(childComplexity int) int
+		Potassium          func(childComplexity int) int
+		Protein            func(childComplexity int) int
+		SaturatedFat       func(childComplexity int) int
+		Sodium             func(childComplexity int) int
+		Sugar              func(childComplexity int) int
+		TotalCarbohydrate  func(childComplexity int) int
+		TotalFat           func(childComplexity int) int
+		TransFat           func(childComplexity int) int
 	}
 
 	Post struct {
@@ -199,17 +228,41 @@ type ComplexityRoot struct {
 		Hashtags              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		ImageByID             func(childComplexity int, id string) int
 		ImagesByHashTags      func(childComplexity int, hashTags []string) int
-		Ingredients           func(childComplexity int) int
+		Ingredients           func(childComplexity int, filter *apimodel.ResultsFilter) int
 		MeasurementByID       func(childComplexity int, id string) int
 		Measurements          func(childComplexity int, filter *apimodel.ResultsFilter) int
 		NotificationsByUserID func(childComplexity int, userID string) int
+		Portions              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		PostsByUserID         func(childComplexity int, userID string) int
+		Recipes               func(childComplexity int, filter *apimodel.ResultsFilter) int
 		UserByID              func(childComplexity int, id string) int
 		Users                 func(childComplexity int, filter *apimodel.ResultsFilter) int
 		VideoByID             func(childComplexity int, id string) int
 		Videos                func(childComplexity int, filter apimodel.ResultsFilter) int
 		VideosByHashTags      func(childComplexity int, hashTags []string) int
 		WaterfallByUserID     func(childComplexity int, waterfallID string) int
+	}
+
+	Recipe struct {
+		Calories           func(childComplexity int) int
+		Cholesterol        func(childComplexity int) int
+		CreatedAt          func(childComplexity int) int
+		CreatedBy          func(childComplexity int) int
+		DeletedAt          func(childComplexity int) int
+		DietaryFiber       func(childComplexity int) int
+		Hashtags           func(childComplexity int) int
+		ID                 func(childComplexity int) int
+		MonounsaturatedFat func(childComplexity int) int
+		Name               func(childComplexity int) int
+		Portions           func(childComplexity int) int
+		Potassium          func(childComplexity int) int
+		Protein            func(childComplexity int) int
+		SaturatedFat       func(childComplexity int) int
+		Sodium             func(childComplexity int) int
+		Sugar              func(childComplexity int) int
+		TotalCarbohydrate  func(childComplexity int) int
+		TotalFat           func(childComplexity int) int
+		TransFat           func(childComplexity int) int
 	}
 
 	Reference struct {
@@ -284,6 +337,12 @@ type MutationResolver interface {
 	CreateIngredient(ctx context.Context, input apimodel.NewIngredient) (*apimodel.Ingredient, error)
 	UpdateIngredient(ctx context.Context, input apimodel.UpdateIngredient) (*apimodel.Result, error)
 	DeleteIngredient(ctx context.Context, id string) (*apimodel.Result, error)
+	CreatePortion(ctx context.Context, input apimodel.NewPortion) (*apimodel.Portion, error)
+	UpdatePortion(ctx context.Context, input apimodel.UpdatePortion) (*apimodel.Result, error)
+	DeletePortion(ctx context.Context, id string) (*apimodel.Result, error)
+	CreateRecipe(ctx context.Context, input apimodel.NewRecipe) (*apimodel.Recipe, error)
+	UpdateRecipe(ctx context.Context, input apimodel.UpdateRecipe) (*apimodel.Result, error)
+	DeleteRecipe(ctx context.Context, id string) (*apimodel.Result, error)
 	CreateHashtag(ctx context.Context, name string) (*apimodel.Hashtag, error)
 	DeleteHashtag(ctx context.Context, id string) (*apimodel.Result, error)
 	CreateImage(ctx context.Context, input apimodel.NewImage) (*apimodel.Image, error)
@@ -317,7 +376,9 @@ type QueryResolver interface {
 	ChatByID(ctx context.Context, chatID string) (*apimodel.Chat, error)
 	ClinicByID(ctx context.Context, clinicID string) (*apimodel.Clinic, error)
 	Clinics(ctx context.Context) ([]apimodel.Clinic, error)
-	Ingredients(ctx context.Context) ([]apimodel.Ingredient, error)
+	Ingredients(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Ingredient, error)
+	Portions(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Portion, error)
+	Recipes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Recipe, error)
 	Hashtags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error)
 	ImageByID(ctx context.Context, id string) (*apimodel.Image, error)
@@ -569,6 +630,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ingredient.Name(childComplexity), true
 
+	case "Ingredient.Portions":
+		if e.complexity.Ingredient.Portions == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.Portions(childComplexity), true
+
 	case "Ingredient.Potassium":
 		if e.complexity.Ingredient.Potassium == nil {
 			break
@@ -809,6 +877,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateMessage(childComplexity, args["input"].(apimodel.NewMessage)), true
 
+	case "Mutation.CreatePortion":
+		if e.complexity.Mutation.CreatePortion == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createPortion_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreatePortion(childComplexity, args["input"].(apimodel.NewPortion)), true
+
 	case "Mutation.CreatePost":
 		if e.complexity.Mutation.CreatePost == nil {
 			break
@@ -820,6 +900,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreatePost(childComplexity, args["input"].(apimodel.NewPost)), true
+
+	case "Mutation.CreateRecipe":
+		if e.complexity.Mutation.CreateRecipe == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createRecipe_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateRecipe(childComplexity, args["input"].(apimodel.NewRecipe)), true
 
 	case "Mutation.CreateUser":
 		if e.complexity.Mutation.CreateUser == nil {
@@ -917,6 +1009,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteMessage(childComplexity, args["messageId"].(string)), true
 
+	case "Mutation.DeletePortion":
+		if e.complexity.Mutation.DeletePortion == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deletePortion_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeletePortion(childComplexity, args["id"].(string)), true
+
 	case "Mutation.DeletePost":
 		if e.complexity.Mutation.DeletePost == nil {
 			break
@@ -928,6 +1032,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.DeletePost(childComplexity, args["input"].(apimodel.DeletePost)), true
+
+	case "Mutation.DeleteRecipe":
+		if e.complexity.Mutation.DeleteRecipe == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteRecipe_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteRecipe(childComplexity, args["id"].(string)), true
 
 	case "Mutation.DeleteUser":
 		if e.complexity.Mutation.DeleteUser == nil {
@@ -1032,6 +1148,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateMessage(childComplexity, args["input"].(apimodel.UpdateMessage)), true
 
+	case "Mutation.UpdatePortion":
+		if e.complexity.Mutation.UpdatePortion == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updatePortion_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdatePortion(childComplexity, args["input"].(apimodel.UpdatePortion)), true
+
 	case "Mutation.UpdatePost":
 		if e.complexity.Mutation.UpdatePost == nil {
 			break
@@ -1043,6 +1171,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdatePost(childComplexity, args["input"].(apimodel.UpdatePost)), true
+
+	case "Mutation.UpdateRecipe":
+		if e.complexity.Mutation.UpdateRecipe == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateRecipe_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateRecipe(childComplexity, args["input"].(apimodel.UpdateRecipe)), true
 
 	case "Mutation.UpdateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
@@ -1168,6 +1308,139 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.NumericMeasurementResult.Value(childComplexity), true
+
+	case "Portion.Amount":
+		if e.complexity.Portion.Amount == nil {
+			break
+		}
+
+		return e.complexity.Portion.Amount(childComplexity), true
+
+	case "Portion.Calories":
+		if e.complexity.Portion.Calories == nil {
+			break
+		}
+
+		return e.complexity.Portion.Calories(childComplexity), true
+
+	case "Portion.Cholesterol":
+		if e.complexity.Portion.Cholesterol == nil {
+			break
+		}
+
+		return e.complexity.Portion.Cholesterol(childComplexity), true
+
+	case "Portion.CreatedAt":
+		if e.complexity.Portion.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Portion.CreatedAt(childComplexity), true
+
+	case "Portion.CreatedBy":
+		if e.complexity.Portion.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Portion.CreatedBy(childComplexity), true
+
+	case "Portion.DeletedAt":
+		if e.complexity.Portion.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Portion.DeletedAt(childComplexity), true
+
+	case "Portion.DietaryFiber":
+		if e.complexity.Portion.DietaryFiber == nil {
+			break
+		}
+
+		return e.complexity.Portion.DietaryFiber(childComplexity), true
+
+	case "Portion.Hashtags":
+		if e.complexity.Portion.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Portion.Hashtags(childComplexity), true
+
+	case "Portion.ID":
+		if e.complexity.Portion.ID == nil {
+			break
+		}
+
+		return e.complexity.Portion.ID(childComplexity), true
+
+	case "Portion.MonounsaturatedFat":
+		if e.complexity.Portion.MonounsaturatedFat == nil {
+			break
+		}
+
+		return e.complexity.Portion.MonounsaturatedFat(childComplexity), true
+
+	case "Portion.Name":
+		if e.complexity.Portion.Name == nil {
+			break
+		}
+
+		return e.complexity.Portion.Name(childComplexity), true
+
+	case "Portion.Potassium":
+		if e.complexity.Portion.Potassium == nil {
+			break
+		}
+
+		return e.complexity.Portion.Potassium(childComplexity), true
+
+	case "Portion.Protein":
+		if e.complexity.Portion.Protein == nil {
+			break
+		}
+
+		return e.complexity.Portion.Protein(childComplexity), true
+
+	case "Portion.SaturatedFat":
+		if e.complexity.Portion.SaturatedFat == nil {
+			break
+		}
+
+		return e.complexity.Portion.SaturatedFat(childComplexity), true
+
+	case "Portion.Sodium":
+		if e.complexity.Portion.Sodium == nil {
+			break
+		}
+
+		return e.complexity.Portion.Sodium(childComplexity), true
+
+	case "Portion.Sugar":
+		if e.complexity.Portion.Sugar == nil {
+			break
+		}
+
+		return e.complexity.Portion.Sugar(childComplexity), true
+
+	case "Portion.TotalCarbohydrate":
+		if e.complexity.Portion.TotalCarbohydrate == nil {
+			break
+		}
+
+		return e.complexity.Portion.TotalCarbohydrate(childComplexity), true
+
+	case "Portion.TotalFat":
+		if e.complexity.Portion.TotalFat == nil {
+			break
+		}
+
+		return e.complexity.Portion.TotalFat(childComplexity), true
+
+	case "Portion.TransFat":
+		if e.complexity.Portion.TransFat == nil {
+			break
+		}
+
+		return e.complexity.Portion.TransFat(childComplexity), true
 
 	case "Post.Chat":
 		if e.complexity.Post.Chat == nil {
@@ -1330,7 +1603,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Query.Ingredients(childComplexity), true
+		args, err := ec.field_Query_ingredients_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Ingredients(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
 	case "Query.MeasurementByID":
 		if e.complexity.Query.MeasurementByID == nil {
@@ -1368,6 +1646,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.NotificationsByUserID(childComplexity, args["userID"].(string)), true
 
+	case "Query.Portions":
+		if e.complexity.Query.Portions == nil {
+			break
+		}
+
+		args, err := ec.field_Query_portions_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Portions(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
+
 	case "Query.PostsByUserID":
 		if e.complexity.Query.PostsByUserID == nil {
 			break
@@ -1379,6 +1669,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.PostsByUserID(childComplexity, args["userId"].(string)), true
+
+	case "Query.Recipes":
+		if e.complexity.Query.Recipes == nil {
+			break
+		}
+
+		args, err := ec.field_Query_recipes_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Recipes(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
 	case "Query.UserByID":
 		if e.complexity.Query.UserByID == nil {
@@ -1451,6 +1753,139 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.WaterfallByUserID(childComplexity, args["waterfallId"].(string)), true
+
+	case "Recipe.Calories":
+		if e.complexity.Recipe.Calories == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Calories(childComplexity), true
+
+	case "Recipe.Cholesterol":
+		if e.complexity.Recipe.Cholesterol == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Cholesterol(childComplexity), true
+
+	case "Recipe.CreatedAt":
+		if e.complexity.Recipe.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Recipe.CreatedAt(childComplexity), true
+
+	case "Recipe.CreatedBy":
+		if e.complexity.Recipe.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Recipe.CreatedBy(childComplexity), true
+
+	case "Recipe.DeletedAt":
+		if e.complexity.Recipe.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Recipe.DeletedAt(childComplexity), true
+
+	case "Recipe.DietaryFiber":
+		if e.complexity.Recipe.DietaryFiber == nil {
+			break
+		}
+
+		return e.complexity.Recipe.DietaryFiber(childComplexity), true
+
+	case "Recipe.Hashtags":
+		if e.complexity.Recipe.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Hashtags(childComplexity), true
+
+	case "Recipe.ID":
+		if e.complexity.Recipe.ID == nil {
+			break
+		}
+
+		return e.complexity.Recipe.ID(childComplexity), true
+
+	case "Recipe.MonounsaturatedFat":
+		if e.complexity.Recipe.MonounsaturatedFat == nil {
+			break
+		}
+
+		return e.complexity.Recipe.MonounsaturatedFat(childComplexity), true
+
+	case "Recipe.Name":
+		if e.complexity.Recipe.Name == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Name(childComplexity), true
+
+	case "Recipe.Portions":
+		if e.complexity.Recipe.Portions == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Portions(childComplexity), true
+
+	case "Recipe.Potassium":
+		if e.complexity.Recipe.Potassium == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Potassium(childComplexity), true
+
+	case "Recipe.Protein":
+		if e.complexity.Recipe.Protein == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Protein(childComplexity), true
+
+	case "Recipe.SaturatedFat":
+		if e.complexity.Recipe.SaturatedFat == nil {
+			break
+		}
+
+		return e.complexity.Recipe.SaturatedFat(childComplexity), true
+
+	case "Recipe.Sodium":
+		if e.complexity.Recipe.Sodium == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Sodium(childComplexity), true
+
+	case "Recipe.Sugar":
+		if e.complexity.Recipe.Sugar == nil {
+			break
+		}
+
+		return e.complexity.Recipe.Sugar(childComplexity), true
+
+	case "Recipe.TotalCarbohydrate":
+		if e.complexity.Recipe.TotalCarbohydrate == nil {
+			break
+		}
+
+		return e.complexity.Recipe.TotalCarbohydrate(childComplexity), true
+
+	case "Recipe.TotalFat":
+		if e.complexity.Recipe.TotalFat == nil {
+			break
+		}
+
+		return e.complexity.Recipe.TotalFat(childComplexity), true
+
+	case "Recipe.TransFat":
+		if e.complexity.Recipe.TransFat == nil {
+			break
+		}
+
+		return e.complexity.Recipe.TransFat(childComplexity), true
 
 	case "Reference.ID":
 		if e.complexity.Reference.ID == nil {
@@ -1844,10 +2279,20 @@ extend type Mutation {
     createIngredient(input: NewIngredient!): Ingredient!
     updateIngredient(input: UpdateIngredient!) : Result
     deleteIngredient(id: ID!) : Result
+
+    createPortion(input: NewPortion!): Portion!
+    updatePortion(input: UpdatePortion!) : Result
+    deletePortion(id: ID!) : Result
+
+    createRecipe(input: NewRecipe!): Recipe!
+    updateRecipe(input: UpdateRecipe!) : Result
+    deleteRecipe(id: ID!) : Result
 }
 
 extend type Query {
-    ingredients: [Ingredient!]!
+    ingredients(filter:ResultsFilter): [Ingredient!]!
+    portions(filter:ResultsFilter): [Portion!]!
+    recipes(filter:ResultsFilter): [Recipe!]!
 }
 
 type Ingredient {
@@ -1857,6 +2302,7 @@ type Ingredient {
     createdBy: ID!
     createdAt: Timestamp!
     deletedAt: Timestamp
+    portions: [Portion!]!
     calories: Float
     totalFat: Float
     saturatedFat: Float
@@ -1905,7 +2351,68 @@ input UpdateIngredient {
     sugar: Float
     protein: Float
 }
-`},
+
+type Portion {
+    id: ID!
+    name: String!
+    hashtags:[ID!]
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+    amount: Float!
+    calories: Float
+    totalFat: Float
+    saturatedFat: Float
+    monounsaturatedFat: Float
+    transFat: Float
+    cholesterol: Float
+    sodium: Float
+    potassium: Float
+    totalCarbohydrate: Float
+    dietaryFiber: Float
+    sugar: Float
+    protein: Float
+}
+
+input NewPortion {
+    ingredientId: ID!
+    amount: Float!
+}
+
+input UpdatePortion {
+    id: String!
+    amount: Float!
+}
+
+type Recipe {
+    id: ID!
+    name: String!
+    hashtags:[ID!]
+    createdBy: ID!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+    portions: [Portion!]!
+    calories: Float
+    totalFat: Float
+    saturatedFat: Float
+    monounsaturatedFat: Float
+    transFat: Float
+    cholesterol: Float
+    sodium: Float
+    potassium: Float
+    totalCarbohydrate: Float
+    dietaryFiber: Float
+    sugar: Float
+    protein: Float
+}
+
+input NewRecipe {
+    ingredientId: ID!
+}
+
+input UpdateRecipe {
+    id: String!
+}`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashtag(name:String!): Hashtag
     deleteHashtag(id:ID!): Result
@@ -2392,12 +2899,40 @@ func (ec *executionContext) field_Mutation_createMessage_args(ctx context.Contex
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_createPortion_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.NewPortion
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewPortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewPortion(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_createPost_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 apimodel.NewPost
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNNewPost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewPost(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_createRecipe_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.NewRecipe
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNNewRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewRecipe(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2518,6 +3053,20 @@ func (ec *executionContext) field_Mutation_deleteMessage_args(ctx context.Contex
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_deletePortion_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_deletePost_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -2529,6 +3078,20 @@ func (ec *executionContext) field_Mutation_deletePost_args(ctx context.Context, 
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_deleteRecipe_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -2644,12 +3207,40 @@ func (ec *executionContext) field_Mutation_updateMessage_args(ctx context.Contex
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_updatePortion_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.UpdatePortion
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdatePortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdatePortion(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_updatePost_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 apimodel.UpdatePost
 	if tmp, ok := rawArgs["input"]; ok {
 		arg0, err = ec.unmarshalNUpdatePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdatePost(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateRecipe_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.UpdateRecipe
+	if tmp, ok := rawArgs["input"]; ok {
+		arg0, err = ec.unmarshalNUpdateRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateRecipe(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2812,6 +3403,20 @@ func (ec *executionContext) field_Query_imagesByHashTags_args(ctx context.Contex
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_ingredients_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_measurementById_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -2854,6 +3459,20 @@ func (ec *executionContext) field_Query_notificationsByUserId_args(ctx context.C
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_portions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_postsByUserId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -2865,6 +3484,20 @@ func (ec *executionContext) field_Query_postsByUserId_args(ctx context.Context, 
 		}
 	}
 	args["userId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_recipes_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -3693,6 +4326,33 @@ func (ec *executionContext) _Ingredient_deletedAt(ctx context.Context, field gra
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_portions(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Portions, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Portion)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNPortion2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Ingredient_calories(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
@@ -4649,6 +5309,198 @@ func (ec *executionContext) _Mutation_deleteIngredient(ctx context.Context, fiel
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Mutation().DeleteIngredient(rctx, args["id"].(string))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createPortion(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createPortion_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreatePortion(rctx, args["input"].(apimodel.NewPortion))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Portion)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNPortion2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updatePortion(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updatePortion_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdatePortion(rctx, args["input"].(apimodel.UpdatePortion))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deletePortion(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deletePortion_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeletePortion(rctx, args["id"].(string))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createRecipe(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createRecipe_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateRecipe(rctx, args["input"].(apimodel.NewRecipe))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Recipe)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNRecipe2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateRecipe(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateRecipe_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateRecipe(rctx, args["input"].(apimodel.UpdateRecipe))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Result)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResult2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteRecipe(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Mutation",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteRecipe_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteRecipe(rctx, args["id"].(string))
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -5647,6 +6499,477 @@ func (ec *executionContext) _NumericMeasurementResult_deletedAt(ctx context.Cont
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Portion_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOID2ᚕstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_amount(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Amount, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_calories(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Calories, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_totalFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_saturatedFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SaturatedFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_monounsaturatedFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MonounsaturatedFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_transFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TransFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_cholesterol(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cholesterol, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_sodium(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sodium, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_potassium(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Potassium, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_totalCarbohydrate(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCarbohydrate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_dietaryFiber(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DietaryFiber, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_sugar(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sugar, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_protein(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Protein, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Post_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Post) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -6080,10 +7403,17 @@ func (ec *executionContext) _Query_ingredients(ctx context.Context, field graphq
 		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_ingredients_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Ingredients(rctx)
+		return ec.resolvers.Query().Ingredients(rctx, args["filter"].(*apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -6095,6 +7425,74 @@ func (ec *executionContext) _Query_ingredients(ctx context.Context, field graphq
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNIngredient2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_portions(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_portions_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Portions(rctx, args["filter"].(*apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Portion)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNPortion2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_recipes(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_recipes_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Recipes(rctx, args["filter"].(*apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Recipe)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNRecipe2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_hashtags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -6592,6 +7990,477 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOID2ᚕstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_portions(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Portions, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Portion)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNPortion2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_calories(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Calories, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_totalFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_saturatedFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SaturatedFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_monounsaturatedFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.MonounsaturatedFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_transFat(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TransFat, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_cholesterol(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cholesterol, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_sodium(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sodium, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_potassium(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Potassium, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_totalCarbohydrate(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TotalCarbohydrate, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_dietaryFiber(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DietaryFiber, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_sugar(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Sugar, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_protein(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Protein, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*float64)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOFloat2ᚖfloat64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Reference_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reference) graphql.Marshaler {
@@ -8641,6 +10510,30 @@ func (ec *executionContext) unmarshalInputNewMessage(ctx context.Context, v inte
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNewPortion(ctx context.Context, v interface{}) (apimodel.NewPortion, error) {
+	var it apimodel.NewPortion
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "ingredientId":
+			var err error
+			it.IngredientID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "amount":
+			var err error
+			it.Amount, err = ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, v interface{}) (apimodel.NewPost, error) {
 	var it apimodel.NewPost
 	var asMap = v.(map[string]interface{})
@@ -8656,6 +10549,24 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, v interfa
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewRecipe(ctx context.Context, v interface{}) (apimodel.NewRecipe, error) {
+	var it apimodel.NewRecipe
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "ingredientId":
+			var err error
+			it.IngredientID, err = ec.unmarshalNID2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -9025,6 +10936,30 @@ func (ec *executionContext) unmarshalInputUpdateMessage(ctx context.Context, v i
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUpdatePortion(ctx context.Context, v interface{}) (apimodel.UpdatePortion, error) {
+	var it apimodel.UpdatePortion
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "amount":
+			var err error
+			it.Amount, err = ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdatePost(ctx context.Context, v interface{}) (apimodel.UpdatePost, error) {
 	var it apimodel.UpdatePost
 	var asMap = v.(map[string]interface{})
@@ -9046,6 +10981,24 @@ func (ec *executionContext) unmarshalInputUpdatePost(ctx context.Context, v inte
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalNString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateRecipe(ctx context.Context, v interface{}) (apimodel.UpdateRecipe, error) {
+	var it apimodel.UpdateRecipe
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -9432,6 +11385,11 @@ func (ec *executionContext) _Ingredient(ctx context.Context, sel ast.SelectionSe
 			}
 		case "deletedAt":
 			out.Values[i] = ec._Ingredient_deletedAt(ctx, field, obj)
+		case "portions":
+			out.Values[i] = ec._Ingredient_portions(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "calories":
 			out.Values[i] = ec._Ingredient_calories(ctx, field, obj)
 		case "totalFat":
@@ -9652,6 +11610,24 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			out.Values[i] = ec._Mutation_updateIngredient(ctx, field)
 		case "deleteIngredient":
 			out.Values[i] = ec._Mutation_deleteIngredient(ctx, field)
+		case "createPortion":
+			out.Values[i] = ec._Mutation_createPortion(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatePortion":
+			out.Values[i] = ec._Mutation_updatePortion(ctx, field)
+		case "deletePortion":
+			out.Values[i] = ec._Mutation_deletePortion(ctx, field)
+		case "createRecipe":
+			out.Values[i] = ec._Mutation_createRecipe(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updateRecipe":
+			out.Values[i] = ec._Mutation_updateRecipe(ctx, field)
+		case "deleteRecipe":
+			out.Values[i] = ec._Mutation_deleteRecipe(ctx, field)
 		case "createHashtag":
 			out.Values[i] = ec._Mutation_createHashtag(ctx, field)
 		case "deleteHashtag":
@@ -9804,6 +11780,81 @@ func (ec *executionContext) _NumericMeasurementResult(ctx context.Context, sel a
 			}
 		case "deletedAt":
 			out.Values[i] = ec._NumericMeasurementResult_deletedAt(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var portionImplementors = []string{"Portion"}
+
+func (ec *executionContext) _Portion(ctx context.Context, sel ast.SelectionSet, obj *apimodel.Portion) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, portionImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Portion")
+		case "id":
+			out.Values[i] = ec._Portion_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "name":
+			out.Values[i] = ec._Portion_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Portion_hashtags(ctx, field, obj)
+		case "createdBy":
+			out.Values[i] = ec._Portion_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Portion_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Portion_deletedAt(ctx, field, obj)
+		case "amount":
+			out.Values[i] = ec._Portion_amount(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "calories":
+			out.Values[i] = ec._Portion_calories(ctx, field, obj)
+		case "totalFat":
+			out.Values[i] = ec._Portion_totalFat(ctx, field, obj)
+		case "saturatedFat":
+			out.Values[i] = ec._Portion_saturatedFat(ctx, field, obj)
+		case "monounsaturatedFat":
+			out.Values[i] = ec._Portion_monounsaturatedFat(ctx, field, obj)
+		case "transFat":
+			out.Values[i] = ec._Portion_transFat(ctx, field, obj)
+		case "cholesterol":
+			out.Values[i] = ec._Portion_cholesterol(ctx, field, obj)
+		case "sodium":
+			out.Values[i] = ec._Portion_sodium(ctx, field, obj)
+		case "potassium":
+			out.Values[i] = ec._Portion_potassium(ctx, field, obj)
+		case "totalCarbohydrate":
+			out.Values[i] = ec._Portion_totalCarbohydrate(ctx, field, obj)
+		case "dietaryFiber":
+			out.Values[i] = ec._Portion_dietaryFiber(ctx, field, obj)
+		case "sugar":
+			out.Values[i] = ec._Portion_sugar(ctx, field, obj)
+		case "protein":
+			out.Values[i] = ec._Portion_protein(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10023,6 +12074,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "portions":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_portions(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "recipes":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_recipes(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "hashtags":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -10209,6 +12288,81 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			out.Values[i] = ec._Query___type(ctx, field)
 		case "__schema":
 			out.Values[i] = ec._Query___schema(ctx, field)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var recipeImplementors = []string{"Recipe"}
+
+func (ec *executionContext) _Recipe(ctx context.Context, sel ast.SelectionSet, obj *apimodel.Recipe) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, recipeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Recipe")
+		case "id":
+			out.Values[i] = ec._Recipe_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "name":
+			out.Values[i] = ec._Recipe_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._Recipe_hashtags(ctx, field, obj)
+		case "createdBy":
+			out.Values[i] = ec._Recipe_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdAt":
+			out.Values[i] = ec._Recipe_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "deletedAt":
+			out.Values[i] = ec._Recipe_deletedAt(ctx, field, obj)
+		case "portions":
+			out.Values[i] = ec._Recipe_portions(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "calories":
+			out.Values[i] = ec._Recipe_calories(ctx, field, obj)
+		case "totalFat":
+			out.Values[i] = ec._Recipe_totalFat(ctx, field, obj)
+		case "saturatedFat":
+			out.Values[i] = ec._Recipe_saturatedFat(ctx, field, obj)
+		case "monounsaturatedFat":
+			out.Values[i] = ec._Recipe_monounsaturatedFat(ctx, field, obj)
+		case "transFat":
+			out.Values[i] = ec._Recipe_transFat(ctx, field, obj)
+		case "cholesterol":
+			out.Values[i] = ec._Recipe_cholesterol(ctx, field, obj)
+		case "sodium":
+			out.Values[i] = ec._Recipe_sodium(ctx, field, obj)
+		case "potassium":
+			out.Values[i] = ec._Recipe_potassium(ctx, field, obj)
+		case "totalCarbohydrate":
+			out.Values[i] = ec._Recipe_totalCarbohydrate(ctx, field, obj)
+		case "dietaryFiber":
+			out.Values[i] = ec._Recipe_dietaryFiber(ctx, field, obj)
+		case "sugar":
+			out.Values[i] = ec._Recipe_sugar(ctx, field, obj)
+		case "protein":
+			out.Values[i] = ec._Recipe_protein(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -11282,8 +13436,16 @@ func (ec *executionContext) unmarshalNNewMessage2githubᚗcomᚋgremlinsappsᚋa
 	return ec.unmarshalInputNewMessage(ctx, v)
 }
 
+func (ec *executionContext) unmarshalNNewPortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewPortion(ctx context.Context, v interface{}) (apimodel.NewPortion, error) {
+	return ec.unmarshalInputNewPortion(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNNewPost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewPost(ctx context.Context, v interface{}) (apimodel.NewPost, error) {
 	return ec.unmarshalInputNewPost(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNNewRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewRecipe(ctx context.Context, v interface{}) (apimodel.NewRecipe, error) {
+	return ec.unmarshalInputNewRecipe(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐNewUser(ctx context.Context, v interface{}) (apimodel.NewUser, error) {
@@ -11339,6 +13501,57 @@ func (ec *executionContext) marshalNNotification2ᚕgithubᚗcomᚋgremlinsapps�
 	return ret
 }
 
+func (ec *executionContext) marshalNPortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx context.Context, sel ast.SelectionSet, v apimodel.Portion) graphql.Marshaler {
+	return ec._Portion(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNPortion2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx context.Context, sel ast.SelectionSet, v []apimodel.Portion) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNPortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNPortion2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPortion(ctx context.Context, sel ast.SelectionSet, v *apimodel.Portion) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Portion(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNPost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPost(ctx context.Context, sel ast.SelectionSet, v apimodel.Post) graphql.Marshaler {
 	return ec._Post(ctx, sel, &v)
 }
@@ -11392,6 +13605,57 @@ func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋgremlinsappsᚋavocad
 
 func (ec *executionContext) marshalNProfile2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐProfile(ctx context.Context, sel ast.SelectionSet, v apimodel.Profile) graphql.Marshaler {
 	return ec._Profile(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx context.Context, sel ast.SelectionSet, v apimodel.Recipe) graphql.Marshaler {
+	return ec._Recipe(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNRecipe2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx context.Context, sel ast.SelectionSet, v []apimodel.Recipe) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNRecipe2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx context.Context, sel ast.SelectionSet, v *apimodel.Recipe) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Recipe(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNReference2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐReference(ctx context.Context, sel ast.SelectionSet, v apimodel.Reference) graphql.Marshaler {
@@ -11491,8 +13755,16 @@ func (ec *executionContext) unmarshalNUpdateMessage2githubᚗcomᚋgremlinsapps�
 	return ec.unmarshalInputUpdateMessage(ctx, v)
 }
 
+func (ec *executionContext) unmarshalNUpdatePortion2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdatePortion(ctx context.Context, v interface{}) (apimodel.UpdatePortion, error) {
+	return ec.unmarshalInputUpdatePortion(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNUpdatePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdatePost(ctx context.Context, v interface{}) (apimodel.UpdatePost, error) {
 	return ec.unmarshalInputUpdatePost(ctx, v)
+}
+
+func (ec *executionContext) unmarshalNUpdateRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateRecipe(ctx context.Context, v interface{}) (apimodel.UpdateRecipe, error) {
+	return ec.unmarshalInputUpdateRecipe(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNUpdateUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateUser(ctx context.Context, v interface{}) (apimodel.UpdateUser, error) {

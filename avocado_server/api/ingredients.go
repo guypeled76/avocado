@@ -5,7 +5,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 )
 
-func (r *queryResolver) Ingredients(ctx context.Context) ([]apimodel.Ingredient, error) {
+func (r *queryResolver) Ingredients(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Ingredient, error) {
 	panic("implement me")
 }
 
