@@ -19,5 +19,9 @@ func AutoMigrate() {
 		&dalmodel.Message{},
 		&dalmodel.Measurement{},
 		&dalmodel.MeasurementResult{},
+		&dalmodel.Ingredient{},
+		&dalmodel.IngredientPortion{},
+		&dalmodel.Recipe{},
+		&dalmodel.IngredientPortionKind{},
 	)
 }

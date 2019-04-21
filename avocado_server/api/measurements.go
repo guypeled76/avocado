@@ -63,12 +63,12 @@ func (r *mutationResolver) CreateMeasurement(ctx context.Context, input apimodel
 func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel.UpdateMeasurement) (*apimodel.Result, error) {
 	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
-		return &apimodel.Result{Status: "error"}, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	uid, err := sql.ParseUint(input.ID)
 	if err != nil {
-		return nil, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	data := make(map[string]interface{})
@@ -84,7 +84,7 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 	if len(data) > 0 {
 		err = repo.UpdateMeasurement(uid, data)
 		if err != nil {
-			return nil, err
+			return apimodel.CreateFailureResult(err)
 		}
 	}
 
@@ -104,30 +104,30 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 
 		err = hashtagRepo.UpdateMeasurementHashtags(uid, hashtags)
 		if err != nil {
-			return nil, err
+			return apimodel.CreateFailureResult(err)
 		}
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *mutationResolver) DeleteMeasurement(ctx context.Context, id string) (*apimodel.Result, error) {
 	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
-		return nil, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	uid, err := sql.ParseUint(id)
 	if err != nil {
-		return nil, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	err = repo.DeleteMeasurement(uid)
 	if err != nil {
-		return nil, err
+		return apimodel.CreateFailureResult(err)
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (measurementResolver) Chat(ctx context.Context, obj *apimodel.Measurement) (*apimodel.Chat, error) {

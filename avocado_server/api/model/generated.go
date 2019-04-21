@@ -32,19 +32,7 @@ type DeleteImage struct {
 	ID string `json:"id"`
 }
 
-type DeleteIngredient struct {
-	ID string `json:"id"`
-}
-
-type DeleteMeal struct {
-	ID string `json:"id"`
-}
-
 type DeletePost struct {
-	ID string `json:"id"`
-}
-
-type DeleteRecipe struct {
 	ID string `json:"id"`
 }
 
@@ -74,22 +62,24 @@ type Image struct {
 }
 
 type Ingredient struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Hashtags  []Hashtag  `json:"hashtags"`
-	CreatedBy string     `json:"createdBy"`
-	CreatedAt time.Time  `json:"createdAt"`
-	DeletedAt *time.Time `json:"deletedAt"`
-}
-
-type Meal struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Hashtags  []Hashtag  `json:"hashtags"`
-	Recipes   []Recipe   `json:"recipes"`
-	CreatedBy string     `json:"createdBy"`
-	CreatedAt time.Time  `json:"createdAt"`
-	DeletedAt *time.Time `json:"deletedAt"`
+	ID                 string     `json:"id"`
+	Name               string     `json:"name"`
+	Hashtags           []Hashtag  `json:"hashtags"`
+	CreatedBy          string     `json:"createdBy"`
+	CreatedAt          time.Time  `json:"createdAt"`
+	DeletedAt          *time.Time `json:"deletedAt"`
+	Calories           *float64   `json:"calories"`
+	TotalFat           *float64   `json:"totalFat"`
+	SaturatedFat       *float64   `json:"saturatedFat"`
+	MonounsaturatedFat *float64   `json:"monounsaturatedFat"`
+	TransFat           *float64   `json:"transFat"`
+	Cholesterol        *float64   `json:"cholesterol"`
+	Sodium             *float64   `json:"sodium"`
+	Potassium          *float64   `json:"potassium"`
+	TotalCarbohydrate  *float64   `json:"totalCarbohydrate"`
+	DietaryFiber       *float64   `json:"dietaryFiber"`
+	Sugar              *float64   `json:"sugar"`
+	Protein            *float64   `json:"protein"`
 }
 
 type Measurement struct {
@@ -124,13 +114,20 @@ type NewImage struct {
 }
 
 type NewIngredient struct {
-	Name     string   `json:"name"`
-	Hashtags []string `json:"hashtags"`
-}
-
-type NewMeal struct {
-	Name     string   `json:"name"`
-	Hashtags []string `json:"hashtags"`
+	Name               string   `json:"name"`
+	Hashtags           []string `json:"hashtags"`
+	Calories           *float64 `json:"calories"`
+	TotalFat           *float64 `json:"totalFat"`
+	SaturatedFat       *float64 `json:"saturatedFat"`
+	MonounsaturatedFat *float64 `json:"monounsaturatedFat"`
+	TransFat           *float64 `json:"transFat"`
+	Cholesterol        *float64 `json:"cholesterol"`
+	Sodium             *float64 `json:"sodium"`
+	Potassium          *float64 `json:"potassium"`
+	TotalCarbohydrate  *float64 `json:"totalCarbohydrate"`
+	DietaryFiber       *float64 `json:"dietaryFiber"`
+	Sugar              *float64 `json:"sugar"`
+	Protein            *float64 `json:"protein"`
 }
 
 type NewMeasurement struct {
@@ -148,11 +145,6 @@ type NewMessage struct {
 
 type NewPost struct {
 	Text     string   `json:"text"`
-	Hashtags []string `json:"hashtags"`
-}
-
-type NewRecipe struct {
-	Name     string   `json:"name"`
 	Hashtags []string `json:"hashtags"`
 }
 
@@ -208,17 +200,6 @@ type Profile struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-type Recipe struct {
-	ID          string       `json:"id"`
-	Name        string       `json:"name"`
-	Hashtags    []Hashtag    `json:"hashtags"`
-	Ingredients []Ingredient `json:"ingredients"`
-	CreatedBy   string       `json:"createdBy"`
-	CreatedAt   time.Time    `json:"createdAt"`
-	UpdatedAt   time.Time    `json:"updatedAt"`
-	DeletedAt   *time.Time   `json:"deletedAt"`
-}
-
 type Reference struct {
 	ID   string        `json:"id"`
 	Type ReferenceType `json:"type"`
@@ -264,15 +245,21 @@ type UpdateImageHashTags struct {
 }
 
 type UpdateIngredient struct {
-	ID       string   `json:"id"`
-	Name     *string  `json:"name"`
-	Hashtags []string `json:"hashtags"`
-}
-
-type UpdateMeal struct {
-	ID       string   `json:"id"`
-	Name     *string  `json:"name"`
-	Hashtags []string `json:"hashtags"`
+	ID                 string   `json:"id"`
+	Name               *string  `json:"name"`
+	Hashtags           []string `json:"hashtags"`
+	Calories           *float64 `json:"calories"`
+	TotalFat           *float64 `json:"totalFat"`
+	SaturatedFat       *float64 `json:"saturatedFat"`
+	MonounsaturatedFat *float64 `json:"monounsaturatedFat"`
+	TransFat           *float64 `json:"transFat"`
+	Cholesterol        *float64 `json:"cholesterol"`
+	Sodium             *float64 `json:"sodium"`
+	Potassium          *float64 `json:"potassium"`
+	TotalCarbohydrate  *float64 `json:"totalCarbohydrate"`
+	DietaryFiber       *float64 `json:"dietaryFiber"`
+	Sugar              *float64 `json:"sugar"`
+	Protein            *float64 `json:"protein"`
 }
 
 type UpdateMeasurement struct {
@@ -289,12 +276,6 @@ type UpdateMessage struct {
 type UpdatePost struct {
 	ID       string   `json:"id"`
 	Text     string   `json:"text"`
-	Hashtags []string `json:"hashtags"`
-}
-
-type UpdateRecipe struct {
-	ID       string   `json:"id"`
-	Name     *string  `json:"name"`
 	Hashtags []string `json:"hashtags"`
 }
 
