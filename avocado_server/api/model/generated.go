@@ -98,7 +98,8 @@ type Measurement struct {
 
 type Message struct {
 	ID        string     `json:"id"`
-	Message   string     `json:"message"`
+	Text      string     `json:"text"`
+	Replies   []Reply    `json:"replies"`
 	CreatedBy User       `json:"createdBy"`
 	CreateAt  time.Time  `json:"createAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
@@ -140,13 +141,18 @@ type NewMeasurement struct {
 }
 
 type NewMessage struct {
-	Chat    string `json:"chat"`
-	Message string `json:"message"`
+	Chat string `json:"chat"`
+	Text string `json:"text"`
 }
 
 type NewPortion struct {
 	IngredientID string  `json:"ingredientId"`
 	Amount       float64 `json:"amount"`
+	Type         string  `json:"type"`
+}
+
+type NewPortionType struct {
+	Name string `json:"name"`
 }
 
 type NewPost struct {
@@ -156,6 +162,11 @@ type NewPost struct {
 
 type NewRecipe struct {
 	IngredientID string `json:"ingredientId"`
+}
+
+type NewReply struct {
+	Chat string `json:"chat"`
+	Text string `json:"text"`
 }
 
 type NewUser struct {
@@ -195,25 +206,31 @@ type NumericMeasurementResult struct {
 func (NumericMeasurementResult) IsMeasurementResult() {}
 
 type Portion struct {
-	ID                 string     `json:"id"`
-	Name               string     `json:"name"`
-	Hashtags           []string   `json:"hashtags"`
-	CreatedBy          string     `json:"createdBy"`
-	CreatedAt          time.Time  `json:"createdAt"`
-	DeletedAt          *time.Time `json:"deletedAt"`
-	Amount             float64    `json:"amount"`
-	Calories           *float64   `json:"calories"`
-	TotalFat           *float64   `json:"totalFat"`
-	SaturatedFat       *float64   `json:"saturatedFat"`
-	MonounsaturatedFat *float64   `json:"monounsaturatedFat"`
-	TransFat           *float64   `json:"transFat"`
-	Cholesterol        *float64   `json:"cholesterol"`
-	Sodium             *float64   `json:"sodium"`
-	Potassium          *float64   `json:"potassium"`
-	TotalCarbohydrate  *float64   `json:"totalCarbohydrate"`
-	DietaryFiber       *float64   `json:"dietaryFiber"`
-	Sugar              *float64   `json:"sugar"`
-	Protein            *float64   `json:"protein"`
+	ID                 string      `json:"id"`
+	Name               string      `json:"name"`
+	Type               PortionType `json:"type"`
+	Hashtags           []string    `json:"hashtags"`
+	CreatedBy          string      `json:"createdBy"`
+	CreatedAt          time.Time   `json:"createdAt"`
+	DeletedAt          *time.Time  `json:"deletedAt"`
+	Amount             float64     `json:"amount"`
+	Calories           *float64    `json:"calories"`
+	TotalFat           *float64    `json:"totalFat"`
+	SaturatedFat       *float64    `json:"saturatedFat"`
+	MonounsaturatedFat *float64    `json:"monounsaturatedFat"`
+	TransFat           *float64    `json:"transFat"`
+	Cholesterol        *float64    `json:"cholesterol"`
+	Sodium             *float64    `json:"sodium"`
+	Potassium          *float64    `json:"potassium"`
+	TotalCarbohydrate  *float64    `json:"totalCarbohydrate"`
+	DietaryFiber       *float64    `json:"dietaryFiber"`
+	Sugar              *float64    `json:"sugar"`
+	Protein            *float64    `json:"protein"`
+}
+
+type PortionType struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type Post struct {
@@ -257,6 +274,15 @@ type Recipe struct {
 type Reference struct {
 	ID   string        `json:"id"`
 	Type ReferenceType `json:"type"`
+}
+
+type Reply struct {
+	ID        string     `json:"id"`
+	Text      string     `json:"text"`
+	CreatedBy User       `json:"createdBy"`
+	CreateAt  time.Time  `json:"createAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Result struct {
@@ -324,12 +350,19 @@ type UpdateMeasurement struct {
 }
 
 type UpdateMessage struct {
-	Message *string `json:"message"`
+	ID   string  `json:"id"`
+	Text *string `json:"text"`
 }
 
 type UpdatePortion struct {
 	ID     string  `json:"id"`
 	Amount float64 `json:"amount"`
+	Type   string  `json:"type"`
+}
+
+type UpdatePortionType struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type UpdatePost struct {
@@ -340,6 +373,11 @@ type UpdatePost struct {
 
 type UpdateRecipe struct {
 	ID string `json:"id"`
+}
+
+type UpdateReply struct {
+	ID   string  `json:"id"`
+	Text *string `json:"text"`
 }
 
 type UpdateUser struct {

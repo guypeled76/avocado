@@ -9,6 +9,10 @@ extend type Mutation {
     updatePortion(input: UpdatePortion!) : Result
     deletePortion(id: ID!) : Result
 
+    createPortionType(input: NewPortionType!): PortionType!
+    updatePortionType(input: UpdatePortionType!) : Result
+    deletePortionType(id: ID!) : Result
+
     createRecipe(input: NewRecipe!): Recipe!
     updateRecipe(input: UpdateRecipe!) : Result
     deleteRecipe(id: ID!) : Result
@@ -17,6 +21,7 @@ extend type Mutation {
 extend type Query {
     ingredients(filter:ResultsFilter): [Ingredient!]!
     portions(filter:ResultsFilter): [Portion!]!
+    portionTypes(filter:ResultsFilter): [PortionType!]!
     recipes(filter:ResultsFilter): [Recipe!]!
 }
 
@@ -80,6 +85,7 @@ input UpdateIngredient {
 type Portion {
     id: ID!
     name: String!
+    type: PortionType!
     hashtags:[ID!]
     createdBy: ID!
     createdAt: Timestamp!
@@ -102,11 +108,27 @@ type Portion {
 input NewPortion {
     ingredientId: ID!
     amount: Float!
+    type: ID!
 }
 
 input UpdatePortion {
     id: String!
     amount: Float!
+    type: ID!
+}
+
+type PortionType {
+    id: ID!
+    name: String!
+}
+
+input NewPortionType {
+    name: String!
+}
+
+input UpdatePortionType {
+    id: String!
+    name: String!
 }
 
 type Recipe {

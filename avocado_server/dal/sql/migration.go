@@ -22,6 +22,7 @@ func AutoMigrate() {
 		&dalmodel.Ingredient{},
 		&dalmodel.Recipe{},
 		&dalmodel.Portion{},
-		&dalmodel.PortionKind{},
+		&dalmodel.PortionType{},
+		&dalmodel.Reply{},
 	)
 }

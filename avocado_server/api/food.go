@@ -36,3 +36,19 @@ func (r *mutationResolver) UpdateRecipe(ctx context.Context, input apimodel.Upda
 func (r *mutationResolver) DeleteRecipe(ctx context.Context, id string) (*apimodel.Result, error) {
 	panic("implement me")
 }
+
+func (r *mutationResolver) CreatePortionType(ctx context.Context, input apimodel.NewPortionType) (*apimodel.PortionType, error) {
+	panic("implement me")
+}
+
+func (r *mutationResolver) UpdatePortionType(ctx context.Context, input apimodel.UpdatePortionType) (*apimodel.Result, error) {
+	panic("implement me")
+}
+
+func (r *mutationResolver) DeletePortionType(ctx context.Context, id string) (*apimodel.Result, error) {
+	panic("implement me")
+}
+
+func (r *queryResolver) PortionTypes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.PortionType, error) {
+	panic("implement me")
+}

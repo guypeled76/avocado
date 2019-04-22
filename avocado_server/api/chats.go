@@ -109,8 +109,8 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 
 	data := make(map[string]interface{})
 
-	if input.Message != nil {
-		data["Name"] = *input.Message
+	if input.Text != nil {
+		data["Name"] = *input.Text
 	}
 
 	if len(data) > 0 {
@@ -216,6 +216,18 @@ func (r *chatResolver) Messages(ctx context.Context, chat *apimodel.Chat, filter
 	}
 
 	return convertMessages(messages), nil
+}
+
+func (r *mutationResolver) CreateReply(ctx context.Context, input apimodel.NewReply) (*apimodel.Reply, error) {
+	panic("implement me")
+}
+
+func (r *mutationResolver) UpdateReply(ctx context.Context, input apimodel.UpdateReply) (*apimodel.Result, error) {
+	panic("implement me")
+}
+
+func (r *mutationResolver) DeleteReply(ctx context.Context, messageID string) (*apimodel.Result, error) {
+	panic("implement me")
 }
 
 func convertMessages(messages []dalmodel.Message) []apimodel.Message {

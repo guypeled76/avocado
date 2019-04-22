@@ -24,14 +24,14 @@ type Ingredient struct {
 
 type Portion struct {
 	gorm.Model
-	PortionKind   PortionKind `gorm:"foreignkey:PortionKindID;association_foreignkey:ID"`
-	PortionKindID int
+	PortionType   PortionType `gorm:"foreignkey:PortionTypeID;association_foreignkey:ID"`
+	PortionTypeID int
 	Ingredient    Ingredient `gorm:"foreignkey:IngredientID;association_foreignkey:ID"`
 	IngredientID  int
 	Amount        float32
 }
 
-type PortionKind struct {
+type PortionType struct {
 	gorm.Model
 	Name string
 }
