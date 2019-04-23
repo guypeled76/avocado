@@ -4,7 +4,6 @@ import "github.com/jinzhu/gorm"
 
 type Video struct {
 	gorm.Model
-	OwnerModel
 	Text     string
-	Hashtags []Hashtag
+	Hashtags []Hashtag `gorm:"many2many:video_hashtags;"`
 }

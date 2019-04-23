@@ -239,6 +239,7 @@ type ComplexityRoot struct {
 		Clinics               func(childComplexity int) int
 		CurrentUser           func(childComplexity int) int
 		Hashtags              func(childComplexity int, filter *apimodel.ResultsFilter) int
+		HashtagsRelatedTo     func(childComplexity int, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) int
 		ImageByID             func(childComplexity int, id string) int
 		ImagesByHashTags      func(childComplexity int, hashTags []string) int
 		Ingredients           func(childComplexity int, filter *apimodel.ResultsFilter) int
@@ -410,6 +411,7 @@ type QueryResolver interface {
 	PortionTypes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.PortionType, error)
 	Recipes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Recipe, error)
 	Hashtags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
+	HashtagsRelatedTo(ctx context.Context, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error)
 	ImageByID(ctx context.Context, id string) (*apimodel.Image, error)
 	Measurements(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
@@ -1704,6 +1706,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Hashtags(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
+	case "Query.HashtagsRelatedTo":
+		if e.complexity.Query.HashtagsRelatedTo == nil {
+			break
+		}
+
+		args, err := ec.field_Query_hashtagsRelatedTo_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.HashtagsRelatedTo(childComplexity, args["context"].(apimodel.HashtagContext), args["filter"].(*apimodel.ResultsFilter)), true
+
 	case "Query.ImageByID":
 		if e.complexity.Query.ImageByID == nil {
 			break
@@ -2652,6 +2666,7 @@ input UpdateRecipe {
 
 extend type Query {
     hashtags(filter:ResultsFilter) : [Hashtag!]!
+    hashtagsRelatedTo(context: HashtagContext!, filter:ResultsFilter) : [Hashtag!]!
 }
 
 
@@ -2661,6 +2676,18 @@ type Hashtag {
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
+}
+
+enum HashtagContext {
+    Video,
+    Photos,
+    Ingredients,
+    Recipes,
+    Meals,
+    Measurements,
+    Posts,
+    Users,
+    Waterfalls
 }`},
 	&ast.Source{Name: "api/schema/images.graphql", Input: `extend type Mutation {
     createImage(input: NewImage!): Image!
@@ -3673,6 +3700,28 @@ func (ec *executionContext) field_Query_clinicById_args(ctx context.Context, raw
 		}
 	}
 	args["clinicID"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_hashtagsRelatedTo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.HashtagContext
+	if tmp, ok := rawArgs["context"]; ok {
+		arg0, err = ec.unmarshalNHashtagContext2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtagContext(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["context"] = arg0
+	var arg1 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -8179,6 +8228,40 @@ func (ec *executionContext) _Query_hashtags(ctx context.Context, field graphql.C
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Query().Hashtags(rctx, args["filter"].(*apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Hashtag)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_hashtagsRelatedTo(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_hashtagsRelatedTo_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().HashtagsRelatedTo(rctx, args["context"].(apimodel.HashtagContext), args["filter"].(*apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -13120,6 +13203,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "hashtagsRelatedTo":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_hashtagsRelatedTo(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "imagesByHashTags":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -14176,6 +14273,15 @@ func (ec *executionContext) marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavo
 	}
 	wg.Wait()
 	return ret
+}
+
+func (ec *executionContext) unmarshalNHashtagContext2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtagContext(ctx context.Context, v interface{}) (apimodel.HashtagContext, error) {
+	var res apimodel.HashtagContext
+	return res, res.UnmarshalGQL(v)
+}
+
+func (ec *executionContext) marshalNHashtagContext2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtagContext(ctx context.Context, sel ast.SelectionSet, v apimodel.HashtagContext) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {

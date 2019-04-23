@@ -13,5 +13,5 @@ type Measurement struct {
 
 type MeasurementResult struct {
 	gorm.Model
-	MeasurementID uint
+	MeasurementID uint `sql:"index"`
 }

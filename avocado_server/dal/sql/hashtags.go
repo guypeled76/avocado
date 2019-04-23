@@ -65,3 +65,27 @@ func (repo *HashtagRepository) UpdateMeasurementHashtags(ID uint, hashtags []dal
 	measurement := dalmodel.Measurement{Model: gorm.Model{ID: ID}}
 	return repo.conn.UpdateAssociations(&measurement, "Measurements", hashtags)
 }
+
+func (repo *HashtagRepository) GetIngredientHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}
+
+func (repo *HashtagRepository) GetMealHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}
+
+func (repo *HashtagRepository) GetVideoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}
+
+func (repo *HashtagRepository) GetPhotoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}
+
+func (repo *HashtagRepository) GetPostHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}
+
+func (repo *HashtagRepository) GetRecipeHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	panic("implement me")
+}

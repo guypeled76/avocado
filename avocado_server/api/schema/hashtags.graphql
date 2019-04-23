@@ -6,6 +6,7 @@ extend type Mutation {
 
 extend type Query {
     hashtags(filter:ResultsFilter) : [Hashtag!]!
+    hashtagsRelatedTo(context: HashtagContext!, filter:ResultsFilter) : [Hashtag!]!
 }
 
 
@@ -15,4 +16,16 @@ type Hashtag {
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
+}
+
+enum HashtagContext {
+    Video,
+    Photos,
+    Ingredients,
+    Recipes,
+    Meals,
+    Measurements,
+    Posts,
+    Users,
+    Waterfalls
 }

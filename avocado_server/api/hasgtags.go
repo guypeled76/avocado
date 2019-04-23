@@ -90,6 +90,45 @@ func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apim
 	return convertHashtags(hashTags), nil
 }
 
+func (r *queryResolver) HashtagsRelatedTo(ctx context.Context, hashtagContext apimodel.HashtagContext, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error) {
+	repo, err := sql.CreateHashtagRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	hashtags := make([]apimodel.Hashtag, 0)
+	switch hashtagContext {
+	case apimodel.HashtagContextIngredients:
+		hashtags, err = convertHashtagsWithError(repo.GetIngredientHashtags(filter))
+		break
+	case apimodel.HashtagContextMeals:
+		hashtags, err = convertHashtagsWithError(repo.GetMealHashtags(filter))
+		break
+	case apimodel.HashtagContextVideo:
+		hashtags, err = convertHashtagsWithError(repo.GetVideoHashtags(filter))
+		break
+	case apimodel.HashtagContextPhotos:
+		hashtags, err = convertHashtagsWithError(repo.GetPhotoHashtags(filter))
+		break
+	case apimodel.HashtagContextPosts:
+		hashtags, err = convertHashtagsWithError(repo.GetPostHashtags(filter))
+		break
+	case apimodel.HashtagContextRecipes:
+		hashtags, err = convertHashtagsWithError(repo.GetRecipeHashtags(filter))
+		break
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return hashtags, nil
+}
+
+func convertHashtagsWithError(hashtags []dalmodel.Hashtag, err error) ([]apimodel.Hashtag, error) {
+	return convertHashtags(hashtags), err
+}
+
 func convertHashtags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
 	result := make([]apimodel.Hashtag, 0)
 

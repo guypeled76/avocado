@@ -24,5 +24,6 @@ func AutoMigrate() {
 		&dalmodel.Portion{},
 		&dalmodel.PortionType{},
 		&dalmodel.Reply{},
+		&dalmodel.Post{},
 	)
 }

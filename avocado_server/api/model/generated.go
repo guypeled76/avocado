@@ -439,6 +439,61 @@ type Waterfall struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
+type HashtagContext string
+
+const (
+	HashtagContextVideo        HashtagContext = "Video"
+	HashtagContextPhotos       HashtagContext = "Photos"
+	HashtagContextIngredients  HashtagContext = "Ingredients"
+	HashtagContextRecipes      HashtagContext = "Recipes"
+	HashtagContextMeals        HashtagContext = "Meals"
+	HashtagContextMeasurements HashtagContext = "Measurements"
+	HashtagContextPosts        HashtagContext = "Posts"
+	HashtagContextUsers        HashtagContext = "Users"
+	HashtagContextWaterfalls   HashtagContext = "Waterfalls"
+)
+
+var AllHashtagContext = []HashtagContext{
+	HashtagContextVideo,
+	HashtagContextPhotos,
+	HashtagContextIngredients,
+	HashtagContextRecipes,
+	HashtagContextMeals,
+	HashtagContextMeasurements,
+	HashtagContextPosts,
+	HashtagContextUsers,
+	HashtagContextWaterfalls,
+}
+
+func (e HashtagContext) IsValid() bool {
+	switch e {
+	case HashtagContextVideo, HashtagContextPhotos, HashtagContextIngredients, HashtagContextRecipes, HashtagContextMeals, HashtagContextMeasurements, HashtagContextPosts, HashtagContextUsers, HashtagContextWaterfalls:
+		return true
+	}
+	return false
+}
+
+func (e HashtagContext) String() string {
+	return string(e)
+}
+
+func (e *HashtagContext) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = HashtagContext(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid HashtagContext", str)
+	}
+	return nil
+}
+
+func (e HashtagContext) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type MeasurementUnit string
 
 const (
