@@ -31,6 +31,7 @@ input NewChat {
 type Message {
     id: ID!
     text: String!
+    resource: Resource
     replies: [Reply!]!
     createdBy: User!
     createAt: Timestamp!
@@ -51,6 +52,7 @@ input NewMessage {
 type Reply {
     id: ID!
     text: String!
+    resource: Resource
     createdBy: User!
     createAt: Timestamp!
     updatedAt: Timestamp!

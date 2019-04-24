@@ -14,10 +14,11 @@ type Post {
     text: String!
     hashtags:[Hashtag!]!
     chat: Chat!
-    createdBy: ID!
+    createdBy: User!
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
+    resources: [Resource!]!
 }
 
 input NewPost {

@@ -29,7 +29,13 @@ models:
         resolver: true
       chat:
         resolver: true
+      image:
+        resolver: true
       measurements:
+        resolver: true
+  Resource:
+    fields:
+      chat:
         resolver: true
   Post:
     fields:

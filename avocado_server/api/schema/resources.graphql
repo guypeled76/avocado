@@ -1,0 +1,38 @@
+extend type Mutation {
+    createResource(input: NewResource!): Resource!
+    updateResource(input: UpdateResource!) : Result
+    deleteResource(input: DeleteResource!) : Result
+}
+
+extend type Query {
+    resources(filter:ResultsFilter!): [Resource!]!
+    resourceById(id:ID!): Resource!
+}
+
+
+type Resource {
+    id: ID!
+    name: String!
+    hashtags:[Hashtag!]!
+    thumbnail:String
+    image:String
+    video:String
+    chat: Chat!
+    createdAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+input NewResource {
+    name: String!
+    hashtags:[ID!]!
+}
+
+input UpdateResource {
+    id:ID!
+    name: String
+    hashtags:[ID!]
+}
+
+input DeleteResource {
+    id:ID!
+}

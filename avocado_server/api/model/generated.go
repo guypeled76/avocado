@@ -36,6 +36,10 @@ type DeletePost struct {
 	ID string `json:"id"`
 }
 
+type DeleteResource struct {
+	ID string `json:"id"`
+}
+
 type DeleteVideo struct {
 	ID string `json:"id"`
 }
@@ -99,6 +103,7 @@ type Measurement struct {
 type Message struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
+	Resource  *Resource  `json:"resource"`
 	Replies   []Reply    `json:"replies"`
 	CreatedBy User       `json:"createdBy"`
 	CreateAt  time.Time  `json:"createAt"`
@@ -169,11 +174,15 @@ type NewReply struct {
 	Text string `json:"text"`
 }
 
+type NewResource struct {
+	Name     string   `json:"name"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type NewUser struct {
-	Name        string  `json:"name"`
-	DisplayName string  `json:"displayName"`
-	Email       string  `json:"email"`
-	Image       *string `json:"image"`
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName"`
+	Email       string `json:"email"`
 }
 
 type NewVideo struct {
@@ -238,10 +247,11 @@ type Post struct {
 	Text      string     `json:"text"`
 	Hashtags  []Hashtag  `json:"hashtags"`
 	Chat      Chat       `json:"chat"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy User       `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	Resources []Resource `json:"resources"`
 }
 
 type Profile struct {
@@ -279,11 +289,36 @@ type Reference struct {
 type Reply struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
+	Resource  *Resource  `json:"resource"`
 	CreatedBy User       `json:"createdBy"`
 	CreateAt  time.Time  `json:"createAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }
+
+type Resource struct {
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	Hashtags  []Hashtag  `json:"hashtags"`
+	Thumbnail *string    `json:"thumbnail"`
+	Image     *string    `json:"image"`
+	Video     *string    `json:"video"`
+	Chat      Chat       `json:"chat"`
+	CreatedAt time.Time  `json:"createdAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+type ResourceMeasurementResult struct {
+	ID        string     `json:"id"`
+	Chat      Chat       `json:"chat"`
+	Text      string     `json:"text"`
+	Value     Resource   `json:"value"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	DeletedAt *time.Time `json:"deletedAt"`
+}
+
+func (ResourceMeasurementResult) IsMeasurementResult() {}
 
 type Result struct {
 	Status ResultStatus `json:"status"`
@@ -380,6 +415,12 @@ type UpdateReply struct {
 	Text *string `json:"text"`
 }
 
+type UpdateResource struct {
+	ID       string   `json:"id"`
+	Name     *string  `json:"name"`
+	Hashtags []string `json:"hashtags"`
+}
+
 type UpdateUser struct {
 	ID          string   `json:"id"`
 	Name        *string  `json:"name"`
@@ -410,7 +451,7 @@ type User struct {
 	Name          string         `json:"name"`
 	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
-	Image         string         `json:"image"`
+	Image         Resource       `json:"image"`
 	Hashtags      []Hashtag      `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
 	Measurements  []Measurement  `json:"measurements"`
@@ -502,6 +543,7 @@ const (
 	MeasurementUnitKilo        MeasurementUnit = "KILO"
 	MeasurementUnitPounds      MeasurementUnit = "POUNDS"
 	MeasurementUnitRepetitions MeasurementUnit = "REPETITIONS"
+	MeasurementUnitResource    MeasurementUnit = "RESOURCE"
 )
 
 var AllMeasurementUnit = []MeasurementUnit{
@@ -510,11 +552,12 @@ var AllMeasurementUnit = []MeasurementUnit{
 	MeasurementUnitKilo,
 	MeasurementUnitPounds,
 	MeasurementUnitRepetitions,
+	MeasurementUnitResource,
 }
 
 func (e MeasurementUnit) IsValid() bool {
 	switch e {
-	case MeasurementUnitCentimeter, MeasurementUnitInch, MeasurementUnitKilo, MeasurementUnitPounds, MeasurementUnitRepetitions:
+	case MeasurementUnitCentimeter, MeasurementUnitInch, MeasurementUnitKilo, MeasurementUnitPounds, MeasurementUnitRepetitions, MeasurementUnitResource:
 		return true
 	}
 	return false

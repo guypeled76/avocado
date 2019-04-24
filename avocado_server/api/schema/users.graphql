@@ -16,7 +16,6 @@ input NewUser {
     name: String!
     displayName: String!
     email: String!
-    image: String
 }
 
 type User {
@@ -24,7 +23,7 @@ type User {
     name: String!
     displayName: String!
     email: String!
-    image: String!
+    image: Resource!
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!

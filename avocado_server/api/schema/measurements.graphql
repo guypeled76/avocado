@@ -29,7 +29,8 @@ enum MeasurementUnit {
     INCH
     KILO
     POUNDS
-    REPETITIONS
+    REPETITIONS,
+    RESOURCE
 }
 
 input NewMeasurement{
@@ -73,6 +74,16 @@ type TextMeasurementResult implements MeasurementResult {
     chat: Chat!
     text: String!
     value: String!
+    createdAt: Timestamp!
+    updatedAt: Timestamp!
+    deletedAt: Timestamp
+}
+
+type ResourceMeasurementResult implements MeasurementResult {
+    id:ID!
+    chat: Chat!
+    text: String!
+    value: Resource!
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp

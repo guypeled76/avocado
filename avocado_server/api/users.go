@@ -144,12 +144,15 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
+func (r *userResolver) Image(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error) {
+	panic("implement me")
+}
+
 func convertUser(user *dalmodel.User) *apimodel.User {
 	return &apimodel.User{
 		ID:          fmt.Sprint(user.ID),
 		Name:        user.Name,
 		DisplayName: user.DisplayName,
-		Image:       user.Image,
 		Email:       user.Email,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
