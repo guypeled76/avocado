@@ -14,8 +14,11 @@ type Hashtag {
     id:ID!
     name:String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 enum HashtagContext {

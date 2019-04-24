@@ -6,6 +6,8 @@ extend type Query {
 type Notification {
     id: ID!
     text: String!
-    reference: Reference!
-    createdAt: Timestamp!
+    Resource:Resource!
+    reference:Reference!
+    createdAt:Timestamp!
+    createdBy:User
 }

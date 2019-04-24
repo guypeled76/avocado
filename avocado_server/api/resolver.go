@@ -44,6 +44,14 @@ func (r *Resolver) Resource() graph.ResourceResolver {
 	return &resourceResolver{r}
 }
 
+func (r *Resolver) Reply() graph.ReplyResolver {
+	return &replyResolver{r}
+}
+
+func (r *Resolver) Message() graph.MessageResolver {
+	return &messageResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -64,6 +72,12 @@ type chatResolver struct{ *Resolver }
 
 // Resource
 type resourceResolver struct{ *Resolver }
+
+// Reply
+type replyResolver struct{ *Resolver }
+
+// Message
+type messageResolver struct{ *Resolver }
 
 func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
 	if r.database == nil {

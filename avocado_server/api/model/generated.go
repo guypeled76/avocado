@@ -14,9 +14,14 @@ type MeasurementResult interface {
 }
 
 type Chat struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"createdAt"`
-	Messages  []Message `json:"messages"`
+	ID        string     `json:"id"`
+	CreatedAt time.Time  `json:"createdAt"`
+	CreatedBy *User      `json:"createdBy"`
+	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
+	Messages  []Message  `json:"messages"`
 }
 
 type Clinic struct {
@@ -52,8 +57,11 @@ type Hashtag struct {
 	ID        string     `json:"id"`
 	Name      string     `json:"name"`
 	CreatedAt time.Time  `json:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedBy *User      `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 }
 
 type Image struct {
@@ -69,9 +77,12 @@ type Ingredient struct {
 	ID                 string     `json:"id"`
 	Name               string     `json:"name"`
 	Hashtags           []Hashtag  `json:"hashtags"`
-	CreatedBy          string     `json:"createdBy"`
 	CreatedAt          time.Time  `json:"createdAt"`
+	CreatedBy          User       `json:"createdBy"`
 	DeletedAt          *time.Time `json:"deletedAt"`
+	DeletedBy          *User      `json:"deletedBy"`
+	UpdatedAt          time.Time  `json:"updatedAt"`
+	UpdatedBy          User       `json:"updatedBy"`
 	Portions           []Portion  `json:"portions"`
 	Calories           *float64   `json:"calories"`
 	TotalFat           *float64   `json:"totalFat"`
@@ -96,8 +107,11 @@ type Measurement struct {
 	Hashtags    []Hashtag           `json:"hashtags"`
 	Results     []MeasurementResult `json:"results"`
 	CreatedAt   time.Time           `json:"createdAt"`
-	UpdatedAt   time.Time           `json:"updatedAt"`
+	CreatedBy   *User               `json:"createdBy"`
 	DeletedAt   *time.Time          `json:"deletedAt"`
+	DeletedBy   *User               `json:"deletedBy"`
+	UpdatedAt   time.Time           `json:"updatedAt"`
+	UpdatedBy   *User               `json:"updatedBy"`
 }
 
 type Message struct {
@@ -105,10 +119,12 @@ type Message struct {
 	Text      string     `json:"text"`
 	Resource  *Resource  `json:"resource"`
 	Replies   []Reply    `json:"replies"`
-	CreatedBy User       `json:"createdBy"`
-	CreateAt  time.Time  `json:"createAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedAt time.Time  `json:"createdAt"`
+	CreatedBy *User      `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 }
 
 type NewChat struct {
@@ -198,8 +214,10 @@ type NewWaterfall struct {
 type Notification struct {
 	ID        string    `json:"id"`
 	Text      string    `json:"text"`
+	Resource  Resource  `json:"Resource"`
 	Reference Reference `json:"reference"`
 	CreatedAt time.Time `json:"createdAt"`
+	CreatedBy *User     `json:"createdBy"`
 }
 
 type NumericMeasurementResult struct {
@@ -208,8 +226,11 @@ type NumericMeasurementResult struct {
 	Text      string     `json:"text"`
 	Value     float64    `json:"value"`
 	CreatedAt time.Time  `json:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedBy *User      `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 }
 
 func (NumericMeasurementResult) IsMeasurementResult() {}
@@ -219,9 +240,12 @@ type Portion struct {
 	Name               string      `json:"name"`
 	Type               PortionType `json:"type"`
 	Hashtags           []string    `json:"hashtags"`
-	CreatedBy          string      `json:"createdBy"`
 	CreatedAt          time.Time   `json:"createdAt"`
+	CreatedBy          User        `json:"createdBy"`
 	DeletedAt          *time.Time  `json:"deletedAt"`
+	DeletedBy          *User       `json:"deletedBy"`
+	UpdatedAt          time.Time   `json:"updatedAt"`
+	UpdatedBy          User        `json:"updatedBy"`
 	Amount             float64     `json:"amount"`
 	Calories           *float64    `json:"calories"`
 	TotalFat           *float64    `json:"totalFat"`
@@ -263,9 +287,12 @@ type Recipe struct {
 	ID                 string     `json:"id"`
 	Name               string     `json:"name"`
 	Hashtags           []string   `json:"hashtags"`
-	CreatedBy          string     `json:"createdBy"`
 	CreatedAt          time.Time  `json:"createdAt"`
+	CreatedBy          *User      `json:"createdBy"`
 	DeletedAt          *time.Time `json:"deletedAt"`
+	DeletedBy          *User      `json:"deletedBy"`
+	UpdatedAt          time.Time  `json:"updatedAt"`
+	UpdatedBy          *User      `json:"updatedBy"`
 	Portions           []Portion  `json:"portions"`
 	Calories           *float64   `json:"calories"`
 	TotalFat           *float64   `json:"totalFat"`
@@ -290,10 +317,12 @@ type Reply struct {
 	ID        string     `json:"id"`
 	Text      string     `json:"text"`
 	Resource  *Resource  `json:"resource"`
-	CreatedBy User       `json:"createdBy"`
-	CreateAt  time.Time  `json:"createAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedAt time.Time  `json:"createdAt"`
+	CreatedBy *User      `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 }
 
 type Resource struct {
@@ -304,8 +333,12 @@ type Resource struct {
 	Image     *string    `json:"image"`
 	Video     *string    `json:"video"`
 	Chat      Chat       `json:"chat"`
+	CreatedBy *User      `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
 }
 
 type ResourceMeasurementResult struct {
@@ -314,8 +347,11 @@ type ResourceMeasurementResult struct {
 	Text      string     `json:"text"`
 	Value     Resource   `json:"value"`
 	CreatedAt time.Time  `json:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedBy User       `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy User       `json:"updatedBy"`
 }
 
 func (ResourceMeasurementResult) IsMeasurementResult() {}
@@ -342,8 +378,11 @@ type TextMeasurementResult struct {
 	Text      string     `json:"text"`
 	Value     string     `json:"value"`
 	CreatedAt time.Time  `json:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
+	CreatedBy User       `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy User       `json:"updatedBy"`
 }
 
 func (TextMeasurementResult) IsMeasurementResult() {}

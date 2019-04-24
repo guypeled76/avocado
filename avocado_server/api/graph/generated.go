@@ -14,7 +14,6 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/gremlinsapps/avocado_server/api/model"
-	"github.com/gremlinsapps/avocado_server/dal"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -39,9 +38,11 @@ type Config struct {
 type ResolverRoot interface {
 	Chat() ChatResolver
 	Measurement() MeasurementResolver
+	Message() MessageResolver
 	Mutation() MutationResolver
 	Post() PostResolver
 	Query() QueryResolver
+	Reply() ReplyResolver
 	Resource() ResourceResolver
 	User() UserResolver
 }
@@ -52,8 +53,13 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Chat struct {
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
+		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Messages  func(childComplexity int, filter apimodel.ResultsFilter) int
+		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 	}
 
 	Clinic struct {
@@ -67,10 +73,13 @@ type ComplexityRoot struct {
 
 	Hashtag struct {
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 	}
 
 	Image struct {
@@ -88,6 +97,7 @@ type ComplexityRoot struct {
 		CreatedAt          func(childComplexity int) int
 		CreatedBy          func(childComplexity int) int
 		DeletedAt          func(childComplexity int) int
+		DeletedBy          func(childComplexity int) int
 		DietaryFiber       func(childComplexity int) int
 		Hashtags           func(childComplexity int) int
 		ID                 func(childComplexity int) int
@@ -102,12 +112,16 @@ type ComplexityRoot struct {
 		TotalCarbohydrate  func(childComplexity int) int
 		TotalFat           func(childComplexity int) int
 		TransFat           func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		UpdatedBy          func(childComplexity int) int
 	}
 
 	Measurement struct {
 		Chat        func(childComplexity int) int
 		CreatedAt   func(childComplexity int) int
+		CreatedBy   func(childComplexity int) int
 		DeletedAt   func(childComplexity int) int
+		DeletedBy   func(childComplexity int) int
 		Description func(childComplexity int) int
 		Hashtags    func(childComplexity int) int
 		ID          func(childComplexity int) int
@@ -115,17 +129,20 @@ type ComplexityRoot struct {
 		Results     func(childComplexity int) int
 		Unit        func(childComplexity int) int
 		UpdatedAt   func(childComplexity int) int
+		UpdatedBy   func(childComplexity int) int
 	}
 
 	Message struct {
-		CreateAt  func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
 		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
-		Replies   func(childComplexity int) int
+		Replies   func(childComplexity int, filter apimodel.ResultsFilter) int
 		Resource  func(childComplexity int) int
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -178,18 +195,23 @@ type ComplexityRoot struct {
 
 	Notification struct {
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Reference func(childComplexity int) int
+		Resource  func(childComplexity int) int
 		Text      func(childComplexity int) int
 	}
 
 	NumericMeasurementResult struct {
 		Chat      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 		Value     func(childComplexity int) int
 	}
 
@@ -200,6 +222,7 @@ type ComplexityRoot struct {
 		CreatedAt          func(childComplexity int) int
 		CreatedBy          func(childComplexity int) int
 		DeletedAt          func(childComplexity int) int
+		DeletedBy          func(childComplexity int) int
 		DietaryFiber       func(childComplexity int) int
 		Hashtags           func(childComplexity int) int
 		ID                 func(childComplexity int) int
@@ -214,6 +237,8 @@ type ComplexityRoot struct {
 		TotalFat           func(childComplexity int) int
 		TransFat           func(childComplexity int) int
 		Type               func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		UpdatedBy          func(childComplexity int) int
 	}
 
 	PortionType struct {
@@ -251,11 +276,13 @@ type ComplexityRoot struct {
 		Ingredients           func(childComplexity int, filter *apimodel.ResultsFilter) int
 		MeasurementByID       func(childComplexity int, id string) int
 		Measurements          func(childComplexity int, filter *apimodel.ResultsFilter) int
+		MessagesByChatID      func(childComplexity int, chatID string, filter apimodel.ResultsFilter) int
 		NotificationsByUserID func(childComplexity int, userID string) int
 		PortionTypes          func(childComplexity int, filter *apimodel.ResultsFilter) int
 		Portions              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		PostsByUserID         func(childComplexity int, userID string) int
 		Recipes               func(childComplexity int, filter *apimodel.ResultsFilter) int
+		RepliesByMessageID    func(childComplexity int, messageID string, filter apimodel.ResultsFilter) int
 		ResourceByID          func(childComplexity int, id string) int
 		Resources             func(childComplexity int, filter apimodel.ResultsFilter) int
 		UserByID              func(childComplexity int, id string) int
@@ -272,6 +299,7 @@ type ComplexityRoot struct {
 		CreatedAt          func(childComplexity int) int
 		CreatedBy          func(childComplexity int) int
 		DeletedAt          func(childComplexity int) int
+		DeletedBy          func(childComplexity int) int
 		DietaryFiber       func(childComplexity int) int
 		Hashtags           func(childComplexity int) int
 		ID                 func(childComplexity int) int
@@ -286,6 +314,8 @@ type ComplexityRoot struct {
 		TotalCarbohydrate  func(childComplexity int) int
 		TotalFat           func(childComplexity int) int
 		TransFat           func(childComplexity int) int
+		UpdatedAt          func(childComplexity int) int
+		UpdatedBy          func(childComplexity int) int
 	}
 
 	Reference struct {
@@ -294,34 +324,43 @@ type ComplexityRoot struct {
 	}
 
 	Reply struct {
-		CreateAt  func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
 		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Resource  func(childComplexity int) int
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 	}
 
 	Resource struct {
 		Chat      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		Hashtags  func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Image     func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Thumbnail func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 		Video     func(childComplexity int) int
 	}
 
 	ResourceMeasurementResult struct {
 		Chat      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 		Value     func(childComplexity int) int
 	}
 
@@ -332,10 +371,13 @@ type ComplexityRoot struct {
 	TextMeasurementResult struct {
 		Chat      func(childComplexity int) int
 		CreatedAt func(childComplexity int) int
+		CreatedBy func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
+		DeletedBy func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Text      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+		UpdatedBy func(childComplexity int) int
 		Value     func(childComplexity int) int
 	}
 
@@ -382,6 +424,11 @@ type MeasurementResolver interface {
 
 	Hashtags(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.Hashtag, error)
 	Results(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.MeasurementResult, error)
+}
+type MessageResolver interface {
+	Resource(ctx context.Context, obj *apimodel.Message) (*apimodel.Resource, error)
+
+	CreatedBy(ctx context.Context, obj *apimodel.Message) (*apimodel.User, error)
 }
 type MutationResolver interface {
 	Logon(ctx context.Context) (*apimodel.Result, error)
@@ -433,11 +480,14 @@ type MutationResolver interface {
 type PostResolver interface {
 	Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.Hashtag, error)
 	Chat(ctx context.Context, obj *apimodel.Post) (*apimodel.Chat, error)
+	CreatedBy(ctx context.Context, obj *apimodel.Post) (*apimodel.User, error)
 }
 type QueryResolver interface {
 	CurrentUser(ctx context.Context) (*apimodel.User, error)
 	ChatsByUserID(ctx context.Context, userID string) ([]apimodel.Chat, error)
 	ChatByID(ctx context.Context, chatID string) (*apimodel.Chat, error)
+	MessagesByChatID(ctx context.Context, chatID string, filter apimodel.ResultsFilter) ([]apimodel.Message, error)
+	RepliesByMessageID(ctx context.Context, messageID string, filter apimodel.ResultsFilter) ([]apimodel.Reply, error)
 	ClinicByID(ctx context.Context, clinicID string) (*apimodel.Clinic, error)
 	Clinics(ctx context.Context) ([]apimodel.Clinic, error)
 	Ingredients(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Ingredient, error)
@@ -461,8 +511,14 @@ type QueryResolver interface {
 	Videos(ctx context.Context, filter apimodel.ResultsFilter) ([]apimodel.Video, error)
 	WaterfallByUserID(ctx context.Context, waterfallID string) (*apimodel.Waterfall, error)
 }
+type ReplyResolver interface {
+	Resource(ctx context.Context, obj *apimodel.Reply) (*apimodel.Resource, error)
+
+	CreatedBy(ctx context.Context, obj *apimodel.Reply) (*apimodel.User, error)
+}
 type ResourceResolver interface {
 	Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error)
+	CreatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error)
 }
 type UserResolver interface {
 	Image(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error)
@@ -494,6 +550,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Chat.CreatedAt(childComplexity), true
 
+	case "Chat.CreatedBy":
+		if e.complexity.Chat.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Chat.CreatedBy(childComplexity), true
+
+	case "Chat.DeletedAt":
+		if e.complexity.Chat.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.Chat.DeletedAt(childComplexity), true
+
+	case "Chat.DeletedBy":
+		if e.complexity.Chat.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Chat.DeletedBy(childComplexity), true
+
 	case "Chat.ID":
 		if e.complexity.Chat.ID == nil {
 			break
@@ -512,6 +589,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Chat.Messages(childComplexity, args["filter"].(apimodel.ResultsFilter)), true
+
+	case "Chat.UpdatedAt":
+		if e.complexity.Chat.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Chat.UpdatedAt(childComplexity), true
+
+	case "Chat.UpdatedBy":
+		if e.complexity.Chat.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Chat.UpdatedBy(childComplexity), true
 
 	case "Clinic.CreatedAt":
 		if e.complexity.Clinic.CreatedAt == nil {
@@ -562,12 +653,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Hashtag.CreatedAt(childComplexity), true
 
+	case "Hashtag.CreatedBy":
+		if e.complexity.Hashtag.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Hashtag.CreatedBy(childComplexity), true
+
 	case "Hashtag.DeletedAt":
 		if e.complexity.Hashtag.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.Hashtag.DeletedAt(childComplexity), true
+
+	case "Hashtag.DeletedBy":
+		if e.complexity.Hashtag.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Hashtag.DeletedBy(childComplexity), true
 
 	case "Hashtag.ID":
 		if e.complexity.Hashtag.ID == nil {
@@ -589,6 +694,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Hashtag.UpdatedAt(childComplexity), true
+
+	case "Hashtag.UpdatedBy":
+		if e.complexity.Hashtag.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Hashtag.UpdatedBy(childComplexity), true
 
 	case "Image.CreatedAt":
 		if e.complexity.Image.CreatedAt == nil {
@@ -666,6 +778,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Ingredient.DeletedAt(childComplexity), true
+
+	case "Ingredient.DeletedBy":
+		if e.complexity.Ingredient.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.DeletedBy(childComplexity), true
 
 	case "Ingredient.DietaryFiber":
 		if e.complexity.Ingredient.DietaryFiber == nil {
@@ -765,6 +884,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ingredient.TransFat(childComplexity), true
 
+	case "Ingredient.UpdatedAt":
+		if e.complexity.Ingredient.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.UpdatedAt(childComplexity), true
+
+	case "Ingredient.UpdatedBy":
+		if e.complexity.Ingredient.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Ingredient.UpdatedBy(childComplexity), true
+
 	case "Measurement.Chat":
 		if e.complexity.Measurement.Chat == nil {
 			break
@@ -779,12 +912,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Measurement.CreatedAt(childComplexity), true
 
+	case "Measurement.CreatedBy":
+		if e.complexity.Measurement.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Measurement.CreatedBy(childComplexity), true
+
 	case "Measurement.DeletedAt":
 		if e.complexity.Measurement.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.Measurement.DeletedAt(childComplexity), true
+
+	case "Measurement.DeletedBy":
+		if e.complexity.Measurement.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Measurement.DeletedBy(childComplexity), true
 
 	case "Measurement.Description":
 		if e.complexity.Measurement.Description == nil {
@@ -835,12 +982,19 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Measurement.UpdatedAt(childComplexity), true
 
-	case "Message.CreateAt":
-		if e.complexity.Message.CreateAt == nil {
+	case "Measurement.UpdatedBy":
+		if e.complexity.Measurement.UpdatedBy == nil {
 			break
 		}
 
-		return e.complexity.Message.CreateAt(childComplexity), true
+		return e.complexity.Measurement.UpdatedBy(childComplexity), true
+
+	case "Message.CreatedAt":
+		if e.complexity.Message.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.Message.CreatedAt(childComplexity), true
 
 	case "Message.CreatedBy":
 		if e.complexity.Message.CreatedBy == nil {
@@ -856,6 +1010,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Message.DeletedAt(childComplexity), true
 
+	case "Message.DeletedBy":
+		if e.complexity.Message.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Message.DeletedBy(childComplexity), true
+
 	case "Message.ID":
 		if e.complexity.Message.ID == nil {
 			break
@@ -868,7 +1029,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		return e.complexity.Message.Replies(childComplexity), true
+		args, err := ec.field_Message_replies_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Message.Replies(childComplexity, args["filter"].(apimodel.ResultsFilter)), true
 
 	case "Message.Resource":
 		if e.complexity.Message.Resource == nil {
@@ -890,6 +1056,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Message.UpdatedAt(childComplexity), true
+
+	case "Message.UpdatedBy":
+		if e.complexity.Message.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Message.UpdatedBy(childComplexity), true
 
 	case "Mutation.CreateChat":
 		if e.complexity.Mutation.CreateChat == nil {
@@ -1433,6 +1606,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Notification.CreatedAt(childComplexity), true
 
+	case "Notification.CreatedBy":
+		if e.complexity.Notification.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Notification.CreatedBy(childComplexity), true
+
 	case "Notification.ID":
 		if e.complexity.Notification.ID == nil {
 			break
@@ -1446,6 +1626,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Notification.Reference(childComplexity), true
+
+	case "Notification.Resource":
+		if e.complexity.Notification.Resource == nil {
+			break
+		}
+
+		return e.complexity.Notification.Resource(childComplexity), true
 
 	case "Notification.Text":
 		if e.complexity.Notification.Text == nil {
@@ -1468,12 +1655,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.NumericMeasurementResult.CreatedAt(childComplexity), true
 
+	case "NumericMeasurementResult.CreatedBy":
+		if e.complexity.NumericMeasurementResult.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.NumericMeasurementResult.CreatedBy(childComplexity), true
+
 	case "NumericMeasurementResult.DeletedAt":
 		if e.complexity.NumericMeasurementResult.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.NumericMeasurementResult.DeletedAt(childComplexity), true
+
+	case "NumericMeasurementResult.DeletedBy":
+		if e.complexity.NumericMeasurementResult.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.NumericMeasurementResult.DeletedBy(childComplexity), true
 
 	case "NumericMeasurementResult.ID":
 		if e.complexity.NumericMeasurementResult.ID == nil {
@@ -1495,6 +1696,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.NumericMeasurementResult.UpdatedAt(childComplexity), true
+
+	case "NumericMeasurementResult.UpdatedBy":
+		if e.complexity.NumericMeasurementResult.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.NumericMeasurementResult.UpdatedBy(childComplexity), true
 
 	case "NumericMeasurementResult.Value":
 		if e.complexity.NumericMeasurementResult.Value == nil {
@@ -1544,6 +1752,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Portion.DeletedAt(childComplexity), true
+
+	case "Portion.DeletedBy":
+		if e.complexity.Portion.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Portion.DeletedBy(childComplexity), true
 
 	case "Portion.DietaryFiber":
 		if e.complexity.Portion.DietaryFiber == nil {
@@ -1642,6 +1857,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Portion.Type(childComplexity), true
+
+	case "Portion.UpdatedAt":
+		if e.complexity.Portion.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Portion.UpdatedAt(childComplexity), true
+
+	case "Portion.UpdatedBy":
+		if e.complexity.Portion.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Portion.UpdatedBy(childComplexity), true
 
 	case "PortionType.ID":
 		if e.complexity.PortionType.ID == nil {
@@ -1868,6 +2097,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Measurements(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
+	case "Query.MessagesByChatID":
+		if e.complexity.Query.MessagesByChatID == nil {
+			break
+		}
+
+		args, err := ec.field_Query_messagesByChatId_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.MessagesByChatID(childComplexity, args["chatID"].(string), args["filter"].(apimodel.ResultsFilter)), true
+
 	case "Query.NotificationsByUserID":
 		if e.complexity.Query.NotificationsByUserID == nil {
 			break
@@ -1927,6 +2168,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Recipes(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
+
+	case "Query.RepliesByMessageID":
+		if e.complexity.Query.RepliesByMessageID == nil {
+			break
+		}
+
+		args, err := ec.field_Query_repliesByMessageId_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.RepliesByMessageID(childComplexity, args["messageID"].(string), args["filter"].(apimodel.ResultsFilter)), true
 
 	case "Query.ResourceByID":
 		if e.complexity.Query.ResourceByID == nil {
@@ -2059,6 +2312,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Recipe.DeletedAt(childComplexity), true
 
+	case "Recipe.DeletedBy":
+		if e.complexity.Recipe.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Recipe.DeletedBy(childComplexity), true
+
 	case "Recipe.DietaryFiber":
 		if e.complexity.Recipe.DietaryFiber == nil {
 			break
@@ -2157,6 +2417,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Recipe.TransFat(childComplexity), true
 
+	case "Recipe.UpdatedAt":
+		if e.complexity.Recipe.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Recipe.UpdatedAt(childComplexity), true
+
+	case "Recipe.UpdatedBy":
+		if e.complexity.Recipe.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Recipe.UpdatedBy(childComplexity), true
+
 	case "Reference.ID":
 		if e.complexity.Reference.ID == nil {
 			break
@@ -2171,12 +2445,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Reference.Type(childComplexity), true
 
-	case "Reply.CreateAt":
-		if e.complexity.Reply.CreateAt == nil {
+	case "Reply.CreatedAt":
+		if e.complexity.Reply.CreatedAt == nil {
 			break
 		}
 
-		return e.complexity.Reply.CreateAt(childComplexity), true
+		return e.complexity.Reply.CreatedAt(childComplexity), true
 
 	case "Reply.CreatedBy":
 		if e.complexity.Reply.CreatedBy == nil {
@@ -2191,6 +2465,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Reply.DeletedAt(childComplexity), true
+
+	case "Reply.DeletedBy":
+		if e.complexity.Reply.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Reply.DeletedBy(childComplexity), true
 
 	case "Reply.ID":
 		if e.complexity.Reply.ID == nil {
@@ -2220,6 +2501,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Reply.UpdatedAt(childComplexity), true
 
+	case "Reply.UpdatedBy":
+		if e.complexity.Reply.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Reply.UpdatedBy(childComplexity), true
+
 	case "Resource.Chat":
 		if e.complexity.Resource.Chat == nil {
 			break
@@ -2234,12 +2522,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Resource.CreatedAt(childComplexity), true
 
+	case "Resource.CreatedBy":
+		if e.complexity.Resource.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.Resource.CreatedBy(childComplexity), true
+
 	case "Resource.DeletedAt":
 		if e.complexity.Resource.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.Resource.DeletedAt(childComplexity), true
+
+	case "Resource.DeletedBy":
+		if e.complexity.Resource.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.Resource.DeletedBy(childComplexity), true
 
 	case "Resource.Hashtags":
 		if e.complexity.Resource.Hashtags == nil {
@@ -2276,6 +2578,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Resource.Thumbnail(childComplexity), true
 
+	case "Resource.UpdatedAt":
+		if e.complexity.Resource.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.Resource.UpdatedAt(childComplexity), true
+
+	case "Resource.UpdatedBy":
+		if e.complexity.Resource.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.Resource.UpdatedBy(childComplexity), true
+
 	case "Resource.Video":
 		if e.complexity.Resource.Video == nil {
 			break
@@ -2297,12 +2613,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ResourceMeasurementResult.CreatedAt(childComplexity), true
 
+	case "ResourceMeasurementResult.CreatedBy":
+		if e.complexity.ResourceMeasurementResult.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.ResourceMeasurementResult.CreatedBy(childComplexity), true
+
 	case "ResourceMeasurementResult.DeletedAt":
 		if e.complexity.ResourceMeasurementResult.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.ResourceMeasurementResult.DeletedAt(childComplexity), true
+
+	case "ResourceMeasurementResult.DeletedBy":
+		if e.complexity.ResourceMeasurementResult.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.ResourceMeasurementResult.DeletedBy(childComplexity), true
 
 	case "ResourceMeasurementResult.ID":
 		if e.complexity.ResourceMeasurementResult.ID == nil {
@@ -2324,6 +2654,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ResourceMeasurementResult.UpdatedAt(childComplexity), true
+
+	case "ResourceMeasurementResult.UpdatedBy":
+		if e.complexity.ResourceMeasurementResult.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.ResourceMeasurementResult.UpdatedBy(childComplexity), true
 
 	case "ResourceMeasurementResult.Value":
 		if e.complexity.ResourceMeasurementResult.Value == nil {
@@ -2353,12 +2690,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TextMeasurementResult.CreatedAt(childComplexity), true
 
+	case "TextMeasurementResult.CreatedBy":
+		if e.complexity.TextMeasurementResult.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.TextMeasurementResult.CreatedBy(childComplexity), true
+
 	case "TextMeasurementResult.DeletedAt":
 		if e.complexity.TextMeasurementResult.DeletedAt == nil {
 			break
 		}
 
 		return e.complexity.TextMeasurementResult.DeletedAt(childComplexity), true
+
+	case "TextMeasurementResult.DeletedBy":
+		if e.complexity.TextMeasurementResult.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.TextMeasurementResult.DeletedBy(childComplexity), true
 
 	case "TextMeasurementResult.ID":
 		if e.complexity.TextMeasurementResult.ID == nil {
@@ -2380,6 +2731,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TextMeasurementResult.UpdatedAt(childComplexity), true
+
+	case "TextMeasurementResult.UpdatedBy":
+		if e.complexity.TextMeasurementResult.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.TextMeasurementResult.UpdatedBy(childComplexity), true
 
 	case "TextMeasurementResult.Value":
 		if e.complexity.TextMeasurementResult.Value == nil {
@@ -2662,12 +3020,19 @@ extend type Mutation {
 extend type Query {
     chatsByUserId(userID:ID!): [Chat!]!
     chatById(chatID:ID!): Chat!
+    messagesByChatId(chatID:ID!, filter: ResultsFilter!):[Message!]!
+    repliesByMessageId(messageID:ID!, filter: ResultsFilter!):[Reply!]!
 }
 
 
 type Chat {
     id: ID!
-    createdAt:Timestamp!
+    createdAt: Timestamp!
+    createdBy: User
+    deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
     messages(filter: ResultsFilter!):[Message!]!
 }
 
@@ -2679,11 +3044,13 @@ type Message {
     id: ID!
     text: String!
     resource: Resource
-    replies: [Reply!]!
-    createdBy: User!
-    createAt: Timestamp!
-    updatedAt: Timestamp!
+    replies(filter: ResultsFilter!):[Reply!]!
+    createdAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 input UpdateMessage {
@@ -2700,10 +3067,12 @@ type Reply {
     id: ID!
     text: String!
     resource: Resource
-    createdBy: User!
-    createAt: Timestamp!
-    updatedAt: Timestamp!
+    createdAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 input UpdateReply {
@@ -2762,9 +3131,12 @@ type Ingredient {
     id: ID!
     name: String!
     hashtags:[Hashtag!]!
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
     portions: [Portion!]!
     calories: Float
     totalFat: Float
@@ -2820,9 +3192,12 @@ type Portion {
     name: String!
     type: PortionType!
     hashtags:[ID!]
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
     amount: Float!
     calories: Float
     totalFat: Float
@@ -2868,9 +3243,12 @@ type Recipe {
     id: ID!
     name: String!
     hashtags:[ID!]
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
     portions: [Portion!]!
     calories: Float
     totalFat: Float
@@ -2909,8 +3287,11 @@ type Hashtag {
     id:ID!
     name:String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 enum HashtagContext {
@@ -2989,8 +3370,11 @@ type Measurement {
     hashtags:[Hashtag!]!
     results:[ MeasurementResult!]!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 enum MeasurementUnit {
@@ -3022,8 +3406,11 @@ interface MeasurementResult {
     chat: Chat!
     text: String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 type NumericMeasurementResult implements MeasurementResult {
@@ -3032,8 +3419,11 @@ type NumericMeasurementResult implements MeasurementResult {
     text: String!
     value: Float!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 
@@ -3044,8 +3434,11 @@ type TextMeasurementResult implements MeasurementResult {
     text: String!
     value: String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
 }
 
 type ResourceMeasurementResult implements MeasurementResult {
@@ -3054,8 +3447,11 @@ type ResourceMeasurementResult implements MeasurementResult {
     text: String!
     value: Resource!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
 }
 `},
 	&ast.Source{Name: "api/schema/notifications.graphql", Input: `
@@ -3066,8 +3462,10 @@ extend type Query {
 type Notification {
     id: ID!
     text: String!
-    reference: Reference!
-    createdAt: Timestamp!
+    Resource:Resource!
+    reference:Reference!
+    createdAt:Timestamp!
+    createdBy:User
 }`},
 	&ast.Source{Name: "api/schema/posts.graphql", Input: `
 extend type Mutation {
@@ -3139,19 +3537,23 @@ type Resource {
     thumbnail:String
     image:String
     video:String
-    chat: Chat!
-    createdAt: Timestamp!
-    deletedAt: Timestamp
+    chat:Chat!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
 }
 
 input NewResource {
-    name: String!
+    name:String!
     hashtags:[ID!]!
 }
 
 input UpdateResource {
     id:ID!
-    name: String
+    name:String
     hashtags:[ID!]
 }
 
@@ -3345,6 +3747,20 @@ input NewWaterfall {
 // region    ***************************** args.gotpl *****************************
 
 func (ec *executionContext) field_Chat_messages_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Message_replies_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 apimodel.ResultsFilter
@@ -4136,6 +4552,28 @@ func (ec *executionContext) field_Query_measurements_args(ctx context.Context, r
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_messagesByChatId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["chatID"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["chatID"] = arg0
+	var arg1 apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_notificationsByUserId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -4203,6 +4641,28 @@ func (ec *executionContext) field_Query_recipes_args(ctx context.Context, rawArg
 		}
 	}
 	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_repliesByMessageId_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["messageID"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["messageID"] = arg0
+	var arg1 apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg1, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg1
 	return args, nil
 }
 
@@ -4416,6 +4876,129 @@ func (ec *executionContext) _Chat_createdAt(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Chat_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Chat",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Chat_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Chat",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Chat_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Chat",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Chat_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Chat",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Chat_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Chat",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Chat_messages(ctx context.Context, field graphql.CollectedField, obj *apimodel.Chat) graphql.Marshaler {
@@ -4692,6 +5275,78 @@ func (ec *executionContext) _Hashtag_createdAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Hashtag_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Hashtag",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Hashtag_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Hashtag",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Hashtag_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Hashtag",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Hashtag_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -4719,7 +5374,7 @@ func (ec *executionContext) _Hashtag_updatedAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Hashtag_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
+func (ec *executionContext) _Hashtag_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -4732,15 +5387,15 @@ func (ec *executionContext) _Hashtag_deletedAt(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Image_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Image) graphql.Marshaler {
@@ -4983,33 +5638,6 @@ func (ec *executionContext) _Ingredient_hashtags(ctx context.Context, field grap
 	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Ingredient",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Ingredient_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -5037,6 +5665,33 @@ func (ec *executionContext) _Ingredient_createdAt(ctx context.Context, field gra
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Ingredient_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Ingredient_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -5059,6 +5714,84 @@ func (ec *executionContext) _Ingredient_deletedAt(ctx context.Context, field gra
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Ingredient_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Ingredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Ingredient_portions(ctx context.Context, field graphql.CollectedField, obj *apimodel.Ingredient) graphql.Marshaler {
@@ -5592,6 +6325,78 @@ func (ec *executionContext) _Measurement_createdAt(ctx context.Context, field gr
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Measurement_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Measurement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Measurement_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Measurement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Measurement_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Measurement",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Measurement_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -5619,7 +6424,7 @@ func (ec *executionContext) _Measurement_updatedAt(ctx context.Context, field gr
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Measurement_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
+func (ec *executionContext) _Measurement_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Measurement) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -5632,15 +6437,15 @@ func (ec *executionContext) _Measurement_deletedAt(ctx context.Context, field gr
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Message_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
@@ -5704,13 +6509,13 @@ func (ec *executionContext) _Message_resource(ctx context.Context, field graphql
 		Object:   "Message",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Resource, nil
+		return ec.resolvers.Message().Resource(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -5731,6 +6536,13 @@ func (ec *executionContext) _Message_replies(ctx context.Context, field graphql.
 		IsMethod: false,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Message_replies_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
@@ -5748,7 +6560,7 @@ func (ec *executionContext) _Message_replies(ctx context.Context, field graphql.
 	return ec.marshalNReply2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐReply(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Message_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
+func (ec *executionContext) _Message_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -5761,34 +6573,7 @@ func (ec *executionContext) _Message_createdBy(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(apimodel.User)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Message_createAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Message",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreateAt, nil
+		return obj.CreatedAt, nil
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -5800,6 +6585,78 @@ func (ec *executionContext) _Message_createAt(ctx context.Context, field graphql
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Message_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Message",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Message().CreatedBy(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Message_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Message",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Message_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Message",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Message_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
@@ -5829,7 +6686,7 @@ func (ec *executionContext) _Message_updatedAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Message_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
+func (ec *executionContext) _Message_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Message) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -5842,15 +6699,15 @@ func (ec *executionContext) _Message_deletedAt(ctx context.Context, field graphq
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_logon(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -7331,6 +8188,33 @@ func (ec *executionContext) _Notification_text(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Notification_Resource(ctx context.Context, field graphql.CollectedField, obj *apimodel.Notification) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Notification",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Resource, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.Resource)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Notification_reference(ctx context.Context, field graphql.CollectedField, obj *apimodel.Notification) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -7383,6 +8267,30 @@ func (ec *executionContext) _Notification_createdAt(ctx context.Context, field g
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Notification_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Notification) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Notification",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _NumericMeasurementResult_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
@@ -7520,6 +8428,78 @@ func (ec *executionContext) _NumericMeasurementResult_createdAt(ctx context.Cont
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _NumericMeasurementResult_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "NumericMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NumericMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "NumericMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _NumericMeasurementResult_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "NumericMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _NumericMeasurementResult_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -7547,7 +8527,7 @@ func (ec *executionContext) _NumericMeasurementResult_updatedAt(ctx context.Cont
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _NumericMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
+func (ec *executionContext) _NumericMeasurementResult_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.NumericMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -7560,15 +8540,15 @@ func (ec *executionContext) _NumericMeasurementResult_deletedAt(ctx context.Cont
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Portion_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
@@ -7676,33 +8656,6 @@ func (ec *executionContext) _Portion_hashtags(ctx context.Context, field graphql
 	return ec.marshalOID2ᚕstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Portion_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Portion",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Portion_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -7730,6 +8683,33 @@ func (ec *executionContext) _Portion_createdAt(ctx context.Context, field graphq
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Portion_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Portion_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -7752,6 +8732,84 @@ func (ec *executionContext) _Portion_deletedAt(ctx context.Context, field graphq
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Portion_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Portion",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Portion_amount(ctx context.Context, field graphql.CollectedField, obj *apimodel.Portion) graphql.Marshaler {
@@ -8238,13 +9296,13 @@ func (ec *executionContext) _Post_createdBy(ctx context.Context, field graphql.C
 		Object:   "Post",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
+		return ec.resolvers.Post().CreatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -8252,10 +9310,10 @@ func (ec *executionContext) _Post_createdBy(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(apimodel.User)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Post_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Post) graphql.Marshaler {
@@ -8510,6 +9568,74 @@ func (ec *executionContext) _Query_chatById(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNChat2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_messagesByChatId(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_messagesByChatId_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MessagesByChatID(rctx, args["chatID"].(string), args["filter"].(apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Message)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNMessage2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐMessage(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_repliesByMessageId(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_repliesByMessageId_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().RepliesByMessageID(rctx, args["messageID"].(string), args["filter"].(apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Reply)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNReply2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐReply(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_clinicById(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -9386,33 +10512,6 @@ func (ec *executionContext) _Recipe_hashtags(ctx context.Context, field graphql.
 	return ec.marshalOID2ᚕstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Recipe_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Recipe",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Recipe_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -9440,6 +10539,30 @@ func (ec *executionContext) _Recipe_createdAt(ctx context.Context, field graphql
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Recipe_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Recipe_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -9462,6 +10585,81 @@ func (ec *executionContext) _Recipe_deletedAt(ctx context.Context, field graphql
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Recipe_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Recipe",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Recipe_portions(ctx context.Context, field graphql.CollectedField, obj *apimodel.Recipe) graphql.Marshaler {
@@ -9894,13 +11092,13 @@ func (ec *executionContext) _Reply_resource(ctx context.Context, field graphql.C
 		Object:   "Reply",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Resource, nil
+		return ec.resolvers.Reply().Resource(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -9911,7 +11109,7 @@ func (ec *executionContext) _Reply_resource(ctx context.Context, field graphql.C
 	return ec.marshalOResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Reply_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
+func (ec *executionContext) _Reply_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -9924,34 +11122,7 @@ func (ec *executionContext) _Reply_createdBy(ctx context.Context, field graphql.
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(apimodel.User)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Reply_createAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Reply",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreateAt, nil
+		return obj.CreatedAt, nil
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -9963,6 +11134,78 @@ func (ec *executionContext) _Reply_createAt(ctx context.Context, field graphql.C
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Reply_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Reply",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Reply().CreatedBy(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Reply_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Reply",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Reply_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Reply",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Reply_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
@@ -9992,7 +11235,7 @@ func (ec *executionContext) _Reply_updatedAt(ctx context.Context, field graphql.
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Reply_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
+func (ec *executionContext) _Reply_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Reply) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -10005,15 +11248,15 @@ func (ec *executionContext) _Reply_deletedAt(ctx context.Context, field graphql.
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(*apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Resource_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
@@ -10196,6 +11439,30 @@ func (ec *executionContext) _Resource_chat(ctx context.Context, field graphql.Co
 	return ec.marshalNChat2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Resource_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Resource",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Resource().CreatedBy(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Resource_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -10223,6 +11490,57 @@ func (ec *executionContext) _Resource_createdAt(ctx context.Context, field graph
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Resource_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Resource",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Resource_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Resource",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Resource_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -10245,6 +11563,30 @@ func (ec *executionContext) _Resource_deletedAt(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Resource_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.Resource) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Resource",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _ResourceMeasurementResult_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
@@ -10382,6 +11724,81 @@ func (ec *executionContext) _ResourceMeasurementResult_createdAt(ctx context.Con
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _ResourceMeasurementResult_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "ResourceMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ResourceMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "ResourceMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _ResourceMeasurementResult_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "ResourceMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _ResourceMeasurementResult_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -10409,7 +11826,7 @@ func (ec *executionContext) _ResourceMeasurementResult_updatedAt(ctx context.Con
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _ResourceMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
+func (ec *executionContext) _ResourceMeasurementResult_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.ResourceMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -10422,15 +11839,18 @@ func (ec *executionContext) _ResourceMeasurementResult_deletedAt(ctx context.Con
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Result_status(ctx context.Context, field graphql.CollectedField, obj *apimodel.Result) graphql.Marshaler {
@@ -10595,6 +12015,81 @@ func (ec *executionContext) _TextMeasurementResult_createdAt(ctx context.Context
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _TextMeasurementResult_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "TextMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TextMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "TextMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TextMeasurementResult_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "TextMeasurementResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _TextMeasurementResult_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -10622,7 +12117,7 @@ func (ec *executionContext) _TextMeasurementResult_updatedAt(ctx context.Context
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TextMeasurementResult_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
+func (ec *executionContext) _TextMeasurementResult_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.TextMeasurementResult) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -10635,15 +12130,18 @@ func (ec *executionContext) _TextMeasurementResult_deletedAt(ctx context.Context
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.DeletedAt, nil
+		return obj.UpdatedBy, nil
 	})
 	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*time.Time)
+	res := resTmp.(apimodel.User)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -13274,6 +14772,19 @@ func (ec *executionContext) _Chat(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Chat_createdBy(ctx, field, obj)
+		case "deletedAt":
+			out.Values[i] = ec._Chat_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Chat_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._Chat_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._Chat_updatedBy(ctx, field, obj)
 		case "messages":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -13374,13 +14885,19 @@ func (ec *executionContext) _Hashtag(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Hashtag_createdBy(ctx, field, obj)
+		case "deletedAt":
+			out.Values[i] = ec._Hashtag_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Hashtag_deletedBy(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._Hashtag_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "deletedAt":
-			out.Values[i] = ec._Hashtag_deletedAt(ctx, field, obj)
+		case "updatedBy":
+			out.Values[i] = ec._Hashtag_updatedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -13467,18 +14984,30 @@ func (ec *executionContext) _Ingredient(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "createdBy":
-			out.Values[i] = ec._Ingredient_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		case "createdAt":
 			out.Values[i] = ec._Ingredient_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Ingredient_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "deletedAt":
 			out.Values[i] = ec._Ingredient_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Ingredient_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._Ingredient_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._Ingredient_updatedBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "portions":
 			out.Values[i] = ec._Ingredient_portions(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -13597,13 +15126,19 @@ func (ec *executionContext) _Measurement(ctx context.Context, sel ast.SelectionS
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Measurement_createdBy(ctx, field, obj)
+		case "deletedAt":
+			out.Values[i] = ec._Measurement_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Measurement_deletedBy(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._Measurement_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "deletedAt":
-			out.Values[i] = ec._Measurement_deletedAt(ctx, field, obj)
+		case "updatedBy":
+			out.Values[i] = ec._Measurement_updatedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -13637,29 +15172,48 @@ func (ec *executionContext) _Message(ctx context.Context, sel ast.SelectionSet, 
 				invalid = true
 			}
 		case "resource":
-			out.Values[i] = ec._Message_resource(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Message_resource(ctx, field, obj)
+				return res
+			})
 		case "replies":
 			out.Values[i] = ec._Message_replies(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdAt":
+			out.Values[i] = ec._Message_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "createdBy":
-			out.Values[i] = ec._Message_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "createAt":
-			out.Values[i] = ec._Message_createAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Message_createdBy(ctx, field, obj)
+				return res
+			})
+		case "deletedAt":
+			out.Values[i] = ec._Message_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Message_deletedBy(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._Message_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "deletedAt":
-			out.Values[i] = ec._Message_deletedAt(ctx, field, obj)
+		case "updatedBy":
+			out.Values[i] = ec._Message_updatedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -13844,6 +15398,11 @@ func (ec *executionContext) _Notification(ctx context.Context, sel ast.Selection
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "Resource":
+			out.Values[i] = ec._Notification_Resource(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "reference":
 			out.Values[i] = ec._Notification_reference(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -13854,6 +15413,8 @@ func (ec *executionContext) _Notification(ctx context.Context, sel ast.Selection
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Notification_createdBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -13901,13 +15462,19 @@ func (ec *executionContext) _NumericMeasurementResult(ctx context.Context, sel a
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._NumericMeasurementResult_createdBy(ctx, field, obj)
+		case "deletedAt":
+			out.Values[i] = ec._NumericMeasurementResult_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._NumericMeasurementResult_deletedBy(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._NumericMeasurementResult_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "deletedAt":
-			out.Values[i] = ec._NumericMeasurementResult_deletedAt(ctx, field, obj)
+		case "updatedBy":
+			out.Values[i] = ec._NumericMeasurementResult_updatedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -13947,18 +15514,30 @@ func (ec *executionContext) _Portion(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "hashtags":
 			out.Values[i] = ec._Portion_hashtags(ctx, field, obj)
-		case "createdBy":
-			out.Values[i] = ec._Portion_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		case "createdAt":
 			out.Values[i] = ec._Portion_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Portion_createdBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "deletedAt":
 			out.Values[i] = ec._Portion_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Portion_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._Portion_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._Portion_updatedBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "amount":
 			out.Values[i] = ec._Portion_amount(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -14081,10 +15660,19 @@ func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj
 				return res
 			})
 		case "createdBy":
-			out.Values[i] = ec._Post_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Post_createdBy(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
 		case "createdAt":
 			out.Values[i] = ec._Post_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -14197,6 +15785,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_chatById(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "messagesByChatId":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_messagesByChatId(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "repliesByMessageId":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_repliesByMessageId(ctx, field)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -14548,18 +16164,24 @@ func (ec *executionContext) _Recipe(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "hashtags":
 			out.Values[i] = ec._Recipe_hashtags(ctx, field, obj)
-		case "createdBy":
-			out.Values[i] = ec._Recipe_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		case "createdAt":
 			out.Values[i] = ec._Recipe_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "createdBy":
+			out.Values[i] = ec._Recipe_createdBy(ctx, field, obj)
 		case "deletedAt":
 			out.Values[i] = ec._Recipe_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Recipe_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._Recipe_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._Recipe_updatedBy(ctx, field, obj)
 		case "portions":
 			out.Values[i] = ec._Recipe_portions(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -14654,24 +16276,43 @@ func (ec *executionContext) _Reply(ctx context.Context, sel ast.SelectionSet, ob
 				invalid = true
 			}
 		case "resource":
-			out.Values[i] = ec._Reply_resource(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Reply_resource(ctx, field, obj)
+				return res
+			})
+		case "createdAt":
+			out.Values[i] = ec._Reply_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "createdBy":
-			out.Values[i] = ec._Reply_createdBy(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "createAt":
-			out.Values[i] = ec._Reply_createAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Reply_createdBy(ctx, field, obj)
+				return res
+			})
+		case "deletedAt":
+			out.Values[i] = ec._Reply_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Reply_deletedBy(ctx, field, obj)
 		case "updatedAt":
 			out.Values[i] = ec._Reply_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "deletedAt":
-			out.Values[i] = ec._Reply_deletedAt(ctx, field, obj)
+		case "updatedBy":
+			out.Values[i] = ec._Reply_updatedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -14729,13 +16370,33 @@ func (ec *executionContext) _Resource(ctx context.Context, sel ast.SelectionSet,
 				}
 				return res
 			})
+		case "createdBy":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Resource_createdBy(ctx, field, obj)
+				return res
+			})
 		case "createdAt":
 			out.Values[i] = ec._Resource_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		case "updatedAt":
+			out.Values[i] = ec._Resource_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._Resource_updatedBy(ctx, field, obj)
 		case "deletedAt":
 			out.Values[i] = ec._Resource_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._Resource_deletedBy(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -14783,13 +16444,25 @@ func (ec *executionContext) _ResourceMeasurementResult(ctx context.Context, sel 
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "updatedAt":
-			out.Values[i] = ec._ResourceMeasurementResult_updatedAt(ctx, field, obj)
+		case "createdBy":
+			out.Values[i] = ec._ResourceMeasurementResult_createdBy(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "deletedAt":
 			out.Values[i] = ec._ResourceMeasurementResult_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._ResourceMeasurementResult_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._ResourceMeasurementResult_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._ResourceMeasurementResult_updatedBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -14864,13 +16537,25 @@ func (ec *executionContext) _TextMeasurementResult(ctx context.Context, sel ast.
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "updatedAt":
-			out.Values[i] = ec._TextMeasurementResult_updatedAt(ctx, field, obj)
+		case "createdBy":
+			out.Values[i] = ec._TextMeasurementResult_createdBy(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "deletedAt":
 			out.Values[i] = ec._TextMeasurementResult_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._TextMeasurementResult_deletedBy(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._TextMeasurementResult_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._TextMeasurementResult_updatedBy(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -16304,7 +17989,7 @@ func (ec *executionContext) marshalNString2ᚕstring(ctx context.Context, sel as
 }
 
 func (ec *executionContext) unmarshalNTimestamp2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {
-	return dal.UnmarshalTimestamp(v)
+	return UnmarshalTimestamp(v)
 }
 
 func (ec *executionContext) marshalNTimestamp2timeᚐTime(ctx context.Context, sel ast.SelectionSet, v time.Time) graphql.Marshaler {
@@ -16314,7 +17999,7 @@ func (ec *executionContext) marshalNTimestamp2timeᚐTime(ctx context.Context, s
 		}
 		return graphql.Null
 	}
-	return dal.MarshalTimestamp(v)
+	return MarshalTimestamp(v)
 }
 
 func (ec *executionContext) unmarshalNUpdateImage2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateImage(ctx context.Context, v interface{}) (apimodel.UpdateImage, error) {
@@ -16936,14 +18621,14 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 }
 
 func (ec *executionContext) unmarshalOTimestamp2timeᚐTime(ctx context.Context, v interface{}) (time.Time, error) {
-	return dal.UnmarshalTimestamp(v)
+	return UnmarshalTimestamp(v)
 }
 
 func (ec *executionContext) marshalOTimestamp2timeᚐTime(ctx context.Context, sel ast.SelectionSet, v time.Time) graphql.Marshaler {
 	if v.IsZero() {
 		return graphql.Null
 	}
-	return dal.MarshalTimestamp(v)
+	return MarshalTimestamp(v)
 }
 
 func (ec *executionContext) unmarshalOTimestamp2ᚖtimeᚐTime(ctx context.Context, v interface{}) (*time.Time, error) {

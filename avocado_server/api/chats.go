@@ -180,6 +180,10 @@ func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel
 	return convertChat(chat), nil
 }
 
+func (r *resourceResolver) Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error) {
+	panic("implement me")
+}
+
 func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel.Chat, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
@@ -227,6 +231,14 @@ func (r *mutationResolver) UpdateReply(ctx context.Context, input apimodel.Updat
 }
 
 func (r *mutationResolver) DeleteReply(ctx context.Context, messageID string) (*apimodel.Result, error) {
+	panic("implement me")
+}
+
+func (r *queryResolver) MessagesByChatID(ctx context.Context, chatID string, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
+	panic("implement me")
+}
+
+func (r *queryResolver) RepliesByMessageID(ctx context.Context, messageID string, filter apimodel.ResultsFilter) ([]apimodel.Reply, error) {
 	panic("implement me")
 }
 

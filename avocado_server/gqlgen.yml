@@ -20,7 +20,7 @@ resolver:
 models:
   # Custom scalars point to the name without the Marshal|Unmarshal in front
   Timestamp:
-    model: github.com/gremlinsapps/avocado_server/dal.Timestamp
+    model: github.com/gremlinsapps/avocado_server/api/graph.Timestamp
   User:
     fields:
       notifications:
@@ -37,11 +37,15 @@ models:
     fields:
       chat:
         resolver: true
+      createdBy:
+        resolver: true
   Post:
     fields:
       chat:
         resolver: true
       hashtags:
+        resolver: true
+      createdBy:
         resolver: true
   Chat:
     fields:
@@ -50,6 +54,16 @@ models:
   Message:
     fields:
       messages:
+        resolver: true
+      resource:
+        resolver: true
+      createdBy:
+        resolver: true
+  Reply:
+    fields:
+      resource:
+        resolver: true
+      createdBy:
         resolver: true
   Measurement:
     fields:

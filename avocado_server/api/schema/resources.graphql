@@ -17,19 +17,23 @@ type Resource {
     thumbnail:String
     image:String
     video:String
-    chat: Chat!
-    createdAt: Timestamp!
-    deletedAt: Timestamp
+    chat:Chat!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
 }
 
 input NewResource {
-    name: String!
+    name:String!
     hashtags:[ID!]!
 }
 
 input UpdateResource {
     id:ID!
-    name: String
+    name:String
     hashtags:[ID!]
 }
 

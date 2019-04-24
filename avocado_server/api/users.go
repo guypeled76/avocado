@@ -148,6 +148,22 @@ func (r *userResolver) Image(ctx context.Context, obj *apimodel.User) (*apimodel
 	panic("implement me")
 }
 
+func (r *resourceResolver) CreatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error) {
+	panic("implement me")
+}
+
+func (r *messageResolver) CreatedBy(ctx context.Context, obj *apimodel.Message) (*apimodel.User, error) {
+	panic("implement me")
+}
+
+func (r *replyResolver) CreatedBy(ctx context.Context, obj *apimodel.Reply) (*apimodel.User, error) {
+	panic("implement me")
+}
+
+func (r *postResolver) CreatedBy(ctx context.Context, obj *apimodel.Post) (*apimodel.User, error) {
+	panic("implement me")
+}
+
 func convertUser(user *dalmodel.User) *apimodel.User {
 	return &apimodel.User{
 		ID:          fmt.Sprint(user.ID),

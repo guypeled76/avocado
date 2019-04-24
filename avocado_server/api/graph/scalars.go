@@ -1,4 +1,4 @@
-package dal
+package graph
 
 import (
 	"errors"

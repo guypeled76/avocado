@@ -20,8 +20,11 @@ type Measurement {
     hashtags:[Hashtag!]!
     results:[ MeasurementResult!]!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 enum MeasurementUnit {
@@ -53,8 +56,11 @@ interface MeasurementResult {
     chat: Chat!
     text: String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 type NumericMeasurementResult implements MeasurementResult {
@@ -63,8 +69,11 @@ type NumericMeasurementResult implements MeasurementResult {
     text: String!
     value: Float!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
 }
 
 
@@ -75,8 +84,11 @@ type TextMeasurementResult implements MeasurementResult {
     text: String!
     value: String!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
 }
 
 type ResourceMeasurementResult implements MeasurementResult {
@@ -85,6 +97,9 @@ type ResourceMeasurementResult implements MeasurementResult {
     text: String!
     value: Resource!
     createdAt: Timestamp!
-    updatedAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
 }

@@ -29,9 +29,12 @@ type Ingredient {
     id: ID!
     name: String!
     hashtags:[Hashtag!]!
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
     portions: [Portion!]!
     calories: Float
     totalFat: Float
@@ -87,9 +90,12 @@ type Portion {
     name: String!
     type: PortionType!
     hashtags:[ID!]
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User!
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User!
     amount: Float!
     calories: Float
     totalFat: Float
@@ -135,9 +141,12 @@ type Recipe {
     id: ID!
     name: String!
     hashtags:[ID!]
-    createdBy: ID!
     createdAt: Timestamp!
+    createdBy: User
     deletedAt: Timestamp
+    deletedBy: User
+    updatedAt: Timestamp!
+    updatedBy: User
     portions: [Portion!]!
     calories: Float
     totalFat: Float

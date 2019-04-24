@@ -25,6 +25,10 @@ func (r *queryResolver) ResourceByID(ctx context.Context, id string) (*apimodel.
 	panic("implement me")
 }
 
-func (r *resourceResolver) Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error) {
+func (r *replyResolver) Resource(ctx context.Context, obj *apimodel.Reply) (*apimodel.Resource, error) {
+	panic("implement me")
+}
+
+func (r *messageResolver) Resource(ctx context.Context, obj *apimodel.Message) (*apimodel.Resource, error) {
 	panic("implement me")
 }
