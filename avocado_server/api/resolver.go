@@ -9,6 +9,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/firebase"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/helpers"
 )
 
 type Resolver struct {
@@ -134,7 +135,9 @@ func (r *queryResolver) GetDBConnection() (*sql.DBConnection, error) {
 }
 
 func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
+	return nil, nil
 }
 
 func NewRootResolvers() graph.Config {

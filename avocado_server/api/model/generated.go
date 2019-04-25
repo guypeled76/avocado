@@ -274,11 +274,6 @@ type Post struct {
 	Resources []Resource `json:"resources"`
 }
 
-type Profile struct {
-	ID        int       `json:"id"`
-	UpdatedAt time.Time `json:"updatedAt"`
-}
-
 type Recipe struct {
 	ID                 int        `json:"id"`
 	Name               string     `json:"name"`
@@ -486,12 +481,11 @@ type User struct {
 	Name          string         `json:"name"`
 	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
-	Image         Resource       `json:"image"`
+	Profile       *Resource      `json:"profile"`
 	Hashtags      []Hashtag      `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
 	Measurements  []Measurement  `json:"measurements"`
 	Chat          Chat           `json:"chat"`
-	Profile       Profile        `json:"profile"`
 	CreatedAt     time.Time      `json:"createdAt"`
 	UpdatedAt     time.Time      `json:"updatedAt"`
 	DeletedAt     *time.Time     `json:"deletedAt"`

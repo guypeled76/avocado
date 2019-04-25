@@ -3,6 +3,7 @@ package sql
 import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
+	"github.com/gremlinsapps/avocado_server/helpers"
 	"github.com/jinzhu/gorm"
 )
 
@@ -72,25 +73,31 @@ func (repo *HashtagRepository) UpdateResourceHashtags(resourceId uint, hashtags 
 }
 
 func (repo *HashtagRepository) GetIngredientHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (repo *HashtagRepository) GetMealHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (repo *HashtagRepository) GetVideoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (repo *HashtagRepository) GetPhotoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (repo *HashtagRepository) GetPostHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (repo *HashtagRepository) GetRecipeHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/helpers"
 )
 
 func (r *queryResolver) ChatsByUserID(ctx context.Context, id int) ([]apimodel.Chat, error) {
@@ -160,6 +161,7 @@ func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel
 }
 
 func (r *resourceResolver) Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
@@ -192,22 +194,27 @@ func (r *chatResolver) Messages(ctx context.Context, chat *apimodel.Chat, filter
 }
 
 func (r *mutationResolver) CreateReply(ctx context.Context, input apimodel.NewReply) (*apimodel.Reply, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (r *mutationResolver) UpdateReply(ctx context.Context, input apimodel.UpdateReply) (*apimodel.Result, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (r *mutationResolver) DeleteReply(ctx context.Context, messageID int) (*apimodel.Result, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (r *queryResolver) MessagesByChatID(ctx context.Context, chatID int, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (r *queryResolver) RepliesByMessageID(ctx context.Context, messageID int, filter apimodel.ResultsFilter) ([]apimodel.Reply, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 

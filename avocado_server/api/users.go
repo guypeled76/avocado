@@ -2,10 +2,10 @@ package api
 
 import (
 	"context"
-	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/helpers"
 	"github.com/jinzhu/gorm"
 )
 
@@ -62,6 +62,7 @@ func (r *queryResolver) Users(ctx context.Context, filter *apimodel.ResultsFilte
 }
 
 func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
@@ -117,10 +118,6 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *userResolver) Image(ctx context.Context, user *apimodel.User) (*apimodel.Resource, error) {
-	panic("implement me")
-}
-
 func (r *resourceResolver) CreatedBy(ctx context.Context, resource *apimodel.Resource) (*apimodel.User, error) {
 	return readUser(r, resource.CreatedBy)
 }
@@ -167,7 +164,7 @@ func (r *hashtagResolver) UpdatedBy(ctx context.Context, hashtag *apimodel.Hasht
 
 func readUser(container sql.DBConnectionContainer, user *apimodel.User) (*apimodel.User, error) {
 	if user == nil {
-		return nil, errors.New("could no read null user")
+		return nil, nil
 	}
 
 	return readUserById(container, uint(user.ID))

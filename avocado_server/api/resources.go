@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
@@ -103,6 +102,10 @@ func (r *queryResolver) ResourceByID(ctx context.Context, id int) (*apimodel.Res
 	return readResourceById(r, uint(id))
 }
 
+func (r *userResolver) Profile(ctx context.Context, user *apimodel.User) (*apimodel.Resource, error) {
+	return readResource(r, user.Profile)
+}
+
 func (r *replyResolver) Resource(ctx context.Context, reply *apimodel.Reply) (*apimodel.Resource, error) {
 	return readResource(r, reply.Resource)
 }
@@ -113,7 +116,7 @@ func (r *messageResolver) Resource(ctx context.Context, message *apimodel.Messag
 
 func readResource(container sql.DBConnectionContainer, Resource *apimodel.Resource) (*apimodel.Resource, error) {
 	if Resource == nil {
-		return nil, errors.New("could no read null Resource")
+		return nil, nil
 	}
 
 	return readResourceById(container, uint(Resource.ID))

@@ -259,11 +259,6 @@ type ComplexityRoot struct {
 		UpdatedAt func(childComplexity int) int
 	}
 
-	Profile struct {
-		ID        func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
-	}
-
 	Query struct {
 		ChatByID              func(childComplexity int, chatID int) int
 		ChatsByUserID         func(childComplexity int, userID int) int
@@ -390,7 +385,6 @@ type ComplexityRoot struct {
 		Email         func(childComplexity int) int
 		Hashtags      func(childComplexity int) int
 		ID            func(childComplexity int) int
-		Image         func(childComplexity int) int
 		Measurements  func(childComplexity int, input *apimodel.ResultsFilter) int
 		Name          func(childComplexity int) int
 		Notifications func(childComplexity int) int
@@ -537,7 +531,7 @@ type ResourceResolver interface {
 	UpdatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error)
 }
 type UserResolver interface {
-	Image(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error)
+	Profile(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error)
 	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
 	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
 	Measurements(ctx context.Context, obj *apimodel.User, input *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
@@ -1965,20 +1959,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Post.UpdatedAt(childComplexity), true
 
-	case "Profile.ID":
-		if e.complexity.Profile.ID == nil {
-			break
-		}
-
-		return e.complexity.Profile.ID(childComplexity), true
-
-	case "Profile.UpdatedAt":
-		if e.complexity.Profile.UpdatedAt == nil {
-			break
-		}
-
-		return e.complexity.Profile.UpdatedAt(childComplexity), true
-
 	case "Query.ChatByID":
 		if e.complexity.Query.ChatByID == nil {
 			break
@@ -2810,13 +2790,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.ID(childComplexity), true
-
-	case "User.Image":
-		if e.complexity.User.Image == nil {
-			break
-		}
-
-		return e.complexity.User.Image(childComplexity), true
 
 	case "User.Measurements":
 		if e.complexity.User.Measurements == nil {
@@ -3650,12 +3623,11 @@ type User {
     name: String!
     displayName: String!
     email: String!
-    image: Resource!
+    profile: Resource
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!
     chat: Chat!
-    profile: Profile!
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
@@ -3668,11 +3640,7 @@ input UpdateUser {
     email: String
     hashtags:[ID!]
 }
-
-type Profile {
-    id: ID!
-    updatedAt: Timestamp!
-}`},
+`},
 	&ast.Source{Name: "api/schema/vidoes.graphql", Input: `extend type Mutation {
     createVideo(input: NewVideo!): Video!
     updateVideo(input: UpdateVideo!) : Result
@@ -9434,60 +9402,6 @@ func (ec *executionContext) _Post_resources(ctx context.Context, field graphql.C
 	return ec.marshalNResource2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Profile_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Profile) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Profile",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(int)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2int(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Profile_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.Profile) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Profile",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedAt, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(time.Time)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Query_currentUser(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -12265,7 +12179,7 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_image(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+func (ec *executionContext) _User_profile(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
@@ -12278,18 +12192,15 @@ func (ec *executionContext) _User_image(ctx context.Context, field graphql.Colle
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.User().Image(rctx, obj)
+		return ec.resolvers.User().Profile(rctx, obj)
 	})
 	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.(*apimodel.Resource)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
+	return ec.marshalOResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -12405,33 +12316,6 @@ func (ec *executionContext) _User_chat(ctx context.Context, field graphql.Collec
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNChat2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐChat(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _User_profile(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "User",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Profile, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(apimodel.Profile)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNProfile2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐProfile(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -15741,38 +15625,6 @@ func (ec *executionContext) _Post(ctx context.Context, sel ast.SelectionSet, obj
 	return out
 }
 
-var profileImplementors = []string{"Profile"}
-
-func (ec *executionContext) _Profile(ctx context.Context, sel ast.SelectionSet, obj *apimodel.Profile) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, profileImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	invalid := false
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("Profile")
-		case "id":
-			out.Values[i] = ec._Profile_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "updatedAt":
-			out.Values[i] = ec._Profile_updatedAt(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalid {
-		return graphql.Null
-	}
-	return out
-}
-
 var queryImplementors = []string{"Query"}
 
 func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -16656,7 +16508,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "image":
+		case "profile":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -16664,10 +16516,7 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._User_image(ctx, field, obj)
-				if res == graphql.Null {
-					invalid = true
-				}
+				res = ec._User_profile(ctx, field, obj)
 				return res
 			})
 		case "hashtags":
@@ -16726,11 +16575,6 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 				}
 				return res
 			})
-		case "profile":
-			out.Values[i] = ec._User_profile(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
 		case "createdAt":
 			out.Values[i] = ec._User_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -17820,10 +17664,6 @@ func (ec *executionContext) marshalNPost2ᚖgithubᚗcomᚋgremlinsappsᚋavocad
 		return graphql.Null
 	}
 	return ec._Post(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNProfile2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐProfile(ctx context.Context, sel ast.SelectionSet, v apimodel.Profile) graphql.Marshaler {
-	return ec._Profile(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalNRecipe2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx context.Context, sel ast.SelectionSet, v apimodel.Recipe) graphql.Marshaler {

@@ -23,12 +23,11 @@ type User {
     name: String!
     displayName: String!
     email: String!
-    image: Resource!
+    profile: Resource
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!
     chat: Chat!
-    profile: Profile!
     createdAt: Timestamp!
     updatedAt: Timestamp!
     deletedAt: Timestamp
@@ -40,9 +39,4 @@ input UpdateUser {
     displayName: String
     email: String
     hashtags:[ID!]
-}
-
-type Profile {
-    id: ID!
-    updatedAt: Timestamp!
 }

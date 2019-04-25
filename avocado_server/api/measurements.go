@@ -5,6 +5,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/helpers"
 	"github.com/jinzhu/gorm"
 )
 
@@ -113,14 +114,17 @@ func (r *mutationResolver) DeleteMeasurement(ctx context.Context, id int) (*apim
 }
 
 func (measurementResolver) Chat(ctx context.Context, obj *apimodel.Measurement) (*apimodel.Chat, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (measurementResolver) Hashtags(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.Hashtag, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
 func (measurementResolver) Results(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.MeasurementResult, error) {
+	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 

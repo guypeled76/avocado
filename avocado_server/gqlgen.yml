@@ -34,7 +34,7 @@ models:
         resolver: true
       chat:
         resolver: true
-      image:
+      profile:
         resolver: true
       measurements:
         resolver: true
