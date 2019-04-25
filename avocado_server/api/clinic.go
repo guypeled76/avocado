@@ -9,6 +9,6 @@ func (r *queryResolver) Clinics(ctx context.Context) ([]apimodel.Clinic, error) 
 	panic("implement me")
 }
 
-func (r *queryResolver) ClinicByID(ctx context.Context, clinicID string) (*apimodel.Clinic, error) {
+func (r *queryResolver) ClinicByID(ctx context.Context, clinicID int) (*apimodel.Clinic, error) {
 	panic("implement me")
 }

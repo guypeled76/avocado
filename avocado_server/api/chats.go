@@ -2,24 +2,18 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 )
 
-func (r *queryResolver) ChatsByUserID(ctx context.Context, id string) ([]apimodel.Chat, error) {
+func (r *queryResolver) ChatsByUserID(ctx context.Context, id int) ([]apimodel.Chat, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(id)
-	if err != nil {
-		return nil, err
-	}
-
-	chats, err := repo.GetChatsByUserId(uid)
+	chats, err := repo.GetChatsByUserId(uint(id))
 	if err != nil {
 		return nil, err
 	}
@@ -27,18 +21,13 @@ func (r *queryResolver) ChatsByUserID(ctx context.Context, id string) ([]apimode
 	return convertChats(chats), nil
 }
 
-func (r *queryResolver) ChatByID(ctx context.Context, id string) (*apimodel.Chat, error) {
+func (r *queryResolver) ChatByID(ctx context.Context, id int) (*apimodel.Chat, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(id)
-	if err != nil {
-		return nil, err
-	}
-
-	user, err := repo.GetChatById(uid)
+	user, err := repo.GetChatById(uint(id))
 	if err != nil {
 		return nil, err
 	}
@@ -123,18 +112,13 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId int) (*apimodel.Result, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	id, err := sql.ParseUint(messageId)
-	if err != nil {
-		return nil, err
-	}
-
-	err = repo.DeleteChat(id)
+	err = repo.DeleteChat(uint(messageId))
 	if err != nil {
 		return nil, err
 	}
@@ -167,12 +151,7 @@ func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel
 		return nil, err
 	}
 
-	postId, err := sql.ParseUint(post.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	chat, err := repo.GetChatByPostId(postId)
+	chat, err := repo.GetChatByPostId(uint(post.ID))
 	if err != nil {
 		return nil, err
 	}
@@ -190,12 +169,7 @@ func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(user.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	chat, err := repo.GetPrimaryChatByUserId(uid)
+	chat, err := repo.GetPrimaryChatByUserId(uint(user.ID))
 	if err != nil {
 		return nil, err
 	}
@@ -209,12 +183,7 @@ func (r *chatResolver) Messages(ctx context.Context, chat *apimodel.Chat, filter
 		return nil, err
 	}
 
-	chatId, err := sql.ParseUint(chat.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	messages, err := repo.GetMessagesByChatId(chatId)
+	messages, err := repo.GetMessagesByChatId(uint(chat.ID))
 	if err != nil {
 		return nil, err
 	}
@@ -230,15 +199,15 @@ func (r *mutationResolver) UpdateReply(ctx context.Context, input apimodel.Updat
 	panic("implement me")
 }
 
-func (r *mutationResolver) DeleteReply(ctx context.Context, messageID string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteReply(ctx context.Context, messageID int) (*apimodel.Result, error) {
 	panic("implement me")
 }
 
-func (r *queryResolver) MessagesByChatID(ctx context.Context, chatID string, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
+func (r *queryResolver) MessagesByChatID(ctx context.Context, chatID int, filter apimodel.ResultsFilter) ([]apimodel.Message, error) {
 	panic("implement me")
 }
 
-func (r *queryResolver) RepliesByMessageID(ctx context.Context, messageID string, filter apimodel.ResultsFilter) ([]apimodel.Reply, error) {
+func (r *queryResolver) RepliesByMessageID(ctx context.Context, messageID int, filter apimodel.ResultsFilter) ([]apimodel.Reply, error) {
 	panic("implement me")
 }
 
@@ -252,7 +221,7 @@ func convertMessages(messages []dalmodel.Message) []apimodel.Message {
 
 func convertMessage(message *dalmodel.Message) *apimodel.Message {
 	return &apimodel.Message{
-		ID: fmt.Sprint(message.ID),
+		ID: int(message.ID),
 	}
 }
 
@@ -266,6 +235,6 @@ func convertChats(chats []dalmodel.Chat) []apimodel.Chat {
 
 func convertChat(chat *dalmodel.Chat) *apimodel.Chat {
 	return &apimodel.Chat{
-		ID: fmt.Sprint(chat.ID),
+		ID: int(chat.ID),
 	}
 }

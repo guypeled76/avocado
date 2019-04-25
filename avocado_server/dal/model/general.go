@@ -6,11 +6,15 @@ import (
 
 type Hashtag struct {
 	gorm.Model
-	OwnerModel
+	AuditModel
 	Name string `gorm:"not null;unique_index"`
 }
 
-type OwnerModel struct {
-	Clinic   Clinic
-	CreateBy User
+type AuditModel struct {
+	CreatedBy   User `gorm:"foreignkey:CreatedByID;association_foreignkey:ID"`
+	CreatedByID int
+	UpdatedBy   User `gorm:"foreignkey:UpdatedByID;association_foreignkey:ID"`
+	UpdatedByID int
+	DeletedBy   User `gorm:"foreignkey:DeletedByID;association_foreignkey:ID"`
+	DeletedByID int
 }

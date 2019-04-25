@@ -18,9 +18,14 @@ resolver:
 # Tell gqlgen about any existing models you want to reuse for
 # graphql. These normally come from the db or a remote api.
 models:
-  # Custom scalars point to the name without the Marshal|Unmarshal in front
+  ID:
+    model: github.com/99designs/gqlgen/graphql.IntID
   Timestamp:
     model: github.com/gremlinsapps/avocado_server/api/graph.Timestamp
+  Hashtag:
+    fields:
+      createdBy:
+        resolver: true
   User:
     fields:
       notifications:

@@ -2,27 +2,19 @@ package api
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
-	"strconv"
 )
 
-func (r *mutationResolver) DeleteHashtag(ctx context.Context, id string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteHashtag(ctx context.Context, id int) (*apimodel.Result, error) {
 
 	repo, err := sql.CreateHashtagRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := strconv.ParseUint(id, 10, 32)
-	if err != nil {
-		return nil, errors.New("could not parse uint from hash tag id")
-	}
-
-	err = repo.DeleteHashtag(uint(uid))
+	err = repo.DeleteHashtag(uint(id))
 	if err != nil {
 		return nil, err
 	}
@@ -66,8 +58,8 @@ func (r *queryResolver) Hashtags(ctx context.Context, filter *apimodel.ResultsFi
 
 func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.Hashtag, error) {
 	return []apimodel.Hashtag{
-		{ID: "1", Name: "fff"},
-		{ID: "2", Name: "ggg"},
+		{ID: 1, Name: "fff"},
+		{ID: 2, Name: "ggg"},
 	}, nil
 }
 
@@ -77,12 +69,7 @@ func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apim
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(obj.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	hashTags, err := repo.GetUserHashtags(uid)
+	hashTags, err := repo.GetUserHashtags(uint(obj.ID))
 	if err != nil {
 		return nil, err
 	}
@@ -141,9 +128,10 @@ func convertHashtags(hashtags []dalmodel.Hashtag) []apimodel.Hashtag {
 
 func convertHashtag(hashtag *dalmodel.Hashtag) *apimodel.Hashtag {
 	return &apimodel.Hashtag{
-		ID:        fmt.Sprint(hashtag.ID),
+		ID:        int(hashtag.ID),
 		Name:      hashtag.Name,
 		CreatedAt: hashtag.CreatedAt,
+		CreatedBy: createUser(hashtag.AuditModel.CreatedByID),
 		UpdatedAt: hashtag.UpdatedAt,
 		DeletedAt: hashtag.DeletedAt,
 	}

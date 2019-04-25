@@ -52,6 +52,10 @@ func (r *Resolver) Message() graph.MessageResolver {
 	return &messageResolver{r}
 }
 
+func (r *Resolver) Hashtag() graph.HashtagResolver {
+	return &hashtagResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -79,43 +83,54 @@ type replyResolver struct{ *Resolver }
 // Message
 type messageResolver struct{ *Resolver }
 
-func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
-	if r.database == nil {
+// Hashtag
+type hashtagResolver struct{ *Resolver }
+
+func getDB(db *sql.DBConnection) (*sql.DBConnection, error) {
+	if db == nil {
 		return nil, errors.New("DB connection was not initialized")
 	}
-	return r.database, nil
+	return db, nil
+}
+
+func (r *resourceResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
+}
+
+func (r *replyResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
+}
+
+func (r *messageResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
+}
+
+func (r *hashtagResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
+}
+
+func (r *mutationResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
 }
 
 func (r *postResolver) GetDBConnection() (*sql.DBConnection, error) {
-	if r.database == nil {
-		return nil, errors.New("DB connection was not initialized")
-	}
-	return r.database, nil
+	return getDB(r.database)
 }
 
 func (r *userResolver) GetDBConnection() (*sql.DBConnection, error) {
-	if r.database == nil {
-		return nil, errors.New("DB connection was not initialized")
-	}
-	return r.database, nil
+	return getDB(r.database)
 }
 
 func (r *chatResolver) GetDBConnection() (*sql.DBConnection, error) {
-	if r.database == nil {
-		return nil, errors.New("DB connection was not initialized")
-	}
-	return r.database, nil
+	return getDB(r.database)
+}
+
+func (r *queryResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
 }
 
 func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) {
 	panic("implement me")
-}
-
-func (r *queryResolver) GetDBConnection() (*sql.DBConnection, error) {
-	if r.database == nil {
-		return nil, errors.New("DB connection was not initialized")
-	}
-	return r.database, nil
 }
 
 func NewRootResolvers() graph.Config {

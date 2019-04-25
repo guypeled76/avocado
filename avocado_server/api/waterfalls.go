@@ -5,7 +5,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 )
 
-func (r *queryResolver) WaterfallByUserID(ctx context.Context, waterfallID string) (*apimodel.Waterfall, error) {
+func (r *queryResolver) WaterfallByUserID(ctx context.Context, waterfallID int) (*apimodel.Waterfall, error) {
 	panic("implement me")
 }
 

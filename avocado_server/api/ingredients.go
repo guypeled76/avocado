@@ -18,6 +18,6 @@ func (r *mutationResolver) UpdateIngredient(ctx context.Context, input apimodel.
 	return apimodel.CreateSuccessResult()
 }
 
-func (r *mutationResolver) DeleteIngredient(ctx context.Context, id string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteIngredient(ctx context.Context, id int) (*apimodel.Result, error) {
 	return apimodel.CreateSuccessResult()
 }

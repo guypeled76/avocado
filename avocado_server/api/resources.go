@@ -21,7 +21,7 @@ func (r *queryResolver) Resources(ctx context.Context, filter apimodel.ResultsFi
 	panic("implement me")
 }
 
-func (r *queryResolver) ResourceByID(ctx context.Context, id string) (*apimodel.Resource, error) {
+func (r *queryResolver) ResourceByID(ctx context.Context, id int) (*apimodel.Resource, error) {
 	panic("implement me")
 }
 

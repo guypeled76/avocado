@@ -14,7 +14,7 @@ type MeasurementResult interface {
 }
 
 type Chat struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	CreatedAt time.Time  `json:"createdAt"`
 	CreatedBy *User      `json:"createdBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
@@ -25,9 +25,9 @@ type Chat struct {
 }
 
 type Clinic struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Name      string     `json:"name"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy int        `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
@@ -42,7 +42,7 @@ type DeletePost struct {
 }
 
 type DeleteResource struct {
-	ID string `json:"id"`
+	ID int `json:"id"`
 }
 
 type DeleteVideo struct {
@@ -54,7 +54,7 @@ type DeleteWaterfall struct {
 }
 
 type Hashtag struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Name      string     `json:"name"`
 	CreatedAt time.Time  `json:"createdAt"`
 	CreatedBy *User      `json:"createdBy"`
@@ -65,16 +65,16 @@ type Hashtag struct {
 }
 
 type Image struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Hashtags  []Hashtag  `json:"hashtags"`
 	Image     string     `json:"image"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy int        `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Ingredient struct {
-	ID                 string     `json:"id"`
+	ID                 int        `json:"id"`
 	Name               string     `json:"name"`
 	Hashtags           []Hashtag  `json:"hashtags"`
 	CreatedAt          time.Time  `json:"createdAt"`
@@ -99,7 +99,7 @@ type Ingredient struct {
 }
 
 type Measurement struct {
-	ID          string              `json:"id"`
+	ID          int                 `json:"id"`
 	Name        string              `json:"name"`
 	Chat        Chat                `json:"chat"`
 	Unit        MeasurementUnit     `json:"unit"`
@@ -115,7 +115,7 @@ type Measurement struct {
 }
 
 type Message struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Text      string     `json:"text"`
 	Resource  *Resource  `json:"resource"`
 	Replies   []Reply    `json:"replies"`
@@ -132,13 +132,13 @@ type NewChat struct {
 }
 
 type NewImage struct {
-	Image    string   `json:"image"`
-	Hashtags []string `json:"hashtags"`
+	Image    string `json:"image"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type NewIngredient struct {
 	Name               string   `json:"name"`
-	Hashtags           []string `json:"hashtags"`
+	Hashtags           []int    `json:"hashtags"`
 	Calories           *float64 `json:"calories"`
 	TotalFat           *float64 `json:"totalFat"`
 	SaturatedFat       *float64 `json:"saturatedFat"`
@@ -154,22 +154,22 @@ type NewIngredient struct {
 }
 
 type NewMeasurement struct {
-	ID          string          `json:"id"`
+	ID          int             `json:"id"`
 	Name        string          `json:"name"`
 	Unit        MeasurementUnit `json:"unit"`
 	Description string          `json:"description"`
-	Hashtags    []string        `json:"hashtags"`
+	Hashtags    []int           `json:"hashtags"`
 }
 
 type NewMessage struct {
-	Chat string `json:"chat"`
+	Chat int    `json:"chat"`
 	Text string `json:"text"`
 }
 
 type NewPortion struct {
-	IngredientID string  `json:"ingredientId"`
+	IngredientID int     `json:"ingredientId"`
 	Amount       float64 `json:"amount"`
-	Type         string  `json:"type"`
+	Type         int     `json:"type"`
 }
 
 type NewPortionType struct {
@@ -182,17 +182,17 @@ type NewPost struct {
 }
 
 type NewRecipe struct {
-	IngredientID string `json:"ingredientId"`
+	IngredientID int `json:"ingredientId"`
 }
 
 type NewReply struct {
-	Chat string `json:"chat"`
+	Chat int    `json:"chat"`
 	Text string `json:"text"`
 }
 
 type NewResource struct {
-	Name     string   `json:"name"`
-	Hashtags []string `json:"hashtags"`
+	Name     string `json:"name"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type NewUser struct {
@@ -202,17 +202,17 @@ type NewUser struct {
 }
 
 type NewVideo struct {
-	Video    string   `json:"video"`
-	Hashtags []string `json:"hashtags"`
+	Video    string `json:"video"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type NewWaterfall struct {
-	Text     string   `json:"text"`
-	Hashtags []string `json:"hashtags"`
+	Text     string `json:"text"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type Notification struct {
-	ID        string    `json:"id"`
+	ID        int       `json:"id"`
 	Text      string    `json:"text"`
 	Resource  Resource  `json:"Resource"`
 	Reference Reference `json:"reference"`
@@ -221,7 +221,7 @@ type Notification struct {
 }
 
 type NumericMeasurementResult struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Chat      Chat       `json:"chat"`
 	Text      string     `json:"text"`
 	Value     float64    `json:"value"`
@@ -236,10 +236,10 @@ type NumericMeasurementResult struct {
 func (NumericMeasurementResult) IsMeasurementResult() {}
 
 type Portion struct {
-	ID                 string      `json:"id"`
+	ID                 int         `json:"id"`
 	Name               string      `json:"name"`
 	Type               PortionType `json:"type"`
-	Hashtags           []string    `json:"hashtags"`
+	Hashtags           []int       `json:"hashtags"`
 	CreatedAt          time.Time   `json:"createdAt"`
 	CreatedBy          User        `json:"createdBy"`
 	DeletedAt          *time.Time  `json:"deletedAt"`
@@ -262,12 +262,12 @@ type Portion struct {
 }
 
 type PortionType struct {
-	ID   string `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
 type Post struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Text      string     `json:"text"`
 	Hashtags  []Hashtag  `json:"hashtags"`
 	Chat      Chat       `json:"chat"`
@@ -279,14 +279,14 @@ type Post struct {
 }
 
 type Profile struct {
-	ID        string    `json:"id"`
+	ID        int       `json:"id"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 type Recipe struct {
-	ID                 string     `json:"id"`
+	ID                 int        `json:"id"`
 	Name               string     `json:"name"`
-	Hashtags           []string   `json:"hashtags"`
+	Hashtags           []int      `json:"hashtags"`
 	CreatedAt          time.Time  `json:"createdAt"`
 	CreatedBy          *User      `json:"createdBy"`
 	DeletedAt          *time.Time `json:"deletedAt"`
@@ -314,7 +314,7 @@ type Reference struct {
 }
 
 type Reply struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Text      string     `json:"text"`
 	Resource  *Resource  `json:"resource"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -326,7 +326,7 @@ type Reply struct {
 }
 
 type Resource struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Name      string     `json:"name"`
 	Hashtags  []Hashtag  `json:"hashtags"`
 	Thumbnail *string    `json:"thumbnail"`
@@ -342,7 +342,7 @@ type Resource struct {
 }
 
 type ResourceMeasurementResult struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Chat      Chat       `json:"chat"`
 	Text      string     `json:"text"`
 	Value     Resource   `json:"value"`
@@ -369,11 +369,11 @@ type ResultsFilter struct {
 	Limit      *int           `json:"limit"`
 	After      *time.Time     `json:"after"`
 	Before     *time.Time     `json:"before"`
-	Hashtags   []string       `json:"hashtags"`
+	Hashtags   []int          `json:"hashtags"`
 }
 
 type TextMeasurementResult struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Chat      Chat       `json:"chat"`
 	Text      string     `json:"text"`
 	Value     string     `json:"value"`
@@ -388,20 +388,20 @@ type TextMeasurementResult struct {
 func (TextMeasurementResult) IsMeasurementResult() {}
 
 type UpdateImage struct {
-	ID       string   `json:"id"`
-	Image    string   `json:"image"`
-	Hashtags []string `json:"hashtags"`
+	ID       string `json:"id"`
+	Image    string `json:"image"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type UpdateImageHashTags struct {
-	ID       string   `json:"id"`
-	Hashtags []string `json:"hashtags"`
+	ID       string `json:"id"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type UpdateIngredient struct {
 	ID                 string   `json:"id"`
 	Name               *string  `json:"name"`
-	Hashtags           []string `json:"hashtags"`
+	Hashtags           []int    `json:"hashtags"`
 	Calories           *float64 `json:"calories"`
 	TotalFat           *float64 `json:"totalFat"`
 	SaturatedFat       *float64 `json:"saturatedFat"`
@@ -417,21 +417,21 @@ type UpdateIngredient struct {
 }
 
 type UpdateMeasurement struct {
-	ID          string   `json:"id"`
-	Name        *string  `json:"name"`
-	Description *string  `json:"description"`
-	Hashtags    []string `json:"hashtags"`
+	ID          int     `json:"id"`
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+	Hashtags    []int   `json:"hashtags"`
 }
 
 type UpdateMessage struct {
-	ID   string  `json:"id"`
+	ID   int     `json:"id"`
 	Text *string `json:"text"`
 }
 
 type UpdatePortion struct {
 	ID     string  `json:"id"`
 	Amount float64 `json:"amount"`
-	Type   string  `json:"type"`
+	Type   int     `json:"type"`
 }
 
 type UpdatePortionType struct {
@@ -450,43 +450,43 @@ type UpdateRecipe struct {
 }
 
 type UpdateReply struct {
-	ID   string  `json:"id"`
+	ID   int     `json:"id"`
 	Text *string `json:"text"`
 }
 
 type UpdateResource struct {
-	ID       string   `json:"id"`
-	Name     *string  `json:"name"`
-	Hashtags []string `json:"hashtags"`
+	ID       int     `json:"id"`
+	Name     *string `json:"name"`
+	Hashtags []int   `json:"hashtags"`
 }
 
 type UpdateUser struct {
-	ID          string   `json:"id"`
-	Name        *string  `json:"name"`
-	DisplayName *string  `json:"displayName"`
-	Email       *string  `json:"email"`
-	Hashtags    []string `json:"hashtags"`
+	ID          int     `json:"id"`
+	Name        *string `json:"name"`
+	DisplayName *string `json:"displayName"`
+	Email       *string `json:"email"`
+	Hashtags    []int   `json:"hashtags"`
 }
 
 type UpdateVideo struct {
-	ID       string   `json:"id"`
-	Video    string   `json:"video"`
-	Hashtags []string `json:"hashtags"`
+	ID       string `json:"id"`
+	Video    string `json:"video"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type UpdateVideoHashTags struct {
-	ID       string   `json:"id"`
-	Hashtags []string `json:"hashtags"`
+	ID       string `json:"id"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type UpdateWaterfall struct {
-	ID       string   `json:"id"`
-	Text     string   `json:"text"`
-	Hashtags []string `json:"hashtags"`
+	ID       string `json:"id"`
+	Text     string `json:"text"`
+	Hashtags []int  `json:"hashtags"`
 }
 
 type User struct {
-	ID            string         `json:"id"`
+	ID            int            `json:"id"`
 	Name          string         `json:"name"`
 	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
@@ -502,19 +502,19 @@ type User struct {
 }
 
 type Video struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Hashtags  []Hashtag  `json:"hashtags"`
 	Video     string     `json:"video"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy int        `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Waterfall struct {
-	ID        string     `json:"id"`
+	ID        int        `json:"id"`
 	Text      string     `json:"text"`
 	Hashtags  []Hashtag  `json:"hashtags"`
-	CreatedBy string     `json:"createdBy"`
+	CreatedBy int        `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
 	DeletedAt *time.Time `json:"deletedAt"`
 }

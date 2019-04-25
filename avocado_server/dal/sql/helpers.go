@@ -13,14 +13,10 @@ func ParseUint(id string) (uint, error) {
 	return uint(uid), nil
 }
 
-func ParseAllUint(ids []string) ([]uint, error) {
+func ParseAllUint(ids []int) ([]uint, error) {
 	uids := make([]uint, 0)
 	for _, id := range ids {
-		uid, err := ParseUint(id)
-		if err != nil {
-			return nil, errors.New("could not parse uint from id")
-		}
-		uids = append(uids, uint(uid))
+		uids = append(uids, uint(id))
 	}
 	return uids, nil
 }

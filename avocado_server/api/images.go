@@ -5,11 +5,11 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 )
 
-func (r *queryResolver) ImagesByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Image, error) {
+func (r *queryResolver) ImagesByHashTags(ctx context.Context, hashTags []int) ([]apimodel.Image, error) {
 	panic("implement me")
 }
 
-func (r *queryResolver) ImageByID(ctx context.Context, id string) (*apimodel.Image, error) {
+func (r *queryResolver) ImageByID(ctx context.Context, id int) (*apimodel.Image, error) {
 	panic("implement me")
 }
 

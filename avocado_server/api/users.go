@@ -2,7 +2,7 @@ package api
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
@@ -29,18 +29,13 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUse
 	return convertUser(&user), nil
 }
 
-func (r *mutationResolver) DeleteUser(ctx context.Context, userId string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteUser(ctx context.Context, userId int) (*apimodel.Result, error) {
 	repo, err := sql.CreateUserRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	id, err := sql.ParseUint(userId)
-	if err != nil {
-		return nil, err
-	}
-
-	err = repo.DeleteUser(id)
+	err = repo.DeleteUser(uint(userId))
 	if err != nil {
 		return nil, err
 	}
@@ -70,18 +65,13 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 	panic("implement me")
 }
 
-func (r *queryResolver) UserByID(ctx context.Context, id string) (*apimodel.User, error) {
+func (r *queryResolver) UserByID(ctx context.Context, id int) (*apimodel.User, error) {
 	repo, err := sql.CreateUserRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(id)
-	if err != nil {
-		return nil, err
-	}
-
-	user, err := repo.GetUser(uid)
+	user, err := repo.GetUser(uint(id))
 	if err != nil {
 		return nil, err
 	}
@@ -95,10 +85,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		return &apimodel.Result{Status: "error"}, err
 	}
 
-	uid, err := sql.ParseUint(input.ID)
-	if err != nil {
-		return nil, err
-	}
+	uid := uint(input.ID)
 
 	data := make(map[string]interface{})
 
@@ -127,12 +114,8 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 			return nil, err
 		}
 		hashtags := make([]dalmodel.Hashtag, 0)
-		for _, id := range input.Hashtags {
-			hashtagId, err := sql.ParseUint(id)
-			if err != nil {
-				return nil, err
-			}
-			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
+		for _, hashtagId := range input.Hashtags {
+			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}})
 		}
 
 		err = hashtagRepo.UpdateUserHashtags(uid, hashtags)
@@ -144,29 +127,55 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
-func (r *userResolver) Image(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error) {
+func (r *userResolver) Image(ctx context.Context, user *apimodel.User) (*apimodel.Resource, error) {
 	panic("implement me")
 }
 
-func (r *resourceResolver) CreatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error) {
-	panic("implement me")
+func (r *resourceResolver) CreatedBy(ctx context.Context, resource *apimodel.Resource) (*apimodel.User, error) {
+	return readUser(r, resource.CreatedBy)
 }
 
-func (r *messageResolver) CreatedBy(ctx context.Context, obj *apimodel.Message) (*apimodel.User, error) {
-	panic("implement me")
+func (r *messageResolver) CreatedBy(ctx context.Context, message *apimodel.Message) (*apimodel.User, error) {
+	return readUser(r, message.CreatedBy)
 }
 
-func (r *replyResolver) CreatedBy(ctx context.Context, obj *apimodel.Reply) (*apimodel.User, error) {
-	panic("implement me")
+func (r *replyResolver) CreatedBy(ctx context.Context, reply *apimodel.Reply) (*apimodel.User, error) {
+	return readUser(r, reply.CreatedBy)
 }
 
-func (r *postResolver) CreatedBy(ctx context.Context, obj *apimodel.Post) (*apimodel.User, error) {
-	panic("implement me")
+func (r *postResolver) CreatedBy(ctx context.Context, post *apimodel.Post) (*apimodel.User, error) {
+	return readUser(r, &post.CreatedBy)
+}
+
+func (r *hashtagResolver) CreatedBy(ctx context.Context, hashtag *apimodel.Hashtag) (*apimodel.User, error) {
+	return readUser(r, hashtag.CreatedBy)
+}
+
+func readUser(container sql.DBConnectionContainer, user *apimodel.User) (*apimodel.User, error) {
+	if user == nil {
+		return nil, errors.New("could no read null user")
+	}
+
+	repo, err := sql.CreateUserRepo(container)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertUserWithError(repo.GetUser(uint(user.ID)))
+
+}
+
+func createUser(id int) *apimodel.User {
+	return &apimodel.User{ID: id}
+}
+
+func convertUserWithError(user *dalmodel.User, err error) (*apimodel.User, error) {
+	return convertUser(user), err
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {
 	return &apimodel.User{
-		ID:          fmt.Sprint(user.ID),
+		ID:          int(user.ID),
 		Name:        user.Name,
 		DisplayName: user.DisplayName,
 		Email:       user.Email,

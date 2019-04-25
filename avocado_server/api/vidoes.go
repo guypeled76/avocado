@@ -9,11 +9,11 @@ func (r *queryResolver) Videos(ctx context.Context, filter apimodel.ResultsFilte
 	panic("implement me")
 }
 
-func (r *queryResolver) VideosByHashTags(ctx context.Context, hashTags []string) ([]apimodel.Video, error) {
+func (r *queryResolver) VideosByHashTags(ctx context.Context, hashTags []int) ([]apimodel.Video, error) {
 	panic("implement me")
 }
 
-func (r *queryResolver) VideoByID(ctx context.Context, id string) (*apimodel.Video, error) {
+func (r *queryResolver) VideoByID(ctx context.Context, id int) (*apimodel.Video, error) {
 	panic("implement me")
 }
 

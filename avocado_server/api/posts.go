@@ -5,7 +5,7 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 )
 
-func (r *queryResolver) PostsByUserID(ctx context.Context, userID string) ([]apimodel.Post, error) {
+func (r *queryResolver) PostsByUserID(ctx context.Context, userID int) ([]apimodel.Post, error) {
 	panic("implement me")
 }
 

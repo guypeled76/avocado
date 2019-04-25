@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
@@ -27,18 +26,13 @@ func (r *queryResolver) Measurements(ctx context.Context, filter *apimodel.Resul
 	return results, nil
 }
 
-func (r *queryResolver) MeasurementByID(ctx context.Context, id string) (*apimodel.Measurement, error) {
+func (r *queryResolver) MeasurementByID(ctx context.Context, id int) (*apimodel.Measurement, error) {
 	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(id)
-	if err != nil {
-		return nil, err
-	}
-
-	measurement, err := repo.GetMeasurement(uid)
+	measurement, err := repo.GetMeasurement(uint(id))
 	if err != nil {
 		return nil, err
 	}
@@ -66,10 +60,7 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 		return apimodel.CreateFailureResult(err)
 	}
 
-	uid, err := sql.ParseUint(input.ID)
-	if err != nil {
-		return apimodel.CreateFailureResult(err)
-	}
+	uid := uint(input.ID)
 
 	data := make(map[string]interface{})
 
@@ -94,12 +85,8 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 			return nil, err
 		}
 		hashtags := make([]dalmodel.Hashtag, 0)
-		for _, id := range input.Hashtags {
-			hashtagId, err := sql.ParseUint(id)
-			if err != nil {
-				return nil, err
-			}
-			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: hashtagId}})
+		for _, hashtagId := range input.Hashtags {
+			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}})
 		}
 
 		err = hashtagRepo.UpdateMeasurementHashtags(uid, hashtags)
@@ -111,18 +98,13 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 	return apimodel.CreateSuccessResult()
 }
 
-func (r *mutationResolver) DeleteMeasurement(ctx context.Context, id string) (*apimodel.Result, error) {
+func (r *mutationResolver) DeleteMeasurement(ctx context.Context, id int) (*apimodel.Result, error) {
 	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
 		return apimodel.CreateFailureResult(err)
 	}
 
-	uid, err := sql.ParseUint(id)
-	if err != nil {
-		return apimodel.CreateFailureResult(err)
-	}
-
-	err = repo.DeleteMeasurement(uid)
+	err = repo.DeleteMeasurement(uint(id))
 	if err != nil {
 		return apimodel.CreateFailureResult(err)
 	}
@@ -148,12 +130,7 @@ func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User, fil
 		return nil, err
 	}
 
-	uid, err := sql.ParseUint(obj.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	measurements, err := repo.GetUserMeasurements(uid, filter)
+	measurements, err := repo.GetUserMeasurements(uint(obj.ID), filter)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +150,7 @@ func convertMeasurements(measurements []dalmodel.Measurement) []apimodel.Measure
 
 func convertMeasurement(measurement *dalmodel.Measurement) *apimodel.Measurement {
 	return &apimodel.Measurement{
-		ID:          fmt.Sprint(measurement.ID),
+		ID:          int(measurement.ID),
 		Name:        measurement.Name,
 		Description: measurement.Description,
 		CreatedAt:   measurement.CreatedAt,
