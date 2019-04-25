@@ -92,6 +92,18 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		data["Email"] = *input.Email
 	}
 
+	if input.Thumbnail != nil {
+		data["Thumbnail"] = *input.Thumbnail
+	}
+
+	if input.Image != nil {
+		data["Image"] = *input.Image
+	}
+
+	if input.Video != nil {
+		data["Video"] = *input.Video
+	}
+
 	if len(data) > 0 {
 		err = repo.UpdateUser(uid, data)
 		if err != nil {
@@ -193,6 +205,9 @@ func convertUser(user *dalmodel.User) *apimodel.User {
 		Name:        user.Name,
 		DisplayName: user.DisplayName,
 		Email:       user.Email,
+		Thumbnail:   &user.Thumbnail,
+		Image:       &user.Image,
+		Video:       &user.Video,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
 		DeletedAt:   user.DeletedAt,

@@ -16,6 +16,9 @@ input NewUser {
     name: String!
     displayName: String!
     email: String!
+    thumbnail:String
+    image:String
+    video:String
 }
 
 type User {
@@ -23,10 +26,13 @@ type User {
     name: String!
     displayName: String!
     email: String!
-    profile: Resource
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!
+    resources(filter:ResultsFilter): [Resource!]!
     chat: Chat!
     createdAt: Timestamp!
     updatedAt: Timestamp!
@@ -38,5 +44,9 @@ input UpdateUser {
     name: String
     displayName: String
     email: String
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]
+    profile: UpdateDependentResource
 }

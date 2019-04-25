@@ -28,12 +28,23 @@ type Resource {
 
 input NewResource {
     name:String!
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]!
 }
 
 input UpdateResource {
     id:ID!
     name:String
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]
 }
 
+input UpdateDependentResource {
+    thumbnail:String
+    image:String
+    video:String
+}

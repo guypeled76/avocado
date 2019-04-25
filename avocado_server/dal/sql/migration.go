@@ -10,7 +10,6 @@ func AutoMigrate() {
 	conn.db.AutoMigrate(
 		&dalmodel.Hashtag{},
 		&dalmodel.Notification{},
-		&dalmodel.Profile{},
 		&dalmodel.User{},
 		&dalmodel.Clinic{},
 		&dalmodel.Video{},

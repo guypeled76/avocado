@@ -34,9 +34,9 @@ models:
         resolver: true
       chat:
         resolver: true
-      profile:
-        resolver: true
       measurements:
+        resolver: true
+      resources:
         resolver: true
   Resource:
     fields:

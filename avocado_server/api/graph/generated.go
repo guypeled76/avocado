@@ -385,11 +385,14 @@ type ComplexityRoot struct {
 		Email         func(childComplexity int) int
 		Hashtags      func(childComplexity int) int
 		ID            func(childComplexity int) int
+		Image         func(childComplexity int) int
 		Measurements  func(childComplexity int, input *apimodel.ResultsFilter) int
 		Name          func(childComplexity int) int
 		Notifications func(childComplexity int) int
-		Profile       func(childComplexity int) int
+		Resources     func(childComplexity int, filter *apimodel.ResultsFilter) int
+		Thumbnail     func(childComplexity int) int
 		UpdatedAt     func(childComplexity int) int
+		Video         func(childComplexity int) int
 	}
 
 	Video struct {
@@ -531,10 +534,10 @@ type ResourceResolver interface {
 	UpdatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error)
 }
 type UserResolver interface {
-	Profile(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error)
 	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
 	Notifications(ctx context.Context, obj *apimodel.User) ([]apimodel.Notification, error)
 	Measurements(ctx context.Context, obj *apimodel.User, input *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
+	Resources(ctx context.Context, obj *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error)
 	Chat(ctx context.Context, obj *apimodel.User) (*apimodel.Chat, error)
 }
 
@@ -2791,6 +2794,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.ID(childComplexity), true
 
+	case "User.Image":
+		if e.complexity.User.Image == nil {
+			break
+		}
+
+		return e.complexity.User.Image(childComplexity), true
+
 	case "User.Measurements":
 		if e.complexity.User.Measurements == nil {
 			break
@@ -2817,12 +2827,24 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.User.Notifications(childComplexity), true
 
-	case "User.Profile":
-		if e.complexity.User.Profile == nil {
+	case "User.Resources":
+		if e.complexity.User.Resources == nil {
 			break
 		}
 
-		return e.complexity.User.Profile(childComplexity), true
+		args, err := ec.field_User_resources_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.User.Resources(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
+
+	case "User.Thumbnail":
+		if e.complexity.User.Thumbnail == nil {
+			break
+		}
+
+		return e.complexity.User.Thumbnail(childComplexity), true
 
 	case "User.UpdatedAt":
 		if e.complexity.User.UpdatedAt == nil {
@@ -2830,6 +2852,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.UpdatedAt(childComplexity), true
+
+	case "User.Video":
+		if e.complexity.User.Video == nil {
+			break
+		}
+
+		return e.complexity.User.Video(childComplexity), true
 
 	case "Video.CreatedAt":
 		if e.complexity.Video.CreatedAt == nil {
@@ -3537,15 +3566,26 @@ type Resource {
 
 input NewResource {
     name:String!
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]!
 }
 
 input UpdateResource {
     id:ID!
     name:String
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]
 }
 
+input UpdateDependentResource {
+    thumbnail:String
+    image:String
+    video:String
+}
 `},
 	&ast.Source{Name: "api/schema/schema.graphql", Input: `
 type Mutation {
@@ -3616,6 +3656,9 @@ input NewUser {
     name: String!
     displayName: String!
     email: String!
+    thumbnail:String
+    image:String
+    video:String
 }
 
 type User {
@@ -3623,10 +3666,13 @@ type User {
     name: String!
     displayName: String!
     email: String!
-    profile: Resource
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[Hashtag!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!
+    resources(filter:ResultsFilter): [Resource!]!
     chat: Chat!
     createdAt: Timestamp!
     updatedAt: Timestamp!
@@ -3638,7 +3684,11 @@ input UpdateUser {
     name: String
     displayName: String
     email: String
+    thumbnail:String
+    image:String
+    video:String
     hashtags:[ID!]
+    profile: UpdateDependentResource
 }
 `},
 	&ast.Source{Name: "api/schema/vidoes.graphql", Input: `extend type Mutation {
@@ -4770,6 +4820,20 @@ func (ec *executionContext) field_User_measurements_args(ctx context.Context, ra
 		}
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_User_resources_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 *apimodel.ResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -12179,28 +12243,76 @@ func (ec *executionContext) _User_email(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _User_profile(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+func (ec *executionContext) _User_thumbnail(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
 		Object:   "User",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.User().Profile(rctx, obj)
+		return obj.Thumbnail, nil
 	})
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*apimodel.Resource)
+	res := resTmp.(*string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_image(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Image, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_video(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Video, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -12289,6 +12401,40 @@ func (ec *executionContext) _User_measurements(ctx context.Context, field graphq
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNMeasurement2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐMeasurement(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_resources(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "User",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_User_resources_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.User().Resources(rctx, obj, args["filter"].(*apimodel.ResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Resource)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNResource2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_chat(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -13947,6 +14093,24 @@ func (ec *executionContext) unmarshalInputNewResource(ctx context.Context, v int
 			if err != nil {
 				return it, err
 			}
+		case "thumbnail":
+			var err error
+			it.Thumbnail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalNID2ᚕint(ctx, v)
@@ -13980,6 +14144,24 @@ func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, v interfa
 		case "email":
 			var err error
 			it.Email, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "thumbnail":
+			var err error
+			it.Thumbnail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -14094,6 +14276,36 @@ func (ec *executionContext) unmarshalInputResultsFilter(ctx context.Context, v i
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalOID2ᚕint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputUpdateDependentResource(ctx context.Context, v interface{}) (apimodel.UpdateDependentResource, error) {
+	var it apimodel.UpdateDependentResource
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "thumbnail":
+			var err error
+			it.Thumbnail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -14463,6 +14675,24 @@ func (ec *executionContext) unmarshalInputUpdateResource(ctx context.Context, v 
 			if err != nil {
 				return it, err
 			}
+		case "thumbnail":
+			var err error
+			it.Thumbnail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalOID2ᚕint(ctx, v)
@@ -14505,9 +14735,33 @@ func (ec *executionContext) unmarshalInputUpdateUser(ctx context.Context, v inte
 			if err != nil {
 				return it, err
 			}
+		case "thumbnail":
+			var err error
+			it.Thumbnail, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "image":
+			var err error
+			it.Image, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "video":
+			var err error
+			it.Video, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "hashtags":
 			var err error
 			it.Hashtags, err = ec.unmarshalOID2ᚕint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "profile":
+			var err error
+			it.Profile, err = ec.unmarshalOUpdateDependentResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateDependentResource(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -16508,17 +16762,12 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
-		case "profile":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._User_profile(ctx, field, obj)
-				return res
-			})
+		case "thumbnail":
+			out.Values[i] = ec._User_thumbnail(ctx, field, obj)
+		case "image":
+			out.Values[i] = ec._User_image(ctx, field, obj)
+		case "video":
+			out.Values[i] = ec._User_video(ctx, field, obj)
 		case "hashtags":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -16556,6 +16805,20 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 					}
 				}()
 				res = ec._User_measurements(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "resources":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_resources(ctx, field, obj)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -18538,6 +18801,18 @@ func (ec *executionContext) marshalOTimestamp2ᚖtimeᚐTime(ctx context.Context
 		return graphql.Null
 	}
 	return ec.marshalOTimestamp2timeᚐTime(ctx, sel, *v)
+}
+
+func (ec *executionContext) unmarshalOUpdateDependentResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateDependentResource(ctx context.Context, v interface{}) (apimodel.UpdateDependentResource, error) {
+	return ec.unmarshalInputUpdateDependentResource(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOUpdateDependentResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateDependentResource(ctx context.Context, v interface{}) (*apimodel.UpdateDependentResource, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOUpdateDependentResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateDependentResource(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) marshalOUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v apimodel.User) graphql.Marshaler {

@@ -187,14 +187,20 @@ type NewReply struct {
 }
 
 type NewResource struct {
-	Name     string `json:"name"`
-	Hashtags []int  `json:"hashtags"`
+	Name      string  `json:"name"`
+	Thumbnail *string `json:"thumbnail"`
+	Image     *string `json:"image"`
+	Video     *string `json:"video"`
+	Hashtags  []int   `json:"hashtags"`
 }
 
 type NewUser struct {
-	Name        string `json:"name"`
-	DisplayName string `json:"displayName"`
-	Email       string `json:"email"`
+	Name        string  `json:"name"`
+	DisplayName string  `json:"displayName"`
+	Email       string  `json:"email"`
+	Thumbnail   *string `json:"thumbnail"`
+	Image       *string `json:"image"`
+	Video       *string `json:"video"`
 }
 
 type NewVideo struct {
@@ -378,6 +384,12 @@ type TextMeasurementResult struct {
 
 func (TextMeasurementResult) IsMeasurementResult() {}
 
+type UpdateDependentResource struct {
+	Thumbnail *string `json:"thumbnail"`
+	Image     *string `json:"image"`
+	Video     *string `json:"video"`
+}
+
 type UpdateImage struct {
 	ID       string `json:"id"`
 	Image    string `json:"image"`
@@ -446,17 +458,24 @@ type UpdateReply struct {
 }
 
 type UpdateResource struct {
-	ID       int     `json:"id"`
-	Name     *string `json:"name"`
-	Hashtags []int   `json:"hashtags"`
+	ID        int     `json:"id"`
+	Name      *string `json:"name"`
+	Thumbnail *string `json:"thumbnail"`
+	Image     *string `json:"image"`
+	Video     *string `json:"video"`
+	Hashtags  []int   `json:"hashtags"`
 }
 
 type UpdateUser struct {
-	ID          int     `json:"id"`
-	Name        *string `json:"name"`
-	DisplayName *string `json:"displayName"`
-	Email       *string `json:"email"`
-	Hashtags    []int   `json:"hashtags"`
+	ID          int                      `json:"id"`
+	Name        *string                  `json:"name"`
+	DisplayName *string                  `json:"displayName"`
+	Email       *string                  `json:"email"`
+	Thumbnail   *string                  `json:"thumbnail"`
+	Image       *string                  `json:"image"`
+	Video       *string                  `json:"video"`
+	Hashtags    []int                    `json:"hashtags"`
+	Profile     *UpdateDependentResource `json:"profile"`
 }
 
 type UpdateVideo struct {
@@ -481,10 +500,13 @@ type User struct {
 	Name          string         `json:"name"`
 	DisplayName   string         `json:"displayName"`
 	Email         string         `json:"email"`
-	Profile       *Resource      `json:"profile"`
+	Thumbnail     *string        `json:"thumbnail"`
+	Image         *string        `json:"image"`
+	Video         *string        `json:"video"`
 	Hashtags      []Hashtag      `json:"hashtags"`
 	Notifications []Notification `json:"notifications"`
 	Measurements  []Measurement  `json:"measurements"`
+	Resources     []Resource     `json:"resources"`
 	Chat          Chat           `json:"chat"`
 	CreatedAt     time.Time      `json:"createdAt"`
 	UpdatedAt     time.Time      `json:"updatedAt"`

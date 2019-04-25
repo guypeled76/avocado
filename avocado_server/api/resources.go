@@ -80,6 +80,24 @@ func (r *mutationResolver) DeleteResource(ctx context.Context, resourceId int) (
 	return &apimodel.Result{Status: "ok"}, nil
 }
 
+func (r *userResolver) Resources(ctx context.Context, obj *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error) {
+	repo, err := sql.CreateResourceRepo(r)
+	if err != nil {
+		return []apimodel.Resource{}, err
+	}
+
+	resources, err := repo.GetResources(filter)
+	if err != nil {
+		return []apimodel.Resource{}, err
+	}
+
+	var results []apimodel.Resource
+	for _, resource := range resources {
+		results = append(results, *convertResource(&resource))
+	}
+	return results, nil
+}
+
 func (r *queryResolver) Resources(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error) {
 	repo, err := sql.CreateResourceRepo(r)
 	if err != nil {
@@ -100,10 +118,6 @@ func (r *queryResolver) Resources(ctx context.Context, filter *apimodel.ResultsF
 
 func (r *queryResolver) ResourceByID(ctx context.Context, id int) (*apimodel.Resource, error) {
 	return readResourceById(r, uint(id))
-}
-
-func (r *userResolver) Profile(ctx context.Context, user *apimodel.User) (*apimodel.Resource, error) {
-	return readResource(r, user.Profile)
 }
 
 func (r *replyResolver) Resource(ctx context.Context, reply *apimodel.Reply) (*apimodel.Resource, error) {
