@@ -93,6 +93,10 @@ func getDB(db *sql.DBConnection) (*sql.DBConnection, error) {
 	return db, nil
 }
 
+func (r *measurementResolver) GetDBConnection() (*sql.DBConnection, error) {
+	return getDB(r.database)
+}
+
 func (r *resourceResolver) GetDBConnection() (*sql.DBConnection, error) {
 	return getDB(r.database)
 }

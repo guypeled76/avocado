@@ -422,17 +422,25 @@ type ChatResolver interface {
 }
 type HashtagResolver interface {
 	CreatedBy(ctx context.Context, obj *apimodel.Hashtag) (*apimodel.User, error)
+
+	UpdatedBy(ctx context.Context, obj *apimodel.Hashtag) (*apimodel.User, error)
 }
 type MeasurementResolver interface {
 	Chat(ctx context.Context, obj *apimodel.Measurement) (*apimodel.Chat, error)
 
 	Hashtags(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.Hashtag, error)
 	Results(ctx context.Context, obj *apimodel.Measurement) ([]apimodel.MeasurementResult, error)
+
+	CreatedBy(ctx context.Context, obj *apimodel.Measurement) (*apimodel.User, error)
+
+	UpdatedBy(ctx context.Context, obj *apimodel.Measurement) (*apimodel.User, error)
 }
 type MessageResolver interface {
 	Resource(ctx context.Context, obj *apimodel.Message) (*apimodel.Resource, error)
 
 	CreatedBy(ctx context.Context, obj *apimodel.Message) (*apimodel.User, error)
+
+	UpdatedBy(ctx context.Context, obj *apimodel.Message) (*apimodel.User, error)
 }
 type MutationResolver interface {
 	Logon(ctx context.Context) (*apimodel.Result, error)
@@ -519,10 +527,14 @@ type ReplyResolver interface {
 	Resource(ctx context.Context, obj *apimodel.Reply) (*apimodel.Resource, error)
 
 	CreatedBy(ctx context.Context, obj *apimodel.Reply) (*apimodel.User, error)
+
+	UpdatedBy(ctx context.Context, obj *apimodel.Reply) (*apimodel.User, error)
 }
 type ResourceResolver interface {
 	Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error)
 	CreatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error)
+
+	UpdatedBy(ctx context.Context, obj *apimodel.Resource) (*apimodel.User, error)
 }
 type UserResolver interface {
 	Image(ctx context.Context, obj *apimodel.User) (*apimodel.Resource, error)
@@ -5385,13 +5397,13 @@ func (ec *executionContext) _Hashtag_updatedBy(ctx context.Context, field graphq
 		Object:   "Hashtag",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedBy, nil
+		return ec.resolvers.Hashtag().UpdatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -6336,13 +6348,13 @@ func (ec *executionContext) _Measurement_createdBy(ctx context.Context, field gr
 		Object:   "Measurement",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.CreatedBy, nil
+		return ec.resolvers.Measurement().CreatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -6435,13 +6447,13 @@ func (ec *executionContext) _Measurement_updatedBy(ctx context.Context, field gr
 		Object:   "Measurement",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedBy, nil
+		return ec.resolvers.Measurement().UpdatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -6697,13 +6709,13 @@ func (ec *executionContext) _Message_updatedBy(ctx context.Context, field graphq
 		Object:   "Message",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedBy, nil
+		return ec.resolvers.Message().UpdatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -11246,13 +11258,13 @@ func (ec *executionContext) _Reply_updatedBy(ctx context.Context, field graphql.
 		Object:   "Reply",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedBy, nil
+		return ec.resolvers.Reply().UpdatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -11528,13 +11540,13 @@ func (ec *executionContext) _Resource_updatedBy(ctx context.Context, field graph
 		Object:   "Resource",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdatedBy, nil
+		return ec.resolvers.Resource().UpdatedBy(rctx, obj)
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -14910,7 +14922,16 @@ func (ec *executionContext) _Hashtag(ctx context.Context, sel ast.SelectionSet, 
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._Hashtag_updatedBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Hashtag_updatedBy(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -15140,7 +15161,16 @@ func (ec *executionContext) _Measurement(ctx context.Context, sel ast.SelectionS
 				invalid = true
 			}
 		case "createdBy":
-			out.Values[i] = ec._Measurement_createdBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Measurement_createdBy(ctx, field, obj)
+				return res
+			})
 		case "deletedAt":
 			out.Values[i] = ec._Measurement_deletedAt(ctx, field, obj)
 		case "deletedBy":
@@ -15151,7 +15181,16 @@ func (ec *executionContext) _Measurement(ctx context.Context, sel ast.SelectionS
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._Measurement_updatedBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Measurement_updatedBy(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -15226,7 +15265,16 @@ func (ec *executionContext) _Message(ctx context.Context, sel ast.SelectionSet, 
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._Message_updatedBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Message_updatedBy(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -16325,7 +16373,16 @@ func (ec *executionContext) _Reply(ctx context.Context, sel ast.SelectionSet, ob
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._Reply_updatedBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Reply_updatedBy(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -16405,7 +16462,16 @@ func (ec *executionContext) _Resource(ctx context.Context, sel ast.SelectionSet,
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._Resource_updatedBy(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Resource_updatedBy(ctx, field, obj)
+				return res
+			})
 		case "deletedAt":
 			out.Values[i] = ec._Resource_deletedAt(ctx, field, obj)
 		case "deletedBy":

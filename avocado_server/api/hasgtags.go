@@ -131,8 +131,10 @@ func convertHashtag(hashtag *dalmodel.Hashtag) *apimodel.Hashtag {
 		ID:        int(hashtag.ID),
 		Name:      hashtag.Name,
 		CreatedAt: hashtag.CreatedAt,
-		CreatedBy: createUser(hashtag.AuditModel.CreatedByID),
+		CreatedBy: createEmptyUser(hashtag.AuditModel.CreatedByID),
 		UpdatedAt: hashtag.UpdatedAt,
+		UpdatedBy: createEmptyUser(hashtag.AuditModel.UpdatedByID),
 		DeletedAt: hashtag.DeletedAt,
+		DeletedBy: createEmptyUser(hashtag.AuditModel.DeletedByID),
 	}
 }

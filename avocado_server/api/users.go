@@ -66,17 +66,7 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 }
 
 func (r *queryResolver) UserByID(ctx context.Context, id int) (*apimodel.User, error) {
-	repo, err := sql.CreateUserRepo(r)
-	if err != nil {
-		return nil, err
-	}
-
-	user, err := repo.GetUser(uint(id))
-	if err != nil {
-		return nil, err
-	}
-
-	return convertUser(user), nil
+	return readUserById(r, uint(id))
 }
 
 func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error) {
@@ -151,21 +141,48 @@ func (r *hashtagResolver) CreatedBy(ctx context.Context, hashtag *apimodel.Hasht
 	return readUser(r, hashtag.CreatedBy)
 }
 
+func (r *measurementResolver) CreatedBy(ctx context.Context, measurement *apimodel.Measurement) (*apimodel.User, error) {
+	return readUser(r, measurement.CreatedBy)
+}
+
+func (r *measurementResolver) UpdatedBy(ctx context.Context, measurement *apimodel.Measurement) (*apimodel.User, error) {
+	return readUser(r, measurement.UpdatedBy)
+}
+
+func (r *resourceResolver) UpdatedBy(ctx context.Context, resource *apimodel.Resource) (*apimodel.User, error) {
+	return readUser(r, resource.UpdatedBy)
+}
+
+func (r *replyResolver) UpdatedBy(ctx context.Context, reply *apimodel.Reply) (*apimodel.User, error) {
+	return readUser(r, reply.UpdatedBy)
+}
+
+func (r *messageResolver) UpdatedBy(ctx context.Context, message *apimodel.Message) (*apimodel.User, error) {
+	return readUser(r, message.UpdatedBy)
+}
+
+func (r *hashtagResolver) UpdatedBy(ctx context.Context, hashtag *apimodel.Hashtag) (*apimodel.User, error) {
+	return readUser(r, hashtag.UpdatedBy)
+}
+
 func readUser(container sql.DBConnectionContainer, user *apimodel.User) (*apimodel.User, error) {
 	if user == nil {
 		return nil, errors.New("could no read null user")
 	}
 
+	return readUserById(container, uint(user.ID))
+}
+
+func readUserById(container sql.DBConnectionContainer, uid uint) (*apimodel.User, error) {
 	repo, err := sql.CreateUserRepo(container)
 	if err != nil {
 		return nil, err
 	}
 
-	return convertUserWithError(repo.GetUser(uint(user.ID)))
-
+	return convertUserWithError(repo.GetUser(uid))
 }
 
-func createUser(id int) *apimodel.User {
+func createEmptyUser(id int) *apimodel.User {
 	return &apimodel.User{ID: id}
 }
 

@@ -15,8 +15,6 @@ resolver:
   filename: api/resolver.go # where to write them
   type: Resolver  # whats the resolver root implementation type called?
 
-# Tell gqlgen about any existing models you want to reuse for
-# graphql. These normally come from the db or a remote api.
 models:
   ID:
     model: github.com/99designs/gqlgen/graphql.IntID
@@ -25,6 +23,8 @@ models:
   Hashtag:
     fields:
       createdBy:
+        resolver: true
+      updatedBy:
         resolver: true
   User:
     fields:
@@ -44,6 +44,8 @@ models:
         resolver: true
       createdBy:
         resolver: true
+      updatedBy:
+        resolver: true
   Post:
     fields:
       chat:
@@ -51,6 +53,8 @@ models:
       hashtags:
         resolver: true
       createdBy:
+        resolver: true
+      updatedBy:
         resolver: true
   Chat:
     fields:
@@ -64,11 +68,15 @@ models:
         resolver: true
       createdBy:
         resolver: true
+      updatedBy:
+        resolver: true
   Reply:
     fields:
       resource:
         resolver: true
       createdBy:
+        resolver: true
+      updatedBy:
         resolver: true
   Measurement:
     fields:
@@ -78,7 +86,15 @@ models:
         resolver: true
       chat:
         resolver: true
+      createdBy:
+        resolver: true
+      updatedBy:
+        resolver: true
   MeasurementResult:
     fields:
       chat:
+        resolver: true
+      createdBy:
+        resolver: true
+      updatedBy:
         resolver: true
