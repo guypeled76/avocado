@@ -172,7 +172,7 @@ type ComplexityRoot struct {
 		DeletePost          func(childComplexity int, input apimodel.DeletePost) int
 		DeleteRecipe        func(childComplexity int, id int) int
 		DeleteReply         func(childComplexity int, messageID int) int
-		DeleteResource      func(childComplexity int, input apimodel.DeleteResource) int
+		DeleteResource      func(childComplexity int, id int) int
 		DeleteUser          func(childComplexity int, id int) int
 		DeleteVideo         func(childComplexity int, input apimodel.DeleteVideo) int
 		DeleteWaterfall     func(childComplexity int, input apimodel.DeleteWaterfall) int
@@ -285,7 +285,7 @@ type ComplexityRoot struct {
 		Recipes               func(childComplexity int, filter *apimodel.ResultsFilter) int
 		RepliesByMessageID    func(childComplexity int, messageID int, filter apimodel.ResultsFilter) int
 		ResourceByID          func(childComplexity int, id int) int
-		Resources             func(childComplexity int, filter apimodel.ResultsFilter) int
+		Resources             func(childComplexity int, filter *apimodel.ResultsFilter) int
 		UserByID              func(childComplexity int, id int) int
 		Users                 func(childComplexity int, filter *apimodel.ResultsFilter) int
 		VideoByID             func(childComplexity int, id int) int
@@ -477,7 +477,7 @@ type MutationResolver interface {
 	DeletePost(ctx context.Context, input apimodel.DeletePost) (*apimodel.Result, error)
 	CreateResource(ctx context.Context, input apimodel.NewResource) (*apimodel.Resource, error)
 	UpdateResource(ctx context.Context, input apimodel.UpdateResource) (*apimodel.Result, error)
-	DeleteResource(ctx context.Context, input apimodel.DeleteResource) (*apimodel.Result, error)
+	DeleteResource(ctx context.Context, id int) (*apimodel.Result, error)
 	CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error)
 	UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error)
 	DeleteUser(ctx context.Context, id int) (*apimodel.Result, error)
@@ -514,7 +514,7 @@ type QueryResolver interface {
 	MeasurementByID(ctx context.Context, id int) (*apimodel.Measurement, error)
 	NotificationsByUserID(ctx context.Context, userID int) ([]apimodel.Notification, error)
 	PostsByUserID(ctx context.Context, userID int) ([]apimodel.Post, error)
-	Resources(ctx context.Context, filter apimodel.ResultsFilter) ([]apimodel.Resource, error)
+	Resources(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error)
 	ResourceByID(ctx context.Context, id int) (*apimodel.Resource, error)
 	Users(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.User, error)
 	UserByID(ctx context.Context, id int) (*apimodel.User, error)
@@ -1390,7 +1390,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.DeleteResource(childComplexity, args["input"].(apimodel.DeleteResource)), true
+		return e.complexity.Mutation.DeleteResource(childComplexity, args["id"].(int)), true
 
 	case "Mutation.DeleteUser":
 		if e.complexity.Mutation.DeleteUser == nil {
@@ -2219,7 +2219,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Resources(childComplexity, args["filter"].(apimodel.ResultsFilter)), true
+		return e.complexity.Query.Resources(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
 
 	case "Query.UserByID":
 		if e.complexity.Query.UserByID == nil {
@@ -3537,11 +3537,11 @@ enum ReferenceType {
 	&ast.Source{Name: "api/schema/resources.graphql", Input: `extend type Mutation {
     createResource(input: NewResource!): Resource!
     updateResource(input: UpdateResource!) : Result
-    deleteResource(input: DeleteResource!) : Result
+    deleteResource(id: ID!) : Result
 }
 
 extend type Query {
-    resources(filter:ResultsFilter!): [Resource!]!
+    resources(filter:ResultsFilter): [Resource!]!
     resourceById(id:ID!): Resource!
 }
 
@@ -3573,9 +3573,6 @@ input UpdateResource {
     hashtags:[ID!]
 }
 
-input DeleteResource {
-    id:ID!
-}
 `},
 	&ast.Source{Name: "api/schema/schema.graphql", Input: `
 type Mutation {
@@ -4143,14 +4140,14 @@ func (ec *executionContext) field_Mutation_deleteReply_args(ctx context.Context,
 func (ec *executionContext) field_Mutation_deleteResource_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 apimodel.DeleteResource
-	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNDeleteResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteResource(ctx, tmp)
+	var arg0 int
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2int(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["input"] = arg0
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -4699,9 +4696,9 @@ func (ec *executionContext) field_Query_resourceById_args(ctx context.Context, r
 func (ec *executionContext) field_Query_resources_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 apimodel.ResultsFilter
+	var arg0 *apimodel.ResultsFilter
 	if tmp, ok := rawArgs["filter"]; ok {
-		arg0, err = ec.unmarshalNResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
+		arg0, err = ec.unmarshalOResultsFilter2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResultsFilter(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -7823,7 +7820,7 @@ func (ec *executionContext) _Mutation_deleteResource(ctx context.Context, field 
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteResource(rctx, args["input"].(apimodel.DeleteResource))
+		return ec.resolvers.Mutation().DeleteResource(rctx, args["id"].(int))
 	})
 	if resTmp == nil {
 		return graphql.Null
@@ -10143,7 +10140,7 @@ func (ec *executionContext) _Query_resources(ctx context.Context, field graphql.
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Resources(rctx, args["filter"].(apimodel.ResultsFilter))
+		return ec.resolvers.Query().Resources(rctx, args["filter"].(*apimodel.ResultsFilter))
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -13700,24 +13697,6 @@ func (ec *executionContext) unmarshalInputDeletePost(ctx context.Context, v inte
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputDeleteResource(ctx context.Context, v interface{}) (apimodel.DeleteResource, error) {
-	var it apimodel.DeleteResource
-	var asMap = v.(map[string]interface{})
-
-	for k, v := range asMap {
-		switch k {
-		case "id":
-			var err error
-			it.ID, err = ec.unmarshalNID2int(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputDeleteVideo(ctx context.Context, v interface{}) (apimodel.DeleteVideo, error) {
 	var it apimodel.DeleteVideo
 	var asMap = v.(map[string]interface{})
@@ -17234,10 +17213,6 @@ func (ec *executionContext) unmarshalNDeleteImage2githubᚗcomᚋgremlinsappsᚋ
 
 func (ec *executionContext) unmarshalNDeletePost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeletePost(ctx context.Context, v interface{}) (apimodel.DeletePost, error) {
 	return ec.unmarshalInputDeletePost(ctx, v)
-}
-
-func (ec *executionContext) unmarshalNDeleteResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteResource(ctx context.Context, v interface{}) (apimodel.DeleteResource, error) {
-	return ec.unmarshalInputDeleteResource(ctx, v)
 }
 
 func (ec *executionContext) unmarshalNDeleteVideo2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐDeleteVideo(ctx context.Context, v interface{}) (apimodel.DeleteVideo, error) {

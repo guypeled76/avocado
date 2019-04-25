@@ -27,9 +27,9 @@ func (repo *UserRepository) GetBaseName() string {
 }
 
 func (repo *UserRepository) GetUsers(filter *apimodel.ResultsFilter) ([]dalmodel.User, error) {
-	hashtags := make([]dalmodel.User, 0)
-	err := repo.conn.Select(&hashtags, filter, repo)
-	return hashtags, err
+	users := make([]dalmodel.User, 0)
+	err := repo.conn.Select(&users, filter, repo)
+	return users, err
 }
 
 func (repo *UserRepository) CreateUser(user *dalmodel.User) error {

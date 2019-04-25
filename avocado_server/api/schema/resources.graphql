@@ -1,11 +1,11 @@
 extend type Mutation {
     createResource(input: NewResource!): Resource!
     updateResource(input: UpdateResource!) : Result
-    deleteResource(input: DeleteResource!) : Result
+    deleteResource(id: ID!) : Result
 }
 
 extend type Query {
-    resources(filter:ResultsFilter!): [Resource!]!
+    resources(filter:ResultsFilter): [Resource!]!
     resourceById(id:ID!): Resource!
 }
 
@@ -37,6 +37,3 @@ input UpdateResource {
     hashtags:[ID!]
 }
 
-input DeleteResource {
-    id:ID!
-}

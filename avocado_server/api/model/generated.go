@@ -41,10 +41,6 @@ type DeletePost struct {
 	ID string `json:"id"`
 }
 
-type DeleteResource struct {
-	ID int `json:"id"`
-}
-
 type DeleteVideo struct {
 	ID string `json:"id"`
 }

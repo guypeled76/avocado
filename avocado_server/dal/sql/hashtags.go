@@ -66,6 +66,11 @@ func (repo *HashtagRepository) UpdateMeasurementHashtags(ID uint, hashtags []dal
 	return repo.conn.UpdateAssociations(&measurement, "Measurements", hashtags)
 }
 
+func (repo *HashtagRepository) UpdateResourceHashtags(resourceId uint, hashtags []dalmodel.Hashtag) error {
+	resource := dalmodel.Resource{Model: gorm.Model{ID: resourceId}}
+	return repo.conn.UpdateAssociations(&resource, "Hashtags", hashtags)
+}
+
 func (repo *HashtagRepository) GetIngredientHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	panic("implement me")
 }
