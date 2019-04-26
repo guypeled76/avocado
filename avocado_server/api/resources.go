@@ -5,7 +5,6 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
-	"github.com/jinzhu/gorm"
 )
 
 func (r *mutationResolver) CreateResource(ctx context.Context, input apimodel.NewResource) (*apimodel.Resource, error) {
@@ -32,12 +31,24 @@ func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.Up
 		return &apimodel.Result{Status: "error"}, err
 	}
 
-	uid := uint(input.ID)
+	uid := input.ID
 
 	data := make(map[string]interface{})
 
 	if input.Name != nil {
 		data["Name"] = *input.Name
+	}
+
+	if input.Thumbnail != nil {
+		data["Thumbnail"] = *input.Thumbnail
+	}
+
+	if input.Image != nil {
+		data["Image"] = *input.Image
+	}
+
+	if input.Video != nil {
+		data["Video"] = *input.Video
 	}
 
 	if len(data) > 0 {
@@ -52,12 +63,8 @@ func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.Up
 		if err != nil {
 			return nil, err
 		}
-		hashtags := make([]dalmodel.Hashtag, 0)
-		for _, hashtagId := range input.Hashtags {
-			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}})
-		}
 
-		err = hashtagRepo.UpdateResourceHashtags(uid, hashtags)
+		err = hashtagRepo.UpdateResourceHashtags(uid, input.Hashtags)
 		if err != nil {
 			return nil, err
 		}

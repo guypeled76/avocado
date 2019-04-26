@@ -6,7 +6,6 @@ import (
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"github.com/gremlinsapps/avocado_server/helpers"
-	"github.com/jinzhu/gorm"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error) {
@@ -35,7 +34,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, userId int) (*apimode
 		return nil, err
 	}
 
-	err = repo.DeleteUser(uint(userId))
+	err = repo.DeleteUser(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +66,7 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 }
 
 func (r *queryResolver) UserByID(ctx context.Context, id int) (*apimodel.User, error) {
-	return readUserById(r, uint(id))
+	return readUserById(r, id)
 }
 
 func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error) {
@@ -76,7 +75,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		return &apimodel.Result{Status: "error"}, err
 	}
 
-	uid := uint(input.ID)
+	uid := input.ID
 
 	data := make(map[string]interface{})
 
@@ -116,12 +115,8 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		if err != nil {
 			return nil, err
 		}
-		hashtags := make([]dalmodel.Hashtag, 0)
-		for _, hashtagId := range input.Hashtags {
-			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}})
-		}
 
-		err = hashtagRepo.UpdateUserHashtags(uid, hashtags)
+		err = hashtagRepo.UpdateUserHashtags(uid, input.Hashtags)
 		if err != nil {
 			return nil, err
 		}
@@ -179,10 +174,10 @@ func readUser(container sql.DBConnectionContainer, user *apimodel.User) (*apimod
 		return nil, nil
 	}
 
-	return readUserById(container, uint(user.ID))
+	return readUserById(container, user.ID)
 }
 
-func readUserById(container sql.DBConnectionContainer, uid uint) (*apimodel.User, error) {
+func readUserById(container sql.DBConnectionContainer, uid int) (*apimodel.User, error) {
 	repo, err := sql.CreateUserRepo(container)
 	if err != nil {
 		return nil, err

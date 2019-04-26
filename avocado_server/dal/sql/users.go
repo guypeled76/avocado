@@ -33,26 +33,28 @@ func (repo *UserRepository) GetUsers(filter *apimodel.ResultsFilter) ([]dalmodel
 }
 
 func (repo *UserRepository) CreateUser(user *dalmodel.User) error {
-	err := repo.conn.Create(&user)
+	err := repo.conn.Create(user)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (repo *UserRepository) DeleteUser(ID uint) error {
-	hashtag := dalmodel.User{Model: gorm.Model{ID: ID}}
-	err := repo.conn.Delete(&hashtag)
+func (repo *UserRepository) DeleteUser(id int) error {
+	err := repo.conn.Delete(createFromUserId(id))
 	return err
 }
 
-func (repo *UserRepository) GetUser(ID uint) (*dalmodel.User, error) {
-	user := dalmodel.User{Model: gorm.Model{ID: ID}}
-	err := repo.conn.Get(&user)
-	return &user, err
+func (repo *UserRepository) GetUser(id int) (*dalmodel.User, error) {
+	user := createFromUserId(id)
+	err := repo.conn.Get(user)
+	return user, err
 }
 
-func (repo *UserRepository) UpdateUser(ID uint, data map[string]interface{}) error {
-	user := dalmodel.User{Model: gorm.Model{ID: ID}}
-	return repo.conn.Update(&user, data)
+func (repo *UserRepository) UpdateUser(ID int, data map[string]interface{}) error {
+	return repo.conn.Update(createFromUserId(ID), data)
+}
+
+func createFromUserId(uid int) *dalmodel.User {
+	return &dalmodel.User{Model: gorm.Model{ID: uint(uid)}}
 }

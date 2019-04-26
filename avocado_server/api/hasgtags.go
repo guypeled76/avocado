@@ -14,7 +14,7 @@ func (r *mutationResolver) DeleteHashtag(ctx context.Context, id int) (*apimodel
 		return nil, err
 	}
 
-	err = repo.DeleteHashtag(uint(id))
+	err = repo.DeleteHashtag(id)
 	if err != nil {
 		return nil, err
 	}
@@ -63,13 +63,13 @@ func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apim
 	}, nil
 }
 
-func (r *userResolver) Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error) {
+func (r *userResolver) Hashtags(ctx context.Context, user *apimodel.User) ([]apimodel.Hashtag, error) {
 	repo, err := sql.CreateHashtagRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	hashTags, err := repo.GetUserHashtags(uint(obj.ID))
+	hashTags, err := repo.GetUserHashtags(user.ID)
 	if err != nil {
 		return nil, err
 	}

@@ -52,7 +52,10 @@ func (repo *ResourceRepository) CreateResource(resource *dalmodel.Resource) erro
 	return nil
 }
 
-func (repo *ResourceRepository) UpdateResource(resourceId uint, data map[string]interface{}) error {
-	resource := dalmodel.Resource{Model: gorm.Model{ID: resourceId}}
-	return repo.conn.Update(&resource, data)
+func (repo *ResourceRepository) UpdateResource(id int, data map[string]interface{}) error {
+	return repo.conn.Update(createFromResourceId(id), data)
+}
+
+func createFromResourceId(id int) *dalmodel.Resource {
+	return &dalmodel.Resource{Model: gorm.Model{ID: uint(id)}}
 }

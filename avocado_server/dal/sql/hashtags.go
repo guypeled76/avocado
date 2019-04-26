@@ -44,32 +44,27 @@ func (repo *HashtagRepository) CreateHashtag(name string) (*dalmodel.Hashtag, er
 	return &hashtag, nil
 }
 
-func (repo *HashtagRepository) DeleteHashtag(ID uint) error {
-	hashtag := dalmodel.Hashtag{Model: gorm.Model{ID: ID}}
-	err := repo.conn.Delete(&hashtag)
+func (repo *HashtagRepository) DeleteHashtag(ID int) error {
+	err := repo.conn.Delete(createFromHashtagId(ID))
 	return err
 }
 
-func (repo *HashtagRepository) GetUserHashtags(ID uint) ([]dalmodel.Hashtag, error) {
-	user := dalmodel.User{Model: gorm.Model{ID: ID}}
+func (repo *HashtagRepository) GetUserHashtags(uid int) ([]dalmodel.Hashtag, error) {
 	hashTags := make([]dalmodel.Hashtag, 0)
-	err := repo.conn.GetAssociations(user, "Hashtags", &hashTags)
+	err := repo.conn.GetAssociations(createFromUserId(uid), "Hashtags", &hashTags)
 	return hashTags, err
 }
 
-func (repo *HashtagRepository) UpdateUserHashtags(ID uint, hashtags []dalmodel.Hashtag) error {
-	user := dalmodel.User{Model: gorm.Model{ID: ID}}
-	return repo.conn.UpdateAssociations(&user, "Hashtags", hashtags)
+func (repo *HashtagRepository) UpdateUserHashtags(id int, hashtagIds []int) error {
+	return repo.conn.UpdateAssociations(createFromUserId(id), "Hashtags", createFromHashtagIds(hashtagIds))
 }
 
-func (repo *HashtagRepository) UpdateMeasurementHashtags(ID uint, hashtags []dalmodel.Hashtag) error {
-	measurement := dalmodel.Measurement{Model: gorm.Model{ID: ID}}
-	return repo.conn.UpdateAssociations(&measurement, "Measurements", hashtags)
+func (repo *HashtagRepository) UpdateMeasurementHashtags(id int, hashtagIds []int) error {
+	return repo.conn.UpdateAssociations(createFromMeasurementId(id), "Measurements", createFromHashtagIds(hashtagIds))
 }
 
-func (repo *HashtagRepository) UpdateResourceHashtags(resourceId uint, hashtags []dalmodel.Hashtag) error {
-	resource := dalmodel.Resource{Model: gorm.Model{ID: resourceId}}
-	return repo.conn.UpdateAssociations(&resource, "Hashtags", hashtags)
+func (repo *HashtagRepository) UpdateResourceHashtags(resourceId int, hashtagIds []int) error {
+	return repo.conn.UpdateAssociations(createFromResourceId(resourceId), "Hashtags", createFromHashtagIds(hashtagIds))
 }
 
 func (repo *HashtagRepository) GetIngredientHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
@@ -100,4 +95,16 @@ func (repo *HashtagRepository) GetPostHashtags(filter *apimodel.ResultsFilter) (
 func (repo *HashtagRepository) GetRecipeHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
+}
+
+func createFromHashtagIds(hashtagIds []int) []dalmodel.Hashtag {
+	hashtags := make([]dalmodel.Hashtag, 0)
+	for _, hashtagId := range hashtagIds {
+		hashtags = append(hashtags, createFromHashtagId(hashtagId))
+	}
+	return hashtags
+}
+
+func createFromHashtagId(hashtagId int) dalmodel.Hashtag {
+	return dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}}
 }

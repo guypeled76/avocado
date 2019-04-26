@@ -6,7 +6,6 @@ import (
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"github.com/gremlinsapps/avocado_server/helpers"
-	"github.com/jinzhu/gorm"
 )
 
 func (r *queryResolver) Measurements(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error) {
@@ -33,7 +32,7 @@ func (r *queryResolver) MeasurementByID(ctx context.Context, id int) (*apimodel.
 		return nil, err
 	}
 
-	measurement, err := repo.GetMeasurement(uint(id))
+	measurement, err := repo.GetMeasurement(id)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +60,7 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 		return apimodel.CreateFailureResult(err)
 	}
 
-	uid := uint(input.ID)
+	uid := input.ID
 
 	data := make(map[string]interface{})
 
@@ -85,12 +84,8 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 		if err != nil {
 			return nil, err
 		}
-		hashtags := make([]dalmodel.Hashtag, 0)
-		for _, hashtagId := range input.Hashtags {
-			hashtags = append(hashtags, dalmodel.Hashtag{Model: gorm.Model{ID: uint(hashtagId)}})
-		}
 
-		err = hashtagRepo.UpdateMeasurementHashtags(uid, hashtags)
+		err = hashtagRepo.UpdateMeasurementHashtags(uid, input.Hashtags)
 		if err != nil {
 			return apimodel.CreateFailureResult(err)
 		}
@@ -105,7 +100,7 @@ func (r *mutationResolver) DeleteMeasurement(ctx context.Context, id int) (*apim
 		return apimodel.CreateFailureResult(err)
 	}
 
-	err = repo.DeleteMeasurement(uint(id))
+	err = repo.DeleteMeasurement(id)
 	if err != nil {
 		return apimodel.CreateFailureResult(err)
 	}
@@ -128,13 +123,13 @@ func (measurementResolver) Results(ctx context.Context, obj *apimodel.Measuremen
 	panic("implement me")
 }
 
-func (r *userResolver) Measurements(ctx context.Context, obj *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error) {
+func (r *userResolver) Measurements(ctx context.Context, user *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error) {
 	repo, err := sql.CreateMeasurementRepo(r)
 	if err != nil {
 		return nil, err
 	}
 
-	measurements, err := repo.GetUserMeasurements(uint(obj.ID), filter)
+	measurements, err := repo.GetUserMeasurements(user.ID, filter)
 	if err != nil {
 		return nil, err
 	}
