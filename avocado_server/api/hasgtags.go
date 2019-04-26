@@ -19,7 +19,7 @@ func (r *mutationResolver) DeleteHashtag(ctx context.Context, id int) (*apimodel
 		return nil, err
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *mutationResolver) CreateHashtag(ctx context.Context, name string) (*apimodel.Hashtag, error) {
