@@ -3188,7 +3188,7 @@ input NewIngredient {
 }
 
 input UpdateIngredient {
-    id: String!
+    id: ID!
     name: String
     hashtags:[ID!]
     calories: Float
@@ -3238,7 +3238,7 @@ input NewPortion {
 }
 
 input UpdatePortion {
-    id: String!
+    id: ID!
     amount: Float!
     type: ID!
 }
@@ -3253,7 +3253,7 @@ input NewPortionType {
 }
 
 input UpdatePortionType {
-    id: String!
+    id: ID!
     name: String!
 }
 
@@ -3287,7 +3287,7 @@ input NewRecipe {
 }
 
 input UpdateRecipe {
-    id: String!
+    id: ID!
 }`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashtag(name:String!): Hashtag
@@ -14377,7 +14377,7 @@ func (ec *executionContext) unmarshalInputUpdateIngredient(ctx context.Context, 
 		switch k {
 		case "id":
 			var err error
-			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			it.ID, err = ec.unmarshalNID2int(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -14539,7 +14539,7 @@ func (ec *executionContext) unmarshalInputUpdatePortion(ctx context.Context, v i
 		switch k {
 		case "id":
 			var err error
-			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			it.ID, err = ec.unmarshalNID2int(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -14569,7 +14569,7 @@ func (ec *executionContext) unmarshalInputUpdatePortionType(ctx context.Context,
 		switch k {
 		case "id":
 			var err error
-			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			it.ID, err = ec.unmarshalNID2int(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -14623,7 +14623,7 @@ func (ec *executionContext) unmarshalInputUpdateRecipe(ctx context.Context, v in
 		switch k {
 		case "id":
 			var err error
-			it.ID, err = ec.unmarshalNString2string(ctx, v)
+			it.ID, err = ec.unmarshalNID2int(ctx, v)
 			if err != nil {
 				return it, err
 			}

@@ -402,7 +402,7 @@ type UpdateImageHashTags struct {
 }
 
 type UpdateIngredient struct {
-	ID                 string   `json:"id"`
+	ID                 int      `json:"id"`
 	Name               *string  `json:"name"`
 	Hashtags           []int    `json:"hashtags"`
 	Calories           *float64 `json:"calories"`
@@ -432,13 +432,13 @@ type UpdateMessage struct {
 }
 
 type UpdatePortion struct {
-	ID     string  `json:"id"`
+	ID     int     `json:"id"`
 	Amount float64 `json:"amount"`
 	Type   int     `json:"type"`
 }
 
 type UpdatePortionType struct {
-	ID   string `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -449,7 +449,7 @@ type UpdatePost struct {
 }
 
 type UpdateRecipe struct {
-	ID string `json:"id"`
+	ID int `json:"id"`
 }
 
 type UpdateReply struct {

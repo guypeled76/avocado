@@ -83,7 +83,7 @@ func (r *queryResolver) Chats(ctx context.Context, filter *apimodel.ResultsFilte
 func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error) {
 	repo, err := sql.CreateChatRepo(r)
 	if err != nil {
-		return &apimodel.Result{Status: "error"}, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	messageId := input.ID

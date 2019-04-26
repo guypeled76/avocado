@@ -68,7 +68,7 @@ input NewIngredient {
 }
 
 input UpdateIngredient {
-    id: String!
+    id: ID!
     name: String
     hashtags:[ID!]
     calories: Float
@@ -118,7 +118,7 @@ input NewPortion {
 }
 
 input UpdatePortion {
-    id: String!
+    id: ID!
     amount: Float!
     type: ID!
 }
@@ -133,7 +133,7 @@ input NewPortionType {
 }
 
 input UpdatePortionType {
-    id: String!
+    id: ID!
     name: String!
 }
 
@@ -167,5 +167,5 @@ input NewRecipe {
 }
 
 input UpdateRecipe {
-    id: String!
+    id: ID!
 }
