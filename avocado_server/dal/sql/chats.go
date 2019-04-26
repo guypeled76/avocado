@@ -64,6 +64,13 @@ func (repo *ChatRepository) GetChatByPostId(id int) (*dalmodel.Chat, error) {
 	return chat, err
 }
 
+func (repo *ChatRepository) GetChatByResourceId(id int) (*dalmodel.Chat, error) {
+	// TODO
+	chat := createFromChatId(id)
+	err := repo.conn.Get(chat)
+	return chat, err
+}
+
 func (repo *ChatRepository) GetPrimaryChatByUserId(id int) (*dalmodel.Chat, error) {
 	// TODO
 	chat := createFromChatId(id)

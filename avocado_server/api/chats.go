@@ -86,7 +86,6 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 		return &apimodel.Result{Status: "error"}, err
 	}
 
-	// TODO
 	messageId := input.ID
 
 	data := make(map[string]interface{})
@@ -133,9 +132,18 @@ func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel
 	return convertChat(chat), nil
 }
 
-func (r *resourceResolver) Chat(ctx context.Context, obj *apimodel.Resource) (*apimodel.Chat, error) {
-	helpers.NotImplementedPanic()
-	panic("implement me")
+func (r *resourceResolver) Chat(ctx context.Context, resource *apimodel.Resource) (*apimodel.Chat, error) {
+	repo, err := sql.CreateChatRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	chat, err := repo.GetChatByPostId(resource.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertChat(chat), nil
 }
 
 func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel.Chat, error) {
