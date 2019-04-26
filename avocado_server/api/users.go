@@ -39,7 +39,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, userId int) (*apimode
 		return nil, err
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *queryResolver) Users(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.User, error) {
@@ -53,11 +53,7 @@ func (r *queryResolver) Users(ctx context.Context, filter *apimodel.ResultsFilte
 		return []apimodel.User{}, err
 	}
 
-	var results []apimodel.User
-	for _, user := range users {
-		results = append(results, *convertUser(&user))
-	}
-	return results, nil
+	return convertUsers(users), nil
 }
 
 func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error) {
@@ -72,7 +68,7 @@ func (r *queryResolver) UserByID(ctx context.Context, id int) (*apimodel.User, e
 func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.UpdateUser) (*apimodel.Result, error) {
 	repo, err := sql.CreateUserRepo(r)
 	if err != nil {
-		return &apimodel.Result{Status: "error"}, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	uid := input.ID
@@ -122,7 +118,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 		}
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *resourceResolver) CreatedBy(ctx context.Context, resource *apimodel.Resource) (*apimodel.User, error) {
@@ -192,6 +188,14 @@ func createEmptyUser(id int) *apimodel.User {
 
 func convertUserWithError(user *dalmodel.User, err error) (*apimodel.User, error) {
 	return convertUser(user), err
+}
+
+func convertUsers(users []dalmodel.User) []apimodel.User {
+	var results []apimodel.User
+	for _, resource := range users {
+		results = append(results, *convertUser(&resource))
+	}
+	return results
 }
 
 func convertUser(user *dalmodel.User) *apimodel.User {

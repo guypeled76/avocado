@@ -70,7 +70,7 @@ func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.Up
 		}
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *mutationResolver) DeleteResource(ctx context.Context, resourceId int) (*apimodel.Result, error) {
@@ -79,12 +79,12 @@ func (r *mutationResolver) DeleteResource(ctx context.Context, resourceId int) (
 		return nil, err
 	}
 
-	err = repo.DeleteResource(uint(resourceId))
+	err = repo.DeleteResource(resourceId)
 	if err != nil {
 		return nil, err
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *userResolver) Resources(ctx context.Context, obj *apimodel.User, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error) {
@@ -98,11 +98,7 @@ func (r *userResolver) Resources(ctx context.Context, obj *apimodel.User, filter
 		return []apimodel.Resource{}, err
 	}
 
-	var results []apimodel.Resource
-	for _, resource := range resources {
-		results = append(results, *convertResource(&resource))
-	}
-	return results, nil
+	return convertResources(resources), nil
 }
 
 func (r *queryResolver) Resources(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Resource, error) {
@@ -116,15 +112,11 @@ func (r *queryResolver) Resources(ctx context.Context, filter *apimodel.ResultsF
 		return []apimodel.Resource{}, err
 	}
 
-	var results []apimodel.Resource
-	for _, resource := range resources {
-		results = append(results, *convertResource(&resource))
-	}
-	return results, nil
+	return convertResources(resources), nil
 }
 
 func (r *queryResolver) ResourceByID(ctx context.Context, id int) (*apimodel.Resource, error) {
-	return readResourceById(r, uint(id))
+	return readResourceById(r, id)
 }
 
 func (r *replyResolver) Resource(ctx context.Context, reply *apimodel.Reply) (*apimodel.Resource, error) {
@@ -140,16 +132,24 @@ func readResource(container sql.DBConnectionContainer, Resource *apimodel.Resour
 		return nil, nil
 	}
 
-	return readResourceById(container, uint(Resource.ID))
+	return readResourceById(container, Resource.ID)
 }
 
-func readResourceById(container sql.DBConnectionContainer, uid uint) (*apimodel.Resource, error) {
+func readResourceById(container sql.DBConnectionContainer, uid int) (*apimodel.Resource, error) {
 	repo, err := sql.CreateResourceRepo(container)
 	if err != nil {
 		return nil, err
 	}
 
 	return convertResourceWithError(repo.GetResource(uid))
+}
+
+func convertResources(resources []dalmodel.Resource) []apimodel.Resource {
+	var results []apimodel.Resource
+	for _, resource := range resources {
+		results = append(results, *convertResource(&resource))
+	}
+	return results
 }
 
 func convertResourceWithError(Resource *dalmodel.Resource, err error) (*apimodel.Resource, error) {

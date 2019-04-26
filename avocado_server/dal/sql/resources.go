@@ -26,10 +26,10 @@ func CreateResourceRepo(container DBConnectionContainer) (*ResourceRepository, e
 	return &ResourceRepository{conn}, nil
 }
 
-func (repo *ResourceRepository) GetResource(resourceID uint) (*dalmodel.Resource, error) {
-	resource := dalmodel.Resource{Model: gorm.Model{ID: resourceID}}
-	err := repo.conn.Get(&resource)
-	return &resource, err
+func (repo *ResourceRepository) GetResource(id int) (*dalmodel.Resource, error) {
+	resource := createFromResourceId(id)
+	err := repo.conn.Get(resource)
+	return resource, err
 }
 
 func (repo *ResourceRepository) GetResources(filter *apimodel.ResultsFilter) ([]dalmodel.Resource, error) {
@@ -38,18 +38,12 @@ func (repo *ResourceRepository) GetResources(filter *apimodel.ResultsFilter) ([]
 	return resources, err
 }
 
-func (repo *ResourceRepository) DeleteResource(resourceId uint) error {
-	hashtag := dalmodel.Resource{Model: gorm.Model{ID: resourceId}}
-	err := repo.conn.Delete(&hashtag)
-	return err
+func (repo *ResourceRepository) DeleteResource(id int) error {
+	return repo.conn.Delete(createFromResourceId(id))
 }
 
 func (repo *ResourceRepository) CreateResource(resource *dalmodel.Resource) error {
-	err := repo.conn.Create(&resource)
-	if err != nil {
-		return err
-	}
-	return nil
+	return repo.conn.Create(&resource)
 }
 
 func (repo *ResourceRepository) UpdateResource(id int, data map[string]interface{}) error {
