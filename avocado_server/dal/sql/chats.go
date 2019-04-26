@@ -84,7 +84,10 @@ func (repo *ChatRepository) CreateMessage(message *dalmodel.Message) (*dalmodel.
 	return message, nil
 }
 
-func (repo *ChatRepository) UpdateMessage(messageId uint, data map[string]interface{}) error {
-	message := dalmodel.Message{Model: gorm.Model{ID: messageId}}
-	return repo.conn.Update(&message, data)
+func (repo *ChatRepository) UpdateMessage(id int, data map[string]interface{}) error {
+	return repo.conn.Update(createFromMessageId(id), data)
+}
+
+func createFromMessageId(id int) *dalmodel.Message {
+	return &dalmodel.Message{Model: gorm.Model{ID: uint(id)}}
 }

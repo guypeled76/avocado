@@ -92,10 +92,7 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 	}
 
 	// TODO
-	messageId, err := sql.ParseUint("id")
-	if err != nil {
-		return nil, err
-	}
+	messageId := input.ID
 
 	data := make(map[string]interface{})
 
@@ -110,7 +107,7 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 		}
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId int) (*apimodel.Result, error) {
@@ -124,26 +121,7 @@ func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId int) (*a
 		return nil, err
 	}
 
-	return &apimodel.Result{Status: "ok"}, nil
-}
-
-func (r *queryResolver) Chat(ctx context.Context, chatID string) (*apimodel.Chat, error) {
-	repo, err := sql.CreateChatRepo(r)
-	if err != nil {
-		return nil, err
-	}
-
-	uid, err := sql.ParseUint(chatID)
-	if err != nil {
-		return nil, err
-	}
-
-	chat, err := repo.GetChatById(uid)
-	if err != nil {
-		return nil, err
-	}
-
-	return convertChat(chat), nil
+	return apimodel.CreateSuccessResult()
 }
 
 func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel.Chat, error) {

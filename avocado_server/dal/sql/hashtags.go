@@ -55,6 +55,12 @@ func (repo *HashtagRepository) GetUserHashtags(uid int) ([]dalmodel.Hashtag, err
 	return hashTags, err
 }
 
+func (repo *HashtagRepository) GetPostHashtags(id int) ([]dalmodel.Hashtag, error) {
+	hashTags := make([]dalmodel.Hashtag, 0)
+	err := repo.conn.GetAssociations(createFromPostId(id), "Hashtags", &hashTags)
+	return hashTags, err
+}
+
 func (repo *HashtagRepository) UpdateUserHashtags(id int, hashtagIds []int) error {
 	return repo.conn.UpdateAssociations(createFromUserId(id), "Hashtags", createFromHashtagIds(hashtagIds))
 }
@@ -72,27 +78,27 @@ func (repo *HashtagRepository) GetIngredientHashtags(filter *apimodel.ResultsFil
 	panic("implement me")
 }
 
-func (repo *HashtagRepository) GetMealHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtagsRelatedToMeals(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
-func (repo *HashtagRepository) GetVideoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtagsRelatedToVideos(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
-func (repo *HashtagRepository) GetPhotoHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtagsRelatedToPhotos(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
-func (repo *HashtagRepository) GetPostHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtagsRelatedToPosts(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }
 
-func (repo *HashtagRepository) GetRecipeHashtags(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) GetHashtagsRelatedToRecipes(filter *apimodel.ResultsFilter) ([]dalmodel.Hashtag, error) {
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }

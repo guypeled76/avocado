@@ -49,18 +49,21 @@ func (r *queryResolver) Hashtags(ctx context.Context, filter *apimodel.ResultsFi
 		return []apimodel.Hashtag{}, err
 	}
 
-	var results []apimodel.Hashtag
-	for _, hashtag := range hashtags {
-		results = append(results, *convertHashtag(&hashtag))
-	}
-	return results, nil
+	return convertHashtags(hashtags), nil
 }
 
-func (r *postResolver) Hashtags(ctx context.Context, obj *apimodel.Post) ([]apimodel.Hashtag, error) {
-	return []apimodel.Hashtag{
-		{ID: 1, Name: "fff"},
-		{ID: 2, Name: "ggg"},
-	}, nil
+func (r *postResolver) Hashtags(ctx context.Context, post *apimodel.Post) ([]apimodel.Hashtag, error) {
+	repo, err := sql.CreateHashtagRepo(r)
+	if err != nil {
+		return nil, err
+	}
+
+	hashTags, err := repo.GetPostHashtags(post.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertHashtags(hashTags), nil
 }
 
 func (r *userResolver) Hashtags(ctx context.Context, user *apimodel.User) ([]apimodel.Hashtag, error) {
@@ -89,19 +92,19 @@ func (r *queryResolver) HashtagsRelatedTo(ctx context.Context, hashtagContext ap
 		hashtags, err = convertHashtagsWithError(repo.GetIngredientHashtags(filter))
 		break
 	case apimodel.HashtagContextMeals:
-		hashtags, err = convertHashtagsWithError(repo.GetMealHashtags(filter))
+		hashtags, err = convertHashtagsWithError(repo.GetHashtagsRelatedToMeals(filter))
 		break
 	case apimodel.HashtagContextVideo:
-		hashtags, err = convertHashtagsWithError(repo.GetVideoHashtags(filter))
+		hashtags, err = convertHashtagsWithError(repo.GetHashtagsRelatedToVideos(filter))
 		break
 	case apimodel.HashtagContextPhotos:
-		hashtags, err = convertHashtagsWithError(repo.GetPhotoHashtags(filter))
+		hashtags, err = convertHashtagsWithError(repo.GetHashtagsRelatedToPhotos(filter))
 		break
 	case apimodel.HashtagContextPosts:
-		hashtags, err = convertHashtagsWithError(repo.GetPostHashtags(filter))
+		hashtags, err = convertHashtagsWithError(repo.GetHashtagsRelatedToPosts(filter))
 		break
 	case apimodel.HashtagContextRecipes:
-		hashtags, err = convertHashtagsWithError(repo.GetRecipeHashtags(filter))
+		hashtags, err = convertHashtagsWithError(repo.GetHashtagsRelatedToRecipes(filter))
 		break
 	}
 
