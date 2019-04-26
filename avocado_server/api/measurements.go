@@ -19,11 +19,7 @@ func (r *queryResolver) Measurements(ctx context.Context, filter *apimodel.Resul
 		return []apimodel.Measurement{}, err
 	}
 
-	var results []apimodel.Measurement
-	for _, measurement := range measurements {
-		results = append(results, *convertMeasurement(&measurement))
-	}
-	return results, nil
+	return convertMeasurements(measurements), nil
 }
 
 func (r *queryResolver) MeasurementByID(ctx context.Context, id int) (*apimodel.Measurement, error) {

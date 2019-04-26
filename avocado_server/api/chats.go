@@ -14,7 +14,7 @@ func (r *queryResolver) ChatsByUserID(ctx context.Context, id int) ([]apimodel.C
 		return nil, err
 	}
 
-	chats, err := repo.GetChatsByUserId(uint(id))
+	chats, err := repo.GetChatsByUserId(id)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (r *queryResolver) ChatByID(ctx context.Context, id int) (*apimodel.Chat, e
 		return nil, err
 	}
 
-	user, err := repo.GetChatById(uint(id))
+	user, err := repo.GetChatById(id)
 	if err != nil {
 		return nil, err
 	}
@@ -77,12 +77,7 @@ func (r *queryResolver) Chats(ctx context.Context, filter *apimodel.ResultsFilte
 		return []apimodel.Chat{}, err
 	}
 
-	var results []apimodel.Chat
-	for _, chat := range chats {
-		results = append(results, *convertChat(&chat))
-	}
-	return results, nil
-
+	return convertChats(chats), nil
 }
 
 func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.UpdateMessage) (*apimodel.Result, error) {
@@ -116,7 +111,7 @@ func (r *mutationResolver) DeleteMessage(ctx context.Context, messageId int) (*a
 		return nil, err
 	}
 
-	err = repo.DeleteChat(uint(messageId))
+	err = repo.DeleteChat(messageId)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +125,7 @@ func (r *postResolver) Chat(ctx context.Context, post *apimodel.Post) (*apimodel
 		return nil, err
 	}
 
-	chat, err := repo.GetChatByPostId(uint(post.ID))
+	chat, err := repo.GetChatByPostId(post.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +144,7 @@ func (r *userResolver) Chat(ctx context.Context, user *apimodel.User) (*apimodel
 		return nil, err
 	}
 
-	chat, err := repo.GetPrimaryChatByUserId(uint(user.ID))
+	chat, err := repo.GetPrimaryChatByUserId(user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +158,7 @@ func (r *chatResolver) Messages(ctx context.Context, chat *apimodel.Chat, filter
 		return nil, err
 	}
 
-	messages, err := repo.GetMessagesByChatId(uint(chat.ID))
+	messages, err := repo.GetMessagesByChatId(chat.ID)
 	if err != nil {
 		return nil, err
 	}

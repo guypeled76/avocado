@@ -40,38 +40,38 @@ func (repo *ChatRepository) CreateChat(chat *dalmodel.Chat) (*dalmodel.Chat, err
 	return chat, nil
 }
 
-func (repo *ChatRepository) DeleteChat(chatId uint) error {
-	hashtag := dalmodel.Chat{Model: gorm.Model{ID: chatId}}
-	err := repo.conn.Delete(&hashtag)
+func (repo *ChatRepository) DeleteChat(id int) error {
+	chat := createFromChatId(id)
+	err := repo.conn.Delete(&chat)
 	return err
 }
 
-func (repo *ChatRepository) GetChatById(chatId uint) (*dalmodel.Chat, error) {
-	chat := dalmodel.Chat{Model: gorm.Model{ID: chatId}}
-	err := repo.conn.Get(&chat)
-	return &chat, err
+func (repo *ChatRepository) GetChatById(id int) (*dalmodel.Chat, error) {
+	chat := createFromChatId(id)
+	err := repo.conn.Get(chat)
+	return chat, err
 }
 
-func (repo *ChatRepository) GetMessagesByChatId(chatId uint) ([]dalmodel.Message, error) {
+func (repo *ChatRepository) GetMessagesByChatId(id int) ([]dalmodel.Message, error) {
 	// TODO
 	return []dalmodel.Message{}, nil
 }
 
-func (repo *ChatRepository) GetChatByPostId(postId uint) (*dalmodel.Chat, error) {
+func (repo *ChatRepository) GetChatByPostId(id int) (*dalmodel.Chat, error) {
 	// TODO
-	chat := dalmodel.Chat{Model: gorm.Model{ID: postId}}
-	err := repo.conn.Get(&chat)
-	return &chat, err
+	chat := createFromChatId(id)
+	err := repo.conn.Get(chat)
+	return chat, err
 }
 
-func (repo *ChatRepository) GetPrimaryChatByUserId(userId uint) (*dalmodel.Chat, error) {
+func (repo *ChatRepository) GetPrimaryChatByUserId(id int) (*dalmodel.Chat, error) {
 	// TODO
-	chat := dalmodel.Chat{Model: gorm.Model{ID: userId}}
-	err := repo.conn.Get(&chat)
-	return &chat, err
+	chat := createFromChatId(id)
+	err := repo.conn.Get(chat)
+	return chat, err
 }
 
-func (repo *ChatRepository) GetChatsByUserId(userId uint) ([]dalmodel.Chat, error) {
+func (repo *ChatRepository) GetChatsByUserId(id int) ([]dalmodel.Chat, error) {
 	// TODO
 	return []dalmodel.Chat{}, nil
 }
@@ -90,4 +90,8 @@ func (repo *ChatRepository) UpdateMessage(id int, data map[string]interface{}) e
 
 func createFromMessageId(id int) *dalmodel.Message {
 	return &dalmodel.Message{Model: gorm.Model{ID: uint(id)}}
+}
+
+func createFromChatId(id int) *dalmodel.Chat {
+	return &dalmodel.Chat{Model: gorm.Model{ID: uint(id)}}
 }
