@@ -30,7 +30,7 @@ func AuthHandler(next http.Handler) http.Handler {
 
 		cookie, _ := r.Cookie("session_token")
 
-		if cookie != nil {
+		if cookie != nil && cookie.Value != "" {
 			next.ServeHTTP(w, r)
 		} else {
 			url := authConfig.AuthCodeURL(authState)
@@ -40,17 +40,30 @@ func AuthHandler(next http.Handler) http.Handler {
 	})
 }
 
-func LoginCallbackHandler(w http.ResponseWriter, r *http.Request) {
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session_token",
+		Value:    "",
+		HttpOnly: true,
+		Path:     "/",
+	})
+
+	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
+}
+
+func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := loginCallback(w, r)
 	if err != nil {
 		panic(err)
 	}
 
-	expire := time.Now().AddDate(0, 0, 1)
+	expire := time.Now().Add(60 * time.Minute)
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
-		Value:    user.ID,
+		Value:    user.Email,
 		Expires:  expire,
 		HttpOnly: true,
 		Path:     "/",
