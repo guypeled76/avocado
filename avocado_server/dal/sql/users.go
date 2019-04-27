@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/jinzhu/gorm"
@@ -38,6 +39,26 @@ func (repo *UserRepository) CreateUser(user *dalmodel.User) error {
 		return err
 	}
 	return nil
+}
+
+func (repo *UserRepository) GetOrCreateUserByEmail(user *dalmodel.User) (*dalmodel.User, error) {
+	if user == nil {
+		return nil, errors.New("user argument is required to get or create user")
+	}
+
+	current := &dalmodel.User{Email: user.Email}
+
+	err := repo.conn.Find(current)
+	if err != nil {
+		if gorm.IsRecordNotFoundError(err) {
+			err = repo.CreateUser(user)
+			return user, err
+		} else {
+			return nil, err
+		}
+	} else {
+		return current, nil
+	}
 }
 
 func (repo *UserRepository) DeleteUser(id int) error {

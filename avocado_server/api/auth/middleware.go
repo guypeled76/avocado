@@ -2,8 +2,11 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/dchest/uniuri"
+	"github.com/gremlinsapps/avocado_server/dal/model"
+	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"github.com/markbates/goth/providers/google"
 	"golang.org/x/oauth2"
 	"io/ioutil"
@@ -11,13 +14,14 @@ import (
 	"time"
 )
 
-type AuthManager struct {
+type Manager struct {
 	authConfig *oauth2.Config
 	authState  string
+	conn       *sql.DBConnection
 }
 
-func NewAuthManager() *AuthManager {
-	return &AuthManager{
+func NewAuthManager() *Manager {
+	return &Manager{
 		authConfig: &oauth2.Config{
 			RedirectURL:  "http://localhost:8090/callback",
 			ClientID:     "219538454820-f5a7vff8sfq7unr1ssv4q0mh079cjk19.apps.googleusercontent.com",
@@ -28,10 +32,19 @@ func NewAuthManager() *AuthManager {
 			Endpoint: google.Endpoint,
 		},
 		authState: uniuri.New(),
+		conn:      sql.Connect(),
 	}
 }
 
-func (m *AuthManager) AuthHandler(next http.Handler) http.Handler {
+func (m *Manager) GetDBConnection() (*sql.DBConnection, error) {
+	db := m.conn
+	if db == nil {
+		return nil, errors.New("DB connection was not initialized")
+	}
+	return db, nil
+}
+
+func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -47,7 +60,7 @@ func (m *AuthManager) AuthHandler(next http.Handler) http.Handler {
 	})
 }
 
-func (m *AuthManager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
+func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
@@ -59,7 +72,7 @@ func (m *AuthManager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
 
-func (m *AuthManager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
+func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := m.loginCallback(w, r)
 	if err != nil {
@@ -79,23 +92,24 @@ func (m *AuthManager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
 
-func (m *AuthManager) loginCallback(w http.ResponseWriter, r *http.Request) (*googleUser, error) {
+func (m *Manager) loginCallback(w http.ResponseWriter, r *http.Request) (*dalmodel.User, error) {
 
-	state := r.FormValue("state")
-	if state != m.authState {
+	if r.FormValue("state") != m.authState {
 		return nil, fmt.Errorf("invalid oauth state")
 	}
 
-	code := r.FormValue("code")
-	token, err := m.authConfig.Exchange(oauth2.NoContext, code)
+	token, err := m.authConfig.Exchange(oauth2.NoContext, r.FormValue("code"))
 	if err != nil {
 		return nil, fmt.Errorf("code exchange failed: %s", err.Error())
 	}
+
 	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
 	if err != nil {
 		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
 	}
+
 	defer response.Body.Close()
+
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed reading response body: %s", err.Error())
@@ -103,7 +117,23 @@ func (m *AuthManager) loginCallback(w http.ResponseWriter, r *http.Request) (*go
 
 	user := &googleUser{}
 	json.Unmarshal(contents, user)
-	return user, nil
+
+	repo, err := sql.CreateUserRepo(m)
+	if err != nil {
+		return nil, fmt.Errorf("failed getting user repo: %s", err.Error())
+	}
+
+	dbuser := &dalmodel.User{
+		Email:       user.Email,
+		Thumbnail:   user.Picture,
+		Image:       user.Picture,
+		Name:        user.Name,
+		DisplayName: user.GivenName,
+	}
+
+	dbuser, err = repo.GetOrCreateUserByEmail(dbuser)
+
+	return dbuser, err
 }
 
 type googleUser struct {

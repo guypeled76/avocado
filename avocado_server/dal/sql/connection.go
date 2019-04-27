@@ -46,6 +46,10 @@ func (conn *DBConnection) Get(out interface{}) error {
 	return db.First(out).Error
 }
 
+func (conn *DBConnection) Find(ref interface{}) error {
+	return conn.db.Where(ref).First(ref).Error
+}
+
 func (conn *DBConnection) Delete(in interface{}) error {
 	return conn.db.Delete(in).Error
 }
