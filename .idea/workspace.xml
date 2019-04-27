@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4391276-3ed6-41cd-8c5b-b7640c9c5965" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/avocado_server/api/auth/middleware.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/api/chats.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/api/chats.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/api/graph/generated.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/api/graph/generated.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/api/ingredients.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/api/ingredients.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/api/model/generated.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/api/model/generated.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/api/schema/food.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/api/schema/food.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/dal/sql/food.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/dal/sql/food.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/dal/sql/ingredients.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/dal/sql/ingredients.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_server/api/context.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_server/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_server/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avocado_server/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/go.sum" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/avocado_common/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/avocado_common/.pub/" />
@@ -124,89 +122,50 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/api/chats.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="39" column="4" lean-forward="true" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/api/ingredients.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="30" column="21" lean-forward="true" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/avocado_server/api/schema/food.graphql">
+        <entry file="file://$PROJECT_DIR$/avocado_server/api/auth/middleware.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-104">
-              <caret line="53" column="16" selection-start-line="53" selection-start-column="16" selection-end-line="53" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/api/users.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="68" column="4" lean-forward="true" selection-start-line="68" selection-start-column="4" selection-end-line="120" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/food.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" selection-start-line="7" selection-end-line="13" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/ingredients.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="47" column="40" lean-forward="true" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
+            <state relative-caret-position="378">
+              <caret line="50" column="40" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
               <folding>
-                <element signature="e#13#127#0" expanded="true" />
+                <element signature="e#14#101#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/users.go">
+        <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/net/http/request.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="636">
-              <caret line="53" selection-start-line="53" selection-end-line="55" selection-end-column="1" />
+            <state relative-caret-position="181">
+              <caret line="391" selection-start-line="391" selection-end-line="391" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/connection.go">
+        <entry file="file://$USER_HOME$/go/pkg/mod/github.com/markbates/goth@v1.50.0/gothic/gothic.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="13" column="26" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="26" />
+            <state relative-caret-position="201">
+              <caret line="150" column="80" selection-start-line="150" selection-start-column="80" selection-end-line="150" selection-end-column="80" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/chats.go">
+        <entry file="file://$PROJECT_DIR$/avocado_server/helpers/helpers.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
-              <folding>
-                <element signature="e#13#153#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="51">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_server/app.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -294,9 +253,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/avocado_server/dal/sql/recipes.go" />
-        <option value="$PROJECT_DIR$/avocado_server/dal/sql/meals.go" />
-        <option value="$PROJECT_DIR$/avocado_server/api/model/generated.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/model/chats.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/model/food.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/model/videos.go" />
@@ -345,6 +301,9 @@
         <option value="$PROJECT_DIR$/avocado_server/dal/sql/ingredients.go" />
         <option value="$PROJECT_DIR$/avocado_server/api/ingredients.go" />
         <option value="$PROJECT_DIR$/avocado_server/api/schema/food.graphql" />
+        <option value="$PROJECT_DIR$/avocado_server/api/auth/user.go" />
+        <option value="$PROJECT_DIR$/avocado_server/app.go" />
+        <option value="$PROJECT_DIR$/avocado_server/api/auth/middleware.go" />
       </list>
     </option>
   </component>
@@ -377,30 +336,7 @@
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
               <item name="avocado_server" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
-              <item name="avocado_server" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="schema" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
-              <item name="avocado_server" type="462c0819:PsiDirectoryNode" />
-              <item name="dal" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
-              <item name="avocado_server" type="462c0819:PsiDirectoryNode" />
-              <item name="dal" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
-              <item name="avocado_server" type="462c0819:PsiDirectoryNode" />
-              <item name="dal" type="462c0819:PsiDirectoryNode" />
-              <item name="sql" type="462c0819:PsiDirectoryNode" />
+              <item name="auth" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
@@ -420,7 +356,63 @@
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
               <item name="Go Modules &lt;github.com/gremlinsapps/avocado_server&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="gorm@v1.9.2" type="462c0819:PsiDirectoryNode" />
+              <item name="oauth2@v0.0.0-20190226205417-e64efc72b421" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="io" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="io" type="462c0819:PsiDirectoryNode" />
+              <item name="ioutil" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+              <item name="http" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+              <item name="url" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Go SDK 1.12.1" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="time" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="avocado" type="b2602c69:ProjectViewProjectNode" />
@@ -532,7 +524,7 @@
     <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556295569668" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556356181416" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
@@ -671,14 +663,7 @@
       <workItem from="1555246227666" duration="2850000" />
       <workItem from="1555264381283" duration="4357000" />
       <workItem from="1555314074551" duration="45388000" />
-      <workItem from="1555784356884" duration="54442000" />
-    </task>
-    <task id="LOCAL-00035" summary="Add avocado go server">
-      <created>1553879467682</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1553879467682</updated>
+      <workItem from="1555784356884" duration="61866000" />
     </task>
     <task id="LOCAL-00036" summary="Add avocado go server">
       <created>1553950844325</created>
@@ -1016,17 +1001,24 @@
       <option name="project" value="LOCAL" />
       <updated>1556283894086</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="ingredients">
+      <created>1556295585755</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1556295585755</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="273519000" />
+    <option name="totallyTimeSpent" value="280943000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21387696" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21387696" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1038,12 +1030,12 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.24096386" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.21566264" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49930555" weight="0.29277107" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49930555" visible="true" weight="0.2879518" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32902467" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49861112" weight="0.4453584" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49861112" visible="true" weight="0.43253013" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49861112" weight="0.43253013" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5013889" side_tool="true" weight="0.32902467" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49930555" weight="0.5518072" />
@@ -1135,7 +1127,6 @@
     <MESSAGE value="messages" />
     <MESSAGE value="repos" />
     <MESSAGE value="chats" />
-    <MESSAGE value="ingredients" />
     <MESSAGE value="database+api" />
     <MESSAGE value="hashtags" />
     <MESSAGE value="id as int" />
@@ -1143,7 +1134,8 @@
     <MESSAGE value="resources" />
     <MESSAGE value="uint" />
     <MESSAGE value="organize code" />
-    <option name="LAST_COMMIT_MESSAGE" value="organize code" />
+    <MESSAGE value="ingredients" />
+    <option name="LAST_COMMIT_MESSAGE" value="ingredients" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -1172,6 +1164,12 @@
           <properties />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/avocado_server/api/auth/middleware.go</url>
+          <line>31</line>
+          <properties />
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -1190,70 +1188,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/avocado_server/go.mod">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/glide.yaml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/graph/generated.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4177">
-          <caret line="18001" column="11" selection-start-line="18001" selection-start-column="11" selection-end-line="18001" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/graph/scalars.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="9" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="9" />
-          <folding>
-            <element signature="e#13#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/time/time.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/schema/waterfalls.graphql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/filters.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/helpers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/schema/measurements.graphql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-155">
-          <caret line="26" column="19" lean-forward="true" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/dal/model/images.go">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/helpers/helpers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/dal/model/measurements.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1434,13 +1368,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/context.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/api/hasgtags.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
@@ -1478,22 +1405,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/food.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="13" selection-end-column="1" />
+        <state relative-caret-position="102">
+          <caret line="6" selection-start-line="6" selection-end-line="12" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/api/chats.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="388">
-          <caret line="39" column="4" lean-forward="true" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="38" />
+          <caret line="39" column="4" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/chats.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="106">
-          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+          <caret line="40" column="1" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
           <folding>
             <element signature="e#13#153#0" expanded="true" />
           </folding>
@@ -1510,7 +1437,7 @@
     <entry file="file://$PROJECT_DIR$/avocado_server/dal/sql/ingredients.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="402">
-          <caret line="47" column="40" lean-forward="true" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
+          <caret line="47" column="40" selection-start-line="47" selection-start-column="40" selection-end-line="47" selection-end-column="40" />
           <folding>
             <element signature="e#13#127#0" expanded="true" />
           </folding>
@@ -1520,7 +1447,7 @@
     <entry file="file://$PROJECT_DIR$/avocado_server/api/users.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="68" column="4" lean-forward="true" selection-start-line="68" selection-start-column="4" selection-end-line="120" selection-end-column="41" />
+          <caret line="68" column="4" selection-start-line="68" selection-start-column="4" selection-end-line="120" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -1534,7 +1461,17 @@
     <entry file="file://$PROJECT_DIR$/avocado_server/api/ingredients.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
-          <caret line="30" column="21" lean-forward="true" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/api/context.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="8" selection-start-line="8" selection-end-line="27" selection-end-column="1" />
+          <folding>
+            <element signature="e#13#101#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1542,6 +1479,86 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-104">
           <caret line="53" column="16" selection-start-line="53" selection-start-column="16" selection-end-line="53" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/helpers/helpers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/pkg/mod/github.com/markbates/goth@v1.50.0/gothic/gothic.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="150" column="80" selection-start-line="150" selection-start-column="80" selection-end-line="150" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/io/ioutil/ioutil.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/net/url/url.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="827" column="5" selection-start-line="827" selection-start-column="5" selection-end-line="827" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/pkg/mod/golang.org/x/oauth2@v0.0.0-20190226205417-e64efc72b421/oauth2.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="124" column="20" selection-start-line="124" selection-start-column="20" selection-end-line="124" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/api/auth/user.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/app.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/net/http/request.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="391" selection-start-line="391" selection-end-line="391" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/net/http/cookie.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="28" column="42" lean-forward="true" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/time/time.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-893">
+          <caret line="948" column="14" selection-start-line="948" selection-start-column="14" selection-end-line="948" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/api/auth/middleware.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="50" column="40" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
+          <folding>
+            <element signature="e#14#101#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

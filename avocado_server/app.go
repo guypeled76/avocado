@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gremlinsapps/avocado_server/api"
+	"github.com/gremlinsapps/avocado_server/api/auth"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"log"
 	"net/http"
@@ -25,8 +26,9 @@ func main() {
 	queryHandler := http.HandlerFunc(handler.Playground("Avocado", "/query"))
 	rootHandler := http.HandlerFunc(handler.GraphQL(graph.NewExecutableSchema(api.NewRootResolvers())))
 
-	http.Handle("/", queryHandler)
-	http.Handle("/query", api.AuthHandler(rootHandler))
+	http.Handle("/", auth.AuthHandler(queryHandler))
+	http.Handle("/query", rootHandler)
+	http.Handle("/callback", http.HandlerFunc(auth.LoginCallbackHandler))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
