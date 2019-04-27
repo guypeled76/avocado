@@ -23,13 +23,15 @@ func main() {
 		port = defaultPort
 	}
 
+	authManager := auth.NewAuthManager()
+
 	queryHandler := http.HandlerFunc(handler.Playground("Avocado", "/query"))
 	rootHandler := http.HandlerFunc(handler.GraphQL(graph.NewExecutableSchema(api.NewRootResolvers())))
 
-	http.Handle("/", auth.AuthHandler(queryHandler))
+	http.Handle("/", authManager.AuthHandler(queryHandler))
 	http.Handle("/query", rootHandler)
-	http.Handle("/callback", http.HandlerFunc(auth.CallbackHandler))
-	http.Handle("/logout", http.HandlerFunc(auth.LogoutHandler))
+	http.Handle("/callback", http.HandlerFunc(authManager.CallbackHandler))
+	http.Handle("/logout", http.HandlerFunc(authManager.LogoutHandler))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
