@@ -11,13 +11,13 @@ import (
 	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 type Manager struct {
 	authConfig *oauth2.Config
 	authState  string
 	conn       *sql.DBConnection
+	secret     []byte
 }
 
 func NewAuthManager() *Manager {
@@ -33,6 +33,7 @@ func NewAuthManager() *Manager {
 		},
 		authState: uniuri.New(),
 		conn:      sql.Connect(),
+		secret:    []byte("thisishash"),
 	}
 }
 
@@ -48,10 +49,9 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		cookie, _ := r.Cookie("session_token")
-
-		if cookie != nil && cookie.Value != "" {
-			next.ServeHTTP(w, r)
+		requestWithSession, err := getRequestWithSession(r, m.secret)
+		if err == nil && requestWithSession != nil {
+			next.ServeHTTP(w, requestWithSession)
 		} else {
 			url := m.authConfig.AuthCodeURL(m.authState)
 			http.Redirect(w, r, url, http.StatusTemporaryRedirect)
@@ -62,12 +62,7 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    "",
-		HttpOnly: true,
-		Path:     "/",
-	})
+	clearSession(w)
 
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
@@ -79,15 +74,12 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	expire := time.Now().Add(60 * time.Minute)
+	session := &Session{
+		ID:    user.ID,
+		Email: user.Email,
+	}
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "session_token",
-		Value:    user.Email,
-		Expires:  expire,
-		HttpOnly: true,
-		Path:     "/",
-	})
+	session.writeSession(w, m.secret)
 
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }

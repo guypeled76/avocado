@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gremlinsapps/avocado_server/api"
-	"github.com/gremlinsapps/avocado_server/api/auth"
+	"github.com/gremlinsapps/avocado_server/auth"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"log"
 	"net/http"
@@ -29,7 +29,7 @@ func main() {
 	rootHandler := http.HandlerFunc(handler.GraphQL(graph.NewExecutableSchema(api.NewRootResolvers())))
 
 	http.Handle("/", authManager.AuthHandler(queryHandler))
-	http.Handle("/query", rootHandler)
+	http.Handle("/query", authManager.AuthHandler(rootHandler))
 	http.Handle("/callback", http.HandlerFunc(authManager.CallbackHandler))
 	http.Handle("/logout", http.HandlerFunc(authManager.LogoutHandler))
 
