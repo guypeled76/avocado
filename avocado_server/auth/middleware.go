@@ -72,7 +72,7 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	session := &Session{
-		ID:    user.ID,
+		ID:    int(user.ID),
 		Email: user.Email,
 	}
 

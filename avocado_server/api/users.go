@@ -57,7 +57,7 @@ func (r *queryResolver) Users(ctx context.Context, filter *apimodel.ResultsFilte
 }
 
 func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error) {
-	session, err := auth.GetSession(ctx)
+	uid, err := auth.GetCurrentUserId(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error)
 		return nil, err
 	}
 
-	user, err := repo.GetUser(int(session.ID))
+	user, err := repo.GetUser(uid)
 	if err != nil {
 		return nil, err
 	}

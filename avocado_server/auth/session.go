@@ -14,7 +14,7 @@ var sessionKey = struct {
 }{"sessionKey"}
 
 type Session struct {
-	ID    uint   `json:"id"`
+	ID    int    `json:"id"`
 	Email string `json:"email"`
 }
 
@@ -22,7 +22,15 @@ func (s *Session) Valid() error {
 	return nil
 }
 
-func GetSession(ctx context.Context) (*Session, error) {
+func GetCurrentUserId(ctx context.Context) (int, error) {
+	session, err := getSessionFromContext(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return session.ID, nil
+}
+
+func getSessionFromContext(ctx context.Context) (*Session, error) {
 	session, success := ctx.Value(sessionKey).(*Session)
 	if !success {
 		return nil, errors.New("could not get session from context")
@@ -125,7 +133,7 @@ func deserializeSessionFromClaims(claims jwt.MapClaims) (*Session, error) {
 		return nil, fmt.Errorf("claims are invalid:%s", err)
 	}
 
-	id := uint(claims["id"].(float64))
+	id := int(claims["id"].(float64))
 	email := claims["email"].(string)
 	return &Session{
 		ID:    id,
