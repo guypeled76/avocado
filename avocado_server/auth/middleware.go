@@ -49,7 +49,7 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		requestWithSession, err := getRequestWithSession(r, m.secret)
+		requestWithSession, err := createRequestWithSession(r, m.secret)
 		if err == nil && requestWithSession != nil {
 			next.ServeHTTP(w, requestWithSession)
 		} else {
@@ -59,13 +59,8 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 	})
 }
 
-func (m *Manager) redirectToLogin(w http.ResponseWriter, r *http.Request) {
-	url := m.authConfig.AuthCodeURL(m.authState)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	clearSession(w)
+	clearSessionCookie(w)
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
 
@@ -84,6 +79,11 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	session.writeToCookie(w, m.secret)
 
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
+}
+
+func (m *Manager) redirectToLogin(w http.ResponseWriter, r *http.Request) {
+	url := m.authConfig.AuthCodeURL(m.authState)
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
 func (m *Manager) getUserFromOAuthCallback(w http.ResponseWriter, r *http.Request) (*dalmodel.User, error) {

@@ -22,7 +22,15 @@ func (s *Session) Valid() error {
 	return nil
 }
 
-func clearSession(w http.ResponseWriter) {
+func GetSession(ctx context.Context) (*Session, error) {
+	session, success := ctx.Value(sessionKey).(*Session)
+	if !success {
+		return nil, errors.New("could not get session from context")
+	}
+	return session, nil
+}
+
+func clearSessionCookie(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
 		Value:    "",
@@ -31,8 +39,8 @@ func clearSession(w http.ResponseWriter) {
 	})
 }
 
-func getRequestWithSession(r *http.Request, secret []byte) (*http.Request, error) {
-	session, err := ReadSession(r, secret)
+func createRequestWithSession(r *http.Request, secret []byte) (*http.Request, error) {
+	session, err := readSessionFromCookie(r, secret)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +52,7 @@ func getRequestWithSession(r *http.Request, secret []byte) (*http.Request, error
 	return r.WithContext(context.WithValue(r.Context(), sessionKey, session)), nil
 }
 
-func ReadSession(r *http.Request, secret []byte) (*Session, error) {
+func readSessionFromCookie(r *http.Request, secret []byte) (*Session, error) {
 	cookie, _ := r.Cookie("session_token")
 
 	if cookie == nil || cookie.Value == "" {
@@ -70,7 +78,7 @@ func ReadSession(r *http.Request, secret []byte) (*Session, error) {
 		return nil, errors.New("claims are not ok")
 	}
 
-	session, err := fromClaims(claims)
+	session, err := deserializeSessionFromClaims(claims)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get session from cookie:%s", err)
 	}
@@ -80,7 +88,7 @@ func ReadSession(r *http.Request, secret []byte) (*Session, error) {
 }
 
 func (s *Session) writeToCookie(w http.ResponseWriter, secret []byte) {
-	token, err := s.toToken(secret)
+	token, err := s.serializeToToken(secret)
 	if err != nil {
 		panic(err)
 	}
@@ -96,30 +104,22 @@ func (s *Session) writeToCookie(w http.ResponseWriter, secret []byte) {
 	})
 }
 
-func GetSession(ctx context.Context) (*Session, error) {
-	session, success := ctx.Value(sessionKey).(*Session)
-	if !success {
-		return nil, errors.New("could not get session from context")
-	}
-	return session, nil
-}
-
-func (s *Session) toToken(secret []byte) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, s.toClaims())
+func (s *Session) serializeToToken(secret []byte) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, s.serializeToClaims())
 	if token == nil {
 		return "", errors.New("could not create token from session")
 	}
 	return token.SignedString(secret)
 }
 
-func (s *Session) toClaims() jwt.MapClaims {
+func (s *Session) serializeToClaims() jwt.MapClaims {
 	claims := make(jwt.MapClaims)
 	claims["id"] = s.ID
 	claims["email"] = s.Email
 	return claims
 }
 
-func fromClaims(claims jwt.MapClaims) (*Session, error) {
+func deserializeSessionFromClaims(claims jwt.MapClaims) (*Session, error) {
 
 	if err := claims.Valid(); err != nil {
 		return nil, fmt.Errorf("claims are invalid:%s", err)
