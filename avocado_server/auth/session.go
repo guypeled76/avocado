@@ -79,7 +79,7 @@ func ReadSession(r *http.Request, secret []byte) (*Session, error) {
 
 }
 
-func (s *Session) writeSession(w http.ResponseWriter, secret []byte) {
+func (s *Session) writeToCookie(w http.ResponseWriter, secret []byte) {
 	token, err := s.toToken(secret)
 	if err != nil {
 		panic(err)

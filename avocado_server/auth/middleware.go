@@ -71,7 +71,7 @@ func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 
 func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 
-	user, err := m.loginCallback(w, r)
+	user, err := m.getUserFromOAuthCallback(w, r)
 	if err != nil {
 		panic(err)
 	}
@@ -81,12 +81,12 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		Email: user.Email,
 	}
 
-	session.writeSession(w, m.secret)
+	session.writeToCookie(w, m.secret)
 
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
 
-func (m *Manager) loginCallback(w http.ResponseWriter, r *http.Request) (*dalmodel.User, error) {
+func (m *Manager) getUserFromOAuthCallback(w http.ResponseWriter, r *http.Request) (*dalmodel.User, error) {
 
 	if r.FormValue("state") != m.authState {
 		return nil, fmt.Errorf("invalid oauth state")
