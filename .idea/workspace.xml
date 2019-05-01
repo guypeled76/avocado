@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4391276-3ed6-41cd-8c5b-b7640c9c5965" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/avocado_server/auth/google.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avocado_server/auth/middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/auth/middleware.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avocado_server/auth/session.go" beforeDir="false" afterPath="$PROJECT_DIR$/avocado_server/auth/session.go" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/avocado_common/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/avocado_common/.pub/" />
@@ -122,8 +122,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/avocado_server/auth/middleware.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1326">
-              <caret line="89" selection-start-line="89" selection-end-line="89" />
+            <state relative-caret-position="35">
+              <caret line="43" column="63" selection-start-line="43" selection-start-column="63" selection-end-line="43" selection-end-column="63" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/avocado_server/auth/google.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+              <folding>
+                <element signature="e#14#61#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,8 +161,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avocado_server/auth/session.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+            <state relative-caret-position="2227">
+              <caret line="131" column="42" lean-forward="true" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
               <folding>
                 <element signature="e#14#103#0" expanded="true" />
               </folding>
@@ -170,8 +182,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avocado_server/api/users.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="59" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="292">
+              <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
             </state>
           </provider>
         </entry>
@@ -286,7 +298,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/avocado_server/dal/model/images.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/model/measurements.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/model/posts.go" />
         <option value="$PROJECT_DIR$/avocado_server/api/schema/posts.graphql" />
@@ -333,9 +344,10 @@
         <option value="$PROJECT_DIR$/avocado_server/dal/sql/connection.go" />
         <option value="$PROJECT_DIR$/avocado_server/dal/sql/users.go" />
         <option value="$PROJECT_DIR$/avocado_server/api/auth/middleware.go" />
-        <option value="$PROJECT_DIR$/avocado_server/api/users.go" />
         <option value="$PROJECT_DIR$/avocado_server/app.go" />
+        <option value="$PROJECT_DIR$/avocado_server/api/users.go" />
         <option value="$PROJECT_DIR$/avocado_server/auth/session.go" />
+        <option value="$PROJECT_DIR$/avocado_server/auth/google.go" />
         <option value="$PROJECT_DIR$/avocado_server/auth/middleware.go" />
       </list>
     </option>
@@ -607,7 +619,7 @@
     <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556688445984" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556688997156" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
@@ -747,21 +759,7 @@
       <workItem from="1555264381283" duration="4357000" />
       <workItem from="1555314074551" duration="45388000" />
       <workItem from="1555784356884" duration="74124000" />
-      <workItem from="1556624330903" duration="7319000" />
-    </task>
-    <task id="LOCAL-00043" summary="Split api and model">
-      <created>1554875456276</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1554875456276</updated>
-    </task>
-    <task id="LOCAL-00044" summary="db">
-      <created>1555223644190</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1555223644190</updated>
+      <workItem from="1556624330903" duration="7833000" />
     </task>
     <task id="LOCAL-00045" summary="db">
       <created>1555265630824</created>
@@ -1092,16 +1090,31 @@
       <option name="project" value="LOCAL" />
       <updated>1556687963983</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="auth">
+      <created>1556688453297</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1556688453297</updated>
+    </task>
+    <task id="LOCAL-00093" summary="auth">
+      <created>1556688801770</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1556688801770</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="300520000" />
+    <option name="totallyTimeSpent" value="301034000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2167382" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2167382" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1121,7 +1134,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49861112" weight="0.19277108" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5013889" side_tool="true" weight="0.32902467" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="11" sideWeight="0.49930555" visible="true" weight="0.5518072" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49930555" weight="0.5518072" />
       <window_info anchor="bottom" id="Flutter Performance" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Android Profiler" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="14" />
@@ -1254,7 +1267,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/avocado_server/auth/session.go</url>
-          <line>51</line>
+          <line>59</line>
           <properties />
           <option name="timeStamp" value="55" />
         </line-breakpoint>
@@ -1276,13 +1289,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/notifications.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/api/posts.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1542,13 +1548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avocado_server/api/users.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/Cellar/go/1.12.1/libexec/src/net/http/server.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -1605,20 +1604,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/api/users.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/auth/session.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        <state relative-caret-position="2227">
+          <caret line="131" column="42" lean-forward="true" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
           <folding>
             <element signature="e#14#103#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/avocado_server/auth/google.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+          <folding>
+            <element signature="e#14#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/avocado_server/auth/middleware.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="89" selection-start-line="89" selection-end-line="89" />
+        <state relative-caret-position="35">
+          <caret line="43" column="63" selection-start-line="43" selection-start-column="63" selection-end-line="43" selection-end-column="63" />
         </state>
       </provider>
     </entry>
