@@ -47,33 +47,36 @@ func getRequestWithSession(r *http.Request, secret []byte) (*http.Request, error
 func ReadSession(r *http.Request, secret []byte) (*Session, error) {
 	cookie, _ := r.Cookie("session_token")
 
-	if cookie != nil && cookie.Value != "" {
-
-		tokenString := cookie.Value
-
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-			}
-
-			return []byte(secret), nil
-		})
-
-		if claims, ok := token.Claims.(jwt.MapClaims); claims != nil && ok && token.Valid {
-
-			id := uint(claims["id"].(float64))
-			email := claims["email"].(string)
-			session := &Session{
-				ID:    id,
-				Email: email,
-			}
-			return session, nil
-		} else {
-			return nil, err
-		}
+	if cookie == nil || cookie.Value == "" {
+		return nil, nil
 	}
 
-	return nil, nil
+	tokenString := cookie.Value
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(secret), nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get token from cookie:%s", err)
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("claims are not ok")
+	}
+
+	session, err := fromClaims(claims)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get session from cookie:%s", err)
+	}
+
+	return session, nil
+
 }
 
 func (s *Session) writeSession(w http.ResponseWriter, secret []byte) {
@@ -102,9 +105,30 @@ func GetSession(ctx context.Context) (*Session, error) {
 }
 
 func (s *Session) toToken(secret []byte) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, s)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, s.toClaims())
 	if token == nil {
 		return "", errors.New("could not create token from session")
 	}
 	return token.SignedString(secret)
+}
+
+func (s *Session) toClaims() jwt.MapClaims {
+	claims := make(jwt.MapClaims)
+	claims["id"] = s.ID
+	claims["email"] = s.Email
+	return claims
+}
+
+func fromClaims(claims jwt.MapClaims) (*Session, error) {
+
+	if err := claims.Valid(); err != nil {
+		return nil, fmt.Errorf("claims are invalid:%s", err)
+	}
+
+	id := uint(claims["id"].(float64))
+	email := claims["email"].(string)
+	return &Session{
+		ID:    id,
+		Email: email,
+	}, nil
 }

@@ -53,17 +53,19 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 		if err == nil && requestWithSession != nil {
 			next.ServeHTTP(w, requestWithSession)
 		} else {
-			url := m.authConfig.AuthCodeURL(m.authState)
-			http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+			m.redirectToLogin(w, r)
 		}
 
 	})
 }
 
+func (m *Manager) redirectToLogin(w http.ResponseWriter, r *http.Request) {
+	url := m.authConfig.AuthCodeURL(m.authState)
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+}
+
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
-
 	clearSession(w)
-
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }
 
@@ -108,7 +110,10 @@ func (m *Manager) loginCallback(w http.ResponseWriter, r *http.Request) (*dalmod
 	}
 
 	user := &googleUser{}
-	json.Unmarshal(contents, user)
+	err = json.Unmarshal(contents, user)
+	if err != nil {
+		return nil, fmt.Errorf("failed getting google user: %s", err.Error())
+	}
 
 	repo, err := sql.CreateUserRepo(m)
 	if err != nil {
@@ -123,9 +128,7 @@ func (m *Manager) loginCallback(w http.ResponseWriter, r *http.Request) (*dalmod
 		DisplayName: user.GivenName,
 	}
 
-	dbuser, err = repo.GetOrCreateUserByEmail(dbuser)
-
-	return dbuser, err
+	return repo.GetOrCreateUserByEmail(dbuser)
 }
 
 type googleUser struct {
