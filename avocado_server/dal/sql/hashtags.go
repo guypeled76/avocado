@@ -33,9 +33,10 @@ func (repo *HashtagRepository) GetHashtags(filter *apimodel.ResultsFilter) ([]da
 	return hashtags, err
 }
 
-func (repo *HashtagRepository) CreateHashtag(name string) (*dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) CreateHashtag(name string, uid int) (*dalmodel.Hashtag, error) {
 	hashtag := dalmodel.Hashtag{
-		Name: name,
+		Name:       name,
+		AuditModel: dalmodel.CreateAuditModel(uid),
 	}
 	err := repo.conn.Create(&hashtag)
 	if err != nil {

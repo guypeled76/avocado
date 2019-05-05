@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"github.com/gremlinsapps/avocado_server/api/model"
+	"github.com/gremlinsapps/avocado_server/auth"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 )
@@ -29,7 +30,12 @@ func (r *mutationResolver) CreateHashtag(ctx context.Context, name string) (*api
 		return nil, err
 	}
 
-	hashtag, err := repo.CreateHashtag(name)
+	uid, err := auth.GetCurrentUserId(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	hashtag, err := repo.CreateHashtag(name, uid)
 	if err != nil {
 		return nil, err
 	}

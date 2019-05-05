@@ -18,3 +18,10 @@ type AuditModel struct {
 	DeletedBy   User `gorm:"foreignkey:DeletedByID;association_foreignkey:ID"`
 	DeletedByID int
 }
+
+func CreateAuditModel(uid int) AuditModel {
+	return AuditModel{
+		CreatedByID: uid,
+		UpdatedByID: uid,
+	}
+}
