@@ -20,7 +20,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUse
 		Email:       input.Email,
 	}
 
-	err = repo.CreateUser(&user)
+	err = repo.CreateUser(ctx, &user)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input apimodel.Update
 	}
 
 	if len(data) > 0 {
-		err = repo.UpdateUser(uid, data)
+		err = repo.UpdateUser(ctx, uid, data)
 		if err != nil {
 			return nil, err
 		}

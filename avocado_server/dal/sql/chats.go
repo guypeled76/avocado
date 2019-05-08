@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"context"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/jinzhu/gorm"
@@ -32,8 +33,8 @@ func (repo *ChatRepository) GetChats(filter *apimodel.ResultsFilter) ([]dalmodel
 	return chats, err
 }
 
-func (repo *ChatRepository) CreateChat(chat *dalmodel.Chat) (*dalmodel.Chat, error) {
-	err := repo.conn.Create(chat)
+func (repo *ChatRepository) CreateChat(ctx context.Context, chat *dalmodel.Chat) (*dalmodel.Chat, error) {
+	err := repo.conn.Create(ctx, chat)
 	if err != nil {
 		return nil, err
 	}
@@ -83,16 +84,16 @@ func (repo *ChatRepository) GetChatsByUserId(id int) ([]dalmodel.Chat, error) {
 	return []dalmodel.Chat{}, nil
 }
 
-func (repo *ChatRepository) CreateMessage(message *dalmodel.Message) (*dalmodel.Message, error) {
-	err := repo.conn.Create(message)
+func (repo *ChatRepository) CreateMessage(ctx context.Context, message *dalmodel.Message) (*dalmodel.Message, error) {
+	err := repo.conn.Create(ctx, message)
 	if err != nil {
 		return nil, err
 	}
 	return message, nil
 }
 
-func (repo *ChatRepository) UpdateMessage(id int, data map[string]interface{}) error {
-	return repo.conn.Update(createFromMessageId(id), data)
+func (repo *ChatRepository) UpdateMessage(ctx context.Context, id int, data map[string]interface{}) error {
+	return repo.conn.Update(ctx, createFromMessageId(id), data)
 }
 
 func createFromMessageId(id int) *dalmodel.Message {

@@ -44,25 +44,11 @@ func (repo *ResourceRepository) DeleteResource(id int) error {
 }
 
 func (repo *ResourceRepository) CreateResource(ctx context.Context, resource *dalmodel.Resource) error {
-
-	audit, err := dalmodel.CreateAuditModel(ctx)
-	if err != nil {
-		return err
-	}
-
-	resource.AuditModel = *audit
-
-	return repo.conn.Create(&resource)
+	return repo.conn.Create(ctx, &resource)
 }
 
 func (repo *ResourceRepository) UpdateResource(ctx context.Context, id int, data map[string]interface{}) error {
-
-	err := dalmodel.UpdateAuditModel(ctx, data)
-	if err != nil {
-		return err
-	}
-
-	return repo.conn.Update(createFromResourceId(id), data)
+	return repo.conn.Update(ctx, createFromResourceId(id), data)
 }
 
 func createFromResourceId(id int) *dalmodel.Resource {

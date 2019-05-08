@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"context"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/jinzhu/gorm"
@@ -38,8 +39,8 @@ func (repo *MeasurementRepository) DeleteMeasurement(id int) error {
 	return err
 }
 
-func (repo *MeasurementRepository) UpdateMeasurement(id int, data map[string]interface{}) error {
-	return repo.conn.Update(createFromMeasurementId(id), data)
+func (repo *MeasurementRepository) UpdateMeasurement(ctx context.Context, id int, data map[string]interface{}) error {
+	return repo.conn.Update(ctx, createFromMeasurementId(id), data)
 }
 
 func (repo *MeasurementRepository) GetUserMeasurements(id int, filter *apimodel.ResultsFilter) ([]dalmodel.Measurement, error) {
@@ -54,12 +55,12 @@ func (repo *MeasurementRepository) GetMeasurements(filter *apimodel.ResultsFilte
 	return measurements, err
 }
 
-func (repo *MeasurementRepository) CreateMeasurement(input apimodel.NewMeasurement) (*dalmodel.Measurement, error) {
+func (repo *MeasurementRepository) CreateMeasurement(ctx context.Context, input apimodel.NewMeasurement) (*dalmodel.Measurement, error) {
 	measurement := dalmodel.Measurement{
 		Name:        input.Name,
 		Description: input.Description,
 	}
-	err := repo.conn.Create(&measurement)
+	err := repo.conn.Create(ctx, &measurement)
 	if err != nil {
 		return nil, err
 	}

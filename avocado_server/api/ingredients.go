@@ -31,7 +31,7 @@ func (r *mutationResolver) CreateIngredient(ctx context.Context, input apimodel.
 		Name: input.Name,
 	}
 
-	err = repo.CreateIngredient(&ingredient)
+	err = repo.CreateIngredient(ctx, &ingredient)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (r *mutationResolver) UpdateIngredient(ctx context.Context, input apimodel.
 	// TODO: fill
 
 	if len(data) > 0 {
-		err = repo.UpdateUser(uid, data)
+		err = repo.UpdateUser(ctx, uid, data)
 		if err != nil {
 			return nil, err
 		}

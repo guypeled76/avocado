@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"context"
 	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
@@ -33,8 +34,8 @@ func (repo *UserRepository) GetUsers(filter *apimodel.ResultsFilter) ([]dalmodel
 	return users, err
 }
 
-func (repo *UserRepository) CreateUser(user *dalmodel.User) error {
-	err := repo.conn.Create(user)
+func (repo *UserRepository) CreateUser(ctx context.Context, user *dalmodel.User) error {
+	err := repo.conn.Create(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -51,7 +52,8 @@ func (repo *UserRepository) GetOrCreateUserByEmail(user *dalmodel.User) (*dalmod
 	err := repo.conn.Find(current)
 	if err != nil {
 		if gorm.IsRecordNotFoundError(err) {
-			err = repo.CreateUser(user)
+
+			err = repo.CreateUser(context.Background(), user)
 			return user, err
 		} else {
 			return nil, err
@@ -72,8 +74,8 @@ func (repo *UserRepository) GetUser(id int) (*dalmodel.User, error) {
 	return user, err
 }
 
-func (repo *UserRepository) UpdateUser(ID int, data map[string]interface{}) error {
-	return repo.conn.Update(createFromUserId(ID), data)
+func (repo *UserRepository) UpdateUser(ctx context.Context, ID int, data map[string]interface{}) error {
+	return repo.conn.Update(ctx, createFromUserId(ID), data)
 }
 
 func createFromUserId(uid int) *dalmodel.User {

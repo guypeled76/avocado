@@ -42,7 +42,7 @@ func (r *mutationResolver) CreateMeasurement(ctx context.Context, input apimodel
 		return nil, err
 	}
 
-	hashtag, err := repo.CreateMeasurement(input)
+	hashtag, err := repo.CreateMeasurement(ctx, input)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (r *mutationResolver) UpdateMeasurement(ctx context.Context, input apimodel
 	}
 
 	if len(data) > 0 {
-		err = repo.UpdateMeasurement(uid, data)
+		err = repo.UpdateMeasurement(ctx, uid, data)
 		if err != nil {
 			return apimodel.CreateFailureResult(err)
 		}

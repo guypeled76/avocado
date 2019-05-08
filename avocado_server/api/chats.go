@@ -42,7 +42,7 @@ func (r *mutationResolver) CreateChat(ctx context.Context, input apimodel.NewCha
 		return nil, err
 	}
 
-	chat, err := repo.CreateChat(&dalmodel.Chat{})
+	chat, err := repo.CreateChat(ctx, &dalmodel.Chat{})
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input apimodel.New
 		return nil, err
 	}
 
-	message, err := repo.CreateMessage(&dalmodel.Message{})
+	message, err := repo.CreateMessage(ctx, &dalmodel.Message{})
 
 	if err != nil {
 		return nil, err
@@ -95,7 +95,7 @@ func (r *mutationResolver) UpdateMessage(ctx context.Context, input apimodel.Upd
 	}
 
 	if len(data) > 0 {
-		err = repo.UpdateMessage(messageId, data)
+		err = repo.UpdateMessage(ctx, messageId, data)
 		if err != nil {
 			return nil, err
 		}

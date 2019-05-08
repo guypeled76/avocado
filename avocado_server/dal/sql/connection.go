@@ -1,9 +1,13 @@
 package sql
 
 import (
+	"context"
+	"errors"
 	"github.com/gremlinsapps/avocado_server/api/model"
+	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"reflect"
 	"sync"
 )
 
@@ -54,7 +58,30 @@ func (conn *DBConnection) Delete(in interface{}) error {
 	return conn.db.Delete(in).Error
 }
 
-func (conn *DBConnection) Create(out interface{}) error {
+func (conn *DBConnection) Create(ctx context.Context, out interface{}) error {
+
+	if out == nil {
+		return errors.New("ddd")
+	}
+
+	value := reflect.ValueOf(out).Elem()
+	createdByID := value.FieldByName("CreatedByID")
+	updatedByID := value.FieldByName("UpdatedByID")
+	if createdByID.IsValid() || updatedByID.IsValid() {
+		uid, err := session.GetUserId(ctx)
+		if err != nil {
+			return err
+		}
+
+		if createdByID.IsValid() {
+			createdByID.Set(reflect.ValueOf(uid))
+		}
+
+		if updatedByID.IsValid() {
+			updatedByID.Set(reflect.ValueOf(uid))
+		}
+	}
+
 	return conn.db.Create(out).Error
 }
 
@@ -62,7 +89,22 @@ func (conn *DBConnection) Close() {
 	conn.db.Close()
 }
 
-func (conn *DBConnection) Update(in interface{}, data map[string]interface{}) error {
+func (conn *DBConnection) Update(ctx context.Context, in interface{}, data map[string]interface{}) error {
+
+	value := reflect.ValueOf(in).Elem()
+
+	updatedByID := value.FieldByName("UpdatedByID")
+	if updatedByID.IsValid() {
+		uid, err := session.GetUserId(ctx)
+		if err != nil {
+			return err
+		}
+
+		if updatedByID.IsValid() {
+			data["UpdatedByID"] = uid
+		}
+	}
+
 	return conn.db.Model(in).Updates(data).Error
 }
 
