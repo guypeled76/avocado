@@ -1,42 +1,13 @@
 package auth
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gremlinsapps/avocado_server/session"
 	"net/http"
 	"time"
 )
-
-var sessionKey = struct {
-	value string
-}{"sessionKey"}
-
-type Session struct {
-	ID    int    `json:"id"`
-	Email string `json:"email"`
-}
-
-func (s *Session) Valid() error {
-	return nil
-}
-
-func GetCurrentUserId(ctx context.Context) (int, error) {
-	session, err := getSessionFromContext(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return session.ID, nil
-}
-
-func getSessionFromContext(ctx context.Context) (*Session, error) {
-	session, success := ctx.Value(sessionKey).(*Session)
-	if !success {
-		return nil, errors.New("could not get session from context")
-	}
-	return session, nil
-}
 
 func clearSessionCookie(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{
@@ -57,10 +28,10 @@ func createRequestWithSession(r *http.Request, secret []byte) (*http.Request, er
 		return nil, errors.New("could not find a valid session")
 	}
 
-	return r.WithContext(context.WithValue(r.Context(), sessionKey, session)), nil
+	return r.WithContext(session.Set(r.Context())), nil
 }
 
-func readSessionFromCookie(r *http.Request, secret []byte) (*Session, error) {
+func readSessionFromCookie(r *http.Request, secret []byte) (*session.Session, error) {
 	cookie, _ := r.Cookie("session_token")
 
 	if cookie == nil || cookie.Value == "" {
@@ -95,8 +66,22 @@ func readSessionFromCookie(r *http.Request, secret []byte) (*Session, error) {
 
 }
 
-func (s *Session) writeToCookie(w http.ResponseWriter, secret []byte) {
-	token, err := s.serializeToToken(secret)
+func deserializeSessionFromClaims(claims jwt.MapClaims) (*session.Session, error) {
+
+	if err := claims.Valid(); err != nil {
+		return nil, fmt.Errorf("claims are invalid:%s", err)
+	}
+
+	id := int(claims["id"].(float64))
+	email := claims["email"].(string)
+	return &session.Session{
+		ID:    id,
+		Email: email,
+	}, nil
+}
+
+func writeSessionToCookie(s *session.Session, w http.ResponseWriter, secret []byte) {
+	token, err := serializeSessionToToken(s, secret)
 	if err != nil {
 		panic(err)
 	}
@@ -112,31 +97,17 @@ func (s *Session) writeToCookie(w http.ResponseWriter, secret []byte) {
 	})
 }
 
-func (s *Session) serializeToToken(secret []byte) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, s.serializeToClaims())
+func serializeSessionToToken(s *session.Session, secret []byte) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, serializeSessionToClaims(s))
 	if token == nil {
 		return "", errors.New("could not create token from session")
 	}
 	return token.SignedString(secret)
 }
 
-func (s *Session) serializeToClaims() jwt.MapClaims {
+func serializeSessionToClaims(s *session.Session) jwt.MapClaims {
 	claims := make(jwt.MapClaims)
 	claims["id"] = s.ID
 	claims["email"] = s.Email
 	return claims
-}
-
-func deserializeSessionFromClaims(claims jwt.MapClaims) (*Session, error) {
-
-	if err := claims.Valid(); err != nil {
-		return nil, fmt.Errorf("claims are invalid:%s", err)
-	}
-
-	id := int(claims["id"].(float64))
-	email := claims["email"].(string)
-	return &Session{
-		ID:    id,
-		Email: email,
-	}, nil
 }

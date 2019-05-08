@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/dchest/uniuri"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/markbates/goth/providers/google"
 	"golang.org/x/oauth2"
 	"net/http"
@@ -65,12 +66,12 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	session := &Session{
+	session := &session.Session{
 		ID:    int(user.ID),
 		Email: user.Email,
 	}
 
-	session.writeToCookie(w, m.secret)
+	writeSessionToCookie(session, w, m.secret)
 
 	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
 }

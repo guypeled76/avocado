@@ -3,9 +3,9 @@ package api
 import (
 	"context"
 	"github.com/gremlinsapps/avocado_server/api/model"
-	"github.com/gremlinsapps/avocado_server/auth"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
+	"github.com/gremlinsapps/avocado_server/session"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input apimodel.NewUser) (*apimodel.User, error) {
@@ -57,7 +57,7 @@ func (r *queryResolver) Users(ctx context.Context, filter *apimodel.ResultsFilte
 }
 
 func (r *queryResolver) CurrentUser(ctx context.Context) (*apimodel.User, error) {
-	uid, err := auth.GetCurrentUserId(ctx)
+	uid, err := session.GetUserId(ctx)
 	if err != nil {
 		return nil, err
 	}

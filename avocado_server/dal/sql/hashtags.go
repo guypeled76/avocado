@@ -1,6 +1,7 @@
 package sql
 
 import (
+	"context"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/helpers"
@@ -33,12 +34,19 @@ func (repo *HashtagRepository) GetHashtags(filter *apimodel.ResultsFilter) ([]da
 	return hashtags, err
 }
 
-func (repo *HashtagRepository) CreateHashtag(name string, uid int) (*dalmodel.Hashtag, error) {
+func (repo *HashtagRepository) CreateHashtag(ctx context.Context, name string) (*dalmodel.Hashtag, error) {
+
+	audit, err := dalmodel.CreateAuditModel(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	hashtag := dalmodel.Hashtag{
 		Name:       name,
-		AuditModel: dalmodel.CreateAuditModel(uid),
+		AuditModel: *audit,
 	}
-	err := repo.conn.Create(&hashtag)
+
+	err = repo.conn.Create(&hashtag)
 	if err != nil {
 		return nil, err
 	}

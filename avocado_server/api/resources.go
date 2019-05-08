@@ -17,7 +17,7 @@ func (r *mutationResolver) CreateResource(ctx context.Context, input apimodel.Ne
 		Name: input.Name,
 	}
 
-	err = repo.CreateResource(&resource)
+	err = repo.CreateResource(ctx, &resource)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (r *mutationResolver) CreateResource(ctx context.Context, input apimodel.Ne
 func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.UpdateResource) (*apimodel.Result, error) {
 	repo, err := sql.CreateResourceRepo(r)
 	if err != nil {
-		return &apimodel.Result{Status: "error"}, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	uid := input.ID
@@ -52,7 +52,7 @@ func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.Up
 	}
 
 	if len(data) > 0 {
-		err = repo.UpdateResource(uid, data)
+		err = repo.UpdateResource(ctx, uid, data)
 		if err != nil {
 			return nil, err
 		}
@@ -76,7 +76,7 @@ func (r *mutationResolver) UpdateResource(ctx context.Context, input apimodel.Up
 func (r *mutationResolver) DeleteResource(ctx context.Context, resourceId int) (*apimodel.Result, error) {
 	repo, err := sql.CreateResourceRepo(r)
 	if err != nil {
-		return nil, err
+		return apimodel.CreateFailureResult(err)
 	}
 
 	err = repo.DeleteResource(resourceId)
