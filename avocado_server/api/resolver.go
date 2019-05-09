@@ -65,6 +65,10 @@ func (r *Resolver) Waterfall() graph.WaterfallResolver {
 	return &waterfallResolver{r}
 }
 
+func (r *Resolver) GoogleQuery() graph.GoogleQueryResolver {
+	return &googleResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -79,9 +83,6 @@ type postResolver struct{ *Resolver }
 
 // Waterfall
 type waterfallResolver struct{ *Resolver }
-
-// WaterfallEvent
-type waterfallEventResolver struct{ *Resolver }
 
 // Measurements
 type measurementResolver struct{ *Resolver }
@@ -103,6 +104,9 @@ type hashtagResolver struct{ *Resolver }
 
 // Role
 type roleResolver struct{ *Resolver }
+
+// Google
+type googleResolver struct{ *Resolver }
 
 func getDB(db *sql.DBConnection) (*sql.DBConnection, error) {
 	if db == nil {

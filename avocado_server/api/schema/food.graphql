@@ -1,21 +1,21 @@
 
 
-extend type Mutation {
-    createIngredient(input: NewIngredient!): Ingredient!
-    updateIngredient(input: UpdateIngredient!) : Result
-    deleteIngredient(id: ID!) : Result
+extend type Mutation  {
+    createIngredient(input: NewIngredient!): Ingredient!    @require(permission:"manage") 
+    updateIngredient(input: UpdateIngredient!) : Result     @require(permission:"manage")
+    deleteIngredient(id: ID!) : Result                      @require(permission:"manage")
 
-    createPortion(input: NewPortion!): Portion!
-    updatePortion(input: UpdatePortion!) : Result
-    deletePortion(id: ID!) : Result
+    createPortion(input: NewPortion!): Portion!             @require(permission:"manage")
+    updatePortion(input: UpdatePortion!) : Result           @require(permission:"manage")
+    deletePortion(id: ID!) : Result                         @require(permission:"manage")
+                                                            @require(permission:"manage")
+    createPortionType(input: NewPortionType!): PortionType! @require(permission:"manage")
+    updatePortionType(input: UpdatePortionType!) : Result   @require(permission:"manage")
+    deletePortionType(id: ID!) : Result                     @require(permission:"manage")
 
-    createPortionType(input: NewPortionType!): PortionType!
-    updatePortionType(input: UpdatePortionType!) : Result
-    deletePortionType(id: ID!) : Result
-
-    createRecipe(input: NewRecipe!): Recipe!
-    updateRecipe(input: UpdateRecipe!) : Result
-    deleteRecipe(id: ID!) : Result
+    createRecipe(input: NewRecipe!): Recipe!                @require(permission:"manage")
+    updateRecipe(input: UpdateRecipe!) : Result             @require(permission:"manage")
+    deleteRecipe(id: ID!) : Result                          @require(permission:"manage")
 }
 
 extend type Query {

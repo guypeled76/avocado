@@ -1,11 +1,12 @@
 package dalmodel
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Chat struct {
 	gorm.Model
 	Hashtags []Hashtag `gorm:"many2many:chat_hashtags;"`
-	Messages []Message `gorm:"many2many:chat_messages;"`
 }
 
 type Message struct {

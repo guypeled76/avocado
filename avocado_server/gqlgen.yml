@@ -114,3 +114,9 @@ models:
     fields:
       hashtags:
         resolver: true
+  GoogleQuery:
+    fields:
+      ingredient:
+        resolver: true
+  GoogleEngine:
+    model: github.com/gremlinsapps/avocado_server/dal/google.Engine

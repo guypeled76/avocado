@@ -14,6 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/gremlinsapps/avocado_server/api/model"
+	"github.com/gremlinsapps/avocado_server/dal/google"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -37,6 +38,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Chat() ChatResolver
+	GoogleQuery() GoogleQueryResolver
 	Hashtag() HashtagResolver
 	Measurement() MeasurementResolver
 	Message() MessageResolver
@@ -73,6 +75,16 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
+	}
+
+	GoogleEngine struct {
+		HTML func(childComplexity int) int
+		URL  func(childComplexity int) int
+	}
+
+	GoogleQuery struct {
+		Engine     func(childComplexity int) int
+		Ingredient func(childComplexity int) int
 	}
 
 	Hashtag struct {
@@ -270,6 +282,7 @@ type ComplexityRoot struct {
 		ClinicByID            func(childComplexity int, clinicID int) int
 		Clinics               func(childComplexity int) int
 		CurrentUser           func(childComplexity int) int
+		Google                func(childComplexity int, search string) int
 		Hashtags              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		HashtagsRelatedTo     func(childComplexity int, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) int
 		Ingredients           func(childComplexity int, filter *apimodel.ResultsFilter) int
@@ -461,6 +474,9 @@ type ComplexityRoot struct {
 type ChatResolver interface {
 	Messages(ctx context.Context, obj *apimodel.Chat, filter apimodel.ResultsFilter) ([]apimodel.Message, error)
 }
+type GoogleQueryResolver interface {
+	Ingredient(ctx context.Context, obj *apimodel.GoogleQuery) (*apimodel.Ingredient, error)
+}
 type HashtagResolver interface {
 	CreatedBy(ctx context.Context, obj *apimodel.Hashtag) (*apimodel.User, error)
 
@@ -545,6 +561,7 @@ type QueryResolver interface {
 	Portions(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Portion, error)
 	PortionTypes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.PortionType, error)
 	Recipes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Recipe, error)
+	Google(ctx context.Context, search string) (*apimodel.GoogleQuery, error)
 	Hashtags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	HashtagsRelatedTo(ctx context.Context, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	Measurements(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
@@ -708,6 +725,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Clinic.UpdatedAt(childComplexity), true
+
+	case "GoogleEngine.HTML":
+		if e.complexity.GoogleEngine.HTML == nil {
+			break
+		}
+
+		return e.complexity.GoogleEngine.HTML(childComplexity), true
+
+	case "GoogleEngine.URL":
+		if e.complexity.GoogleEngine.URL == nil {
+			break
+		}
+
+		return e.complexity.GoogleEngine.URL(childComplexity), true
+
+	case "GoogleQuery.Engine":
+		if e.complexity.GoogleQuery.Engine == nil {
+			break
+		}
+
+		return e.complexity.GoogleQuery.Engine(childComplexity), true
+
+	case "GoogleQuery.Ingredient":
+		if e.complexity.GoogleQuery.Ingredient == nil {
+			break
+		}
+
+		return e.complexity.GoogleQuery.Ingredient(childComplexity), true
 
 	case "Hashtag.CreatedAt":
 		if e.complexity.Hashtag.CreatedAt == nil {
@@ -2066,6 +2111,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.CurrentUser(childComplexity), true
 
+	case "Query.Google":
+		if e.complexity.Query.Google == nil {
+			break
+		}
+
+		args, err := ec.field_Query_google_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Google(childComplexity, args["search"].(string)), true
+
 	case "Query.Hashtags":
 		if e.complexity.Query.Hashtags == nil {
 			break
@@ -3423,22 +3480,22 @@ type Clinic {
 `},
 	&ast.Source{Name: "api/schema/food.graphql", Input: `
 
-extend type Mutation {
-    createIngredient(input: NewIngredient!): Ingredient!
-    updateIngredient(input: UpdateIngredient!) : Result
-    deleteIngredient(id: ID!) : Result
+extend type Mutation  {
+    createIngredient(input: NewIngredient!): Ingredient!    @require(permission:"manage") 
+    updateIngredient(input: UpdateIngredient!) : Result     @require(permission:"manage")
+    deleteIngredient(id: ID!) : Result                      @require(permission:"manage")
 
-    createPortion(input: NewPortion!): Portion!
-    updatePortion(input: UpdatePortion!) : Result
-    deletePortion(id: ID!) : Result
+    createPortion(input: NewPortion!): Portion!             @require(permission:"manage")
+    updatePortion(input: UpdatePortion!) : Result           @require(permission:"manage")
+    deletePortion(id: ID!) : Result                         @require(permission:"manage")
+                                                            @require(permission:"manage")
+    createPortionType(input: NewPortionType!): PortionType! @require(permission:"manage")
+    updatePortionType(input: UpdatePortionType!) : Result   @require(permission:"manage")
+    deletePortionType(id: ID!) : Result                     @require(permission:"manage")
 
-    createPortionType(input: NewPortionType!): PortionType!
-    updatePortionType(input: UpdatePortionType!) : Result
-    deletePortionType(id: ID!) : Result
-
-    createRecipe(input: NewRecipe!): Recipe!
-    updateRecipe(input: UpdateRecipe!) : Result
-    deleteRecipe(id: ID!) : Result
+    createRecipe(input: NewRecipe!): Recipe!                @require(permission:"manage")
+    updateRecipe(input: UpdateRecipe!) : Result             @require(permission:"manage")
+    deleteRecipe(id: ID!) : Result                          @require(permission:"manage")
 }
 
 extend type Query {
@@ -3591,6 +3648,21 @@ input NewRecipe {
 
 input UpdateRecipe {
     id: ID!
+}`},
+	&ast.Source{Name: "api/schema/google.graphql", Input: `
+extend type Query {
+    google(search: String!): GoogleQuery
+}
+
+
+type GoogleQuery {
+    engine: GoogleEngine
+    ingredient : Ingredient
+}
+
+type GoogleEngine {
+    html: String!
+    url: String!
 }`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashtag(name:String!): Hashtag @require(permission:"manage")
@@ -4804,6 +4876,20 @@ func (ec *executionContext) field_Query_clinicById_args(ctx context.Context, raw
 	return args, nil
 }
 
+func (ec *executionContext) field_Query_google_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["search"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["search"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Query_hashtagsRelatedTo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5564,6 +5650,108 @@ func (ec *executionContext) _Clinic_deletedAt(ctx context.Context, field graphql
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _GoogleEngine_html(ctx context.Context, field graphql.CollectedField, obj *google.Engine) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "GoogleEngine",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.HTML, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _GoogleEngine_url(ctx context.Context, field graphql.CollectedField, obj *google.Engine) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "GoogleEngine",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.URL, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _GoogleQuery_engine(ctx context.Context, field graphql.CollectedField, obj *apimodel.GoogleQuery) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "GoogleQuery",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Engine, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*google.Engine)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOGoogleEngine2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _GoogleQuery_ingredient(ctx context.Context, field graphql.CollectedField, obj *apimodel.GoogleQuery) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "GoogleQuery",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.GoogleQuery().Ingredient(rctx, obj)
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Ingredient)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Hashtag_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
@@ -10185,6 +10373,37 @@ func (ec *executionContext) _Query_recipes(ctx context.Context, field graphql.Co
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNRecipe2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_google(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_google_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Google(rctx, args["search"].(string))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.GoogleQuery)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOGoogleQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_hashtags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -16159,6 +16378,73 @@ func (ec *executionContext) _Clinic(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
+var googleEngineImplementors = []string{"GoogleEngine"}
+
+func (ec *executionContext) _GoogleEngine(ctx context.Context, sel ast.SelectionSet, obj *google.Engine) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, googleEngineImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GoogleEngine")
+		case "html":
+			out.Values[i] = ec._GoogleEngine_html(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "url":
+			out.Values[i] = ec._GoogleEngine_url(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var googleQueryImplementors = []string{"GoogleQuery"}
+
+func (ec *executionContext) _GoogleQuery(ctx context.Context, sel ast.SelectionSet, obj *apimodel.GoogleQuery) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, googleQueryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GoogleQuery")
+		case "engine":
+			out.Values[i] = ec._GoogleQuery_engine(ctx, field, obj)
+		case "ingredient":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._GoogleQuery_ingredient(ctx, field, obj)
+				return res
+			})
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
 var hashtagImplementors = []string{"Hashtag"}
 
 func (ec *executionContext) _Hashtag(ctx context.Context, sel ast.SelectionSet, obj *apimodel.Hashtag) graphql.Marshaler {
@@ -17217,6 +17503,17 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				if res == graphql.Null {
 					invalid = true
 				}
+				return res
+			})
+		case "google":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_google(ctx, field)
 				return res
 			})
 		case "hashtags":
@@ -19988,6 +20285,28 @@ func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel as
 	return ec.marshalOFloat2float64(ctx, sel, *v)
 }
 
+func (ec *executionContext) marshalOGoogleEngine2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx context.Context, sel ast.SelectionSet, v google.Engine) graphql.Marshaler {
+	return ec._GoogleEngine(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOGoogleEngine2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx context.Context, sel ast.SelectionSet, v *google.Engine) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._GoogleEngine(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOGoogleQuery2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx context.Context, sel ast.SelectionSet, v apimodel.GoogleQuery) graphql.Marshaler {
+	return ec._GoogleQuery(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOGoogleQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx context.Context, sel ast.SelectionSet, v *apimodel.GoogleQuery) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._GoogleQuery(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalOHashtag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v apimodel.Hashtag) graphql.Marshaler {
 	return ec._Hashtag(ctx, sel, &v)
 }
@@ -20029,6 +20348,17 @@ func (ec *executionContext) marshalOID2ᚕint(ctx context.Context, sel ast.Selec
 	}
 
 	return ret
+}
+
+func (ec *executionContext) marshalOIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx context.Context, sel ast.SelectionSet, v apimodel.Ingredient) graphql.Marshaler {
+	return ec._Ingredient(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx context.Context, sel ast.SelectionSet, v *apimodel.Ingredient) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Ingredient(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {

@@ -7,6 +7,8 @@ import (
 	"io"
 	"strconv"
 	"time"
+
+	"github.com/gremlinsapps/avocado_server/dal/google"
 )
 
 type MeasurementResult interface {
@@ -43,6 +45,11 @@ type DeletePost struct {
 
 type DeleteWaterfall struct {
 	ID string `json:"id"`
+}
+
+type GoogleQuery struct {
+	Engine     *google.Engine `json:"engine"`
+	Ingredient *Ingredient    `json:"ingredient"`
 }
 
 type Hashtag struct {

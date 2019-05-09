@@ -80,10 +80,6 @@ func (r *userResolver) Hashtags(ctx context.Context, user *apimodel.User) ([]api
 	return convertHashtags(hashTags), nil
 }
 
-func (w *waterfallEventResolver) Hashtags(ctx context.Context, obj *apimodel.WaterfallEvent) ([]apimodel.Hashtag, error) {
-	panic("implement me")
-}
-
 func (w *waterfallResolver) Hashtags(ctx context.Context, obj *apimodel.Waterfall) ([]apimodel.Hashtag, error) {
 	panic("implement me")
 }
