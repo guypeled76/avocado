@@ -18,6 +18,11 @@ func (s *Session) Set(ctx context.Context) context.Context {
 	return context.WithValue(ctx, sessionKey, s)
 }
 
+func (s *Session) HasPermission(permission string) bool {
+
+	return false
+}
+
 func (s *Session) Valid() error {
 	if s == nil {
 		return errors.New("session is not valid")
