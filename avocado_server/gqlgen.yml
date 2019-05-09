@@ -38,6 +38,8 @@ models:
         resolver: true
       resources:
         resolver: true
+      roles:
+        resolver: true
   Resource:
     fields:
       chat:
@@ -97,4 +99,8 @@ models:
       createdBy:
         resolver: true
       updatedBy:
+        resolver: true
+  Role:
+    fields:
+      permissions:
         resolver: true

@@ -57,6 +57,10 @@ func (r *Resolver) Hashtag() graph.HashtagResolver {
 	return &hashtagResolver{r}
 }
 
+func (r *Resolver) Role() graph.RoleResolver {
+	return &roleResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -86,6 +90,9 @@ type messageResolver struct{ *Resolver }
 
 // Hashtag
 type hashtagResolver struct{ *Resolver }
+
+// Role
+type roleResolver struct{ *Resolver }
 
 func getDB(db *sql.DBConnection) (*sql.DBConnection, error) {
 	if db == nil {

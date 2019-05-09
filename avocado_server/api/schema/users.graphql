@@ -30,6 +30,7 @@ type User {
     image:String
     video:String
     hashtags:[Hashtag!]!
+    roles:[Role!]!
     notifications: [Notification!]!
     measurements(input:ResultsFilter): [Measurement!]!
     resources(filter:ResultsFilter): [Resource!]!
@@ -48,5 +49,6 @@ input UpdateUser {
     image:String
     video:String
     hashtags:[ID!]
+    roles:[ID!]
     profile: UpdateDependentResource
 }

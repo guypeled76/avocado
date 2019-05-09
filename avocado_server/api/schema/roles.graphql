@@ -1,0 +1,71 @@
+extend type Mutation {
+    createRole(input: NewRole!): Role!
+    updateRole(input: UpdateRole!) : Result
+    deleteRole(id: ID!) : Result
+    createPermission(input: NewPermission!): Permission!
+    updatePermission(input: UpdatePermission!) : Result
+    deletePermission(id: ID!) : Result
+}
+
+extend type Query {
+    roles(filter:ResultsFilter): [Role!]!
+    roleById(id:ID!): Role!
+    permissions(filter:ResultsFilter): [Permission!]!
+    permissionById(id:ID!): Permission!
+    permissionByName(name:String!): Permission!
+}
+
+
+type Role {
+    id: ID!
+    name: String!
+    hashtags:[Hashtag!]!
+    description:String
+    permissions:[Permission!]!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+}
+
+input NewRole {
+    name:String!
+    description:String
+    hashtags:[ID!]!
+}
+
+input UpdateRole {
+    id:ID!
+    name:String
+    description:String
+    hashtags:[ID!]
+}
+
+type Permission {
+    id: ID!
+    name: String!
+    hashtags:[Hashtag!]!
+    description:String
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+}
+
+input NewPermission {
+    name:String!
+    description:String
+    hashtags:[ID!]!
+}
+
+input UpdatePermission {
+    id:ID!
+    name:String
+    description:String
+    hashtags:[ID!]
+}
+

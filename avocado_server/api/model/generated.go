@@ -162,6 +162,12 @@ type NewMessage struct {
 	Text string `json:"text"`
 }
 
+type NewPermission struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	Hashtags    []int   `json:"hashtags"`
+}
+
 type NewPortion struct {
 	IngredientID int     `json:"ingredientId"`
 	Amount       float64 `json:"amount"`
@@ -192,6 +198,12 @@ type NewResource struct {
 	Image     *string `json:"image"`
 	Video     *string `json:"video"`
 	Hashtags  []int   `json:"hashtags"`
+}
+
+type NewRole struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	Hashtags    []int   `json:"hashtags"`
 }
 
 type NewUser struct {
@@ -236,6 +248,19 @@ type NumericMeasurementResult struct {
 }
 
 func (NumericMeasurementResult) IsMeasurementResult() {}
+
+type Permission struct {
+	ID          int        `json:"id"`
+	Name        string     `json:"name"`
+	Hashtags    []Hashtag  `json:"hashtags"`
+	Description *string    `json:"description"`
+	CreatedBy   *User      `json:"createdBy"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	UpdatedAt   time.Time  `json:"updatedAt"`
+	UpdatedBy   *User      `json:"updatedBy"`
+	DeletedAt   *time.Time `json:"deletedAt"`
+	DeletedBy   *User      `json:"deletedBy"`
+}
 
 type Portion struct {
 	ID                 int         `json:"id"`
@@ -369,6 +394,20 @@ type ResultsFilter struct {
 	Hashtags   []int          `json:"hashtags"`
 }
 
+type Role struct {
+	ID          int          `json:"id"`
+	Name        string       `json:"name"`
+	Hashtags    []Hashtag    `json:"hashtags"`
+	Description *string      `json:"description"`
+	Permissions []Permission `json:"permissions"`
+	CreatedBy   *User        `json:"createdBy"`
+	CreatedAt   time.Time    `json:"createdAt"`
+	UpdatedAt   time.Time    `json:"updatedAt"`
+	UpdatedBy   *User        `json:"updatedBy"`
+	DeletedAt   *time.Time   `json:"deletedAt"`
+	DeletedBy   *User        `json:"deletedBy"`
+}
+
 type TextMeasurementResult struct {
 	ID        int        `json:"id"`
 	Chat      Chat       `json:"chat"`
@@ -431,6 +470,13 @@ type UpdateMessage struct {
 	Text *string `json:"text"`
 }
 
+type UpdatePermission struct {
+	ID          int     `json:"id"`
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+	Hashtags    []int   `json:"hashtags"`
+}
+
 type UpdatePortion struct {
 	ID     int     `json:"id"`
 	Amount float64 `json:"amount"`
@@ -466,6 +512,13 @@ type UpdateResource struct {
 	Hashtags  []int   `json:"hashtags"`
 }
 
+type UpdateRole struct {
+	ID          int     `json:"id"`
+	Name        *string `json:"name"`
+	Description *string `json:"description"`
+	Hashtags    []int   `json:"hashtags"`
+}
+
 type UpdateUser struct {
 	ID          int                      `json:"id"`
 	Name        *string                  `json:"name"`
@@ -475,6 +528,7 @@ type UpdateUser struct {
 	Image       *string                  `json:"image"`
 	Video       *string                  `json:"video"`
 	Hashtags    []int                    `json:"hashtags"`
+	Roles       []int                    `json:"roles"`
 	Profile     *UpdateDependentResource `json:"profile"`
 }
 
@@ -504,6 +558,7 @@ type User struct {
 	Image         *string        `json:"image"`
 	Video         *string        `json:"video"`
 	Hashtags      []Hashtag      `json:"hashtags"`
+	Roles         []Role         `json:"roles"`
 	Notifications []Notification `json:"notifications"`
 	Measurements  []Measurement  `json:"measurements"`
 	Resources     []Resource     `json:"resources"`
