@@ -104,3 +104,13 @@ models:
     fields:
       permissions:
         resolver: true
+  Waterfall:
+    fields:
+      hashtags:
+        resolver: true
+      events:
+        resolver: true
+  WaterfallEvent:
+    fields:
+      hashtags:
+        resolver: true

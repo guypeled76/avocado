@@ -13,9 +13,13 @@ type Waterfall {
     id: ID!
     text: String!
     hashtags:[Hashtag!]!
-    createdBy: ID!
-    createdAt: Timestamp!
-    deletedAt: Timestamp
+    events:[WaterfallEvent!]!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
 }
 
 input UpdateWaterfall {
@@ -32,5 +36,17 @@ input DeleteWaterfall {
 input NewWaterfall {
     text: String!
     hashtags:[ID!]!
+}
+
+type WaterfallEvent {
+    id: ID!
+    text: String!
+    hashtags:[Hashtag!]!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
 }
 

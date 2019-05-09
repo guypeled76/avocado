@@ -61,6 +61,14 @@ func (r *Resolver) Role() graph.RoleResolver {
 	return &roleResolver{r}
 }
 
+func (r *Resolver) Waterfall() graph.WaterfallResolver {
+	return &waterfallResolver{r}
+}
+
+func (r *Resolver) WaterfallEvent() graph.WaterfallEventResolver {
+	return &waterfallEventResolver{r}
+}
+
 // Mutations
 type mutationResolver struct{ *Resolver }
 
@@ -72,6 +80,12 @@ type userResolver struct{ *Resolver }
 
 // Posts
 type postResolver struct{ *Resolver }
+
+// Waterfall
+type waterfallResolver struct{ *Resolver }
+
+// WaterfallEvent
+type waterfallEventResolver struct{ *Resolver }
 
 // Measurements
 type measurementResolver struct{ *Resolver }

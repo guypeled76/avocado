@@ -33,15 +33,7 @@ type Clinic struct {
 	DeletedAt *time.Time `json:"deletedAt"`
 }
 
-type DeleteImage struct {
-	ID string `json:"id"`
-}
-
 type DeletePost struct {
-	ID string `json:"id"`
-}
-
-type DeleteVideo struct {
 	ID string `json:"id"`
 }
 
@@ -58,15 +50,6 @@ type Hashtag struct {
 	DeletedBy *User      `json:"deletedBy"`
 	UpdatedAt time.Time  `json:"updatedAt"`
 	UpdatedBy *User      `json:"updatedBy"`
-}
-
-type Image struct {
-	ID        int        `json:"id"`
-	Hashtags  []Hashtag  `json:"hashtags"`
-	Image     string     `json:"image"`
-	CreatedBy int        `json:"createdBy"`
-	CreatedAt time.Time  `json:"createdAt"`
-	DeletedAt *time.Time `json:"deletedAt"`
 }
 
 type Ingredient struct {
@@ -125,11 +108,6 @@ type Message struct {
 
 type NewChat struct {
 	Description *string `json:"description"`
-}
-
-type NewImage struct {
-	Image    string `json:"image"`
-	Hashtags []int  `json:"hashtags"`
 }
 
 type NewIngredient struct {
@@ -213,11 +191,6 @@ type NewUser struct {
 	Thumbnail   *string `json:"thumbnail"`
 	Image       *string `json:"image"`
 	Video       *string `json:"video"`
-}
-
-type NewVideo struct {
-	Video    string `json:"video"`
-	Hashtags []int  `json:"hashtags"`
 }
 
 type NewWaterfall struct {
@@ -429,17 +402,6 @@ type UpdateDependentResource struct {
 	Video     *string `json:"video"`
 }
 
-type UpdateImage struct {
-	ID       string `json:"id"`
-	Image    string `json:"image"`
-	Hashtags []int  `json:"hashtags"`
-}
-
-type UpdateImageHashTags struct {
-	ID       string `json:"id"`
-	Hashtags []int  `json:"hashtags"`
-}
-
 type UpdateIngredient struct {
 	ID                 int      `json:"id"`
 	Name               *string  `json:"name"`
@@ -532,17 +494,6 @@ type UpdateUser struct {
 	Profile     *UpdateDependentResource `json:"profile"`
 }
 
-type UpdateVideo struct {
-	ID       string `json:"id"`
-	Video    string `json:"video"`
-	Hashtags []int  `json:"hashtags"`
-}
-
-type UpdateVideoHashTags struct {
-	ID       string `json:"id"`
-	Hashtags []int  `json:"hashtags"`
-}
-
 type UpdateWaterfall struct {
 	ID       string `json:"id"`
 	Text     string `json:"text"`
@@ -568,22 +519,29 @@ type User struct {
 	DeletedAt     *time.Time     `json:"deletedAt"`
 }
 
-type Video struct {
-	ID        int        `json:"id"`
-	Hashtags  []Hashtag  `json:"hashtags"`
-	Video     string     `json:"video"`
-	CreatedBy int        `json:"createdBy"`
-	CreatedAt time.Time  `json:"createdAt"`
-	DeletedAt *time.Time `json:"deletedAt"`
+type Waterfall struct {
+	ID        int              `json:"id"`
+	Text      string           `json:"text"`
+	Hashtags  []Hashtag        `json:"hashtags"`
+	Events    []WaterfallEvent `json:"events"`
+	CreatedBy *User            `json:"createdBy"`
+	CreatedAt time.Time        `json:"createdAt"`
+	UpdatedAt time.Time        `json:"updatedAt"`
+	UpdatedBy *User            `json:"updatedBy"`
+	DeletedAt *time.Time       `json:"deletedAt"`
+	DeletedBy *User            `json:"deletedBy"`
 }
 
-type Waterfall struct {
+type WaterfallEvent struct {
 	ID        int        `json:"id"`
 	Text      string     `json:"text"`
 	Hashtags  []Hashtag  `json:"hashtags"`
-	CreatedBy int        `json:"createdBy"`
+	CreatedBy *User      `json:"createdBy"`
 	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
+	UpdatedBy *User      `json:"updatedBy"`
 	DeletedAt *time.Time `json:"deletedAt"`
+	DeletedBy *User      `json:"deletedBy"`
 }
 
 type HashtagContext string

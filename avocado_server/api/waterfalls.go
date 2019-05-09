@@ -25,3 +25,7 @@ func (r *mutationResolver) DeleteWaterfall(ctx context.Context, input apimodel.D
 	helpers.NotImplementedPanic()
 	panic("implement me")
 }
+
+func (w *waterfallResolver) Events(ctx context.Context, obj *apimodel.Waterfall) ([]apimodel.WaterfallEvent, error) {
+	panic("implement me")
+}

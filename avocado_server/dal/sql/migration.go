@@ -12,8 +12,6 @@ func AutoMigrate() {
 		&dalmodel.Notification{},
 		&dalmodel.User{},
 		&dalmodel.Clinic{},
-		&dalmodel.Video{},
-		&dalmodel.Image{},
 		&dalmodel.Chat{},
 		&dalmodel.Message{},
 		&dalmodel.Measurement{},
