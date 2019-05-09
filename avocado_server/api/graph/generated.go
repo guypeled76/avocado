@@ -48,7 +48,6 @@ type ResolverRoot interface {
 	Role() RoleResolver
 	User() UserResolver
 	Waterfall() WaterfallResolver
-	WaterfallEvent() WaterfallEventResolver
 }
 
 type DirectiveRoot struct {
@@ -428,16 +427,33 @@ type ComplexityRoot struct {
 		UpdatedBy func(childComplexity int) int
 	}
 
-	WaterfallEvent struct {
-		CreatedAt func(childComplexity int) int
-		CreatedBy func(childComplexity int) int
-		DeletedAt func(childComplexity int) int
-		DeletedBy func(childComplexity int) int
-		Hashtags  func(childComplexity int) int
-		ID        func(childComplexity int) int
-		Text      func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
-		UpdatedBy func(childComplexity int) int
+	WaterfallMessageEvent struct {
+		CreatedAt   func(childComplexity int) int
+		CreatedBy   func(childComplexity int) int
+		DeletedAt   func(childComplexity int) int
+		DeletedBy   func(childComplexity int) int
+		Hashtags    func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Message     func(childComplexity int) int
+		Resource    func(childComplexity int) int
+		ScheduledTo func(childComplexity int) int
+		Text        func(childComplexity int) int
+		UpdatedAt   func(childComplexity int) int
+		UpdatedBy   func(childComplexity int) int
+	}
+
+	WaterfallPostEvent struct {
+		CreatedAt   func(childComplexity int) int
+		CreatedBy   func(childComplexity int) int
+		DeletedAt   func(childComplexity int) int
+		DeletedBy   func(childComplexity int) int
+		Hashtags    func(childComplexity int) int
+		ID          func(childComplexity int) int
+		Post        func(childComplexity int) int
+		ScheduledTo func(childComplexity int) int
+		Text        func(childComplexity int) int
+		UpdatedAt   func(childComplexity int) int
+		UpdatedBy   func(childComplexity int) int
 	}
 }
 
@@ -572,9 +588,6 @@ type UserResolver interface {
 type WaterfallResolver interface {
 	Hashtags(ctx context.Context, obj *apimodel.Waterfall) ([]apimodel.Hashtag, error)
 	Events(ctx context.Context, obj *apimodel.Waterfall) ([]apimodel.WaterfallEvent, error)
-}
-type WaterfallEventResolver interface {
-	Hashtags(ctx context.Context, obj *apimodel.WaterfallEvent) ([]apimodel.Hashtag, error)
 }
 
 type executableSchema struct {
@@ -3054,68 +3067,166 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Waterfall.UpdatedBy(childComplexity), true
 
-	case "WaterfallEvent.CreatedAt":
-		if e.complexity.WaterfallEvent.CreatedAt == nil {
+	case "WaterfallMessageEvent.CreatedAt":
+		if e.complexity.WaterfallMessageEvent.CreatedAt == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.CreatedAt(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.CreatedAt(childComplexity), true
 
-	case "WaterfallEvent.CreatedBy":
-		if e.complexity.WaterfallEvent.CreatedBy == nil {
+	case "WaterfallMessageEvent.CreatedBy":
+		if e.complexity.WaterfallMessageEvent.CreatedBy == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.CreatedBy(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.CreatedBy(childComplexity), true
 
-	case "WaterfallEvent.DeletedAt":
-		if e.complexity.WaterfallEvent.DeletedAt == nil {
+	case "WaterfallMessageEvent.DeletedAt":
+		if e.complexity.WaterfallMessageEvent.DeletedAt == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.DeletedAt(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.DeletedAt(childComplexity), true
 
-	case "WaterfallEvent.DeletedBy":
-		if e.complexity.WaterfallEvent.DeletedBy == nil {
+	case "WaterfallMessageEvent.DeletedBy":
+		if e.complexity.WaterfallMessageEvent.DeletedBy == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.DeletedBy(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.DeletedBy(childComplexity), true
 
-	case "WaterfallEvent.Hashtags":
-		if e.complexity.WaterfallEvent.Hashtags == nil {
+	case "WaterfallMessageEvent.Hashtags":
+		if e.complexity.WaterfallMessageEvent.Hashtags == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.Hashtags(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.Hashtags(childComplexity), true
 
-	case "WaterfallEvent.ID":
-		if e.complexity.WaterfallEvent.ID == nil {
+	case "WaterfallMessageEvent.ID":
+		if e.complexity.WaterfallMessageEvent.ID == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.ID(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.ID(childComplexity), true
 
-	case "WaterfallEvent.Text":
-		if e.complexity.WaterfallEvent.Text == nil {
+	case "WaterfallMessageEvent.Message":
+		if e.complexity.WaterfallMessageEvent.Message == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.Text(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.Message(childComplexity), true
 
-	case "WaterfallEvent.UpdatedAt":
-		if e.complexity.WaterfallEvent.UpdatedAt == nil {
+	case "WaterfallMessageEvent.Resource":
+		if e.complexity.WaterfallMessageEvent.Resource == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.UpdatedAt(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.Resource(childComplexity), true
 
-	case "WaterfallEvent.UpdatedBy":
-		if e.complexity.WaterfallEvent.UpdatedBy == nil {
+	case "WaterfallMessageEvent.ScheduledTo":
+		if e.complexity.WaterfallMessageEvent.ScheduledTo == nil {
 			break
 		}
 
-		return e.complexity.WaterfallEvent.UpdatedBy(childComplexity), true
+		return e.complexity.WaterfallMessageEvent.ScheduledTo(childComplexity), true
+
+	case "WaterfallMessageEvent.Text":
+		if e.complexity.WaterfallMessageEvent.Text == nil {
+			break
+		}
+
+		return e.complexity.WaterfallMessageEvent.Text(childComplexity), true
+
+	case "WaterfallMessageEvent.UpdatedAt":
+		if e.complexity.WaterfallMessageEvent.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.WaterfallMessageEvent.UpdatedAt(childComplexity), true
+
+	case "WaterfallMessageEvent.UpdatedBy":
+		if e.complexity.WaterfallMessageEvent.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.WaterfallMessageEvent.UpdatedBy(childComplexity), true
+
+	case "WaterfallPostEvent.CreatedAt":
+		if e.complexity.WaterfallPostEvent.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.CreatedAt(childComplexity), true
+
+	case "WaterfallPostEvent.CreatedBy":
+		if e.complexity.WaterfallPostEvent.CreatedBy == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.CreatedBy(childComplexity), true
+
+	case "WaterfallPostEvent.DeletedAt":
+		if e.complexity.WaterfallPostEvent.DeletedAt == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.DeletedAt(childComplexity), true
+
+	case "WaterfallPostEvent.DeletedBy":
+		if e.complexity.WaterfallPostEvent.DeletedBy == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.DeletedBy(childComplexity), true
+
+	case "WaterfallPostEvent.Hashtags":
+		if e.complexity.WaterfallPostEvent.Hashtags == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.Hashtags(childComplexity), true
+
+	case "WaterfallPostEvent.ID":
+		if e.complexity.WaterfallPostEvent.ID == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.ID(childComplexity), true
+
+	case "WaterfallPostEvent.Post":
+		if e.complexity.WaterfallPostEvent.Post == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.Post(childComplexity), true
+
+	case "WaterfallPostEvent.ScheduledTo":
+		if e.complexity.WaterfallPostEvent.ScheduledTo == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.ScheduledTo(childComplexity), true
+
+	case "WaterfallPostEvent.Text":
+		if e.complexity.WaterfallPostEvent.Text == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.Text(childComplexity), true
+
+	case "WaterfallPostEvent.UpdatedAt":
+		if e.complexity.WaterfallPostEvent.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.UpdatedAt(childComplexity), true
+
+	case "WaterfallPostEvent.UpdatedBy":
+		if e.complexity.WaterfallPostEvent.UpdatedBy == nil {
+			break
+		}
+
+		return e.complexity.WaterfallPostEvent.UpdatedBy(childComplexity), true
 
 	}
 	return 0, false
@@ -3935,16 +4046,46 @@ input NewWaterfall {
     hashtags:[ID!]!
 }
 
-type WaterfallEvent {
+interface WaterfallEvent {
     id: ID!
     text: String!
     hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
     createdBy:User
     createdAt:Timestamp!
     updatedAt:Timestamp!
     updatedBy:User
     deletedAt:Timestamp
     deletedBy:User
+}
+
+type WaterfallPostEvent implements WaterfallEvent {
+    id: ID!
+    text: String!
+    hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+    post: Post!
+}
+
+type WaterfallMessageEvent implements WaterfallEvent {
+    id: ID!
+    text: String!
+    hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+    message: String!
+    resource: Resource
 }
 
 `},
@@ -13292,11 +13433,11 @@ func (ec *executionContext) _Waterfall_deletedBy(ctx context.Context, field grap
 	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13319,11 +13460,11 @@ func (ec *executionContext) _WaterfallEvent_id(ctx context.Context, field graphq
 	return ec.marshalNID2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_text(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_text(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13346,20 +13487,20 @@ func (ec *executionContext) _WaterfallEvent_text(ctx context.Context, field grap
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
-		IsMethod: true,
+		IsMethod: false,
 	}
 	ctx = graphql.WithResolverContext(ctx, rctx)
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.WaterfallEvent().Hashtags(rctx, obj)
+		return obj.Hashtags, nil
 	})
 	if resTmp == nil {
 		if !ec.HasError(rctx) {
@@ -13373,11 +13514,38 @@ func (ec *executionContext) _WaterfallEvent_hashtags(ctx context.Context, field 
 	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_scheduledTo(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScheduledTo, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallMessageEvent_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13397,11 +13565,11 @@ func (ec *executionContext) _WaterfallEvent_createdBy(ctx context.Context, field
 	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13424,11 +13592,11 @@ func (ec *executionContext) _WaterfallEvent_createdAt(ctx context.Context, field
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13451,11 +13619,11 @@ func (ec *executionContext) _WaterfallEvent_updatedAt(ctx context.Context, field
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13475,11 +13643,11 @@ func (ec *executionContext) _WaterfallEvent_updatedBy(ctx context.Context, field
 	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13499,11 +13667,11 @@ func (ec *executionContext) _WaterfallEvent_deletedAt(ctx context.Context, field
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _WaterfallEvent_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+func (ec *executionContext) _WaterfallMessageEvent_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
 	rctx := &graphql.ResolverContext{
-		Object:   "WaterfallEvent",
+		Object:   "WaterfallMessageEvent",
 		Field:    field,
 		Args:     nil,
 		IsMethod: false,
@@ -13521,6 +13689,342 @@ func (ec *executionContext) _WaterfallEvent_deletedBy(ctx context.Context, field
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallMessageEvent_message(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallMessageEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Message, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallMessageEvent_resource(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallMessageEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Resource, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.Resource)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOResource2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐResource(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_text(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Text, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_hashtags(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Hashtags, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.Hashtag)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNHashtag2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_scheduledTo(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ScheduledTo, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_createdBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_createdAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_updatedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_updatedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_deletedAt(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedAt, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_deletedBy(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DeletedBy, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.User)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUser2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _WaterfallPostEvent_post(ctx context.Context, field graphql.CollectedField, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "WaterfallPostEvent",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Post, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(apimodel.Post)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNPost2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPost(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) graphql.Marshaler {
@@ -15484,6 +15988,23 @@ func (ec *executionContext) _MeasurementResult(ctx context.Context, sel ast.Sele
 		return ec._ResourceMeasurementResult(ctx, sel, &obj)
 	case *apimodel.ResourceMeasurementResult:
 		return ec._ResourceMeasurementResult(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _WaterfallEvent(ctx context.Context, sel ast.SelectionSet, obj *apimodel.WaterfallEvent) graphql.Marshaler {
+	switch obj := (*obj).(type) {
+	case nil:
+		return graphql.Null
+	case apimodel.WaterfallPostEvent:
+		return ec._WaterfallPostEvent(ctx, sel, &obj)
+	case *apimodel.WaterfallPostEvent:
+		return ec._WaterfallPostEvent(ctx, sel, obj)
+	case apimodel.WaterfallMessageEvent:
+		return ec._WaterfallMessageEvent(ctx, sel, &obj)
+	case *apimodel.WaterfallMessageEvent:
+		return ec._WaterfallMessageEvent(ctx, sel, obj)
 	default:
 		panic(fmt.Errorf("unexpected type %T", obj))
 	}
@@ -17637,59 +18158,127 @@ func (ec *executionContext) _Waterfall(ctx context.Context, sel ast.SelectionSet
 	return out
 }
 
-var waterfallEventImplementors = []string{"WaterfallEvent"}
+var waterfallMessageEventImplementors = []string{"WaterfallMessageEvent", "WaterfallEvent"}
 
-func (ec *executionContext) _WaterfallEvent(ctx context.Context, sel ast.SelectionSet, obj *apimodel.WaterfallEvent) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, waterfallEventImplementors)
+func (ec *executionContext) _WaterfallMessageEvent(ctx context.Context, sel ast.SelectionSet, obj *apimodel.WaterfallMessageEvent) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, waterfallMessageEventImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	invalid := false
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("WaterfallEvent")
+			out.Values[i] = graphql.MarshalString("WaterfallMessageEvent")
 		case "id":
-			out.Values[i] = ec._WaterfallEvent_id(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "text":
-			out.Values[i] = ec._WaterfallEvent_text(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_text(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "hashtags":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._WaterfallEvent_hashtags(ctx, field, obj)
-				if res == graphql.Null {
-					invalid = true
-				}
-				return res
-			})
+			out.Values[i] = ec._WaterfallMessageEvent_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "scheduledTo":
+			out.Values[i] = ec._WaterfallMessageEvent_scheduledTo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		case "createdBy":
-			out.Values[i] = ec._WaterfallEvent_createdBy(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_createdBy(ctx, field, obj)
 		case "createdAt":
-			out.Values[i] = ec._WaterfallEvent_createdAt(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "updatedAt":
-			out.Values[i] = ec._WaterfallEvent_updatedAt(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
 		case "updatedBy":
-			out.Values[i] = ec._WaterfallEvent_updatedBy(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_updatedBy(ctx, field, obj)
 		case "deletedAt":
-			out.Values[i] = ec._WaterfallEvent_deletedAt(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_deletedAt(ctx, field, obj)
 		case "deletedBy":
-			out.Values[i] = ec._WaterfallEvent_deletedBy(ctx, field, obj)
+			out.Values[i] = ec._WaterfallMessageEvent_deletedBy(ctx, field, obj)
+		case "message":
+			out.Values[i] = ec._WaterfallMessageEvent_message(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "resource":
+			out.Values[i] = ec._WaterfallMessageEvent_resource(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var waterfallPostEventImplementors = []string{"WaterfallPostEvent", "WaterfallEvent"}
+
+func (ec *executionContext) _WaterfallPostEvent(ctx context.Context, sel ast.SelectionSet, obj *apimodel.WaterfallPostEvent) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, waterfallPostEventImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("WaterfallPostEvent")
+		case "id":
+			out.Values[i] = ec._WaterfallPostEvent_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "text":
+			out.Values[i] = ec._WaterfallPostEvent_text(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "hashtags":
+			out.Values[i] = ec._WaterfallPostEvent_hashtags(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "scheduledTo":
+			out.Values[i] = ec._WaterfallPostEvent_scheduledTo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "createdBy":
+			out.Values[i] = ec._WaterfallPostEvent_createdBy(ctx, field, obj)
+		case "createdAt":
+			out.Values[i] = ec._WaterfallPostEvent_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedAt":
+			out.Values[i] = ec._WaterfallPostEvent_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "updatedBy":
+			out.Values[i] = ec._WaterfallPostEvent_updatedBy(ctx, field, obj)
+		case "deletedAt":
+			out.Values[i] = ec._WaterfallPostEvent_deletedAt(ctx, field, obj)
+		case "deletedBy":
+			out.Values[i] = ec._WaterfallPostEvent_deletedBy(ctx, field, obj)
+		case "post":
+			out.Values[i] = ec._WaterfallPostEvent_post(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

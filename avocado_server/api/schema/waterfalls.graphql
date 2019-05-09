@@ -38,15 +38,45 @@ input NewWaterfall {
     hashtags:[ID!]!
 }
 
-type WaterfallEvent {
+interface WaterfallEvent {
     id: ID!
     text: String!
     hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
     createdBy:User
     createdAt:Timestamp!
     updatedAt:Timestamp!
     updatedBy:User
     deletedAt:Timestamp
     deletedBy:User
+}
+
+type WaterfallPostEvent implements WaterfallEvent {
+    id: ID!
+    text: String!
+    hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+    post: Post!
+}
+
+type WaterfallMessageEvent implements WaterfallEvent {
+    id: ID!
+    text: String!
+    hashtags:[Hashtag!]!
+    scheduledTo:Timestamp!
+    createdBy:User
+    createdAt:Timestamp!
+    updatedAt:Timestamp!
+    updatedBy:User
+    deletedAt:Timestamp
+    deletedBy:User
+    message: String!
+    resource: Resource
 }
 

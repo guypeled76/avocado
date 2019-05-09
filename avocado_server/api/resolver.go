@@ -65,10 +65,6 @@ func (r *Resolver) Waterfall() graph.WaterfallResolver {
 	return &waterfallResolver{r}
 }
 
-func (r *Resolver) WaterfallEvent() graph.WaterfallEventResolver {
-	return &waterfallEventResolver{r}
-}
-
 // Mutations
 type mutationResolver struct{ *Resolver }
 

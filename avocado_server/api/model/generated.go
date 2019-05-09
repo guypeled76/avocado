@@ -13,6 +13,10 @@ type MeasurementResult interface {
 	IsMeasurementResult()
 }
 
+type WaterfallEvent interface {
+	IsWaterfallEvent()
+}
+
 type Chat struct {
 	ID        int        `json:"id"`
 	CreatedAt time.Time  `json:"createdAt"`
@@ -532,17 +536,38 @@ type Waterfall struct {
 	DeletedBy *User            `json:"deletedBy"`
 }
 
-type WaterfallEvent struct {
-	ID        int        `json:"id"`
-	Text      string     `json:"text"`
-	Hashtags  []Hashtag  `json:"hashtags"`
-	CreatedBy *User      `json:"createdBy"`
-	CreatedAt time.Time  `json:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt"`
-	UpdatedBy *User      `json:"updatedBy"`
-	DeletedAt *time.Time `json:"deletedAt"`
-	DeletedBy *User      `json:"deletedBy"`
+type WaterfallMessageEvent struct {
+	ID          int        `json:"id"`
+	Text        string     `json:"text"`
+	Hashtags    []Hashtag  `json:"hashtags"`
+	ScheduledTo time.Time  `json:"scheduledTo"`
+	CreatedBy   *User      `json:"createdBy"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	UpdatedAt   time.Time  `json:"updatedAt"`
+	UpdatedBy   *User      `json:"updatedBy"`
+	DeletedAt   *time.Time `json:"deletedAt"`
+	DeletedBy   *User      `json:"deletedBy"`
+	Message     string     `json:"message"`
+	Resource    *Resource  `json:"resource"`
 }
+
+func (WaterfallMessageEvent) IsWaterfallEvent() {}
+
+type WaterfallPostEvent struct {
+	ID          int        `json:"id"`
+	Text        string     `json:"text"`
+	Hashtags    []Hashtag  `json:"hashtags"`
+	ScheduledTo time.Time  `json:"scheduledTo"`
+	CreatedBy   *User      `json:"createdBy"`
+	CreatedAt   time.Time  `json:"createdAt"`
+	UpdatedAt   time.Time  `json:"updatedAt"`
+	UpdatedBy   *User      `json:"updatedBy"`
+	DeletedAt   *time.Time `json:"deletedAt"`
+	DeletedBy   *User      `json:"deletedBy"`
+	Post        Post       `json:"post"`
+}
+
+func (WaterfallPostEvent) IsWaterfallEvent() {}
 
 type HashtagContext string
 
