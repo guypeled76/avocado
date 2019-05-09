@@ -161,8 +161,13 @@ func NewRootResolvers() graph.Config {
 	resolver := Resolver{}
 	resolver.firebase = firebase.Connect()
 	resolver.database = sql.Connect()
+
+	directives := graph.DirectiveRoot{
+		Require: resolveRequire,
+	}
 	c := graph.Config{
-		Resolvers: &resolver,
+		Resolvers:  &resolver,
+		Directives: directives,
 	}
 	return c
 }

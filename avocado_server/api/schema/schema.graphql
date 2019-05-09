@@ -42,6 +42,11 @@ enum ResultsSortBy {
     Name,
 }
 
+directive @require(permission: String!) on FIELD_DEFINITION
+
+
+
+
 
 
 

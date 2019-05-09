@@ -1,6 +1,6 @@
 extend type Mutation {
-    createHashtag(name:String!): Hashtag
-    deleteHashtag(id:ID!): Result
+    createHashtag(name:String!): Hashtag @require(permission:"manage")
+    deleteHashtag(id:ID!): Result @require(permission:"manage")
 
 }
 

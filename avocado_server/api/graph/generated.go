@@ -51,6 +51,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
+	Require func(ctx context.Context, obj interface{}, next graphql.Resolver, permission string) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -3282,6 +3283,24 @@ func (ec *executionContext) FieldMiddleware(ctx context.Context, obj interface{}
 			ret = nil
 		}
 	}()
+	rctx := graphql.GetResolverContext(ctx)
+	for _, d := range rctx.Field.Definition.Directives {
+		switch d.Name {
+		case "require":
+			if ec.directives.Require != nil {
+				rawArgs := d.ArgumentMap(ec.Variables)
+				args, err := ec.dir_require_args(ctx, rawArgs)
+				if err != nil {
+					ec.Error(ctx, err)
+					return nil
+				}
+				n := next
+				next = func(ctx context.Context) (interface{}, error) {
+					return ec.directives.Require(ctx, obj, n, args["permission"].(string))
+				}
+			}
+		}
+	}
 	res, err := ec.ResolverMiddleware(ctx, next)
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3574,8 +3593,8 @@ input UpdateRecipe {
     id: ID!
 }`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
-    createHashtag(name:String!): Hashtag
-    deleteHashtag(id:ID!): Result
+    createHashtag(name:String!): Hashtag @require(permission:"manage")
+    deleteHashtag(id:ID!): Result @require(permission:"manage")
 
 }
 
@@ -3765,9 +3784,6 @@ input DeletePost {
 }
 `},
 	&ast.Source{Name: "api/schema/references.graphql", Input: `
-
-
-
 type Reference {
     id: String!
     type: ReferenceType!
@@ -3776,7 +3792,9 @@ type Reference {
 enum ReferenceType {
     POST,
     MESSAGE,
-}`},
+}
+
+`},
 	&ast.Source{Name: "api/schema/resources.graphql", Input: `extend type Mutation {
     createResource(input: NewResource!): Resource!
     updateResource(input: UpdateResource!) : Result
@@ -3944,6 +3962,11 @@ enum ResultsSortBy {
     Name,
 }
 
+directive @require(permission: String!) on FIELD_DEFINITION
+
+
+
+
 
 
 
@@ -4094,6 +4117,20 @@ type WaterfallMessageEvent implements WaterfallEvent {
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) dir_require_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["permission"]; ok {
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["permission"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Chat_messages_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error

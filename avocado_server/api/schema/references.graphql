@@ -1,7 +1,4 @@
 
-
-
-
 type Reference {
     id: String!
     type: ReferenceType!
@@ -11,3 +8,4 @@ enum ReferenceType {
     POST,
     MESSAGE,
 }
+
