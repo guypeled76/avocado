@@ -88,7 +88,7 @@ func generateQuery(path string, options *QueryOptions) (string, error) {
 	return url.String(), nil
 }
 
-func (r *Repository) GetList(ctx context.Context, params *ListReqParams, options *QueryOptions) (ListResults, error) {
+func (r *Repository) GetList(ctx context.Context, params *ListParams, options *QueryOptions) (ListResults, error) {
 
 	var results ListResults
 
@@ -107,26 +107,26 @@ func (r *Repository) GetList(ctx context.Context, params *ListReqParams, options
 	return results, err
 }
 
-func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsReqParams, options *QueryOptions) (NutrientReport, error) {
+func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsParams, options *QueryOptions) (NutrientReport, error) {
 
 	var nutrientReport NutrientReport
 
-	endQuery, err := generateQuery("nutrients", options)
+	query, err := generateQuery("nutrients", options)
 	if err != nil {
 		return nutrientReport, err
 	}
 
-	req, err := r.createRequest(endQuery, params)
+	request, err := r.createRequest(query, params)
 	if err != nil {
 		return nutrientReport, err
 	}
 
-	_, err = r.sendRequest(ctx, req, &nutrientReport)
+	_, err = r.sendRequest(ctx, request, &nutrientReport)
 
 	return nutrientReport, err
 }
 
-func (r *Repository) GetFoodsReportV2(ctx context.Context, params *FoodsReqParams) (FoodsReport, error) {
+func (r *Repository) GetFoodsReportV2(ctx context.Context, params *FoodsParams) (FoodsReport, error) {
 
 	var foodsReport FoodsReport
 
@@ -166,24 +166,24 @@ func (r *Repository) SearchByName(ctx context.Context, name string) (SearchResul
 }
 
 func (r *Repository) GetListByType(ctx context.Context, listType string) (ListResults, error) {
-	params := &ListReqParams{Lt: listType}
+	params := &ListParams{Lt: listType}
 	options := &QueryOptions{Max: 1500, Offset: 0, Sort: "id"}
 	return r.GetList(ctx, params, options)
 }
 
 func (r *Repository) GetNutrientsReport(ctx context.Context) (NutrientReport, error) {
-	params := &NutrientsReqParams{Fg: []string{"0300"}, NutrientsID: []string{"306", "204"}}
+	params := &NutrientsParams{Fg: []string{"0300"}, NutrientsID: []string{"306", "204"}}
 	options := &QueryOptions{Max: 10, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
 }
 
 func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (NutrientReport, error) {
-	params := &NutrientsReqParams{NutrientsID: []string{"306", "204"}, Ndbno: ndbno}
+	params := &NutrientsParams{NutrientsID: []string{"306", "204"}, Ndbno: ndbno}
 	options := &QueryOptions{Max: 100, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
 }
 
 func (r *Repository) GetBasicFoodReport(ctx context.Context, ndbno string) (FoodsReport, error) {
-	params := &FoodsReqParams{Ndbno: []string{ndbno}, Type: "b"}
+	params := &FoodsParams{Ndbno: []string{ndbno}, Type: "b"}
 	return r.GetFoodsReportV2(ctx, params)
 }

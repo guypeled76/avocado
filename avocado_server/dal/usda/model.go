@@ -33,7 +33,7 @@ type QueryOptions struct {
 	Sort   string `url:"sort,omitempty"`
 }
 
-type ListReqParams struct {
+type ListParams struct {
 	Lt string `json:"lt,omitempty"`
 }
 
@@ -53,7 +53,7 @@ type ListResults struct {
 	} `json:"list"`
 }
 
-type NutrientsReqParams struct {
+type NutrientsParams struct {
 	Fg          []string `json:"fg,omitempty"`
 	Ndbno       string   `json:"ndbno,omitempty"`
 	NutrientsID []string `json:"nutrients"`
@@ -87,7 +87,7 @@ type NutrientReport struct {
 	} `json:"report"`
 }
 
-type FoodsReqParams struct {
+type FoodsParams struct {
 	Ndbno []string `json:"ndbno"`
 	Type  string   `json:"type,omitempty"`
 }
