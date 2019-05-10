@@ -1,0 +1,29 @@
+
+
+extend type Query {
+    usda: USDAQuery!
+}
+
+type USDAQuery {
+    searchIngredients(filter: USDAResultsFilter!): [USDAIngredientResult!]!
+    ingredient(ingredientId:ID!): USDAIngredient
+}
+
+input USDAResultsFilter {
+    wildcard:String!
+}
+
+type USDAIngredientResult {
+    id:ID!
+    name:String!
+    group:String
+    manufacturer:String
+}
+
+type USDAIngredient {
+    id:ID!
+    name:String!
+    group:String
+    manufacturer:String
+}
+

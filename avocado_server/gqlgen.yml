@@ -114,9 +114,9 @@ models:
     fields:
       hashtags:
         resolver: true
-  GoogleQuery:
+  USDAQuery:
     fields:
+      searchIngredients:
+        resolver: true
       ingredient:
         resolver: true
-  GoogleEngine:
-    model: github.com/gremlinsapps/avocado_server/dal/google.Engine

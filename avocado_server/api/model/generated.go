@@ -7,8 +7,6 @@ import (
 	"io"
 	"strconv"
 	"time"
-
-	"github.com/gremlinsapps/avocado_server/dal/google"
 )
 
 type MeasurementResult interface {
@@ -45,11 +43,6 @@ type DeletePost struct {
 
 type DeleteWaterfall struct {
 	ID string `json:"id"`
-}
-
-type GoogleQuery struct {
-	Engine     *google.Engine `json:"engine"`
-	Ingredient *Ingredient    `json:"ingredient"`
 }
 
 type Hashtag struct {
@@ -406,6 +399,29 @@ type TextMeasurementResult struct {
 }
 
 func (TextMeasurementResult) IsMeasurementResult() {}
+
+type USDAIngredient struct {
+	ID           int     `json:"id"`
+	Name         string  `json:"name"`
+	Group        *string `json:"group"`
+	Manufacturer *string `json:"manufacturer"`
+}
+
+type USDAIngredientResult struct {
+	ID           int     `json:"id"`
+	Name         string  `json:"name"`
+	Group        *string `json:"group"`
+	Manufacturer *string `json:"manufacturer"`
+}
+
+type USDAQuery struct {
+	SearchIngredients []USDAIngredientResult `json:"searchIngredients"`
+	Ingredient        *USDAIngredient        `json:"ingredient"`
+}
+
+type USDAResultsFilter struct {
+	Wildcard string `json:"wildcard"`
+}
 
 type UpdateDependentResource struct {
 	Thumbnail *string `json:"thumbnail"`

@@ -65,8 +65,8 @@ func (r *Resolver) Waterfall() graph.WaterfallResolver {
 	return &waterfallResolver{r}
 }
 
-func (r *Resolver) GoogleQuery() graph.GoogleQueryResolver {
-	return &googleResolver{r}
+func (r *Resolver) USDAQuery() graph.USDAQueryResolver {
+	return &usdaQueryResolver{r}
 }
 
 // Mutations
@@ -105,8 +105,8 @@ type hashtagResolver struct{ *Resolver }
 // Role
 type roleResolver struct{ *Resolver }
 
-// Google
-type googleResolver struct{ *Resolver }
+// Usda
+type usdaQueryResolver struct{ *Resolver }
 
 func getDB(db *sql.DBConnection) (*sql.DBConnection, error) {
 	if db == nil {

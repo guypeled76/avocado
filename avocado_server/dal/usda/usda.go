@@ -16,7 +16,7 @@ type Repository struct {
 	httpClient *http.Client
 }
 
-func CreateUSDARepository(httpClient *http.Client) (*Repository, error) {
+func CreateRepository(httpClient *http.Client) (*Repository, error) {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -174,13 +174,13 @@ func (r *Repository) GetListByType(ctx context.Context, listType string) (ListRe
 }
 
 func (r *Repository) GetNutrientsReport(ctx context.Context) (NutrientReport, error) {
-	params := &NutrientsParams{Fg: []string{"0300"}, NutrientsID: []string{"306", "204"}}
+	params := &NutrientsParams{FoodGroup: []string{"0300"}, NutrientsID: []string{"306", "204"}}
 	options := &QueryOptions{Max: 10, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
 }
 
 func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (NutrientReport, error) {
-	params := &NutrientsParams{NutrientsID: []string{"306", "204"}, Ndbno: ndbno}
+	params := &NutrientsParams{NutrientsID: []string{"306", "204"}, NDBNO: ndbno}
 	options := &QueryOptions{Max: 100, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
 }

@@ -20,7 +20,7 @@ type SearchResults struct {
 			Offset       int    `json:"offset"`
 			Group        string `json:"group"`
 			Name         string `json:"name"`
-			ItemID       string `json:"ndbno"`
+			NDBNO        string `json:"ndbno"`
 			DataSource   string `json:"ds"`
 			Manufacturer string `json:"manu"`
 		} `json:"item"`

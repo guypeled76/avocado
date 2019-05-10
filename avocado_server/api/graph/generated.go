@@ -14,7 +14,6 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/gremlinsapps/avocado_server/api/model"
-	"github.com/gremlinsapps/avocado_server/dal/google"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -38,7 +37,6 @@ type Config struct {
 
 type ResolverRoot interface {
 	Chat() ChatResolver
-	GoogleQuery() GoogleQueryResolver
 	Hashtag() HashtagResolver
 	Measurement() MeasurementResolver
 	Message() MessageResolver
@@ -48,6 +46,7 @@ type ResolverRoot interface {
 	Reply() ReplyResolver
 	Resource() ResourceResolver
 	Role() RoleResolver
+	USDAQuery() USDAQueryResolver
 	User() UserResolver
 	Waterfall() WaterfallResolver
 }
@@ -75,16 +74,6 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
-	}
-
-	GoogleEngine struct {
-		HTML func(childComplexity int) int
-		URL  func(childComplexity int) int
-	}
-
-	GoogleQuery struct {
-		Engine     func(childComplexity int) int
-		Ingredient func(childComplexity int) int
 	}
 
 	Hashtag struct {
@@ -282,7 +271,6 @@ type ComplexityRoot struct {
 		ClinicByID            func(childComplexity int, clinicID int) int
 		Clinics               func(childComplexity int) int
 		CurrentUser           func(childComplexity int) int
-		Google                func(childComplexity int, search string) int
 		Hashtags              func(childComplexity int, filter *apimodel.ResultsFilter) int
 		HashtagsRelatedTo     func(childComplexity int, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) int
 		Ingredients           func(childComplexity int, filter *apimodel.ResultsFilter) int
@@ -302,6 +290,7 @@ type ComplexityRoot struct {
 		Resources             func(childComplexity int, filter *apimodel.ResultsFilter) int
 		RoleByID              func(childComplexity int, id int) int
 		Roles                 func(childComplexity int, filter *apimodel.ResultsFilter) int
+		Usda                  func(childComplexity int) int
 		UserByID              func(childComplexity int, id int) int
 		Users                 func(childComplexity int, filter *apimodel.ResultsFilter) int
 		WaterfallByUserID     func(childComplexity int, waterfallID int) int
@@ -409,6 +398,25 @@ type ComplexityRoot struct {
 		Value     func(childComplexity int) int
 	}
 
+	USDAIngredient struct {
+		Group        func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Manufacturer func(childComplexity int) int
+		Name         func(childComplexity int) int
+	}
+
+	USDAIngredientResult struct {
+		Group        func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Manufacturer func(childComplexity int) int
+		Name         func(childComplexity int) int
+	}
+
+	USDAQuery struct {
+		Ingredient        func(childComplexity int, ingredientID int) int
+		SearchIngredients func(childComplexity int, filter apimodel.USDAResultsFilter) int
+	}
+
 	User struct {
 		Chat          func(childComplexity int) int
 		CreatedAt     func(childComplexity int) int
@@ -473,9 +481,6 @@ type ComplexityRoot struct {
 
 type ChatResolver interface {
 	Messages(ctx context.Context, obj *apimodel.Chat, filter apimodel.ResultsFilter) ([]apimodel.Message, error)
-}
-type GoogleQueryResolver interface {
-	Ingredient(ctx context.Context, obj *apimodel.GoogleQuery) (*apimodel.Ingredient, error)
 }
 type HashtagResolver interface {
 	CreatedBy(ctx context.Context, obj *apimodel.Hashtag) (*apimodel.User, error)
@@ -561,7 +566,6 @@ type QueryResolver interface {
 	Portions(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Portion, error)
 	PortionTypes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.PortionType, error)
 	Recipes(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Recipe, error)
-	Google(ctx context.Context, search string) (*apimodel.GoogleQuery, error)
 	Hashtags(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	HashtagsRelatedTo(ctx context.Context, context apimodel.HashtagContext, filter *apimodel.ResultsFilter) ([]apimodel.Hashtag, error)
 	Measurements(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Measurement, error)
@@ -575,6 +579,7 @@ type QueryResolver interface {
 	Permissions(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.Permission, error)
 	PermissionByID(ctx context.Context, id int) (*apimodel.Permission, error)
 	PermissionByName(ctx context.Context, name string) (*apimodel.Permission, error)
+	Usda(ctx context.Context) (*apimodel.USDAQuery, error)
 	Users(ctx context.Context, filter *apimodel.ResultsFilter) ([]apimodel.User, error)
 	UserByID(ctx context.Context, id int) (*apimodel.User, error)
 	WaterfallByUserID(ctx context.Context, waterfallID int) (*apimodel.Waterfall, error)
@@ -594,6 +599,10 @@ type ResourceResolver interface {
 }
 type RoleResolver interface {
 	Permissions(ctx context.Context, obj *apimodel.Role) ([]apimodel.Permission, error)
+}
+type USDAQueryResolver interface {
+	SearchIngredients(ctx context.Context, obj *apimodel.USDAQuery, filter apimodel.USDAResultsFilter) ([]apimodel.USDAIngredientResult, error)
+	Ingredient(ctx context.Context, obj *apimodel.USDAQuery, ingredientID int) (*apimodel.USDAIngredient, error)
 }
 type UserResolver interface {
 	Hashtags(ctx context.Context, obj *apimodel.User) ([]apimodel.Hashtag, error)
@@ -725,34 +734,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Clinic.UpdatedAt(childComplexity), true
-
-	case "GoogleEngine.HTML":
-		if e.complexity.GoogleEngine.HTML == nil {
-			break
-		}
-
-		return e.complexity.GoogleEngine.HTML(childComplexity), true
-
-	case "GoogleEngine.URL":
-		if e.complexity.GoogleEngine.URL == nil {
-			break
-		}
-
-		return e.complexity.GoogleEngine.URL(childComplexity), true
-
-	case "GoogleQuery.Engine":
-		if e.complexity.GoogleQuery.Engine == nil {
-			break
-		}
-
-		return e.complexity.GoogleQuery.Engine(childComplexity), true
-
-	case "GoogleQuery.Ingredient":
-		if e.complexity.GoogleQuery.Ingredient == nil {
-			break
-		}
-
-		return e.complexity.GoogleQuery.Ingredient(childComplexity), true
 
 	case "Hashtag.CreatedAt":
 		if e.complexity.Hashtag.CreatedAt == nil {
@@ -2111,18 +2092,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.CurrentUser(childComplexity), true
 
-	case "Query.Google":
-		if e.complexity.Query.Google == nil {
-			break
-		}
-
-		args, err := ec.field_Query_google_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.Google(childComplexity, args["search"].(string)), true
-
 	case "Query.Hashtags":
 		if e.complexity.Query.Hashtags == nil {
 			break
@@ -2350,6 +2319,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.Roles(childComplexity, args["filter"].(*apimodel.ResultsFilter)), true
+
+	case "Query.Usda":
+		if e.complexity.Query.Usda == nil {
+			break
+		}
+
+		return e.complexity.Query.Usda(childComplexity), true
 
 	case "Query.UserByID":
 		if e.complexity.Query.UserByID == nil {
@@ -2932,6 +2908,86 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TextMeasurementResult.Value(childComplexity), true
+
+	case "USDAIngredient.Group":
+		if e.complexity.USDAIngredient.Group == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredient.Group(childComplexity), true
+
+	case "USDAIngredient.ID":
+		if e.complexity.USDAIngredient.ID == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredient.ID(childComplexity), true
+
+	case "USDAIngredient.Manufacturer":
+		if e.complexity.USDAIngredient.Manufacturer == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredient.Manufacturer(childComplexity), true
+
+	case "USDAIngredient.Name":
+		if e.complexity.USDAIngredient.Name == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredient.Name(childComplexity), true
+
+	case "USDAIngredientResult.Group":
+		if e.complexity.USDAIngredientResult.Group == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredientResult.Group(childComplexity), true
+
+	case "USDAIngredientResult.ID":
+		if e.complexity.USDAIngredientResult.ID == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredientResult.ID(childComplexity), true
+
+	case "USDAIngredientResult.Manufacturer":
+		if e.complexity.USDAIngredientResult.Manufacturer == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredientResult.Manufacturer(childComplexity), true
+
+	case "USDAIngredientResult.Name":
+		if e.complexity.USDAIngredientResult.Name == nil {
+			break
+		}
+
+		return e.complexity.USDAIngredientResult.Name(childComplexity), true
+
+	case "USDAQuery.Ingredient":
+		if e.complexity.USDAQuery.Ingredient == nil {
+			break
+		}
+
+		args, err := ec.field_USDAQuery_ingredient_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.USDAQuery.Ingredient(childComplexity, args["ingredientId"].(int)), true
+
+	case "USDAQuery.SearchIngredients":
+		if e.complexity.USDAQuery.SearchIngredients == nil {
+			break
+		}
+
+		args, err := ec.field_USDAQuery_searchIngredients_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.USDAQuery.SearchIngredients(childComplexity, args["filter"].(apimodel.USDAResultsFilter)), true
 
 	case "User.Chat":
 		if e.complexity.User.Chat == nil {
@@ -3649,21 +3705,6 @@ input NewRecipe {
 input UpdateRecipe {
     id: ID!
 }`},
-	&ast.Source{Name: "api/schema/google.graphql", Input: `
-extend type Query {
-    google(search: String!): GoogleQuery
-}
-
-
-type GoogleQuery {
-    engine: GoogleEngine
-    ingredient : Ingredient
-}
-
-type GoogleEngine {
-    html: String!
-    url: String!
-}`},
 	&ast.Source{Name: "api/schema/hashtags.graphql", Input: `extend type Mutation {
     createHashtag(name:String!): Hashtag @require(permission:"manage")
     deleteHashtag(id:ID!): Result @require(permission:"manage")
@@ -4044,6 +4085,36 @@ directive @require(permission: String!) on FIELD_DEFINITION
 
 
 
+
+`},
+	&ast.Source{Name: "api/schema/usda.graphql", Input: `
+
+extend type Query {
+    usda: USDAQuery!
+}
+
+type USDAQuery {
+    searchIngredients(filter: USDAResultsFilter!): [USDAIngredientResult!]!
+    ingredient(ingredientId:ID!): USDAIngredient
+}
+
+input USDAResultsFilter {
+    wildcard:String!
+}
+
+type USDAIngredientResult {
+    id:ID!
+    name:String!
+    group:String
+    manufacturer:String
+}
+
+type USDAIngredient {
+    id:ID!
+    name:String!
+    group:String
+    manufacturer:String
+}
 
 `},
 	&ast.Source{Name: "api/schema/users.graphql", Input: `
@@ -4876,20 +4947,6 @@ func (ec *executionContext) field_Query_clinicById_args(ctx context.Context, raw
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_google_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["search"]; ok {
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["search"] = arg0
-	return args, nil
-}
-
 func (ec *executionContext) field_Query_hashtagsRelatedTo_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -5219,6 +5276,34 @@ func (ec *executionContext) field_Query_waterfallByUserId_args(ctx context.Conte
 		}
 	}
 	args["waterfallId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_USDAQuery_ingredient_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 int
+	if tmp, ok := rawArgs["ingredientId"]; ok {
+		arg0, err = ec.unmarshalNID2int(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["ingredientId"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_USDAQuery_searchIngredients_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 apimodel.USDAResultsFilter
+	if tmp, ok := rawArgs["filter"]; ok {
+		arg0, err = ec.unmarshalNUSDAResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAResultsFilter(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -5650,108 +5735,6 @@ func (ec *executionContext) _Clinic_deletedAt(ctx context.Context, field graphql
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalOTimestamp2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _GoogleEngine_html(ctx context.Context, field graphql.CollectedField, obj *google.Engine) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "GoogleEngine",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.HTML, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _GoogleEngine_url(ctx context.Context, field graphql.CollectedField, obj *google.Engine) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "GoogleEngine",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.URL, nil
-	})
-	if resTmp == nil {
-		if !ec.HasError(rctx) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _GoogleQuery_engine(ctx context.Context, field graphql.CollectedField, obj *apimodel.GoogleQuery) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "GoogleQuery",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Engine, nil
-	})
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*google.Engine)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOGoogleEngine2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _GoogleQuery_ingredient(ctx context.Context, field graphql.CollectedField, obj *apimodel.GoogleQuery) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "GoogleQuery",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.GoogleQuery().Ingredient(rctx, obj)
-	})
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*apimodel.Ingredient)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Hashtag_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.Hashtag) graphql.Marshaler {
@@ -10375,37 +10358,6 @@ func (ec *executionContext) _Query_recipes(ctx context.Context, field graphql.Co
 	return ec.marshalNRecipe2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐRecipe(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_google(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
-	rctx := &graphql.ResolverContext{
-		Object:   "Query",
-		Field:    field,
-		Args:     nil,
-		IsMethod: true,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_google_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	rctx.Args = args
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Google(rctx, args["search"].(string))
-	})
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*apimodel.GoogleQuery)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOGoogleQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _Query_hashtags(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
@@ -10846,6 +10798,33 @@ func (ec *executionContext) _Query_permissionByName(ctx context.Context, field g
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNPermission2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐPermission(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_usda(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, nil, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Usda(rctx)
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.USDAQuery)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUSDAQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAQuery(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) graphql.Marshaler {
@@ -12995,6 +12974,275 @@ func (ec *executionContext) _TextMeasurementResult_updatedBy(ctx context.Context
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNUser2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredient_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredient_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredient_group(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Group, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredient_manufacturer(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredient) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Manufacturer, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredientResult_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredientResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredientResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNID2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredientResult_name(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredientResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredientResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredientResult_group(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredientResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredientResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Group, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAIngredientResult_manufacturer(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAIngredientResult) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAIngredientResult",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Manufacturer, nil
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAQuery_searchIngredients(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAQuery) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAQuery",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_USDAQuery_searchIngredients_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.USDAQuery().SearchIngredients(rctx, obj, args["filter"].(apimodel.USDAResultsFilter))
+	})
+	if resTmp == nil {
+		if !ec.HasError(rctx) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]apimodel.USDAIngredientResult)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalNUSDAIngredientResult2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredientResult(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _USDAQuery_ingredient(ctx context.Context, field graphql.CollectedField, obj *apimodel.USDAQuery) graphql.Marshaler {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() { ec.Tracer.EndFieldExecution(ctx) }()
+	rctx := &graphql.ResolverContext{
+		Object:   "USDAQuery",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_USDAQuery_ingredient_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	rctx.Args = args
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp := ec.FieldMiddleware(ctx, obj, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.USDAQuery().Ingredient(rctx, obj, args["ingredientId"].(int))
+	})
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*apimodel.USDAIngredient)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOUSDAIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *apimodel.User) graphql.Marshaler {
@@ -15684,6 +15932,24 @@ func (ec *executionContext) unmarshalInputResultsFilter(ctx context.Context, v i
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUSDAResultsFilter(ctx context.Context, v interface{}) (apimodel.USDAResultsFilter, error) {
+	var it apimodel.USDAResultsFilter
+	var asMap = v.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "wildcard":
+			var err error
+			it.Wildcard, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputUpdateDependentResource(ctx context.Context, v interface{}) (apimodel.UpdateDependentResource, error) {
 	var it apimodel.UpdateDependentResource
 	var asMap = v.(map[string]interface{})
@@ -16367,73 +16633,6 @@ func (ec *executionContext) _Clinic(ctx context.Context, sel ast.SelectionSet, o
 			}
 		case "deletedAt":
 			out.Values[i] = ec._Clinic_deletedAt(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalid {
-		return graphql.Null
-	}
-	return out
-}
-
-var googleEngineImplementors = []string{"GoogleEngine"}
-
-func (ec *executionContext) _GoogleEngine(ctx context.Context, sel ast.SelectionSet, obj *google.Engine) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, googleEngineImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	invalid := false
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("GoogleEngine")
-		case "html":
-			out.Values[i] = ec._GoogleEngine_html(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		case "url":
-			out.Values[i] = ec._GoogleEngine_url(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalid = true
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalid {
-		return graphql.Null
-	}
-	return out
-}
-
-var googleQueryImplementors = []string{"GoogleQuery"}
-
-func (ec *executionContext) _GoogleQuery(ctx context.Context, sel ast.SelectionSet, obj *apimodel.GoogleQuery) graphql.Marshaler {
-	fields := graphql.CollectFields(ctx, sel, googleQueryImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	invalid := false
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("GoogleQuery")
-		case "engine":
-			out.Values[i] = ec._GoogleQuery_engine(ctx, field, obj)
-		case "ingredient":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._GoogleQuery_ingredient(ctx, field, obj)
-				return res
-			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -17505,17 +17704,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "google":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_google(ctx, field)
-				return res
-			})
 		case "hashtags":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -17693,6 +17881,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_permissionByName(ctx, field)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "usda":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_usda(ctx, field)
 				if res == graphql.Null {
 					invalid = true
 				}
@@ -18259,6 +18461,125 @@ func (ec *executionContext) _TextMeasurementResult(ctx context.Context, sel ast.
 			if out.Values[i] == graphql.Null {
 				invalid = true
 			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var uSDAIngredientImplementors = []string{"USDAIngredient"}
+
+func (ec *executionContext) _USDAIngredient(ctx context.Context, sel ast.SelectionSet, obj *apimodel.USDAIngredient) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, uSDAIngredientImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("USDAIngredient")
+		case "id":
+			out.Values[i] = ec._USDAIngredient_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "name":
+			out.Values[i] = ec._USDAIngredient_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "group":
+			out.Values[i] = ec._USDAIngredient_group(ctx, field, obj)
+		case "manufacturer":
+			out.Values[i] = ec._USDAIngredient_manufacturer(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var uSDAIngredientResultImplementors = []string{"USDAIngredientResult"}
+
+func (ec *executionContext) _USDAIngredientResult(ctx context.Context, sel ast.SelectionSet, obj *apimodel.USDAIngredientResult) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, uSDAIngredientResultImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("USDAIngredientResult")
+		case "id":
+			out.Values[i] = ec._USDAIngredientResult_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "name":
+			out.Values[i] = ec._USDAIngredientResult_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalid = true
+			}
+		case "group":
+			out.Values[i] = ec._USDAIngredientResult_group(ctx, field, obj)
+		case "manufacturer":
+			out.Values[i] = ec._USDAIngredientResult_manufacturer(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalid {
+		return graphql.Null
+	}
+	return out
+}
+
+var uSDAQueryImplementors = []string{"USDAQuery"}
+
+func (ec *executionContext) _USDAQuery(ctx context.Context, sel ast.SelectionSet, obj *apimodel.USDAQuery) graphql.Marshaler {
+	fields := graphql.CollectFields(ctx, sel, uSDAQueryImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	invalid := false
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("USDAQuery")
+		case "searchIngredients":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._USDAQuery_searchIngredients(ctx, field, obj)
+				if res == graphql.Null {
+					invalid = true
+				}
+				return res
+			})
+		case "ingredient":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._USDAQuery_ingredient(ctx, field, obj)
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -19867,6 +20188,65 @@ func (ec *executionContext) marshalNTimestamp2timeᚐTime(ctx context.Context, s
 	return MarshalTimestamp(v)
 }
 
+func (ec *executionContext) marshalNUSDAIngredientResult2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredientResult(ctx context.Context, sel ast.SelectionSet, v apimodel.USDAIngredientResult) graphql.Marshaler {
+	return ec._USDAIngredientResult(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUSDAIngredientResult2ᚕgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredientResult(ctx context.Context, sel ast.SelectionSet, v []apimodel.USDAIngredientResult) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		rctx := &graphql.ResolverContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithResolverContext(ctx, rctx)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNUSDAIngredientResult2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredientResult(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNUSDAQuery2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAQuery(ctx context.Context, sel ast.SelectionSet, v apimodel.USDAQuery) graphql.Marshaler {
+	return ec._USDAQuery(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUSDAQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAQuery(ctx context.Context, sel ast.SelectionSet, v *apimodel.USDAQuery) graphql.Marshaler {
+	if v == nil {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._USDAQuery(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNUSDAResultsFilter2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAResultsFilter(ctx context.Context, v interface{}) (apimodel.USDAResultsFilter, error) {
+	return ec.unmarshalInputUSDAResultsFilter(ctx, v)
+}
+
 func (ec *executionContext) unmarshalNUpdateIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateIngredient(ctx context.Context, v interface{}) (apimodel.UpdateIngredient, error) {
 	return ec.unmarshalInputUpdateIngredient(ctx, v)
 }
@@ -20285,28 +20665,6 @@ func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel as
 	return ec.marshalOFloat2float64(ctx, sel, *v)
 }
 
-func (ec *executionContext) marshalOGoogleEngine2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx context.Context, sel ast.SelectionSet, v google.Engine) graphql.Marshaler {
-	return ec._GoogleEngine(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOGoogleEngine2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋdalᚋgoogleᚐEngine(ctx context.Context, sel ast.SelectionSet, v *google.Engine) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._GoogleEngine(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOGoogleQuery2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx context.Context, sel ast.SelectionSet, v apimodel.GoogleQuery) graphql.Marshaler {
-	return ec._GoogleQuery(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOGoogleQuery2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐGoogleQuery(ctx context.Context, sel ast.SelectionSet, v *apimodel.GoogleQuery) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._GoogleQuery(ctx, sel, v)
-}
-
 func (ec *executionContext) marshalOHashtag2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐHashtag(ctx context.Context, sel ast.SelectionSet, v apimodel.Hashtag) graphql.Marshaler {
 	return ec._Hashtag(ctx, sel, &v)
 }
@@ -20348,17 +20706,6 @@ func (ec *executionContext) marshalOID2ᚕint(ctx context.Context, sel ast.Selec
 	}
 
 	return ret
-}
-
-func (ec *executionContext) marshalOIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx context.Context, sel ast.SelectionSet, v apimodel.Ingredient) graphql.Marshaler {
-	return ec._Ingredient(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalOIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐIngredient(ctx context.Context, sel ast.SelectionSet, v *apimodel.Ingredient) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._Ingredient(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOInt2int(ctx context.Context, v interface{}) (int, error) {
@@ -20524,6 +20871,17 @@ func (ec *executionContext) marshalOTimestamp2ᚖtimeᚐTime(ctx context.Context
 		return graphql.Null
 	}
 	return ec.marshalOTimestamp2timeᚐTime(ctx, sel, *v)
+}
+
+func (ec *executionContext) marshalOUSDAIngredient2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredient(ctx context.Context, sel ast.SelectionSet, v apimodel.USDAIngredient) graphql.Marshaler {
+	return ec._USDAIngredient(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalOUSDAIngredient2ᚖgithubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUSDAIngredient(ctx context.Context, sel ast.SelectionSet, v *apimodel.USDAIngredient) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._USDAIngredient(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOUpdateDependentResource2githubᚗcomᚋgremlinsappsᚋavocado_serverᚋapiᚋmodelᚐUpdateDependentResource(ctx context.Context, v interface{}) (apimodel.UpdateDependentResource, error) {
