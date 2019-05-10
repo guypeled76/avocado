@@ -8,21 +8,21 @@ type SearchParams struct {
 
 type SearchResults struct {
 	List struct {
-		SearchString string `json:"q"`
-		Sr           string `json:"sr"`
-		DataSource   string `json:"ds"`
-		Start        int    `json:"start"`
-		End          int    `json:"end"`
-		Total        int    `json:"total"`
-		Group        string `json:"group"`
-		Sort         string `json:"sort"`
-		Item         []struct {
-			Offset     int    `json:"offset"`
-			Group      string `json:"group"`
-			Name       string `json:"name"`
-			ItemID     string `json:"ndbno"`
-			DataSource string `json:"ds"`
-			Manu       string `json:"manu"`
+		SearchString       string `json:"q"`
+		DataReleaseVersion string `json:"sr"`
+		DataSource         string `json:"ds"`
+		Start              int    `json:"start"`
+		End                int    `json:"end"`
+		Total              int    `json:"total"`
+		Group              string `json:"group"`
+		Sort               string `json:"sort"`
+		Item               []struct {
+			Offset       int    `json:"offset"`
+			Group        string `json:"group"`
+			Name         string `json:"name"`
+			ItemID       string `json:"ndbno"`
+			DataSource   string `json:"ds"`
+			Manufacturer string `json:"manu"`
 		} `json:"item"`
 	} `json:"list"`
 }
@@ -54,16 +54,16 @@ type ListResults struct {
 }
 
 type NutrientsParams struct {
-	Fg          []string `json:"fg,omitempty"`
-	Ndbno       string   `json:"ndbno,omitempty"`
+	FoodGroup   []string `json:"fg,omitempty"`
+	NDBNO       string   `json:"ndbno,omitempty"`
 	NutrientsID []string `json:"nutrients"`
 	Subset      string   `json:"subset,omitempty"`
 }
 
 type NutrientReport struct {
 	Report struct {
-		Sr     string `json:"sr"`
-		Groups []struct {
+		DataReleaseVersion string `json:"sr"`
+		Groups             []struct {
 			ID          string `json:"id"`
 			Description string `json:"description"`
 		} `json:"groups"`
@@ -72,7 +72,7 @@ type NutrientReport struct {
 		Start  int    `json:"start"`
 		Total  int    `json:"total"`
 		Foods  []struct {
-			Ndbno     string  `json:"ndbno"`
+			NDBNO     string  `json:"ndbno"`
 			Name      string  `json:"name"`
 			Weight    float64 `json:"weight"`
 			Measure   string  `json:"measure"`
@@ -95,49 +95,49 @@ type FoodsParams struct {
 type FoodsReport struct {
 	Foods []struct {
 		Food struct {
-			Sr   string `json:"sr"`
-			Type string `json:"type"`
-			Desc struct {
-				Ndbno string  `json:"ndbno"`
-				Name  string  `json:"name"`
-				Sd    string  `json:"sd"`
-				Fg    string  `json:"fg"`
-				Sn    string  `json:"sn"`
-				Cn    string  `json:"cn"`
-				Manu  string  `json:"manu"`
-				Nf    float64 `json:"nf"`
-				Cf    float64 `json:"cf"`
-				Ff    float64 `json:"ff"`
-				Pf    float64 `json:"pf"`
-				R     string  `json:"r"`
-				Rd    string  `json:"rd"`
-				Ds    string  `json:"ds"`
-				Ru    string  `json:"ru"`
+			DataReleaseVersion string `json:"sr"`
+			Type               string `json:"type"`
+			Description        struct {
+				NDBNO                  string  `json:"ndbno"`
+				Name                   string  `json:"name"`
+				ShortDescription       string  `json:"sd"`
+				FoodGroup              string  `json:"fg"`
+				ScientificName         string  `json:"sn"`
+				CommercialName         string  `json:"cn"`
+				Manufacturer           string  `json:"manu"`
+				Nitrogen2ProteinFactor float64 `json:"nf"`
+				CarbohydrateFactor     float64 `json:"cf"`
+				FatFactor              float64 `json:"ff"`
+				ProteinFactor          float64 `json:"pf"`
+				RefusePercentage       string  `json:"r"`
+				RefuseDescription      string  `json:"rd"`
+				DataSource             string  `json:"ds"`
+				ReportingUnit          string  `json:"ru"`
 			} `json:"desc"`
 			Nutrients []struct {
-				NutrientID interface{} `json:"nutrient_id"` //Issue
-				Name       string      `json:"name"`
-				Group      string      `json:"group"`
-				Unit       string      `json:"unit"`
-				Value      interface{} `json:"value"` //Issue
-				Derivation string      `json:"derivation"`
-				Sourcecode interface{} `json:"sourcecode"`
-				Dp         interface{} `json:"dp"` //Issue
-				Se         string      `json:"se"`
-				Measures   []struct {
-					Label string      `json:"label"`
-					Eqv   float64     `json:"eqv"`
-					Eunit string      `json:"eunit"`
-					Qty   float64     `json:"qty"`
-					Value interface{} `json:"value"` //Issue
+				NutrientID      interface{} `json:"nutrient_id"` //Issue
+				Name            string      `json:"name"`
+				Group           string      `json:"group"`
+				Unit            string      `json:"unit"`
+				Value           interface{} `json:"value"` //Issue
+				Derivation      string      `json:"derivation"`
+				SourceCode      interface{} `json:"sourcecode"`
+				NumOfDataPoints interface{} `json:"dp"` //Issue
+				StandardError   string      `json:"se"`
+				Measures        []struct {
+					Label    string      `json:"label"`
+					Eqv      float64     `json:"eqv"`
+					Eunit    string      `json:"eunit"`
+					Quantity float64     `json:"qty"`
+					Value    interface{} `json:"value"` //Issue
 				} `json:"measures"`
 			} `json:"nutrients"`
 			Sources []struct {
 				ID      int    `json:"id"`
 				Title   string `json:"title"`
 				Authors string `json:"authors"`
-				Vol     string `json:"vol"`
-				Iss     string `json:"iss"`
+				Volume  string `json:"vol"`
+				Issue   string `json:"iss"`
 				Year    string `json:"year"`
 			} `json:"sources"`
 			Footnotes []interface{} `json:"footnotes"`

@@ -16,8 +16,10 @@ type Repository struct {
 	httpClient *http.Client
 }
 
-func CreateUSDARepository() (*Repository, error) {
-	httpClient := http.DefaultClient
+func CreateUSDARepository(httpClient *http.Client) (*Repository, error) {
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
 
 	baseURL, err := url.Parse("https://api.nal.usda.gov/ndb/")
 	if err != nil {
@@ -126,7 +128,7 @@ func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsPar
 	return nutrientReport, err
 }
 
-func (r *Repository) GetFoodsReportV2(ctx context.Context, params *FoodsParams) (FoodsReport, error) {
+func (r *Repository) GetFoodsReport(ctx context.Context, params *FoodsParams) (FoodsReport, error) {
 
 	var foodsReport FoodsReport
 
@@ -140,11 +142,11 @@ func (r *Repository) GetFoodsReportV2(ctx context.Context, params *FoodsParams) 
 	return foodsReport, err
 }
 
-func (r *Repository) Search(ctx context.Context, params *SearchParams, opts *QueryOptions) (SearchResults, error) {
+func (r *Repository) Search(ctx context.Context, params *SearchParams, options *QueryOptions) (SearchResults, error) {
 
 	var results SearchResults
 
-	query, err := generateQuery("search", opts)
+	query, err := generateQuery("search", options)
 	if err != nil {
 		return results, err
 	}
@@ -185,5 +187,5 @@ func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (
 
 func (r *Repository) GetBasicFoodReport(ctx context.Context, ndbno string) (FoodsReport, error) {
 	params := &FoodsParams{Ndbno: []string{ndbno}, Type: "b"}
-	return r.GetFoodsReportV2(ctx, params)
+	return r.GetFoodsReport(ctx, params)
 }
