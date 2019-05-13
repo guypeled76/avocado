@@ -60,7 +60,7 @@ type NutrientsParams struct {
 	Subset      string   `json:"subset,omitempty"`
 }
 
-type NutrientReport struct {
+type NutrientResult struct {
 	Report struct {
 		DataReleaseVersion string `json:"sr"`
 		Groups             []struct {

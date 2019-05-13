@@ -14,6 +14,7 @@ type Repository struct {
 	baseURL    *url.URL
 	apiKey     string
 	httpClient *http.Client
+	dataSource string
 }
 
 func CreateRepository(httpClient *http.Client) (*Repository, error) {
@@ -29,6 +30,7 @@ func CreateRepository(httpClient *http.Client) (*Repository, error) {
 		baseURL:    baseURL,
 		httpClient: httpClient,
 		apiKey:     "8bVnDeZfZLJx6I51EK8CGggyP7bclFZdDRkceVZJ",
+		dataSource: "Standard Reference",
 	}, nil
 }
 
@@ -70,7 +72,7 @@ func (r *Repository) sendRequest(ctx context.Context, request *http.Request, bod
 	return response, err
 }
 
-func generateQuery(path string, options *QueryOptions) (string, error) {
+func (r *Repository) generateQuery(path string, options *QueryOptions) (string, error) {
 
 	if options == nil {
 		return path, nil
@@ -80,6 +82,9 @@ func generateQuery(path string, options *QueryOptions) (string, error) {
 	if err != nil {
 		return path, err
 	}
+
+	values.Set("api_key", r.apiKey)
+	values.Set("ds", r.dataSource)
 
 	url, err := url.Parse(path)
 	if err != nil {
@@ -94,7 +99,7 @@ func (r *Repository) GetList(ctx context.Context, params *ListParams, options *Q
 
 	var results ListResults
 
-	query, err := generateQuery("list", options)
+	query, err := r.generateQuery("list", options)
 	if err != nil {
 		return results, err
 	}
@@ -109,11 +114,11 @@ func (r *Repository) GetList(ctx context.Context, params *ListParams, options *Q
 	return results, err
 }
 
-func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsParams, options *QueryOptions) (NutrientReport, error) {
+func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsParams, options *QueryOptions) (NutrientResult, error) {
 
-	var nutrientReport NutrientReport
+	var nutrientReport NutrientResult
 
-	query, err := generateQuery("nutrients", options)
+	query, err := r.generateQuery("nutrients", options)
 	if err != nil {
 		return nutrientReport, err
 	}
@@ -146,7 +151,11 @@ func (r *Repository) Search(ctx context.Context, params *SearchParams, options *
 
 	var results SearchResults
 
-	query, err := generateQuery("search", options)
+	if params == nil {
+		params = &SearchParams{}
+	}
+
+	query, err := r.generateQuery("search", options)
 	if err != nil {
 		return results, err
 	}
@@ -173,13 +182,13 @@ func (r *Repository) GetListByType(ctx context.Context, listType string) (ListRe
 	return r.GetList(ctx, params, options)
 }
 
-func (r *Repository) GetNutrientsReport(ctx context.Context) (NutrientReport, error) {
+func (r *Repository) GetNutrientsReport(ctx context.Context) (NutrientResult, error) {
 	params := &NutrientsParams{FoodGroup: []string{"0300"}, NutrientsID: []string{"306", "204"}}
 	options := &QueryOptions{Max: 10, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
 }
 
-func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (NutrientReport, error) {
+func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (NutrientResult, error) {
 	params := &NutrientsParams{NutrientsID: []string{"306", "204"}, NDBNO: ndbno}
 	options := &QueryOptions{Max: 100, Offset: 0, Sort: "r"}
 	return r.GetNutrientReport(ctx, params, options)
