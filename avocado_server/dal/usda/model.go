@@ -92,7 +92,7 @@ type FoodsParams struct {
 	Type  string   `json:"type,omitempty"`
 }
 
-type FoodsReport struct {
+type FoodsResults struct {
 	Foods []struct {
 		Food struct {
 			DataReleaseVersion string `json:"sr"`

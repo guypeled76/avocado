@@ -28,7 +28,7 @@ func TestRepository_SearchByName(t *testing.T) {
 
 }
 
-func TestRepository_GetFoodsReport(t *testing.T) {
+func TestRepository_GetBasicFoodReport(t *testing.T) {
 	ndbno := "11096"
 	ctx := context.Background()
 
@@ -37,16 +37,16 @@ func TestRepository_GetFoodsReport(t *testing.T) {
 		t.Error(err)
 	}
 
-	result, err := repo.GetFoodNutrientsReport(ctx, ndbno)
+	result, err := repo.GetBasicFoodReport(ctx, ndbno)
 	if err != nil {
 		t.Error(err)
 	}
 
-	report := result.Report
-	if report.Foods == nil {
+	foods := result.Foods
+	if foods == nil {
 		t.Error("failed to get foods")
 	}
 
-	t.Logf("found %d items", len(report.Foods))
+	t.Logf("found %d items", len(foods))
 
 }

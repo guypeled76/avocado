@@ -133,9 +133,9 @@ func (r *Repository) GetNutrientReport(ctx context.Context, params *NutrientsPar
 	return nutrientReport, err
 }
 
-func (r *Repository) GetFoodsReport(ctx context.Context, params *FoodsParams) (FoodsReport, error) {
+func (r *Repository) GetFoodsReport(ctx context.Context, params *FoodsParams) (FoodsResults, error) {
 
-	var foodsReport FoodsReport
+	var foodsReport FoodsResults
 
 	request, err := r.createRequest("V2/reports", params)
 	if err != nil {
@@ -194,7 +194,7 @@ func (r *Repository) GetFoodNutrientsReport(ctx context.Context, ndbno string) (
 	return r.GetNutrientReport(ctx, params, options)
 }
 
-func (r *Repository) GetBasicFoodReport(ctx context.Context, ndbno string) (FoodsReport, error) {
+func (r *Repository) GetBasicFoodReport(ctx context.Context, ndbno string) (FoodsResults, error) {
 	params := &FoodsParams{Ndbno: []string{ndbno}, Type: "b"}
 	return r.GetFoodsReport(ctx, params)
 }

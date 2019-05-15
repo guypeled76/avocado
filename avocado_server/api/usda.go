@@ -2,9 +2,11 @@ package api
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/dal/usda"
+	"strconv"
 )
 
 func (usdaQueryResolver) SearchIngredients(ctx context.Context, obj *apimodel.USDAQuery, filter apimodel.USDAResultsFilter) ([]apimodel.USDAIngredientResult, error) {
@@ -25,8 +27,14 @@ func (usdaQueryResolver) SearchIngredients(ctx context.Context, obj *apimodel.US
 	}
 
 	for _, item := range results.List.Item {
+
+		id, err := strconv.ParseInt(item.NDBNO, 0, 64)
+		if err != nil {
+			continue
+		}
+
 		ingredients = append(ingredients, apimodel.USDAIngredientResult{
-			ID:   1,
+			ID:   int(id),
 			Name: item.Name,
 		})
 	}
@@ -45,8 +53,13 @@ func (usdaQueryResolver) Ingredient(ctx context.Context, obj *apimodel.USDAQuery
 		return nil, err
 	}
 
+	foods := result.Report.Foods
+	if foods == nil {
+		return nil, errors.New("failed to get ingredient")
+	}
+
 	return &apimodel.USDAIngredient{
-		Name: result.Report.Foods[0].Name,
+		Name: foods[0].Name,
 	}, nil
 }
 
