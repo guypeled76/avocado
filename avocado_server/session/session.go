@@ -20,7 +20,7 @@ func (s *Session) Set(ctx context.Context) context.Context {
 
 func (s *Session) HasPermission(permission string) bool {
 
-	return false
+	return true
 }
 
 func (s *Session) Valid() error {

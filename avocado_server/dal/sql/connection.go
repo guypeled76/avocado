@@ -3,9 +3,11 @@ package sql
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"reflect"
 	"sync"
@@ -24,9 +26,10 @@ var once sync.Once
 
 func Connect() *DBConnection {
 	once.Do(func() {
-		db, err := gorm.Open("sqlite3", "test.db")
+		//db, err := gorm.Open("sqlite3", "test.db")
+		db, err := gorm.Open("mysql", "avocado:Newron123@tcp(localhost:3306)/avocado?parseTime=true")
 		if err != nil {
-			panic("failed to connect database")
+			panic(fmt.Sprintf("failed to connect database:%s", err.Error()))
 		}
 
 		instance = &DBConnection{
