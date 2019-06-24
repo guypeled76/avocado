@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/res/merged/release/drawable/notification_bg.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/drawable/notification_bg.xml"
+    },
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/res/merged/release/drawable/notification_tile_bg.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/drawable/notification_tile_bg.xml"
+    },
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/res/merged/release/drawable/notification_icon_background.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/drawable/notification_icon_background.xml"
+    },
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/res/merged/release/drawable/notification_bg_low.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/drawable/notification_bg_low.xml"
+    }
+]

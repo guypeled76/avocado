@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["built_redux_saga|lib/src/process.dart","built_redux|lib/built_redux.dart","built_redux_saga|lib/built_redux_saga.dart","built_value|lib/built_value.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["async"]}

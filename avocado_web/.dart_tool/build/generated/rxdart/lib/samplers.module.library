@@ -1,0 +1,1 @@
+{"isEntrypoint":true,"deps":["rxdart|lib/src/samplers/buffer_strategy.dart","rxdart|lib/src/samplers/utils.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

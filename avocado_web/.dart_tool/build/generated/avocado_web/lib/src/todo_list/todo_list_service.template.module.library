@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_web|lib/src/todo_list/todo_list_service.dart","angular|lib/src/di/reflector.dart","angular|lib/core.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

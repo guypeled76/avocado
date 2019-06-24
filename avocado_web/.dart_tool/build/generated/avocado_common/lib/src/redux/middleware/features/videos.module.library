@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_common|lib/common.dart","built_redux|lib/built_redux.dart","built_redux_saga|lib/built_redux_saga.dart","avocado_common|lib/src/redux/middleware/api/index.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

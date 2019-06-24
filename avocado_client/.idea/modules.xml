@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/avocado_client.iml" filepath="$PROJECT_DIR$/avocado_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../avocado_common/avocado_common.iml" filepath="$PROJECT_DIR$/../avocado_common/avocado_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../avocado_web/avocado_web.iml" filepath="$PROJECT_DIR$/../avocado_web/avocado_web.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_common|lib/src/models/mocks/chats.dart","avocado_common|lib/src/models/mocks/notifications.dart","avocado_common|lib/src/models/mocks/posts.dart","avocado_common|lib/src/models/mocks/pinned.dart","avocado_common|lib/src/models/mocks/users.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

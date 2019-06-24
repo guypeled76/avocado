@@ -1,0 +1,22 @@
+define(['dart_sdk'], function(dart_sdk) {
+  'use strict';
+  const core = dart_sdk.core;
+  const dart = dart_sdk.dart;
+  const dartx = dart_sdk.dartx;
+  const _root = Object.create(null);
+  const app_component$46scss$46css$46shim = Object.create(_root);
+  dart.defineLazy(app_component$46scss$46css$46shim, {
+    /*app_component$46scss$46css$46shim.styles*/get styles() {
+      return ["._nghost-%ID%{display:block;height:100%;margin:0px;overflow:hidden;position:relative;width:100%}.controls._ngcontent-%ID%{border:1px solid red;overflow:scroll}.custom-width[persistent]._ngcontent-%ID%,.custom-width[permanent]._ngcontent-%ID%{width:50%}.custom-width[persistent]:not([end])._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[persistent]:not([end])._ngcontent-%ID% ~ .material-content._ngcontent-%ID%,.custom-width[permanent]:not([end])._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[permanent]:not([end])._ngcontent-%ID% ~ .material-content._ngcontent-%ID%{margin-left:50%}.custom-width[persistent][end]._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[persistent][end]._ngcontent-%ID% ~ .material-content._ngcontent-%ID%,.custom-width[permanent][end]._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[permanent][end]._ngcontent-%ID% ~ .material-content._ngcontent-%ID%{margin-right:50%}.custom-width[persistent].mat-drawer-collapsed:not([end])._ngcontent-%ID%{transform:translateX(-100%)}.custom-width[persistent].mat-drawer-collapsed:not([end])._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[persistent].mat-drawer-collapsed:not([end])._ngcontent-%ID% ~ .material-content._ngcontent-%ID%{margin-left:0}.custom-width[persistent].mat-drawer-collapsed[end]._ngcontent-%ID%{transform:translateX(100%)}.custom-width[persistent].mat-drawer-collapsed[end]._ngcontent-%ID% ~ material-content._ngcontent-%ID%,.custom-width[persistent].mat-drawer-collapsed[end]._ngcontent-%ID% ~ .material-content._ngcontent-%ID%{margin-right:0}.custom-width._ngcontent-%ID%  > .drawer-content{left:-50%;width:50%}.custom-width.mat-drawer-expanded._ngcontent-%ID%  > .drawer-content{transform:translateX(100%)}.custom-width[end]._ngcontent-%ID%  > .drawer-content{left:initial;right:-50%}.custom-width[end].mat-drawer-expanded._ngcontent-%ID%  > .drawer-content{transform:translateX(-100%)}.main-area._ngcontent-%ID%{flex-direction:column;height:100%;display:flex}.content-area._ngcontent-%ID%{flex:1;overflow:auto}"];
+    }
+  });
+  dart.trackLibraries("packages/avocado_web/app_component.scss.css.shim.ddc", {
+    "package:avocado_web/app_component.scss.css.shim.dart": app_component$46scss$46css$46shim
+  }, '{"version":3,"sourceRoot":"","sources":["app_component.scss.css.shim.dart"],"names":[],"mappings":";;;;;;;;MAGoB,wCAAM;YAAG,EAAC","file":"app_component.scss.css.shim.ddc.js"}');
+  // Exports:
+  return {
+    app_component$46scss$46css$46shim: app_component$46scss$46css$46shim
+  };
+});
+
+//# sourceMappingURL=app_component.scss.css.shim.ddc.js.map

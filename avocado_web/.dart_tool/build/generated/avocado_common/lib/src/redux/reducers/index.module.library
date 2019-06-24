@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_common|lib/src/redux/reducers/app.dart","avocado_common|lib/src/redux/reducers/posts.dart","avocado_common|lib/src/redux/reducers/videos.dart","avocado_common|lib/src/redux/reducers/clients.dart","avocado_common|lib/src/redux/reducers/auth.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

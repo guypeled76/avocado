@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_common|lib/common.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["async"]}

@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_web|lib/src/services/repository.dart","angular|lib/src/di/reflector.dart","angular|lib/angular.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

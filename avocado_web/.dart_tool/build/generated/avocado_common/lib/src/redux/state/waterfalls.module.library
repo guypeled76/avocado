@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["built_collection|lib/built_collection.dart","built_value|lib/built_value.dart","avocado_common|lib/common.dart"],"parts":["avocado_common|lib/src/redux/state/waterfalls.g.dart"],"conditionalDeps":[],"sdkDeps":[]}

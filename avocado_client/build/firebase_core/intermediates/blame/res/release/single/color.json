@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/firebase_core/intermediates/res/merged/release/color/common_google_signin_btn_tint.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/9f6bfccee8f3c91a05b4846759b60fe2/res/color/common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/firebase_core/intermediates/res/merged/release/color/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/9f6bfccee8f3c91a05b4846759b60fe2/res/color/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/guy.p/Projects/avocado/avocado_client/build/firebase_core/intermediates/res/merged/release/color/common_google_signin_btn_text_light.xml",
+        "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/play-services-base-16.0.1.aar/9f6bfccee8f3c91a05b4846759b60fe2/res/color/common_google_signin_btn_text_light.xml"
+    }
+]

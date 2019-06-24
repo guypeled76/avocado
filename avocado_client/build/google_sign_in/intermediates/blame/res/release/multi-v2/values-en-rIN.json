@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/guy.p/Projects/avocado/avocado_client/build/google_sign_in/intermediates/incremental/mergeReleaseResources/merged.dir/values-en-rIN/values-en-rIN.xml",
+            "map": [
+                {
+                    "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/2cf84112cbb96a17f1a4394ff6e7e690/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/guy.p/Projects/avocado/avocado_client/build/google_sign_in/intermediates/res/merged/release/values-en-rIN/values-en-rIN.xml",
+            "map": [
+                {
+                    "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/2cf84112cbb96a17f1a4394ff6e7e690/res/values-en-rIN/values-en-rIN.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

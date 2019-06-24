@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["avocado_web|lib/src/pipes/isnull.dart","angular|lib/di.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

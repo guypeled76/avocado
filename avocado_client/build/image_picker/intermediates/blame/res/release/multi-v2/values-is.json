@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/res/merged/release/values-is/values-is.xml",
+            "map": [
+                {
+                    "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/values-is/values-is.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/guy.p/Projects/avocado/avocado_client/build/image_picker/intermediates/incremental/mergeReleaseResources/merged.dir/values-is/values-is.xml",
+            "map": [
+                {
+                    "source": "/Users/guy.p/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0a6ef5c01834f9a14672e37b27f5d620/res/values-is/values-is.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

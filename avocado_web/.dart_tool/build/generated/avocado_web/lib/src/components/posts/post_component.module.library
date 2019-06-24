@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["angular|lib/angular.dart","angular_components|lib/angular_components.dart","avocado_common|lib/common.dart","avocado_web|lib/src/components/posts/video_component.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}
