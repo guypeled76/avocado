@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["built_redux|lib/built_redux.dart","avocado_common|lib/common.dart"],"parts":["avocado_common|lib/src/redux/actions/waterfalls.g.dart"],"conditionalDeps":[],"sdkDeps":[]}

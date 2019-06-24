@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["avocado_web|test/app_test.dart","angular_test|lib/angular_test.template.dart","avocado_web|lib/app_component.template.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["angular|lib/angular.dart","avocado_common|lib/common.dart","avocado_web|lib/src/components/posts/post_component.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

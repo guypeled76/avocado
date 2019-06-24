@@ -1,1 +1,0 @@
-{"isEntrypoint":true,"deps":["test|lib/bootstrap/browser.dart","avocado_web|test/app_test.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

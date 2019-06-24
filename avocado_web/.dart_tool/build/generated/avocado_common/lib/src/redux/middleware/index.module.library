@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["avocado_common|lib/src/redux/middleware/features/app.dart","avocado_common|lib/src/redux/middleware/features/posts.dart","avocado_common|lib/src/redux/middleware/features/videos.dart","avocado_common|lib/src/redux/middleware/features/auth.dart","avocado_common|lib/src/redux/middleware/core/log.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["avocado_common|lib/src/services/auth.dart","avocado_common|lib/src/services/repository.dart","avocado_common|lib/src/services/store.dart","avocado_common|lib/src/services/container.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":[]}

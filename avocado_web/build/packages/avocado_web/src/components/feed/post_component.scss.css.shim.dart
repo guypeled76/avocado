@@ -1,4 +1,0 @@
-library asset_avocado_web_lib_src_components_feed_post_component.scss.css.shim.dart;
-
-
-final List<dynamic> styles = ['._nghost-%ID%{display:flex;margin:2px}.demo-size._ngcontent-%ID%{width:352px}.demo-card__title._ngcontent-%ID%{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(0,0,0,0.87);font:500 20px/32px Roboto,Noto,sans-serif;letter-spacing:0.005em;line-height:1em;margin:0}.demo-card__subtitle._ngcontent-%ID%{color:rgba(0,0,0,0.87);font:400 15px/24px Roboto,Noto,sans-serif;letter-spacing:0.01em;margin:0}.demo-card__media._ngcontent-%ID%{background-image:url("http://material-components-web.appspot.com/images/16-9.jpg")}.demo-card__primary._ngcontent-%ID%{padding:16px}.demo-card__secondary._ngcontent-%ID%{color:rgba(0,0,0,0.87);font:400 13px/20px Roboto,Noto,sans-serif;letter-spacing:0.01em;padding:0 16px 8px}section._ngcontent-%ID%{display:block}section._ngcontent-%ID% + section._ngcontent-%ID%{margin-left:32px}'];

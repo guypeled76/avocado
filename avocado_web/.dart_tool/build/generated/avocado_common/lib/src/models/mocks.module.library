@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["avocado_common|lib/src/models/entities.dart","rxdart|lib/rxdart.dart","avocado_common|lib/src/models/mocks/mocks.dart","avocado_common|lib/common.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["async"]}

@@ -1,1 +1,0 @@
-{"isEntrypoint":false,"deps":["json_annotation|lib/json_annotation.dart","avocado_common|lib/common.dart"],"parts":["avocado_common|lib/src/models/waterfalls.g.dart"],"conditionalDeps":[],"sdkDeps":[]}
