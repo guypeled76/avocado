@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: avocado_server:v1.0.4
+          image: avocado_server:v1.0.7
           ports:
             - containerPort: 8080
           env:

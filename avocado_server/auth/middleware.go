@@ -2,7 +2,9 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dchest/uniuri"
+	"github.com/gremlinsapps/avocado_server/config"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/markbates/goth/providers/google"
@@ -20,7 +22,7 @@ type Manager struct {
 func NewAuthManager() *Manager {
 	return &Manager{
 		authConfig: &oauth2.Config{
-			RedirectURL:  "http://localhost:8090/callback",
+			RedirectURL:  fmt.Sprintf("%s/callback", config.GetBaseUrl()),
 			ClientID:     "219538454820-f5a7vff8sfq7unr1ssv4q0mh079cjk19.apps.googleusercontent.com",
 			ClientSecret: "gL2EN9ayp8t6NqRDc1ACiBxu",
 			Scopes: []string{
@@ -56,7 +58,7 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	clearSessionCookie(w)
-	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, config.GetBaseUrl(), http.StatusTemporaryRedirect)
 }
 
 func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +75,7 @@ func (m *Manager) CallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	writeSessionToCookie(session, w, m.secret)
 
-	http.Redirect(w, r, "http://localhost:8090/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, config.GetBaseUrl(), http.StatusTemporaryRedirect)
 }
 
 func (m *Manager) redirectToLogin(w http.ResponseWriter, r *http.Request) {

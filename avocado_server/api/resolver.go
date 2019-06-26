@@ -163,7 +163,7 @@ func (r *mutationResolver) Logon(ctx context.Context) (*apimodel.Result, error) 
 
 func NewRootResolvers() graph.Config {
 	resolver := Resolver{}
-	resolver.firebase = firebase.Connect()
+	//resolver.firebase = firebase.Connect()
 	resolver.database = sql.Connect()
 
 	directives := graph.DirectiveRoot{
