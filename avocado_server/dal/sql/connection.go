@@ -9,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"os"
 	"reflect"
 	"sync"
 )
@@ -26,8 +27,13 @@ var once sync.Once
 
 func Connect() *DBConnection {
 	once.Do(func() {
-		//db, err := gorm.Open("sqlite3", "test.db")
-		db, err := gorm.Open("mysql", "avocado:Newron123@tcp(localhost:3306)/avocado?parseTime=true")
+
+		host := os.Getenv("DB_HOST")
+		user := os.Getenv("DB_HOST")
+		password := os.Getenv("DB_HOST")
+		connection := fmt.Sprintf("%s:%s@tcp(%s)/avocado?parseTime=true", user, password, host)
+
+		db, err := gorm.Open("mysql", connection)
 		if err != nil {
 			panic(fmt.Sprintf("failed to connect database:%s", err.Error()))
 		}
