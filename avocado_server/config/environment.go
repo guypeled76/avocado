@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 )
 
@@ -25,16 +26,6 @@ func GetSchema() string {
 	return schema
 }
 
-const defaultHost = "http"
-
-func GetHost() string {
-	host := os.Getenv("HOST")
-	if host == "" {
-		host = defaultHost
-	}
-	return host
-}
-
-func GetBaseUrl() string {
-	return fmt.Sprintf("%s://%s:%s/", GetSchema(), GetHost(), GetPort())
+func GetBaseUrl(r *http.Request) string {
+	return fmt.Sprintf("%s://%s/", GetSchema(), r.Host)
 }
