@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/avocado-backend/avocado_server', '.' ]
+images:
+  - 'gcr.io/avocado-backend/quickstart-image'
