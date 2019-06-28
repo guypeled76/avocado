@@ -27,4 +27,4 @@ This is a sample project that implements Graphql server using Golang and firebas
 5. Dataloaders
 5. Small tweaks
 
-// avocado-backend:europe-west2:avocado-database
+// avocado-backend:europe-west2:avocado-database 
