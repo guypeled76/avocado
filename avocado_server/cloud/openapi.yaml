@@ -1,0 +1,5 @@
+swagger: "2.0"
+host: "api.endpoints.avocado-backend.cloud.goog"
+x-google-endpoints:
+- name: "api.endpoints.avocado-backend.cloud.goog"
+  target: "34.65.103.112"
