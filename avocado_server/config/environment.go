@@ -27,5 +27,5 @@ func GetSchema() string {
 }
 
 func GetBaseUrl(r *http.Request) string {
-	return fmt.Sprintf("%s://%s/", GetSchema(), r.Host)
+	return fmt.Sprintf("%s://%s", GetSchema(), r.Host)
 }
