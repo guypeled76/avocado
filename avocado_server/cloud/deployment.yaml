@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: eu.gcr.io/avocado-backend/avocado_server
+          image: eu.gcr.io/avocado-backend/avocado_server:latest
           ports:
             - containerPort: 8080
           env:
