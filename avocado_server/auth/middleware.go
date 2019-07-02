@@ -10,6 +10,7 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"net/http"
+	"os"
 )
 
 type Manager struct {
@@ -74,8 +75,8 @@ func (m *Manager) redirectToLogin(w http.ResponseWriter, r *http.Request) {
 	if m.authConfig == nil {
 		m.authConfig = &oauth2.Config{
 			RedirectURL:  fmt.Sprintf("%s/callback", config.GetBaseUrl(r)),
-			ClientID:     "219538454820-f5a7vff8sfq7unr1ssv4q0mh079cjk19.apps.googleusercontent.com",
-			ClientSecret: "gL2EN9ayp8t6NqRDc1ACiBxu",
+			ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
+			ClientSecret: os.Getenv("GOOGLE_SECRET"),
 			Scopes: []string{
 				"https://www.googleapis.com/auth/userinfo.profile",
 				"https://www.googleapis.com/auth/userinfo.email"},

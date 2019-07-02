@@ -7,9 +7,6 @@ import (
 	"github.com/gremlinsapps/avocado_server/api/model"
 	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"os"
 	"reflect"
 	"sync"
 )
@@ -27,13 +24,7 @@ var once sync.Once
 
 func Connect() *DBConnection {
 	once.Do(func() {
-
-		host := os.Getenv("DB_HOST")
-		user := os.Getenv("DB_USER")
-		password := os.Getenv("DB_PASSWORD")
-		connection := fmt.Sprintf("%s:%s@tcp(%s)/avocado?parseTime=true", user, password, host)
-
-		db, err := gorm.Open("mysql", connection)
+		db, err := generateConnection()
 		if err != nil {
 			panic(fmt.Sprintf("failed to connect database:%s", err.Error()))
 		}
@@ -43,6 +34,20 @@ func Connect() *DBConnection {
 		}
 	})
 	return instance
+}
+
+func generateConnection() (*gorm.DB, error) {
+
+	db, err := generateCloudSqlConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	if db != nil {
+		return db, nil
+	}
+
+	return generateLocalConnection()
 }
 
 func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter, repo Repository) error {

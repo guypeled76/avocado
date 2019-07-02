@@ -2,11 +2,14 @@ package sql
 
 import (
 	"github.com/gremlinsapps/avocado_server/dal/model"
+	"log"
 )
 
 func AutoMigrate() {
 	conn := Connect()
-	//defer conn.Close()
+
+	log.Print("AutoMigrating db.")
+
 	conn.db.AutoMigrate(
 		&dalmodel.Hashtag{},
 		&dalmodel.Notification{},
@@ -24,4 +27,6 @@ func AutoMigrate() {
 		&dalmodel.Post{},
 		&dalmodel.Resource{},
 	)
+
+	log.Print("Done AutoMigrating db.")
 }

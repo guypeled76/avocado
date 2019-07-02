@@ -6,7 +6,7 @@ require (
 	github.com/dchest/uniuri v0.0.0-20160212164326-8902c56451e9
 	github.com/denisenkom/go-mssqldb v0.0.0-20190515213511-eb9f6a1743f3 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-sql-driver/mysql v1.4.1 // indirect
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/google/go-querystring v1.0.0
 	github.com/googleapis/gax-go v2.0.2+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.2
