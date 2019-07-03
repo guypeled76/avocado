@@ -1,1 +1,1 @@
-./cloud_sql_proxy -instances=avocado-backend:us-central1:avocado-db=tcp:3306
+./cloud_sql_proxy -instances=avocado-services:europe-west2:avocado-database=tcp:3306

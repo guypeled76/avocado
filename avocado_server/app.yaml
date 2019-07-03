@@ -6,6 +6,6 @@ env_variables:
   CLOUDSQL_CONNECTION_NAME: "avocado-services:europe-west2:avocado-database"
   CLOUDSQL_USER: "avocado"
   CLOUDSQL_PASSWORD: "Newron123"
-  GOOGLE_CLIENT_ID: "219538454820-bqsvb84l7gi5d9uea2k2egj8i3rg31uo.apps.googleusercontent.com"
-  GOOGLE_SECRET: "xGttzu4Ky9J6HPDmmwsVBhQW"
+  GOOGLE_CLIENT_ID: "612947651641-gtqgvd2j7mi1gocvldohkob78oo83m1i.apps.googleusercontent.com"
+  GOOGLE_SECRET: "KQrAojiEsRtdHA1vVRK8ZAC0"
 
