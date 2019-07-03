@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/avocado_client/avocado_client.iml" filepath="$PROJECT_DIR$/avocado_client/avocado_client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/avocado_common/avocado_common.iml" filepath="$PROJECT_DIR$/avocado_common/avocado_common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/avocado_console/avocado_console.iml" filepath="$PROJECT_DIR$/avocado_console/avocado_console.iml" />
-      <module fileurl="file://$PROJECT_DIR$/avocado_functions/avocado_functions.iml" filepath="$PROJECT_DIR$/avocado_functions/avocado_functions.iml" />
       <module fileurl="file://$PROJECT_DIR$/avocado_server/avocado_server.iml" filepath="$PROJECT_DIR$/avocado_server/avocado_server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/avocado_web/avocado_web.iml" filepath="$PROJECT_DIR$/avocado_web/avocado_web.iml" />
     </modules>
   </component>
 </project>
