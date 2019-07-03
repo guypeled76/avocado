@@ -7,13 +7,11 @@ import (
 	"errors"
 	"github.com/gremlinsapps/avocado_server/api/graph"
 	"github.com/gremlinsapps/avocado_server/api/model"
-	"github.com/gremlinsapps/avocado_server/dal/firebase"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
 	"github.com/gremlinsapps/avocado_server/helpers"
 )
 
 type Resolver struct {
-	firebase *firebase.FBConnection
 	database *sql.DBConnection
 }
 

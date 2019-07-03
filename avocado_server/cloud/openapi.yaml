@@ -1,9 +1,0 @@
-swagger: "2.0"
-info:
-  description: "The avocado backend APIs."
-  title: "Acocado APIs"
-  version: "1.0.0"
-host: "api.endpoints.avocado-backend.cloud.goog"
-x-google-endpoints:
-- name: "api.endpoints.avocado-backend.cloud.goog"
-  target: "34.65.103.112"

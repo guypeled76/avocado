@@ -1,6 +1,0 @@
-steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'eu.gcr.io/avocado-backend/avocado_server', '.' ]
-    dir: 'avocado_server'
-images:
-  - 'eu.gcr.io/avocado-backend/avocado_server'
