@@ -1,4 +1,4 @@
-package sql
+package sqlconnector
 
 import (
 	"database/sql"
@@ -10,7 +10,7 @@ import (
 	"os"
 )
 
-func generateCloudSqlConnection() (*gorm.DB, error) {
+func connectCloudSql() (*gorm.DB, error) {
 	connectionName := os.Getenv("CLOUDSQL_CONNECTION_NAME")
 	if len(connectionName) == 0 {
 		return nil, nil
@@ -18,10 +18,15 @@ func generateCloudSqlConnection() (*gorm.DB, error) {
 
 	user := os.Getenv("CLOUDSQL_USER")
 	password := os.Getenv("CLOUDSQL_PASSWORD")
+	socket := os.Getenv("CLOUDSQL_SOCKET")
 
-	log.Printf("Connecting to database at '%s:[PASSWORD]@cloudsql(%s)/avocado?parseTime=true'.", user, connectionName)
+	if len(socket) == 0 {
+		socket = "/cloudsql"
+	}
 
-	connection := fmt.Sprintf("%s:%s@cloudsql(%s)/avocado?parseTime=true", user, password, connectionName)
+	log.Printf("Connecting to database at '%s:[PASSWORD]@unix(%s%s/)/avocado?parseTime=true'.", user, socket, connectionName)
+
+	connection := fmt.Sprintf("%s:%s@unix(%s/%s)/avocado?parseTime=true", user, password, socket, connectionName)
 
 	db, err := sql.Open("mysql", connection)
 	if err != nil {

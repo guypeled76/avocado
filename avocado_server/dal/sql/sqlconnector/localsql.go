@@ -1,4 +1,4 @@
-package sql
+package sqlconnector
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func generateLocalConnection() (*gorm.DB, error) {
+func connectLocalSql() (*gorm.DB, error) {
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")

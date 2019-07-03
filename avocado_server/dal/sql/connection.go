@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gremlinsapps/avocado_server/api/model"
+	"github.com/gremlinsapps/avocado_server/dal/sql/sqlconnector"
 	"github.com/gremlinsapps/avocado_server/session"
 	"github.com/jinzhu/gorm"
 	"reflect"
@@ -24,7 +25,7 @@ var once sync.Once
 
 func Connect() *DBConnection {
 	once.Do(func() {
-		db, err := generateConnection()
+		db, err := sqlconnector.Connect()
 		if err != nil {
 			panic(fmt.Sprintf("failed to connect database:%s", err.Error()))
 		}
@@ -34,20 +35,6 @@ func Connect() *DBConnection {
 		}
 	})
 	return instance
-}
-
-func generateConnection() (*gorm.DB, error) {
-
-	db, err := generateCloudSqlConnection()
-	if err != nil {
-		return nil, err
-	}
-
-	if db != nil {
-		return db, nil
-	}
-
-	return generateLocalConnection()
 }
 
 func (conn *DBConnection) Select(out interface{}, filter *apimodel.ResultsFilter, repo Repository) error {

@@ -27,4 +27,4 @@ This is a sample project that implements Graphql server using Golang and firebas
 5. Dataloaders
 5. Small tweaks
 
-// avocado-backend:europe-west2:avocado-database 
+// ENV: DB_HOST=localhost:3306;DB_USER=avocado;DB_PASSWORD=Newron123;PORT=8080;SCHEMA=http;GOOGLE_CLIENT_ID=219538454820-bqsvb84l7gi5d9uea2k2egj8i3rg31uo.apps.googleusercontent.com;GOOGLE_SECRET=xGttzu4Ky9J6HPDmmwsVBhQW
