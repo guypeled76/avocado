@@ -3,7 +3,7 @@ runtime: go112
 env_variables:
   PORT: "8080"
   SCHEMA: "http"
-  CLOUDSQL_CONNECTION_NAME: "avocado-backend:us-central1:avocado-db"
+  CLOUDSQL_CONNECTION_NAME: "avocado-services:europe-west2:avocado-database"
   CLOUDSQL_USER: "avocado"
   CLOUDSQL_PASSWORD: "Newron123"
   GOOGLE_CLIENT_ID: "219538454820-bqsvb84l7gi5d9uea2k2egj8i3rg31uo.apps.googleusercontent.com"
