@@ -1,5 +1,4 @@
 import 'package:avocado_common/common.dart';
-import 'package:rxdart/rxdart.dart';
 
 class AuthBLoC extends BaseBLoC {
 

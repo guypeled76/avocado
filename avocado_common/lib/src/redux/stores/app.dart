@@ -1,6 +1,5 @@
 import 'package:avocado_common/common.dart';
 import 'package:built_redux/built_redux.dart';
-import 'package:built_redux_saga/built_redux_saga.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AppStore {
@@ -21,15 +20,7 @@ class AppStore {
         new AppState(),
         new AppActions(),
         middleware:
-        <Middleware<AppState, AppStateBuilder, AppActions>>[
-          createSagaMiddleware<AppState, AppStateBuilder, AppActions>(<Iterable<Runnable>>[]
-            ..add(logSaga())
-            ..add(appSaga(container))
-            ..add(postsSaga())
-            ..add(authSaga())
-            ..add(videosSaga())
-          ),
-        ]
+        <Middleware<AppState, AppStateBuilder, AppActions>>[]
     );
 
     _state = new BehaviorSubject()
