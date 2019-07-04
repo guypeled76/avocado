@@ -1,4 +1,4 @@
-package com.gremlin.avocadoclient;
+package com.gremlinsapps.avocado;
 
 import android.os.Bundle;
 
