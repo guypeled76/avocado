@@ -1,7 +1,7 @@
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
 import 'package:avocado_client/services/provider.dart';
-import 'package:avocado_common/main.dart';
+import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
 
