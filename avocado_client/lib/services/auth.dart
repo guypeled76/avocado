@@ -35,7 +35,10 @@ class AuthServiceImpl implements AuthService {
       switch (result.status) {
         case FacebookLoginStatus.loggedIn:
           final FacebookAccessToken accessToken = result.accessToken;
-          this._auth.signInWithFacebook(accessToken: accessToken.token);
+          this._auth.signInWithCredential(GoogleAuthProvider.getCredential(
+            accessToken: accessToken.token,
+            idToken: "",
+          ));
           break;
         case FacebookLoginStatus.cancelledByUser:
           break;
@@ -53,10 +56,10 @@ class AuthServiceImpl implements AuthService {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      await this._auth.signInWithGoogle(
+      await this._auth.signInWithCredential(GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
-      );
+      ));
     } catch (e) {
       logError("Failed ot login with google", e);
     }

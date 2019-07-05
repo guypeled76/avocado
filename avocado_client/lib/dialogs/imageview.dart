@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:avocado_client/dialogs/comments.dart';
-import 'package:avocado_common/common.dart';
 import 'package:avocado_common/common.dart' as common;
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:extended_image/extended_image.dart';
 
 class ImageViewDialog extends StatelessWidget {
   final common.ImageInfo imageInfo;
@@ -19,11 +17,11 @@ class ImageViewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    ImageProvider imageProvider;
+    String image;
     if(this.imageFile != null) {
-      imageProvider = FileImage(this.imageFile);
+     // image = this.imageFile;
     } else {
-      imageProvider = CachedNetworkImageProvider(this.imageInfo.image);
+      image = this.imageInfo.image;
     }
 
     return Scaffold(
@@ -38,8 +36,8 @@ class ImageViewDialog extends StatelessWidget {
             },
           )],
         ),
-        body: PhotoView(
-            imageProvider: imageProvider,
+        body: ExtendedImage.network(
+            image
           ),
         bottomNavigationBar: Column(
           mainAxisSize:MainAxisSize.min,

@@ -1,6 +1,5 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/dialogs/about.dart';
-import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/services/provider.dart';
 import 'package:avocado_common/common.dart';
 import 'package:cached_network_image/cached_network_image.dart';

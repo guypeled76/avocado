@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:avocado_client/services/provider.dart';
-import 'package:avocado_client/services/auth.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
-import 'package:avocado_client/services/repository.dart';
 import 'package:avocado_client/services/store.dart';
 import 'package:avocado_common/common.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
