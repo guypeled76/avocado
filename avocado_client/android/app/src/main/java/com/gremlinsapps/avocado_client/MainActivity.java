@@ -1,4 +1,4 @@
-package com.gremlinsapss.avocado_client;
+package com.gremlinsapps.avocado_client;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
