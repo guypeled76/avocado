@@ -1,6 +1,6 @@
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
-import 'package:avocado_client/services/provider.dart';
+import 'package:avocado_client/services/scope.dart';
 import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +16,10 @@ class _ClientHomePageState extends State<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    StoreService storeService = ServiceScope.get<StoreService>(context);
+
     return DefaultTabController(
         length: 5,
         child: Scaffold(
@@ -37,7 +41,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
           ),
           body: TabBarView(children: [
                   FeedPage(
-                    bloc: FeedBLoC(ServiceProvider.get<StoreService>(context).postsStore),
+                    bloc: FeedBLoC(storeService.postsStore),
                   ),
                   TimelinePage(),
                   NotificationsWidget(
@@ -46,7 +50,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   FoodPage(),
                   ChatWidget(
                     bloc: ChatBLoC(
-                        ServiceProvider.get<StoreService>(context).chatsStore["c1"]),
+                        storeService.chatsStore["c1"]),
                   ),
                 ]),
           floatingActionButton: FloatingActionButton(

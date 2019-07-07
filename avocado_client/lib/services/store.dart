@@ -4,12 +4,12 @@ import 'auth.dart';
 
 class StoreServiceImpl extends StoreService {
 
-  final ServiceContainer container;
+  final ServiceProvider provider;
 
   final RepositoryService repositoryService = RepositoryServiceImpl();
   final AuthService authService = AuthServiceImpl();
 
-  StoreServiceImpl(this.container) ;
+  StoreServiceImpl(this.provider) ;
 
   @override
   ServiceType getService<ServiceType>() {
@@ -20,7 +20,7 @@ class StoreServiceImpl extends StoreService {
       return authService as ServiceType;
     }
 
-    return this.container.getService<ServiceType>();
+    return this.provider.getService<ServiceType>();
   }
 
 }

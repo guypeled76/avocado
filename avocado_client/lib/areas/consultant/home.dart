@@ -1,6 +1,6 @@
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/dialogs/dialogs.dart';
-import 'package:avocado_client/services/provider.dart';
+import 'package:avocado_client/services/scope.dart';
 import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
@@ -35,13 +35,13 @@ class ConsultantHomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              FeedPage(bloc: new FeedBLoC(ServiceProvider.get<StoreService>(context).postsStore)),
+              FeedPage(bloc: new FeedBLoC(ServiceScope.get<StoreService>(context).postsStore)),
               TimelinePage(),
               NotificationsWidget(),
               FoodPage(),
               ChatWidget(
                 bloc: ChatBLoC(
-                    ServiceProvider.get<StoreService>(context).chatsStore["c1"]
+                    ServiceScope.get<StoreService>(context).chatsStore["c1"]
                 ),
               ),
             ],

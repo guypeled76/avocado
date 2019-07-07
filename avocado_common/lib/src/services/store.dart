@@ -2,7 +2,7 @@ import 'package:avocado_common/common.dart';
 
 import 'container.dart';
 
-abstract class StoreService implements ServiceContainer {
+abstract class StoreService implements ServiceProvider {
 
   AppStore _store;
 

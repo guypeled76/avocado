@@ -14,9 +14,9 @@ class AppStore {
 
   BehaviorSubject<AppState> _state;
 
-  AppStore(ServiceContainer container) {
+  AppStore(ServiceProvider provider) {
     _store = new Store<AppState, AppStateBuilder, AppActions>(
-        createAppReducer(container), // build returns a reducer function
+        createAppReducer(provider), // build returns a reducer function
         new AppState(),
         new AppActions(),
         middleware:
