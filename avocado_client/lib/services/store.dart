@@ -12,7 +12,7 @@ class StoreServiceImpl extends StoreService {
   StoreServiceImpl(this.provider) ;
 
   @override
-  ServiceType getService<ServiceType>() {
+  ServiceType get<ServiceType>() {
 
     if(repositoryService is ServiceType) {
       return repositoryService as ServiceType;
@@ -20,7 +20,7 @@ class StoreServiceImpl extends StoreService {
       return authService as ServiceType;
     }
 
-    return this.provider.getService<ServiceType>();
+    return this.provider.get<ServiceType>();
   }
 
 }

@@ -19,13 +19,13 @@ class ServiceScope extends InheritedWidget {
   static ServiceType get<ServiceType>(BuildContext context) {
     ServiceScope provider = context.inheritFromWidgetOfExactType(ServiceScope);
     if(provider != null) {
-        return provider.getService<ServiceType>();
+        return provider._get<ServiceType>();
     }
     return null;
   }
 
-  ServiceType getService<ServiceType>() {
-    return this.provider.getService<ServiceType>();
+  ServiceType _get<ServiceType>() {
+    return this.provider.get<ServiceType>();
   }
 
 }

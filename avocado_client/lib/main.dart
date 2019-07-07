@@ -33,7 +33,7 @@ class AvocadoApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     ServiceContainer container = new ServiceContainer();
-    container.addService(new StoreServiceImpl(container));
+    container.add(new StoreServiceImpl(container));
 
     return MaterialApp(
         title: 'Avocado',
@@ -46,7 +46,7 @@ class AvocadoApp extends StatelessWidget {
         home: ServiceScope(
           provider: container,
           child: StreamBuilder<ProfileInfo>(
-              stream: container.getService<StoreService>().authProfile,
+              stream: container.get<StoreService>().authProfile,
               builder: (BuildContext context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SplashPage();
