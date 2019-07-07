@@ -1,12 +1,15 @@
 import 'package:avocado_common/common.dart';
+import 'package:avocado_common/src/services/container.dart';
 
 import 'container.dart';
 
-abstract class StoreService implements ServiceProvider {
+class StoreService implements ServiceProvider {
 
   AppStore _store;
 
-  StoreService() {
+  final ServiceProvider provider;
+
+  StoreService(this.provider) {
     _store = AppStore(this);
     _store.actions.initialize(CommandPayload.empty);
   }
@@ -27,7 +30,7 @@ abstract class StoreService implements ServiceProvider {
     return this._store.authStore;
   }
 
-  Stream<ProfileInfo> get authProfile {
+  Stream<ProfileInfo> get profile {
     return this.authStore.profile;
   }
 
@@ -37,6 +40,11 @@ abstract class StoreService implements ServiceProvider {
 
   VideosStore get videosStore {
     return this._store.videosStore;
+  }
+
+  @override
+  ServiceType get<ServiceType>() {
+    return this.provider.get<ServiceType>();
   }
 
 }

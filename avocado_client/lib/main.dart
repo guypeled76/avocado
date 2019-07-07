@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:avocado_client/services/client.dart';
 import 'package:avocado_client/services/scope.dart';
 import 'package:avocado_client/pages/pages.dart';
 import 'package:avocado_client/areas/areas.dart';
-import 'package:avocado_client/services/store.dart';
 import 'package:avocado_common/common.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -26,14 +26,12 @@ void main() {
 }
 
 class AvocadoApp extends StatelessWidget {
-  final FirebaseAnalytics analytics = FirebaseAnalytics();
+
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    ServiceContainer container = new ServiceContainer();
-    container.add(new StoreServiceImpl(container));
+    ClientServiceProvider provider = new ClientServiceProvider();
 
     return MaterialApp(
         title: 'Avocado',
@@ -41,12 +39,14 @@ class AvocadoApp extends StatelessWidget {
           primarySwatch: Colors.green,
         ),
         navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
+          FirebaseAnalyticsObserver(analytics: FirebaseAnalytics()),
         ],
         home: ServiceScope(
-          provider: container,
+          provider: provider,
           child: StreamBuilder<ProfileInfo>(
-              stream: container.get<StoreService>().authProfile,
+              stream: provider
+                  .get<StoreService>()
+                  .profile,
               builder: (BuildContext context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SplashPage();

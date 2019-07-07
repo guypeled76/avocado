@@ -1,7 +1,7 @@
 import 'package:avocado_common/common.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class RepositoryServiceImpl extends RepositoryService {
+class RepositoryServiceForFlutter extends RepositoryService {
   @override
   RepositoryCollection collection(String name) {
     return RepositoryCollectionImpl(Firestore().collection(name));

@@ -10,8 +10,8 @@ class ServiceContainer implements ServiceProvider {
 
     }
 
-    void add(Object service) {
-        _services[service.runtimeType] = service;
+    void add<ServiceType>(ServiceType service) {
+        _services[ServiceType] = service;
     }
 
     ServiceType get<ServiceType>() {

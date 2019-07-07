@@ -15,8 +15,6 @@ class _AuthPageState extends State<AuthPage> {
 
   PageController _controller = new PageController(initialPage: 0, viewportFraction: 1.0);
 
-
-
   @override
   Widget build(BuildContext context) {
     return PageView(

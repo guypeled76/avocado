@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:avocado_client/utils.dart';
 
-class AuthServiceImpl implements AuthService {
+class AuthServiceForFlutter implements AuthService {
 
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -13,7 +13,7 @@ class AuthServiceImpl implements AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  AuthServiceImpl();
+  AuthServiceForFlutter();
 
   @override
   Stream<ProfileInfo> get profile {

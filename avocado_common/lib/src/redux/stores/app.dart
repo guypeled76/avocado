@@ -25,6 +25,7 @@ class AppStore {
 
     _state = new BehaviorSubject()
       ..addStream(_store.nextState);
+
     _clientsStore = ClientsStore(this);
     _postsStore = PostsStore(this);
     _notificationsStore = NotificationsStore(this);
