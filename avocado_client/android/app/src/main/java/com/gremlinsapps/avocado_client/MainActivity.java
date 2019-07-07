@@ -11,9 +11,6 @@ public class MainActivity extends FlutterActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    FacebookSdk.setApplicationId("2289351617806667");
-    FacebookSdk.sdkInitialize(getApplicationContext());
     GeneratedPluginRegistrant.registerWith(this);
   }
 }
