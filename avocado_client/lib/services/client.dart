@@ -7,8 +7,12 @@ import 'auth.dart';
 class ClientServiceProvider extends ServiceContainer {
 
   ClientServiceProvider() {
-    this.add(new StoreService(this));
     this.add<RepositoryService>(new RepositoryServiceForFlutter());
     this.add<AuthService>(new AuthServiceForFlutter());
+    this.add(new StoreService(this));
+
+
+    this.get<StoreService>().initialize();
+
   }
 }

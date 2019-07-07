@@ -8,17 +8,25 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  String text = "Splash";
   @override
   Widget build(BuildContext context) {
     return Container(
         color: Colors.white,
         child: Center(
             child: RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+
+            this.setState((){
+              text += "f";
+
+            });
+          },
           padding: const EdgeInsets.all(8.0),
           textColor: Colors.white,
           color: Colors.blue,
-          child: new Text("Splash"),
+          child: new Text(this.text),
         )));
   }
 }

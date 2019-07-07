@@ -11,6 +11,9 @@ class StoreService implements ServiceProvider {
 
   StoreService(this.provider) {
     _store = AppStore(this);
+  }
+
+  void initialize() {
     _store.actions.initialize(CommandPayload.empty);
   }
 
