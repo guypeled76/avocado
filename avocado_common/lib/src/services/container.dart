@@ -11,10 +11,12 @@ class ServiceContainer implements ServiceProvider {
     }
 
     void add<ServiceType>(ServiceType service) {
-        _services[ServiceType] = service;
-
         if (service is ServicePromoter) {
             _promote(service);
+        } else if(service is ServiceEntry) {
+            _register(service);
+        } else {
+            _register(ServiceEntry<ServiceType>(service));
         }
     }
 
@@ -26,9 +28,13 @@ class ServiceContainer implements ServiceProvider {
     }
 
     void _promote(ServicePromoter promoter) {
-        for (MapEntry<Type, Object> promoted in promoter.getPromotedServices()) {
-            _services[promoted.key] = promoted.value;
+        for (ServiceEntry promoted in promoter.getPromotedServices()) {
+            _register(promoted);
         }
+    }
+
+    void _register(ServiceEntry entry) {
+      _services[entry.type] = entry.service;
     }
 }
 
@@ -37,6 +43,13 @@ abstract class ServiceProvider {
 }
 
 abstract class ServicePromoter {
-    Iterable<MapEntry<Type, Object>> getPromotedServices();
+    Iterable<ServiceEntry> getPromotedServices();
+}
+
+class ServiceEntry<ServiceType> {
+    final Type type;
+    final ServiceType service;
+
+    ServiceEntry(this.service) : type = ServiceType;
 }
 

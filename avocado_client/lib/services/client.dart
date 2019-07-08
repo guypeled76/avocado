@@ -12,7 +12,7 @@ class ClientServiceProvider extends ServiceContainer {
     this.add(new StoreService(this));
 
 
-    this.get<StoreService>().initialize();
+    this.get<AppStore>().initialize();
 
   }
 }

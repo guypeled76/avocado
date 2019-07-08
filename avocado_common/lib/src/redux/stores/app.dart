@@ -42,6 +42,12 @@ class AppStore {
     _chatsStore = ChatsStore(this);
   }
 
+
+  void initialize() {
+    _store.actions.initialize(CommandPayload.empty);
+  }
+
+
   AuthStore get authStore {
     return _authStore;
   }
