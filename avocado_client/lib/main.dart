@@ -31,7 +31,9 @@ class AvocadoApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    ClientServiceProvider provider = new ClientServiceProvider();
+    ServiceContainer provider = new ServiceContainer();
+    provider.add(ClientServiceConfiguration());
+    provider.get<AppStore>().initialize();
 
     return MaterialApp(
         title: 'Avocado',

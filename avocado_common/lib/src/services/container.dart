@@ -11,8 +11,8 @@ class ServiceContainer implements ServiceProvider {
     }
 
     void add<ServiceType>(ServiceType service) {
-        if (service is ServicePromoter) {
-            _promote(service);
+        if (service is ServiceConfiguration) {
+            _apply(service);
         } else if(service is ServiceEntry) {
             _register(service);
         } else {
@@ -27,9 +27,9 @@ class ServiceContainer implements ServiceProvider {
         return parent != null ? parent.get<ServiceType>() : null;
     }
 
-    void _promote(ServicePromoter promoter) {
-        for (ServiceEntry promoted in promoter.getPromotedServices()) {
-            _register(promoted);
+    void _apply(ServiceConfiguration configuration) {
+        for (ServiceEntry entry in configuration.getConfiguredServices(this)) {
+            _register(entry);
         }
     }
 
@@ -42,8 +42,8 @@ abstract class ServiceProvider {
     ServiceType get<ServiceType>();
 }
 
-abstract class ServicePromoter {
-    Iterable<ServiceEntry> getPromotedServices();
+abstract class ServiceConfiguration {
+    Iterable<ServiceEntry> getConfiguredServices(ServiceProvider provider);
 }
 
 class ServiceEntry<ServiceType> {

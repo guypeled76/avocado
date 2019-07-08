@@ -4,15 +4,12 @@ import 'package:avocado_common/common.dart';
 import 'repository.dart';
 import 'auth.dart';
 
-class ClientServiceProvider extends ServiceContainer {
+class ClientServiceConfiguration extends CommonServiceConfiguration {
 
-  ClientServiceProvider() {
-    this.add<RepositoryService>(new RepositoryServiceForFlutter());
-    this.add<AuthService>(new AuthServiceForFlutter());
-    this.add(new StoreService(this));
-
-
-    this.get<AppStore>().initialize();
-
+  @override
+  Iterable<ServiceEntry> getConfiguredServices(ServiceProvider provider) sync* {
+    yield ServiceEntry<RepositoryService>(new RepositoryServiceForFlutter());
+    yield ServiceEntry<AuthService>(new AuthServiceForFlutter());
+    yield* super.getConfiguredServices(provider);
   }
 }
