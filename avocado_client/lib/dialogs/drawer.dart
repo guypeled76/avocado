@@ -6,18 +6,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class DrawerDialog extends StatefulWidget {
+class DrawerDialog extends StatelessWidget {
   DrawerDialog({Key key}) : super(key: key);
 
   @override
-  _DrawerDialogState createState() => _DrawerDialogState();
-}
-
-class _DrawerDialogState extends State<DrawerDialog> {
-  @override
   Widget build(BuildContext context) {
-    AuthBLoC auth =
-        AuthBLoC(ServiceScope.get<StoreService>(context));
+    AuthBLoC auth = AuthBLoC(ServiceScope.get<AuthStore>(context));
 
     return Drawer(
       child: ListView(

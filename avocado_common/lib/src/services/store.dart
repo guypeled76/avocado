@@ -3,51 +3,27 @@ import 'package:avocado_common/src/services/container.dart';
 
 import 'container.dart';
 
-class StoreService implements ServiceProvider {
+class StoreService implements ServicePromoter {
 
   AppStore _store;
 
-  final ServiceProvider provider;
-
-  StoreService(this.provider) {
-    _store = AppStore(this);
+  StoreService(ServiceProvider provider) {
+    _store = AppStore(provider);
   }
 
   void initialize() {
     _store.actions.initialize(CommandPayload.empty);
   }
 
-  AppStore get store {
-    return this._store;
-  }
-
-  ClientsStore get clientsStore {
-    return this._store.clientsStore;
-  }
-
-  PostsStore get postsStore {
-    return this._store.postsStore;
-  }
-
-  AuthStore get authStore {
-    return this._store.authStore;
-  }
-
-  Stream<ProfileInfo> get profile {
-    return this.authStore.profile;
-  }
-
-  ChatsStore get chatsStore {
-    return this._store.chatsStore;
-  }
-
-  VideosStore get videosStore {
-    return this._store.videosStore;
-  }
 
   @override
-  ServiceType get<ServiceType>() {
-    return this.provider.get<ServiceType>();
+  Iterable<MapEntry<Type, Object>> getPromotedServices() sync* {
+    yield MapEntry(AuthStore, this._store.authStore);
+    yield MapEntry(ClientsStore, this._store.clientsStore);
+    yield MapEntry(AppStore, this._store);
+    yield MapEntry(PostsStore, this._store.postsStore);
+    yield MapEntry(ChatsStore, this._store.chatsStore);
+    yield MapEntry(VideosStore, this._store.videosStore);
   }
 
 }

@@ -25,7 +25,7 @@ class CommentsDialog extends StatelessWidget {
             },
           )],
         ),
-      body: ChatWidget(bloc: ChatBLoC(ServiceScope.get<StoreService>(context).chatsStore["c2"])),
+      body: ChatWidget(bloc: ChatBLoC(ServiceScope.get<ChatsStore>(context)["c2"])),
     );
   }
 

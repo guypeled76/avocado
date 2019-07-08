@@ -45,7 +45,7 @@ class AvocadoApp extends StatelessWidget {
           provider: provider,
           child: StreamBuilder<ProfileInfo>(
               stream: provider
-                  .get<StoreService>()
+                  .get<AuthStore>()
                   .profile,
               builder: (BuildContext context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {

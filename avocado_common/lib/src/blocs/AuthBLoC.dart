@@ -2,29 +2,24 @@ import 'package:avocado_common/common.dart';
 
 class AuthBLoC extends BaseBLoC {
 
-    final AuthStore _store;
+    final AuthStore store;
 
     final Stream<ProfileInfo> profile;
 
-
-    AuthBLoC(StoreService service) :
-        _store = service.authStore,
-        profile = service.authStore.profile;
-
-
-
+    AuthBLoC(this.store) :
+        profile = store.profile;
 
 
     void signInWithGoogle() {
-        this._store.actions.signInWithGoogle(CommandPayload.empty);
+        this.store.actions.signInWithGoogle(CommandPayload.empty);
     }
 
     void signInWithFacebook() {
-        this._store.actions.signInWithFacebook(CommandPayload.empty);
+        this.store.actions.signInWithFacebook(CommandPayload.empty);
     }
 
     void signOut() {
-        this._store.actions.signOut(CommandPayload.empty);
+        this.store.actions.signOut(CommandPayload.empty);
     }
 
 }

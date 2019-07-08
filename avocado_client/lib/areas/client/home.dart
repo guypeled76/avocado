@@ -4,21 +4,11 @@ import 'package:avocado_client/services/scope.dart';
 import 'package:avocado_common/common.dart';
 import 'package:flutter/material.dart';
 
-class ClientHomePage extends StatefulWidget {
+class ClientHomePage extends StatelessWidget {
   ClientHomePage({Key key}) : super(key: key);
 
   @override
-  _ClientHomePageState createState() => _ClientHomePageState();
-}
-
-class _ClientHomePageState extends State<ClientHomePage> {
-  void _add() {}
-
-  @override
   Widget build(BuildContext context) {
-
-
-    StoreService storeService = ServiceScope.get<StoreService>(context);
 
     return DefaultTabController(
         length: 5,
@@ -41,7 +31,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
           ),
           body: TabBarView(children: [
                   FeedPage(
-                    bloc: FeedBLoC(storeService.postsStore),
+                    bloc: FeedBLoC(ServiceScope.get<PostsStore>(context)),
                   ),
                   TimelinePage(),
                   NotificationsWidget(
@@ -50,11 +40,11 @@ class _ClientHomePageState extends State<ClientHomePage> {
                   FoodPage(),
                   ChatWidget(
                     bloc: ChatBLoC(
-                        storeService.chatsStore["c1"]),
+                        ServiceScope.get<ChatsStore>(context)["c1"]),
                   ),
                 ]),
           floatingActionButton: FloatingActionButton(
-            onPressed: _add,
+            onPressed: (){},
             tooltip: 'Increment',
             child: Icon(Icons.mode_edit),
           ), // This trailing comma makes auto-formatting nicer for build methods.
