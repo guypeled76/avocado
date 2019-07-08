@@ -32,7 +32,7 @@ class AvocadoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ServiceContainer provider = new ServiceContainer();
-    provider.add(ClientServiceConfiguration());
+    provider.apply(ClientServiceConfiguration());
     provider.get<AppStore>().initialize();
 
     return MaterialApp(

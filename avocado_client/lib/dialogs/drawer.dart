@@ -25,14 +25,14 @@ class DrawerDialog extends StatelessWidget {
 
                 return UserAccountsDrawerHeader(
                   accountName: Text(
-                    profile?.displayName,
+                    profile?.displayName ?? "n/a",
                   ),
                   accountEmail: Text(
-                    profile?.email,
+                    profile?.email ?? "n/a",
                   ),
                   currentAccountPicture: new CircleAvatar(
                     backgroundImage: new CachedNetworkImageProvider(
-                        profile?.image),
+                        profile?.image ?? "n/a"),
                   ),
                 );
               }),

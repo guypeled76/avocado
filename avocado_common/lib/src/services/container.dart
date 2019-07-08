@@ -11,9 +11,7 @@ class ServiceContainer implements ServiceProvider {
     }
 
     void add<ServiceType>(ServiceType service) {
-        if (service is ServiceConfiguration) {
-            _apply(service);
-        } else if(service is ServiceEntry) {
+        if(service is ServiceEntry) {
             _register(service);
         } else {
             _register(ServiceEntry<ServiceType>(service));
@@ -27,7 +25,7 @@ class ServiceContainer implements ServiceProvider {
         return parent != null ? parent.get<ServiceType>() : null;
     }
 
-    void _apply(ServiceConfiguration configuration) {
+    void apply(ServiceConfiguration configuration) {
         for (ServiceEntry entry in configuration.getConfiguredServices(this)) {
             _register(entry);
         }
