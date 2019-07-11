@@ -32,7 +32,7 @@ class DrawerDialog extends StatelessWidget {
                   ),
                   currentAccountPicture: new CircleAvatar(
                     backgroundImage: new CachedNetworkImageProvider(
-                        profile?.image ?? "n/a"),
+                        profile?.image ?? ""),
                   ),
                 );
               }),

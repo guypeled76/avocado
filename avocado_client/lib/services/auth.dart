@@ -19,6 +19,7 @@ class AuthServiceForFlutter extends ServiceInstance implements AuthService {
     return _firebaseAuth.onAuthStateChanged
         .map((user)=> user != null ? new ProfileInfo(
             key:user.uid,
+            email: user.email,
             hashtags:[],
             image:user.photoUrl,
             displayName:user.displayName
