@@ -53,7 +53,7 @@ class AvocadoApp extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SplashPage();
                 } else {
-                  if (snapshot.hasData) {
+                  if (snapshot.data != null) {
                     return ClientHomePage();
                   } else {
                     return AuthPage();

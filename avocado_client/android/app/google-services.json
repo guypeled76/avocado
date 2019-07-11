@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "612947651641-5rl1hnaq6dn4afspuok1aor83mfumn6j.apps.googleusercontent.com",
+          "client_id": "612947651641-7l9i32thtcob49v2a3jojql24qu2tfn3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.gremlinsapps.avocado",
-            "certificate_hash": "aa6e0cfae1240e5affed5f0e8ae8d85b593b1ffc"
+            "certificate_hash": "38cb47b98a924b7ae48041f0d1f68fc73f45d559"
           }
         },
         {

@@ -33,6 +33,10 @@ class ServiceContainer implements ServiceProvider {
 
     void _register(ServiceEntry entry) {
       _services[entry.type] = entry.service;
+
+      if(entry is ServiceInstance) {
+          (entry as ServiceInstance)._provider = this;
+      }
     }
 }
 
@@ -42,6 +46,20 @@ abstract class ServiceProvider {
 
 abstract class ServiceConfiguration {
     Iterable<ServiceEntry> getConfiguredServices(ServiceProvider provider);
+}
+
+abstract class ServiceInstance implements ServiceProvider {
+
+    ServiceProvider _provider;
+
+    @override
+    ServiceType get<ServiceType>() {
+        if(this._provider == null) {
+            return this._provider.get<ServiceType>();
+        }
+        return null;
+    }
+
 }
 
 class ServiceEntry<ServiceType> {

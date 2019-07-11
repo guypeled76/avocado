@@ -18,7 +18,7 @@ Iterable<Runnable> _handledInitialize(ServiceProvider provider) sync* {
     AuthStore authStore = provider.get<AuthStore>();
 
     authService.profile.listen((profile) {
-      authStore.actions.set(EntityPayload(ProfileInfo()));
+      authStore.actions.set(EntityPayload(profile));
     });
   } catch (e) {
     yield put(AppActionsNames.error, ErrorPayload("Failed to initialize authentication.", e));
@@ -30,9 +30,8 @@ Iterable<Runnable> _signOut(ServiceProvider provider) sync* {
     try {
       yield take(AuthActionsNames.signOut);
 
-      AuthService authService = provider.get<AuthService>();
+      yield call(provider.get<AuthService>().signOut());
 
-      authService.signOut();
     } catch(e) {
       yield put(AppActionsNames.error, ErrorPayload("Failed to signout.", e));
     }
@@ -45,7 +44,10 @@ Iterable<Runnable> _signInWithFacebook(ServiceProvider provider) sync* {
     try {
       yield take(AuthActionsNames.signInWithFacebook);
 
-      provider.get<AuthService>().signInWithFacebook();
+      Result result = Result();
+      yield call(provider.get<AuthService>().signInWithFacebook(), result);
+      result.throwErrorIfExists();
+
     }
     catch (e) {
       yield put(AppActionsNames.error, ErrorPayload("Failed to sign in with facebook.", e));
@@ -59,7 +61,10 @@ Iterable<Runnable> _signInWithGoogle(ServiceProvider provider) sync* {
     try {
       yield take(AuthActionsNames.signInWithGoogle);
 
-      provider.get<AuthService>().signInWithGoogle();
+      Result result = Result();
+      yield call(provider.get<AuthService>().signInWithGoogle(), result);
+      result.throwErrorIfExists();
+
     }
     catch (e) {
       yield put(AppActionsNames.error, ErrorPayload("Failed to sign in with facebook.", e));

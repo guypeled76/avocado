@@ -8,16 +8,11 @@ class LoginPage extends StatelessWidget {
   LoginPage({Key key}) : super(key: key);
 
 
-  void _authenticateWithFacebook(BuildContext context) async {
-    ServiceScope.get<AuthService>(context).signInWithGoogle();
-  }
-
-  void _authenticateWithGoogle(BuildContext context) async {
-    ServiceScope.get<AuthService>(context).signInWithGoogle();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    AuthBLoC authBLoC = new AuthBLoC(ServiceScope.get<AuthStore>(context));
+
     return Container(
         color: Colors.white,
         child: Scaffold(
@@ -31,18 +26,14 @@ class LoginPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       textColor: Colors.white,
                       color: Colors.blue,
-                      onPressed: () {
-                        _authenticateWithGoogle(context);
-                      },
+                      onPressed: authBLoC.signInWithGoogle,
                       child: new Text("Google Login"),
                     ),
                     RaisedButton(
                       padding: const EdgeInsets.all(8.0),
                       textColor: Colors.white,
                       color: Colors.blue,
-                      onPressed: () {
-                        _authenticateWithFacebook(context);
-                      },
+                      onPressed: authBLoC.signInWithFacebook,
                       child: new Text("Facebook Login"),
                     )
                   ],

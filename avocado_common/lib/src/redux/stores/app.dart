@@ -31,6 +31,7 @@ class AppStore {
     );
 
     _state = new BehaviorSubject()
+      ..add(_store.state)
       ..addStream(_store.nextState);
 
     _clientsStore = ClientsStore(this);

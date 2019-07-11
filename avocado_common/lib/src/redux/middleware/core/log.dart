@@ -4,8 +4,9 @@ import '../../../../common.dart';
 
 Iterable<Runnable> logSaga(ServiceProvider provider) sync* {
   while(true) {
-    yield takeEverything((result) {
-      print("[action: ${result}]");
-    });
+
+    Result result = Result();
+    yield takeEverything(result);
+    print("[action: ${result.value}]");
   }
 }
