@@ -36,7 +36,10 @@ class ProfileInfo extends EntityInfo implements UserInfo {
   @JsonKey(fromJson: EntityInfo.undefinedToNull)
   final String email;
 
-  ProfileInfo({String key, List<String> hashtags, this.image, this.displayName, this.email}) : super(
+  @JsonKey(fromJson: EntityInfo.undefinedToNull)
+  final String idToken;
+
+  ProfileInfo({String key, List<String> hashtags, this.image, this.displayName, this.email, this.idToken}) : super(
       key:key,
       type:EntityType.profile,
       hashtags:hashtags

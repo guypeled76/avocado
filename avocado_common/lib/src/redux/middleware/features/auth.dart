@@ -14,11 +14,8 @@ Iterable<Runnable> _handledInitialize(ServiceProvider provider) sync* {
   try {
     yield take(AppActionsNames.initialize);
 
-    AuthService authService = provider.get<AuthService>();
-    AuthStore authStore = provider.get<AuthStore>();
-
-    authService.profile.listen((profile) {
-      authStore.actions.set(EntityPayload(profile));
+    provider.get<AuthService>().profile.listen((profile) {
+      provider.get<AuthStore>().actions.set(EntityPayload(profile));
     });
   } catch (e) {
     yield put(AppActionsNames.error, ErrorPayload("Failed to initialize authentication.", e));
@@ -30,7 +27,9 @@ Iterable<Runnable> _signOut(ServiceProvider provider) sync* {
     try {
       yield take(AuthActionsNames.signOut);
 
-      yield call(provider.get<AuthService>().signOut());
+      Result result = Result();
+      yield call(provider.get<AuthService>().signOut(), result);
+      result.throwErrorIfExists();
 
     } catch(e) {
       yield put(AppActionsNames.error, ErrorPayload("Failed to signout.", e));

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"firebase.google.com/go"
 	"fmt"
 	"github.com/dchest/uniuri"
 	"github.com/gremlinsapps/avocado_server/config"
@@ -14,10 +15,11 @@ import (
 )
 
 type Manager struct {
-	authConfig *oauth2.Config
-	authState  string
-	conn       *sql.DBConnection
-	secret     []byte
+	authConfig  *oauth2.Config
+	authState   string
+	conn        *sql.DBConnection
+	firebaseApp *firebase.App
+	secret      []byte
 }
 
 func NewAuthManager() *Manager {
@@ -46,6 +48,20 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 		}
 
 	})
+}
+
+func (m *Manager) LoginHandler(w http.ResponseWriter, r *http.Request) {
+	user, err := m.getUserFromFirebaseIdToken(w, r)
+	if err != nil {
+		panic(err)
+	}
+
+	session := &session.Session{
+		ID:    int(user.ID),
+		Email: user.Email,
+	}
+
+	writeSessionToCookie(session, w, m.secret)
 }
 
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {

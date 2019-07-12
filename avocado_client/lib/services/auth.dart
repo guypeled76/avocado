@@ -17,12 +17,13 @@ class AuthServiceForFlutter extends ServiceInstance implements AuthService {
   @override
   Stream<ProfileInfo> get profile {
     return _firebaseAuth.onAuthStateChanged
-        .map((user)=> user != null ? new ProfileInfo(
+        .asyncMap((user) async => user != null ? new ProfileInfo(
             key:user.uid,
             email: user.email,
             hashtags:[],
             image:user.photoUrl,
-            displayName:user.displayName
+            displayName:user.displayName,
+            idToken: await user.getIdToken(),
     ) : null);
   }
 
