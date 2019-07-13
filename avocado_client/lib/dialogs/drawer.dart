@@ -13,6 +13,8 @@ class DrawerDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthBLoC auth = AuthBLoC(ServiceScope.get<AuthStore>(context));
 
+    GraphQLService graphql = ServiceScope.get<GraphQLService>(context);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -68,7 +70,23 @@ class DrawerDialog extends StatelessWidget {
               Icons.dashboard,
               color: Colors.red,
             ),
-            onTap: () {},
+            onTap: () async {
+
+              String result = await graphql.query('''query { 
+                currentUser {
+                  id,
+                  email,
+                  image
+                }
+                users {
+                  id,
+                  name
+                }
+              }''');
+
+
+              print(result);
+            },
           ),
           new ListTile(
             title: Text(

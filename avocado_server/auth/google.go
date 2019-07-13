@@ -44,7 +44,7 @@ func (m *Manager) getUserFromGoogleCallback(w http.ResponseWriter, r *http.Reque
 		return nil, fmt.Errorf("failed getting user repo: %s", err.Error())
 	}
 
-	dbuser := &dalmodel.User{
+	dbUser := &dalmodel.User{
 		Email:       user.Email,
 		Thumbnail:   user.Picture,
 		Image:       user.Picture,
@@ -52,7 +52,7 @@ func (m *Manager) getUserFromGoogleCallback(w http.ResponseWriter, r *http.Reque
 		DisplayName: user.GivenName,
 	}
 
-	return repo.GetOrCreateUserByEmail(dbuser)
+	return repo.GetOrCreateUserByEmail(dbUser)
 }
 
 type googleUser struct {

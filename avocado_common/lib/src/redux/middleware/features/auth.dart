@@ -16,6 +16,10 @@ Iterable<Runnable> _handledInitialize(ServiceProvider provider) sync* {
 
     provider.get<AuthService>().profile.listen((profile) {
       provider.get<AuthStore>().actions.set(EntityPayload(profile));
+
+      if(profile?.idToken != null) {
+        provider.get<GraphQLService>().login(profile.idToken);
+      }
     });
   } catch (e) {
     yield put(AppActionsNames.error, ErrorPayload("Failed to initialize authentication.", e));

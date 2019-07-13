@@ -11,6 +11,7 @@ dependencies:
   resource: ^2.1.6
   rxdart: ^0.22.0
   json_annotation: ^2.4.0
+  http: ^0.12.0+2
   built_redux: ^7.5.4
   built_redux_saga:
     git: https://github.com/guypeled76/built_redux_saga

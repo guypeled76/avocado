@@ -24,7 +24,7 @@ func main() {
 	http.Handle("/query", authManager.AuthHandler(rootHandler))
 	http.Handle("/callback", http.HandlerFunc(authManager.CallbackHandler))
 	http.Handle("/logout", http.HandlerFunc(authManager.LogoutHandler))
-	http.Handle("/login", http.HandlerFunc(authManager.LogoutHandler))
+	http.Handle("/login", http.HandlerFunc(authManager.LoginHandler))
 
 	port := config.GetPort()
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)

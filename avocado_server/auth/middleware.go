@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"errors"
 	"firebase.google.com/go"
 	"fmt"
@@ -51,9 +52,11 @@ func (m *Manager) AuthHandler(next http.Handler) http.Handler {
 }
 
 func (m *Manager) LoginHandler(w http.ResponseWriter, r *http.Request) {
+
 	user, err := m.getUserFromFirebaseIdToken(w, r)
 	if err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	session := &session.Session{
@@ -62,6 +65,21 @@ func (m *Manager) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeSessionToCookie(session, w, m.secret)
+
+	var result struct {
+		Status string
+	}
+
+	result.Status = "ok"
+
+	js, err := json.Marshal(result)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
 }
 
 func (m *Manager) LogoutHandler(w http.ResponseWriter, r *http.Request) {

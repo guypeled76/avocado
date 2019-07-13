@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/gremlinsapps/avocado_server/dal/model"
 	"github.com/gremlinsapps/avocado_server/dal/sql"
-	"log"
 	"net/http"
 )
 
