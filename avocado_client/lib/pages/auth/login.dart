@@ -1,5 +1,4 @@
-import 'package:avocado_client/services/scope.dart';
-import 'package:avocado_common/common.dart';
+import 'package:avocado_client/references/common.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {

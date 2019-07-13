@@ -1,7 +1,6 @@
 import 'package:avocado_client/dialogs/testings.dart';
 import 'package:avocado_client/dialogs/about.dart';
-import 'package:avocado_client/services/scope.dart';
-import 'package:avocado_common/common.dart';
+import 'package:avocado_client/references/common.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
