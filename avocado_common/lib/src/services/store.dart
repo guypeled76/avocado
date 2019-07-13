@@ -1,7 +1,4 @@
 import 'package:avocado_common/common.dart';
-import 'package:avocado_common/src/services/container.dart';
-
-import 'container.dart';
 
 class CommonServiceConfiguration implements ServiceConfiguration {
 

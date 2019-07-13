@@ -12,3 +12,6 @@ export 'package:built_value/built_value.dart';
 export 'package:built_collection/built_collection.dart';
 
 
+export 'package:service_locator/service_locator.dart';
+
+
